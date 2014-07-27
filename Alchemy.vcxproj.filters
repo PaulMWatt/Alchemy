@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\meta">
+      <UniqueIdentifier>{b87f999a-7e1a-403b-9b25-3fac5d496e4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\detail">
+      <UniqueIdentifier>{a6dca8d8-a527-4038-a0d3-9e0f5b54640f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\meta\type_array">
+      <UniqueIdentifier>{0230f3e9-5c03-43bf-94fc-a10be96c51f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\meta\type_list">
+      <UniqueIdentifier>{ab1d015c-699f-499a-89bb-97f891f23b22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\meta\bit_field">
+      <UniqueIdentifier>{e78da976-09f5-402a-9433-ba959fa12eaa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Alchemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_node.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\size_of.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\meta_fwd.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\meta_util.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\container_size.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\byte_order.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\compiler.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\meta_foreach.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\meta_math.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\offset_of.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\size_at.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_at.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="storage_policy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\meta_macros.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\meta_error.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="Hg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_list\offset_of.h">
+      <Filter>Header Files\meta\type_list</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_list\size_at.h">
+      <Filter>Header Files\meta\type_list</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_list\type_at.h">
+      <Filter>Header Files\meta\type_list</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_array\offset_of.h">
+      <Filter>Header Files\meta\type_array</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_array\size_at.h">
+      <Filter>Header Files\meta\type_array</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_array\type_at.h">
+      <Filter>Header Files\meta\type_array</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\bit_field_list.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_array.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_list.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_list\length.h">
+      <Filter>Header Files\meta\type_list</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\type_array\length.h">
+      <Filter>Header Files\meta\type_array</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\length.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\bit_field\basic_list.h">
+      <Filter>Header Files\meta\bit_field</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\bit_field\bit_field.h">
+      <Filter>Header Files\meta\bit_field</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\integral_sequence.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="meta\auto_index.h">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="detail\basic_msg_field.h">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="detail\bitlist_field_proxy.h">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="detail\msg_buffer.h">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="detail\msg_def.h">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="detail\msg_field.h">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="detail\msg_field_proxy.h">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Alchemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="detail\msg_buffer_host.inl">
+      <Filter>Header Files\detail</Filter>
+    </None>
+    <None Include="detail\msg_buffer_network.inl">
+      <Filter>Header Files\detail</Filter>
+    </None>
+  </ItemGroup>
+</Project>

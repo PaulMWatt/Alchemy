@@ -1,0 +1,52 @@
+/// @file message_dynamic.h
+/// 
+/// Provides utility functions related to messages with dynamic fields.
+/// 
+/// The MIT License(MIT)
+/// @copyright 2014 Paul M Watt
+//  ****************************************************************************
+#ifndef MESSAGE_DYNAMIC_H_INCLUDED
+#define MESSAGE_DYNAMIC_H_INCLUDED
+//  Includes *******************************************************************
+#include <detail/message_dynamic_detail.h>
+
+namespace Hg
+{
+
+//  ****************************************************************************
+/// Query for the amount of dynamic memory required by a specified Hg::Message.
+///
+/// @paramt T       [typename] The Hg::Message format definition of the 
+///                 message to be converted.
+/// @param msg      The message object to be queried.
+///                           
+/// @return         The number of bytes required to populate the dynamically
+///                 sized fields from the message is returned.
+///                 0 is returned when there is no dynamic data.
+///
+template< typename T >
+size_t dynamic_size_of(const T& msg)
+{
+  return detail::DynamicSizeWorker<T, has_dynamic<T>::value>.size(msg);
+  //return detail::dynamic_size(msg);
+}
+
+
+//  ****************************************************************************
+/// Reports the total size of the dynamic buffers required for this message.
+///    
+template< typename MessageT,
+          typename ByteOrderT,
+          typename StorageT
+        >
+size_t dynamic_size_of(const Message<MessageT, ByteOrderT, StorageT>& msg)
+{
+  return detail::DynamicSizeWorker< MessageT, 
+                                    has_dynamic<MessageT::format_type>::value
+                                  >().size(msg);
+}
+
+} // namespace Hg
+
+#endif
+

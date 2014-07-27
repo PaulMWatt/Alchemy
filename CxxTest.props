@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <CallPython>c:\python34\python.exe</CallPython>
+    <CxxTestDir>C:\Development\CxxTest\</CxxTestDir>
+    <CxxTestScriptsDir>$(CxxTestDir)bin\</CxxTestScriptsDir>
+    <GenCxxTestRunner>$(CallPython) "$(CxxTestScriptsDir)cxxtestgen" </GenCxxTestRunner>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CxxTestDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="CallPython">
+      <Value>$(CallPython)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CxxTestDir">
+      <Value>$(CxxTestDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CxxTestScriptsDir">
+      <Value>$(CxxTestScriptsDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenCxxTestRunner">
+      <Value>$(GenCxxTestRunner)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
