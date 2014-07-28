@@ -19,3 +19,11 @@
 *.exe
 *.out
 *.app
+*.log
+*.tlog
+*.idb
+*.pdb
+test/Src/Generated/TestAlchemyTypesRunner.cpp
+Alchemy.v12.suo
+Alchemy.sdf
+test/Src/Generated/TestAlchemyTypesRunner.cpp
