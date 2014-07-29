@@ -526,7 +526,11 @@ void TestMeta::TestSizeOf_ArrayValue(void)
 
   // SUT
   TS_ASSERT_EQUALS(k_control, Hg::SizeOf<sut>::value);
-  TS_ASSERT_EQUALS(sizeof(sut), Hg::SizeOf<sut>::value);
+
+  // The standard array object is not guaranteed to be the same
+  // size as a basic array allocated with the same time and count.
+  // Therefore, this test is not valid.
+  //    TS_ASSERT_EQUALS(sizeof(sut), Hg::SizeOf<sut>::value);
 }
 
 //  ****************************************************************************

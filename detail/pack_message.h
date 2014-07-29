@@ -92,8 +92,17 @@ template< size_t   IdxT,
         >
 struct PackDatum
 {
+  //  **************************************************************************
+  //  Writes a fixed size field to the specified buffer.
+  // 
+  //  @param msg          The message object to supply the data to be written.
+  //  @param buffer       The buffer object to write into.
+  //  @param dynamic_size An additional offset for messages with dynamically 
+  //                      sized fields.
+  //
   void operator()(const MessageT &msg,
-                        BufferT  &buffer)
+                        BufferT  &buffer,
+                        size_t    dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
@@ -102,8 +111,10 @@ struct PackDatum
     typedef typename
       proxy_type::value_type                                            value_type;
 
-    value_type value = const_cast<MessageT&>(msg).template FieldAt<IdxT>().get();
-    buffer.set_data(value, Hg::OffsetOf<IdxT, typename MessageT::format_type>::value);
+    value_type value  = const_cast<MessageT&>(msg).template FieldAt<IdxT>().get();
+    size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
+                      + dynamic_offset;
+    buffer.set_data(value, offset);
   }
 };
 
@@ -119,8 +130,20 @@ template< size_t   IdxT,
         >
 struct PackDatum<IdxT, MessageT, BufferT, nested_trait>
 {
+  //  **************************************************************************
+  //  Writes a fixed size field to the specified buffer.
+  // 
+  //  @param msg          The message object to supply the data to be written.
+  //  @param buffer       The buffer object to write into.
+  //  @param dynamic_size An additional offset for messages with dynamically 
+  //                      sized fields. If this nested value contains additional
+  //                      dynamically-sized fields, this length will be added 
+  //                      to this input value to report how much larger the
+  //                      message has become. 
+  //
   void operator()(const MessageT &msg,
-                        BufferT  &buffer)
+                        BufferT  &buffer,
+                        size_t   &dynamic_buffer)
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
@@ -129,8 +152,9 @@ struct PackDatum<IdxT, MessageT, BufferT, nested_trait>
     typedef typename
       proxy_type::value_type                                            value_type;
 
-    value_type value = const_cast<MessageT&>(msg).template FieldAt<IdxT>().get();
-    size_t     offset= Hg::OffsetOf<IdxT, MessageT::format_type>::value;
+    value_type value  = const_cast<MessageT&>(msg).template FieldAt<IdxT>().get();
+    size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
+                      + dynamic_buffer;
     pack_message< value_type, 
                   BufferT,
                   typename message_size_trait<value_type::format_type>::type
@@ -152,9 +176,19 @@ template< size_t   IdxT,
         >
 struct PackDatum<IdxT, MessageT, BufferT, vector_trait>
 {
-  size_t operator()(const MessageT &msg,
-                          BufferT  &buffer,
-                          size_t   dynamic_offset)
+  //  **************************************************************************
+  //  Writes a fixed size field to the specified buffer.
+  // 
+  //  @param msg          The message object to supply the data to be written.
+  //  @param buffer       The buffer object to write into.
+  //  @param dynamic_size An additional offset for messages with dynamically 
+  //                      sized fields. The length of the dynamic field written 
+  //                      will be added to this input value to report how much 
+  //                      larger the message has become. 
+  //
+  void operator()(const MessageT& msg,
+                        BufferT&  buffer,
+                        size_t&   dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
@@ -171,16 +205,25 @@ struct PackDatum<IdxT, MessageT, BufferT, vector_trait>
       return;
     }
 
-    size_t     size   = value.size();
     size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
                       + dynamic_offset;
-   
-    value_type::value_type 
-    buffer.set_range( &(*value.begin()), 
-                      &(*value.end()), 
+
+    // Calculate the full size of the buffer that will be written.
+    // Size() from the value is the number of elements that are contained.
+    size_t count= value.size();
+    // Adjust with the size of the actual elements in the container.
+    size_t size = count * sizeof(value_type::value_type);
+    
+    value_type::value_type *pFirst = &value[0];
+    value_type::value_type *pLast  = pFirst;
+    std::advance(pLast, size);
+    buffer.set_range( pFirst, 
+                      pLast, 
                       offset);
-    size_t datum_size = size * sizeof(value_type::value_type);
-    return offset + size;
+
+    // Update the accumulated dynamic size with the 
+    // new length added by the size of this field.
+    dynamic_offset += size;
   }
 };
 
@@ -191,7 +234,9 @@ template< size_t   IdxT,
           typename MessageT,
           typename BufferT
         >
-void WriteDatum(const MessageT& message, BufferT& buffer, size_t offset)
+void WriteDatum(const MessageT& message, 
+                      BufferT&  buffer, 
+                      size_t&   dynamic_offset)
 {
   typedef typename
     Hg::detail::DeduceProxyType < IdxT,
@@ -205,7 +250,7 @@ void WriteDatum(const MessageT& message, BufferT& buffer, size_t offset)
               BufferT, 
               DeduceTypeTrait<value_type>::type
             > pack;
-  pack(message, buffer, offset);
+  pack(message, buffer, dynamic_offset);
 }
 
 //  ****************************************************************************
@@ -226,14 +271,25 @@ template <size_t    Idx,
 struct PackMessageWorker
 { 
   void operator()(const MessageT &msg,
-                        BufferT  &buffer,
-                        size_t    offset)
+                        BufferT  &buffer)
   {
     // Write the current value, then move to the next value for the message.
-    size_t last_pos = WriteDatum< Idx, MessageT, BufferT>(msg, buffer, offset);
+    size_t dynamic_offset = 0;
+    WriteDatum< Idx, MessageT, BufferT>(msg, buffer,dynamic_offset);
 
     PackMessageWorker < Idx+1, Count, MessageT, BufferT> pack;
     pack(msg, buffer);
+  }
+
+  void operator()(const MessageT &msg,
+                        BufferT  &buffer,
+                        size_t   &dynamic_offset)
+  {
+    // Write the current value, then move to the next value for the message.
+    WriteDatum< Idx, MessageT, BufferT>(msg, buffer, dynamic_offset);
+
+    PackMessageWorker < Idx+1, Count, MessageT, BufferT> pack;
+    pack(msg, buffer, dynamic_offset);
   }
 };
 
@@ -253,6 +309,11 @@ struct PackMessageWorker< Idx,
 { 
   void operator()(const MessageT& msg, 
                         BufferT& buffer)
+  { }
+
+  void operator()(const MessageT& msg, 
+                        BufferT& buffer,
+                        size_t   dynamic_offset)
   { }
 };
 
@@ -358,7 +419,8 @@ std::shared_ptr<BufferT>
                               MessageT,
                               BufferT
                             > pack;
-  pack(msg_values, *spBuffer.get());
+  size_t dynamic_offset = 0;
+  pack(msg_values, *spBuffer.get(), dynamic_offset);
   return spBuffer;
 }
 

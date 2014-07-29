@@ -27,3 +27,5 @@ test/Src/Generated/TestAlchemyTypesRunner.cpp
 Alchemy.v12.suo
 Alchemy.sdf
 test/Src/Generated/TestAlchemyTypesRunner.cpp
+*.ilk
+test/Src/Generated/TestAlchemyTypesRunner.cpp

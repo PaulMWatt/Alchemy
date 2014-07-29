@@ -181,6 +181,13 @@ protected:
   uint32_t  other_seq_32[k_count_seq_32];
   uint64_t  other_seq_64[k_count_seq_64];
 
+  // With the current test structure, the SUT format uses 71 bytes.
+  static const size_t k_sut_msg_size = 71;
+
+  uint8_t   packed_msg[k_sut_msg_size];
+  uint8_t   other_packed_msg[k_sut_msg_size];
+ 
+
   //  Typedefs *****************************************************************
   //  These typedefs allow the creation of the different msg field types
   //  with a simplified syntax for readability in the unit-tests.
@@ -222,6 +229,38 @@ protected:
     uint64_t* seq64_last  = seq64_first;
     std::advance(seq64_last, k_count_seq_64);
     msg.seq_64.assign(seq64_first, seq64_last);
+
+    // Construct a packed memory array by hand that contains the data
+    // buffer that is expected based on the values assigned above.
+
+    ::memset(packed_msg, 0, sizeof(packed_msg));
+    uint8_t *pCur = packed_msg;
+    
+    ::memcpy(pCur, &k_word_0, sizeof(k_word_0));
+    pCur += sizeof(k_word_0);
+
+    ::memcpy(pCur, &seq_8[0], k_count_seq_8);
+    pCur += k_count_seq_8;
+    
+    size_t seq_16_size = k_count_seq_16 * sizeof(uint16_t);
+    ::memcpy(pCur, &seq_16[0], seq_16_size);
+    pCur += seq_16_size;    
+
+    ::memcpy(pCur, &k_word_1, sizeof(k_word_1));
+    pCur += sizeof(k_word_1);
+
+    size_t seq_32_size = k_count_seq_32 * sizeof(uint32_t);
+    ::memcpy(pCur, &seq_32[0], seq_32_size);
+    pCur += seq_32_size;
+    
+    size_t seq_64_size = k_count_seq_64 * sizeof(uint64_t);
+    ::memcpy(pCur, &seq_64[0], seq_64_size);
+    pCur += seq_64_size;
+
+    ::memcpy(pCur, &k_word_2, sizeof(k_word_2));
+    pCur += sizeof(k_word_2);
+
+    TS_ASSERT_EQUALS((pCur - packed_msg), 71)
   }
 
   //  ****************************************************************************
@@ -251,6 +290,38 @@ protected:
     uint64_t* seq64_last  = seq64_first;
     std::advance(seq64_last, k_count_seq_64);
     msg.seq_64.assign(seq64_first, seq64_last);
+
+    // Construct a packed memory array by hand that contains the data
+    // buffer that is expected based on the values assigned above.
+
+    ::memset(other_packed_msg, 0, sizeof(other_packed_msg));
+    uint8_t *pCur = other_packed_msg;
+    
+    ::memcpy(pCur, &k_other_word_0, sizeof(k_other_word_0));
+    pCur += sizeof(k_other_word_0);
+
+    ::memcpy(pCur, &other_seq_8[0], k_count_seq_8);
+    pCur += k_count_seq_8;
+    
+    size_t seq_16_size = k_count_seq_16 * sizeof(uint16_t);
+    ::memcpy(pCur, &other_seq_16[0], seq_16_size);
+    pCur += seq_16_size;    
+
+    ::memcpy(pCur, &k_other_word_1, sizeof(k_other_word_1));
+    pCur += sizeof(k_other_word_1);
+
+    size_t seq_32_size = k_count_seq_32 * sizeof(uint32_t);
+    ::memcpy(pCur, &other_seq_32[0], seq_32_size);
+    pCur += seq_32_size;
+    
+    size_t seq_64_size = k_count_seq_64 * sizeof(uint64_t);
+    ::memcpy(pCur, &other_seq_64[0], seq_64_size);
+    pCur += seq_64_size;
+
+    ::memcpy(pCur, &k_other_word_2, sizeof(k_other_word_2));
+    pCur += sizeof(k_other_word_2);
+
+    TS_ASSERT_EQUALS((pCur - other_packed_msg), 71)
   }
 
 public:
@@ -355,12 +426,9 @@ void TestDynamicMessageSuite::TestCopyCtor(void)
   SUT                 rhs;
   PopulateBaseValues (rhs);
 
-  // TODO: Last debeggin session determined that the offsets were not being adjusted for the dynamic sizes of the fields.
-  // TODO: Modify the tests so the control buffer is hand-generated to the expected result. If both expected and actual are modified by the same logic, this will not detect problems in the logic to verify that it is generating the correct output.
-
   // SUT
   SUT sut(rhs);
-  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), sut.size());
 }
 
 //  ****************************************************************************
@@ -370,7 +438,7 @@ void TestDynamicMessageSuite::TestValueCtor(void)
   PopulateBaseValues (rhs);
   // SUT
   SUT sut(rhs.data(), rhs.size());
-  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), sut.size());
 }
 
 //  ****************************************************************************
@@ -382,7 +450,7 @@ void TestDynamicMessageSuite::TestAssignmentOperator(void)
   // SUT
   SUT sut;
   sut = rhs;
-  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), sut.size());
 }
 
 //  ****************************************************************************
@@ -438,7 +506,7 @@ void TestDynamicMessageSuite::TestAssign(void)
   // SUT
   SUT sut;
   sut.assign(expected.data(), expected.size());
-
+// TODO: This test currently fails because the call to unpack a raw buffer into the message structure does not yet support dynamic sizes.
   // Verify the contents held in the input buffer were properly assigned to the msg.
   TS_ASSERT_EQUALS(expected.size(), sut.size());
   TS_ASSERT_SAME_DATA(expected.data(), sut.data(), sut.size());
@@ -466,7 +534,7 @@ void TestDynamicMessageSuite::TestClone(void)
   SUT sut;
   sut = rhs.clone();
 
-  TS_ASSERT_SAME_DATA(sut.data(), rhs.data(), sut.size());
+  TS_ASSERT_SAME_DATA(packed_msg, rhs.data(), sut.size());
 }
 
 //  ****************************************************************************
@@ -542,8 +610,8 @@ void TestDynamicMessageSuite::Testto_host(void)
   SUT result = to_host(sut);
   SUT no_op_result = to_host(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -566,8 +634,8 @@ void TestDynamicMessageSuite::Testto_network(void)
   SUT_net_order result = to_network(sut);
   SUT_net_order no_op_result = to_network(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -590,8 +658,8 @@ void TestDynamicMessageSuite::Testto_big_endian(void)
   SUT_big_endian result = to_big_endian(sut);
   SUT_big_endian no_op_result = to_big_endian(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -614,8 +682,8 @@ void TestDynamicMessageSuite::Testto_little_endian(void)
   SUT_little_endian result        = to_little_endian(sut);
   SUT_little_endian no_op_result  = to_little_endian(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
 }
 
 
