@@ -34,6 +34,42 @@
 #include <meta/dynamic.h>
 #include <detail/deduce_proxy_type.h>
 
+//  ****************************************************************************
+//  Utility Constructs For Use With Hg Message Types ***************************
+//  ****************************************************************************
+
+namespace Hg
+{
+
+//  Typedefs *******************************************************************
+typedef size_t (*pfnGetDatumSize)(uint8_t*, size_t);
+
+
+//  ****************************************************************************
+/// Indicates the type size the specified message is, static or dynamic.
+///
+/// @paramt T     A TypeList definition.
+///
+/// @return       A typedef called *type* is defined to return the size trait.
+///               - static_size_trait indicates a fixed-size message whose
+///                                   size is completely known at compile-time.
+///               - dynamic_size_trate indicates a dyanmically sized message.
+///                                    At least some part of the message requires
+///                                    runtime processing to determine the size
+///                                    of the message.
+///
+template< typename T >
+struct message_size_trait
+  : std::conditional
+    < has_dynamic<T>::value,
+      dynamic_size_trait,
+      static_size_trait
+    >
+{ };
+
+
+} // namespace Hg
+
 // *****************************************************************************
 //  Abstracted Message Definition MACROS ***************************************
 //  Simplified user MACROS use these definitions.
@@ -91,9 +127,7 @@
   Proxy##P   P;                                                                \
                                                                                \
   datum_##P& FieldAtIndex(const datum_##P&)                                    \
-  {                                                                            \
-    return *static_cast<datum_##P*>(&P);                                       \
-  }                                                                            \
+  { return *static_cast<datum_##P*>(&P); }                                     \
                                                                                \
   const char* FieldName(const Proxy##P&)                    { return #P; }
 
@@ -103,8 +137,36 @@
   INC_COUNTER                                                                  \
   DECLARE_DATUM_FORMAT_IDX(COUNTER_VALUE, T, P)
 
+
 // *****************************************************************************
-#define DECLARE_FORMAT_FOOTER           };
+#define DECLARE_DYN_DATUM_FORMAT_IDX(IDX,T,P,S)                                \
+  DECLARE_DATUM_FORMAT_IDX(IDX,T,P)                                            \
+  template <typename U>                                                        \
+  size_t Size(U& buffer, datum_##P&)  { return DatumSize(S, buffer); }
+
+
+// *****************************************************************************
+#define DECLARE_DYN_DATUM_FORMAT(T, P, S)                                      \
+  INC_COUNTER                                                                  \
+  DECLARE_DYN_DATUM_FORMAT_IDX(COUNTER_VALUE, T, P, S)
+
+
+// *****************************************************************************
+#define DECLARE_FORMAT_FOOTER                                                  \
+  private:                                                                     \
+    template <typename T, typename U>                                          \
+    size_t DatumSize(T value, U&)                                              \
+    {                                                                          \
+      return value;                                                            \
+    }                                                                          \
+                                                                               \
+    template <typename U>                                                      \
+    size_t DatumSize(pfnGetDatumSize ftor, U& buffer)                          \
+    {                                                                          \
+      if (!buffer) { return 0; }                                               \
+      return ftor(buffer.get(), buffer.size());                                \
+    }                                                                          \
+  };
 
 
 // ****************************************************************************
@@ -162,37 +224,6 @@
 // *****************************************************************************
 #define DECLARE_BIT_SET_FOOTER          };
 
-//  ****************************************************************************
-//  Utility Constructs For Use With Hg Message Types ***************************
-//  ****************************************************************************
-
-namespace Hg
-{
-
-//  ****************************************************************************
-/// Indicates the type size the specified message is, static or dynamic.
-///
-/// @paramt T     A TypeList definition.
-///
-/// @return       A typedef called *type* is defined to return the size trait.
-///               - static_size_trait indicates a fixed-size message whose
-///                                   size is completely known at compile-time.
-///               - dynamic_size_trate indicates a dyanmically sized message.
-///                                    At least some part of the message requires
-///                                    runtime processing to determine the size
-///                                    of the message.
-///
-template< typename T >
-struct message_size_trait
-  : std::conditional
-    < has_dynamic<T>::value,
-      dynamic_size_trait,
-      static_size_trait
-    >
-{ };
-
-
-} // namespace Hg
 
 #endif
 

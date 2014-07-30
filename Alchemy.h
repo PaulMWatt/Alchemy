@@ -124,6 +124,30 @@
 ///             
 #define HG_DATUM(TYPE,PARAM)            DECLARE_DATUM_FORMAT(TYPE,PARAM)
 
+//  ****************************************************************************
+/// Adds a field with a dynamic size to the message definition.
+/// 
+/// This MACRO generates code based on the TypeList specified in the 
+/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
+/// name the property associated with this message format field. 
+/// Finally, a field is provided to specify how this datum will know how
+/// large the field should be when reading data on input.
+///             
+/// @param TYPE     The type to use for this field
+/// @param PARAM    The name to assign this parameter in the message definition.
+///                 PARAM will be the name used to access this field directly.
+/// @param DATUM_SZ Specifies how the size of the field is determined on input.
+///                 There are a few possible ways to indicate the method:
+///                   * Reference a field previously defined in the message that
+///                     indicates the number of entries.
+///                   * Specify a function pointer to a user-defined function
+///                     that will inspect the data and return the size.
+///                     the function should have the following signature:
+///                         size_t pfn_GetDatumSize(uint8_t*, size_t)
+///
+///             
+#define HG_DYN_DATUM(TYPE,PARAM,DATUM_SZ)\
+                                        DECLARE_DYN_DATUM_FORMAT(TYPE,PARAM,DATUM_SZ)
 
 //  ****************************************************************************
 /// Adds a fixed-size array field to the message definition.

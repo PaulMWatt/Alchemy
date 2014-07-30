@@ -77,8 +77,17 @@ template< size_t   IdxT,
         >
 struct UnpackDatum
 {
+  //  **************************************************************************
+  //  Reads a fixed size field from the specified buffer.
+  // 
+  //  @param msg            The message object to supply the data to be read.
+  //  @param buffer         The buffer object to read from.
+  //  @param dynamic_offset An additional offset for messages with dynamically 
+  //                        sized fields.
+  //
   void operator()(MessageT &msg,
-                  BufferT  &buffer)
+                  BufferT  &buffer,
+                  size_t    dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
@@ -87,9 +96,11 @@ struct UnpackDatum
     typedef typename
       proxy_type::value_type                                            value_type;
 
-    value_type value = value_type();
+    value_type value  = value_type();
+    size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
+                      + dynamic_offset;
 
-    buffer.get_data(value, Hg::OffsetOf<IdxT, typename MessageT::format_type>::value);
+    buffer.get_data(value, offset);
     msg.template FieldAt<IdxT>().set(value);
   }
 };
@@ -109,8 +120,20 @@ template< size_t   IdxT,
         >
 struct UnpackDatum<IdxT, MessageT, BufferT, nested_trait>
 {
+  //  **************************************************************************
+  //  Reads a nested field to the specified buffer.
+  // 
+  //  @param msg            The message object to receive the data to be read.
+  //  @param buffer         The buffer object to read from.
+  //  @param dynamic_offset An additional offset for messages with dynamically 
+  //                        sized fields. If this nested value contains additional
+  //                        dynamically-sized fields, this length will be added 
+  //                        to this input value to report how much larger the
+  //                        message has become. 
+  //
   void operator()(      MessageT &msg,
-                  const BufferT  &buffer)
+                  const BufferT  &buffer,
+                        size_t   &dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
@@ -119,8 +142,9 @@ struct UnpackDatum<IdxT, MessageT, BufferT, nested_trait>
     typedef typename
       proxy_type::value_type                                            value_type;
 
-    value_type value = value_type();
-    size_t     offset= Hg::OffsetOf<IdxT, MessageT::format_type>::value;
+    value_type value  = value_type();
+    size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
+                      + dynamic_offset;
     unpack_message< value_type, 
                     BufferT,
                     typename message_size_trait<value_type::format_type>::type
@@ -144,8 +168,19 @@ template< size_t   IdxT,
         >
 struct UnpackDatum<IdxT, MessageT, BufferT, vector_trait>
 {
+  //  **************************************************************************
+  //  Reads a dynamically-size field from the specified buffer.
+  // 
+  //  @param msg            The message object to accept the data to be read.
+  //  @param buffer         The buffer object to read from.
+  //  @param dynamic_offset An additional offset for messages with dynamically 
+  //                        sized fields. The length of the dynamic field read 
+  //                        will be added to this input value to report how much 
+  //                        larger the message has become. 
+  //
   void operator()(      MessageT &msg,
-                  const BufferT  &buffer)
+                  const BufferT  &buffer,
+                        size_t   &dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
@@ -153,12 +188,29 @@ struct UnpackDatum<IdxT, MessageT, BufferT, vector_trait>
                                     MessageT::k_base_offset>::type      proxy_type;
     typedef typename
       proxy_type::value_type                                            value_type;
+    typedef typename
+      value_type::value_type                                            data_type;
 
-    // TODO: Need to specify how the size is determined. The user will define this with the type in the message definition.
-    //value_type value = value_type();
-    //size_t     offset= Hg::OffsetOf<IdxT, MessageT::format_type>::value;
-    //unpack_message<value_type, BufferT>(value, buffer, offset);
-    //msg.template FieldAt<IdxT>().set(value);
+    value_type value  = value_type();
+    size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
+                      + dynamic_offset;
+    
+    // Query the message object for the number of elements in the buffer;
+    size_t      count = msg.Size(buffer, msg.template FieldAt<IdxT>());
+    value.resize(count);
+
+    data_type *pFirst = &value[0];
+    data_type *pLast  = pFirst;
+    std::advance(pLast, count);
+
+    // TODO: Revisit and create a more general solution. For now, simply specifying the size of bytes to be read from the buffer.
+    buffer.get_range(pFirst, count*sizeof(data_type), offset);
+    msg.template FieldAt<IdxT>().set(value);
+
+    // Calculate the number of bytes that will be read from the buffer.
+    size_t size = count * sizeof(data_type);
+
+    dynamic_offset += size;
   }
 };
 
@@ -169,7 +221,9 @@ template< size_t   IdxT,
           typename MessageT,
           typename BufferT
         >
-void ReadDatum(MessageT& message, const BufferT& buffer)
+void ReadDatum(       MessageT& message, 
+                const BufferT&  buffer, 
+                      size_t&   dynamic_offset)
 {
   typedef typename
     Hg::detail::DeduceProxyType < IdxT,
@@ -183,7 +237,7 @@ void ReadDatum(MessageT& message, const BufferT& buffer)
                 const BufferT, 
                 DeduceTypeTrait<value_type>::type
               > unpack;
-  unpack(message, buffer);
+  unpack(message, buffer, dynamic_offset);
 }
 
 //  ****************************************************************************
@@ -207,11 +261,24 @@ struct UnpackMessageWorker
                   const BufferT  &buffer )
   {
     // Read the current value, then move to the next value for the message.
-    ReadDatum< Idx, MessageT, BufferT>(msg, buffer);
+    size_t dynamic_offset = 0;
+    ReadDatum< Idx, MessageT, BufferT>(msg, buffer, dynamic_offset);
 
     UnpackMessageWorker < Idx+1, Count, MessageT, BufferT> unpack;
     unpack(msg, buffer);
   }
+
+  void operator()(      MessageT &msg,
+                  const BufferT  &buffer,
+                        size_t   &dynamic_offset)
+  {
+    // Read the current value, then move to the next value for the message.
+    ReadDatum< Idx, MessageT, BufferT>(msg, buffer, dynamic_offset);
+
+    UnpackMessageWorker < Idx+1, Count, MessageT, BufferT> unpack;
+    unpack(msg, buffer, dynamic_offset);
+  }
+
 };
 
 //  ****************************************************************************
@@ -230,6 +297,11 @@ struct UnpackMessageWorker< Idx,
 { 
   void operator()(      MessageT& msg, 
                   const BufferT& buffer)
+  { }
+
+  void operator()(      MessageT& msg, 
+                  const BufferT& buffer,
+                        size_t   dynamic_offset)
   { }
 };
 
@@ -312,9 +384,9 @@ size_t unpack_message (       MessageT  &msg_values,
 ///
 /// @param msg_values         The message structure that contains the values
 ///                           to be read.
+/// @param buffer               The buffer to read from.
 ///
-/// @return                   The buffer that has been allocated to store the 
-///                           message.
+/// @return                   The populated message values are returned.
 ///
 template< typename MessageT,
           typename BufferT
@@ -323,9 +395,9 @@ MessageT& unpack_message(       MessageT &msg_values,
                           const BufferT  &buffer,
                           const dynamic_size_trait&  )
 {
-// TODO: Return an implement once the size information is known.
   const size_t k_msg_size = Hg::SizeOf<typename MessageT::format_type>::value;
-  // Verify the input buffer contains enough data to populate the message.
+  // Verify the input buffer contains enough data to populate the minimum size
+  // required by the message.
   if ( buffer.empty()
     || buffer.size() < k_msg_size)
   {
@@ -338,7 +410,8 @@ MessageT& unpack_message(       MessageT &msg_values,
                                 MessageT,
                                 BufferT
                               > unpack;
-  unpack(msg_values, buffer);
+  size_t dynamic_offset = 0;
+  unpack(msg_values, buffer, dynamic_offset);
   return msg_values;
 }
 
@@ -362,7 +435,6 @@ size_t unpack_message (       MessageT  &msg_values,
                                size_t    offset,
                         const dynamic_size_trait&   )
 {
-// TODO: Return an implement once the size information is known.
   typedef std::remove_const<BufferT>::type        MutableBuffer;
 
   // Calculate the number of bytes that is expected to be read for this message.

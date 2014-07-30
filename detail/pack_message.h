@@ -131,7 +131,7 @@ template< size_t   IdxT,
 struct PackDatum<IdxT, MessageT, BufferT, nested_trait>
 {
   //  **************************************************************************
-  //  Writes a fixed size field to the specified buffer.
+  //  Writes a nested field to the specified buffer.
   // 
   //  @param msg          The message object to supply the data to be written.
   //  @param buffer       The buffer object to write into.
@@ -177,7 +177,7 @@ template< size_t   IdxT,
 struct PackDatum<IdxT, MessageT, BufferT, vector_trait>
 {
   //  **************************************************************************
-  //  Writes a fixed size field to the specified buffer.
+  //  Writes a dynamically-size field to the specified buffer.
   // 
   //  @param msg          The message object to supply the data to be written.
   //  @param buffer       The buffer object to write into.

@@ -79,6 +79,10 @@ typedef dyn_basic_format_tFormat<0> dyn_basic_type;
 // 
 typedef TypeList
 <
+  uint8_t,
+  uint8_t,
+  uint8_t,
+  uint8_t,
   uint32_t,
   std::vector<uint8_t>,
   std::vector<uint16_t>,
@@ -89,13 +93,17 @@ typedef TypeList
 > dyn_test_format_t;
 
 HG_BEGIN_FORMAT(dyn_test_format_t)
-  HG_DATUM (uint32_t,                 word_0)
-  HG_DATUM ((std::vector<uint8_t>),   seq_8)
-  HG_DATUM ((std::vector<uint16_t>),  seq_16)
-  HG_DATUM (uint32_t,                 word_1)
-  HG_DATUM ((std::vector<uint32_t>),  seq_32)
-  HG_DATUM ((std::vector<uint64_t>),  seq_64)
-  HG_DATUM (uint32_t,                 word_2)
+  HG_DATUM    (uint8_t,                  size_8)
+  HG_DATUM    (uint8_t,                  size_16)
+  HG_DATUM    (uint8_t,                  size_32)
+  HG_DATUM    (uint8_t,                  size_64)
+  HG_DATUM    (uint32_t,                 word_0)
+  HG_DYN_DATUM((std::vector<uint8_t>),   seq_8,  size_8)
+  HG_DYN_DATUM((std::vector<uint16_t>),  seq_16, size_16)
+  HG_DATUM    (uint32_t,                 word_1)
+  HG_DYN_DATUM((std::vector<uint32_t>),  seq_32, size_32)
+  HG_DYN_DATUM((std::vector<uint64_t>),  seq_64, size_64)
+  HG_DATUM    (uint32_t,                 word_2)
 HG_END_FORMAT
 
 typedef dyn_test_format_tFormat<0> dyn_message_type;
@@ -181,8 +189,8 @@ protected:
   uint32_t  other_seq_32[k_count_seq_32];
   uint64_t  other_seq_64[k_count_seq_64];
 
-  // With the current test structure, the SUT format uses 71 bytes.
-  static const size_t k_sut_msg_size = 71;
+  // With the current test structure, the SUT format uses 75 bytes.
+  static const size_t k_sut_msg_size = 75;
 
   uint8_t   packed_msg[k_sut_msg_size];
   uint8_t   other_packed_msg[k_sut_msg_size];
@@ -206,6 +214,11 @@ protected:
   template <typename SUT_t>
   void PopulateBaseValues(SUT_t& msg)
   {
+    msg.size_8       = k_count_seq_8;
+    msg.size_16      = k_count_seq_16;
+    msg.size_32      = k_count_seq_32;
+    msg.size_64      = k_count_seq_64;
+
     msg.word_0       = k_word_0;
     msg.word_1       = k_word_1;
     msg.word_2       = k_word_2;
@@ -236,6 +249,20 @@ protected:
     ::memset(packed_msg, 0, sizeof(packed_msg));
     uint8_t *pCur = packed_msg;
     
+    // size values
+    ::memcpy(pCur, &k_count_seq_8, sizeof(k_count_seq_8));
+    pCur += sizeof(msg.size_8);
+
+    ::memcpy(pCur, &k_count_seq_16, sizeof(k_count_seq_16));
+    pCur += sizeof(msg.size_16);
+
+    ::memcpy(pCur, &k_count_seq_32, sizeof(k_count_seq_32));
+    pCur += sizeof(msg.size_32);
+
+    ::memcpy(pCur, &k_count_seq_64, sizeof(k_count_seq_64));
+    pCur += sizeof(msg.size_64);
+
+    // data values
     ::memcpy(pCur, &k_word_0, sizeof(k_word_0));
     pCur += sizeof(k_word_0);
 
@@ -260,13 +287,20 @@ protected:
     ::memcpy(pCur, &k_word_2, sizeof(k_word_2));
     pCur += sizeof(k_word_2);
 
-    TS_ASSERT_EQUALS((pCur - packed_msg), 71)
+    // This value is explicitly specified to insure that the 
+    // the test is updated if the message buffer is updated.
+    TS_ASSERT_EQUALS((pCur - packed_msg), 75)
   }
 
   //  ****************************************************************************
   template <typename SUT_t>
   void PopulateOtherValues(SUT_t& msg)
   {
+    msg.size_8       = k_count_seq_8;
+    msg.size_16      = k_count_seq_16;
+    msg.size_32      = k_count_seq_32;
+    msg.size_64      = k_count_seq_64;
+
     msg.word_0       = k_other_word_0;
     msg.word_1       = k_other_word_1;
     msg.word_2       = k_other_word_2;
@@ -297,6 +331,20 @@ protected:
     ::memset(other_packed_msg, 0, sizeof(other_packed_msg));
     uint8_t *pCur = other_packed_msg;
     
+    // size values
+    ::memcpy(pCur, &k_count_seq_8, sizeof(k_count_seq_8));
+    pCur += sizeof(msg.size_8);
+
+    ::memcpy(pCur, &k_count_seq_16, sizeof(k_count_seq_16));
+    pCur += sizeof(msg.size_16);
+
+    ::memcpy(pCur, &k_count_seq_32, sizeof(k_count_seq_32));
+    pCur += sizeof(msg.size_32);
+
+    ::memcpy(pCur, &k_count_seq_64, sizeof(k_count_seq_64));
+    pCur += sizeof(msg.size_64);
+
+    // data values
     ::memcpy(pCur, &k_other_word_0, sizeof(k_other_word_0));
     pCur += sizeof(k_other_word_0);
 
@@ -321,7 +369,9 @@ protected:
     ::memcpy(pCur, &k_other_word_2, sizeof(k_other_word_2));
     pCur += sizeof(k_other_word_2);
 
-    TS_ASSERT_EQUALS((pCur - other_packed_msg), 71)
+    // This value is explicitly specified to insure that the 
+    // the test is updated if the message buffer is updated.
+    TS_ASSERT_EQUALS((pCur - other_packed_msg), 75)
   }
 
 public:
@@ -346,11 +396,6 @@ public:
   void TestClear(void);
   void TestClone(void);
   void Testdata(void);
-
-  // Special cases
-  void TestSingleFieldMsg_Basic(void);
-  void TestSingleFieldMsg_Nested(void);
-  void TestSingleFieldMsg_Bitlist(void);
 
   //  Worker Functions *********************************************************
   void Testto_host(void);
@@ -405,8 +450,9 @@ void TestDynamicMessageSuite::TestDynamicFields_message(void)
   typedef 
     dynamic_fields<dyn_message_type::format_type>::type    result_type;
 
-  typedef integer_sequence<1,2,4,5>::type   k_control_type;
+  typedef integer_sequence<5,6,8,9>::type   k_control_type;
   bool is_same_type = std::is_same<k_control_type, result_type>::value;
+
   TS_ASSERT(is_same_type);
 }
 
@@ -506,8 +552,7 @@ void TestDynamicMessageSuite::TestAssign(void)
   // SUT
   SUT sut;
   sut.assign(expected.data(), expected.size());
-// TODO: This test currently fails because the call to unpack a raw buffer into the message structure does not yet support dynamic sizes.
-  // Verify the contents held in the input buffer were properly assigned to the msg.
+
   TS_ASSERT_EQUALS(expected.size(), sut.size());
   TS_ASSERT_SAME_DATA(expected.data(), sut.data(), sut.size());
 }
@@ -540,54 +585,43 @@ void TestDynamicMessageSuite::TestClone(void)
 //  ****************************************************************************
 void TestDynamicMessageSuite::Testdata(void)
 {
-  // TODO: Add code to test that values are set to the interface, and can be read out of the data call.
+  SUT sut;
+  sut.size_8       = k_count_seq_8;
+  sut.size_16      = k_count_seq_16;
+  sut.size_32      = k_count_seq_32;
+  sut.size_64      = k_count_seq_64;
 
-  //SUT sut;
-  //s_pointer spBuffer = get_buffer();
-  //TS_ASSERT(sut.empty());
+  sut.word_0       = k_word_0;
+  sut.word_1       = k_word_1;
+  sut.word_2       = k_word_2;
 
-  //// SUT
-  //SUT::buffer_type buffer = sut.buffer();
-  //TS_ASSERT(buffer.empty());
+  // allocate and copy with the vector assign
+  uint8_t* seq8_first = &seq_8[0];
+  uint8_t* seq8_last  = seq8_first;
+  std::advance(seq8_last, k_count_seq_8);
+  sut.seq_8.assign(seq8_first, seq8_last);
 
-  //// SUT
-  //sut.assign(spBuffer.get(), 0);
-  //buffer = sut.buffer();
-  //TS_ASSERT(!buffer.empty());
-  //TS_ASSERT_EQUALS(spBuffer, buffer.buffer());
-}
+  // grow incrementally with push_back for each element.
+  sut.seq_16.push_back(seq_16[0]);
+  sut.seq_16.push_back(seq_16[1]);
+  sut.seq_16.push_back(seq_16[2]);
+  sut.seq_16.push_back(seq_16[3]);
+  sut.seq_16.push_back(seq_16[4]);
+  sut.seq_16.push_back(seq_16[5]);
 
-//  ****************************************************************************
-void TestDynamicMessageSuite::TestSingleFieldMsg_Basic(void)
-{
-  typedef single_tFormat<0> SingleMsg;
+  // Allocate the memory up front.
+  sut.seq_32.resize(k_count_seq_32);
+  sut.seq_32[0] = seq_32[0];
+  sut.seq_32[1] = seq_32[1];
+  sut.seq_32[2] = seq_32[2];
 
-  SingleMsg sut;
-  sut.only = 1001;
+  sut.seq_64.resize(k_count_seq_64);
+  sut.seq_64[0] = seq_64[0];
+  sut.seq_64[1] = seq_64[1];
+  sut.seq_64[2] = seq_64[2];
 
-  TS_ASSERT_EQUALS(1001, sut.only);
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::TestSingleFieldMsg_Nested(void)
-{
-  typedef single_nested_tFormat<0> SingleMsg;
-
-  SingleMsg sut;
-  sut.only.zero = 255;
-
-  TS_ASSERT_EQUALS(255, sut.only.zero);
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::TestSingleFieldMsg_Bitlist(void)
-{
-  typedef single_bit_tFormat<0> SingleMsg;
-
-  SingleMsg sut;
-  sut.only.lonely = 3;
-
-  TS_ASSERT_EQUALS(1, sut.only.lonely);
+  TS_ASSERT_EQUALS(k_sut_msg_size, sut.size());
+  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), sut.size());
 }
 
 //  ****************************************************************************
