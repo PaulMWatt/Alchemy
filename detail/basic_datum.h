@@ -20,19 +20,75 @@ namespace detail
 /// Type definition that indicates the parameterized-type
 /// located at an index in a type container.
 ///
-/// @param field_t            [typename] This parameterized type declares the
+/// @paramT field_t           [typename] This parameterized type declares the
 ///                           type at the associated location in the parent 
 ///                           type container.
 ///
 /// @note           This type should be specialized for custom fields that
 ///                 desire the field_t input to differ from the defined value_type.
 /// 
-template <typename field_t>
+template <typename FieldT>
 struct field_data_t
 {
-  typedef field_t        value_type;    ///< The matching data type for the index.
+  typedef FieldT         value_type;    ///< The matching data type for the index.
                                         ///  The default implementation uses 
                                         ///  the same type as the index type.
+};
+
+//  ****************************************************************************
+/// (Fixed-Array Specialization) Type definitions for field in type-container.
+///
+/// @param SubTypeT           [typename] This parameterized type declares the
+///                           sub-type of the array defined at the location 
+///                           in the parent type container.
+///
+//template< typename SubTypeT,
+//          size_t   N
+//        >
+//struct field_data_t < std::array<SubTypeT, N> >
+//{
+//  typedef 
+//    SubTypeT                            sub_type;
+//
+//  typedef typename 
+//    field_data_t<sub_type>::value_type  value_sub_type;
+//
+//  typedef 
+//    std::array< value_sub_type, N>      value_type;
+//                                        ///< The proper value_type definition
+//                                        ///  deduced from the type-container
+//                                        ///  and the specified array sub-type.
+//};
+
+//  ****************************************************************************
+/// (Dynamic-Array Specialization) Type definitions for field in type-container.
+///
+/// @param SubTypeT           [typename] This parameterized type declares the
+///                           sub-type of the vector defined at the location 
+///                           in the parent type container.
+/// @param AllocT             [typename] The defined allocator of the vector.
+///
+template< typename SubTypeT,
+          typename AllocT
+        >
+struct field_data_t < std::vector<SubTypeT, AllocT> >
+{
+  typedef 
+    SubTypeT                            sub_type;
+
+  typedef typename 
+    field_data_t<sub_type>::value_type  value_sub_type;
+
+
+  typedef typename
+    std::conditional
+      < nested_value<sub_type>::value,
+        std::vector< value_sub_type, AllocT>,
+        std::vector< sub_type, AllocT>
+      >::type                           value_type;
+                                        ///< The proper value_type definition
+                                        ///  deduced from the type-container
+                                        ///  and the specified array sub-type.
 };
 
 //  ****************************************************************************
@@ -115,6 +171,7 @@ struct DefineFieldType
                                         ///< The field type definition that maps
                                         ///  a field type with it's value_type.
 };
+
 
 } // namespace detail
 

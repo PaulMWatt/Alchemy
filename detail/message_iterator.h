@@ -32,12 +32,12 @@ namespace Hg
 //};
 //
 ////  ****************************************************************************
-///// Specialization for an empty TypeList: results with type T and empty.
+///// Specialization for an MT TypeList: results with type T and empty.
 ///// 
 //template<typename T>
-//struct push_front<empty, T>
+//struct push_front<MT, T>
 //{
-//  typedef TypeNode<T, empty> type;
+//  typedef TypeNode<T, MT> type;
 //};
 //
 ////  ****************************************************************************

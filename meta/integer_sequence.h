@@ -85,7 +85,7 @@ struct IntegralNode
 ///           IntegralNode<T29,  
 ///           IntegralNode<T30,  
 ///           IntegralNode<T31, 
-///           IntegralNode<T32, empty> 
+///           IntegralNode<T32, MT> 
 ///         > > > > > > > > > > > > > > > 
 ///         > > > > > > > > > > > > > > > >                type;
 /// };
@@ -109,10 +109,10 @@ struct integer_sequence
   // listed in the comments for this type.
   // The DECLARE_INTEGER_SEQUENCE MACRO is an indirection because the generated
   // code contains a comma.
-  #define DECLARE_INTEGER_SEQUENCE  TMP_ARRAY_32(IntegralNode<T), empty TMP_REPEAT_32(>)
+  #define DECLARE_INTEGER_SEQUENCE  TMP_ARRAY_32(IntegralNode<T), MT TMP_REPEAT_32(>)
   typedef DECLARE_INTEGER_SEQUENCE                                type;
   typedef size_t                                                  value_type;
-  typedef empty                                                   tail;
+  typedef MT                                                   tail;
   static const size_t                                             value = T0;
   static const size_t                                             count = 1;
 };
@@ -122,7 +122,7 @@ struct integer_sequence
 template <TMP_ARRAY_##S(size_t T)>                                            \
 struct integer_sequence<TMP_ARRAY_##S(T)>                                     \
 {                                                                             \
-  typedef TMP_ARRAY_##S(IntegralNode<T), empty TMP_REPEAT_##S(>)  type;       \
+  typedef TMP_ARRAY_##S(IntegralNode<T), MT TMP_REPEAT_##S(>)  type;       \
   typedef size_t                                                  value_type; \
   typedef typename type::tail                                     tail;       \
   static const size_t                                             value = type::value; \
@@ -175,7 +175,7 @@ struct Front
 
 //  ***************************************************************************
 template <>
-struct Front< empty >
+struct Front< MT >
   : std::integral_constant< size_t, 0>
 { };
 
@@ -188,9 +188,9 @@ struct PopFront
 
 //  ***************************************************************************
 template <>
-struct PopFront <empty>
+struct PopFront <MT>
 {
-  typedef empty                         type;
+  typedef MT                         type;
 };
 
 //  ***************************************************************************
@@ -202,10 +202,10 @@ struct TailValue
 { };
 
 //  ***************************************************************************
-/// Specialization to TailValue for the empty type node.
+/// Specialization to TailValue for the MT type node.
 ///
 template <>
-struct TailValue <empty>
+struct TailValue <MT>
   : std::integral_constant<size_t, 0>
 { };
 
@@ -221,17 +221,17 @@ struct IsTailEmpty
 { };
 
 //  ***************************************************************************
-/// Specialization for an empty type sequence..
+/// Specialization for an MT type sequence..
 ///
 template <>
-struct IsTailEmpty <empty>
+struct IsTailEmpty <MT>
   : std::true_type
 {};
 
 //  ***************************************************************************
 /// Returns the Tail of an Integral Sequence.
 /// This is similar to PopFront, however, as soon as a 0 is encountered, 
-/// empty will be returned, rather than the remainder of the list.
+/// MT will be returned, rather than the remainder of the list.
 ///
 template <typename SeqT>
 struct GetTail
@@ -240,12 +240,12 @@ struct GetTail
 };
 
 //  ***************************************************************************
-/// Specialization of GetTail for the empty node type.
+/// Specialization of GetTail for the MT node type.
 ///
 template <>
-struct GetTail<empty>
+struct GetTail<MT>
 { 
-  typedef empty               type;
+  typedef MT               type;
 };
 
 
@@ -272,18 +272,18 @@ struct at<SeqT, 0>
 { };
 
 //  ***************************************************************************
-/// Specialization that handles an empty sequence.
+/// Specialization that handles an MT sequence.
 ///
 template< size_t IdxT >
-struct at<empty, IdxT>
+struct at<MT, IdxT>
   : std::integral_constant<size_t, 0>
 { };
 
 //  ***************************************************************************
-/// Specialization that handles an empty sequence.
+/// Specialization that handles an MT sequence.
 ///
 template<>
-struct at<empty, 0>
+struct at<MT, 0>
   : std::integral_constant<size_t, 0>
 { };
 
@@ -303,7 +303,7 @@ struct reverse_nodes
 /// A terminating case for reversal of an integral_node list
 ///
 template< typename  ToT >
-struct reverse_nodes<ToT, empty>
+struct reverse_nodes<ToT, MT>
 {
   typedef ToT                                     type;
 };
@@ -313,7 +313,7 @@ struct reverse_nodes<ToT, empty>
 ///
 template< typename  SeqT >
 struct reverse
-  : reverse_nodes<empty, typename SeqT::type> 
+  : reverse_nodes<MT, typename SeqT::type> 
 { };
 
 //  ***************************************************************************
@@ -340,7 +340,7 @@ struct find
 /// If the value is not found, Hg::npos is returned.
 ///
 template< size_t ValueT >
-struct find<empty, ValueT>
+struct find<MT, ValueT>
   : std::integral_constant< size_t, Hg::npos >
 { };
 

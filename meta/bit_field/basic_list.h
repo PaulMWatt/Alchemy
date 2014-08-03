@@ -30,17 +30,17 @@ struct FieldIndex
 
 //  ****************************************************************************
 template<>
-struct FieldIndex<0,empty,0>
+struct FieldIndex<0,MT,0>
 {
-  typedef empty                                   host_type;
-  typedef FieldIndex<0,empty,0>                   this_type;
+  typedef MT                                   host_type;
+  typedef FieldIndex<0,MT,0>                   this_type;
 
   enum { k_index = 0};
   enum { k_size  = 0};
 };
 
 //  ****************************************************************************
-typedef FieldIndex<0,empty,0>     idx_empty_t;
+typedef FieldIndex<0,MT,0>     idx_empty_t;
 
 //  ****************************************************************************
 template <typename T,
@@ -120,7 +120,7 @@ protected:
     : m_data(data_field)
   { }
 
-  value_type            empty_data;     ///< The empty data value field 
+  value_type            empty_data;     ///< The MT data value field 
                                         ///  provides a location to reference
                                         ///  for the default constructor.
 

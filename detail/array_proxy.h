@@ -65,10 +65,6 @@ struct DataProxy <array_trait, IdxT, FormatT, OffsetT>
                                         ///  parent TypeList.
 
   //  Constants ****************************************************************
-  static const
-    size_t k_offset = OffsetOf<IdxT, FormatT>::value
-                    + OffsetT;          ///< The offset in the buffer where this 
-                                        ///  msg field is located.
   static 
     const size_t k_extent = Hg::SizeOf<index_type>::value 
                           / Hg::SizeOf<data_type >::value;

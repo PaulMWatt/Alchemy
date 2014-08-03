@@ -43,13 +43,15 @@ typedef TypeList
 <
   uint32_t,
   uint32_t,
-  uint32_t
+  uint32_t,
+  std::array<uint32_t,20>
 > no_dyn_format_t;
 
 HG_BEGIN_FORMAT(no_dyn_format_t)
   HG_DATUM (uint32_t,                 word_0)
   HG_DATUM (uint32_t,                 word_1)
   HG_DATUM (uint32_t,                 word_2)
+  HG_DATUM ((std::array<uint32_t,20>),  arry_3)
 HG_END_FORMAT
 
 typedef no_dyn_format_tFormat<0> no_dyn_type;
@@ -422,7 +424,7 @@ void TestDynamicMessageSuite::TestDynamicFields_none(void)
   typedef 
     dynamic_fields<no_dyn_type::format_type>::type         reault_type;
 
-  typedef empty   k_control_type;
+  typedef MT   k_control_type;
   bool is_same_type = std::is_same<k_control_type, reault_type>::value;
   TS_ASSERT(is_same_type);
 }
@@ -594,6 +596,9 @@ void TestDynamicMessageSuite::Testdata(void)
   sut.word_0       = k_word_0;
   sut.word_1       = k_word_1;
   sut.word_2       = k_word_2;
+
+
+
 
   // allocate and copy with the vector assign
   uint8_t* seq8_first = &seq_8[0];

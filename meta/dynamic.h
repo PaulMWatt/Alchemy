@@ -62,14 +62,14 @@ struct DynamicFieldSequence
 };
 
 //  ****************************************************************************
-//  Terminating case for an empty typelist simply becomes the specified sequence.
+//  Terminating case for an MT typelist simply becomes the specified sequence.
 //  The final list that is received in SeqT will be reveresed. Therefore a 
 //  call to reverse is made to correct the order before the result is defined.
 //
 template< typename SeqT,
           size_t   IdxT
         >
-struct DynamicFieldSequence<empty, SeqT, IdxT>
+struct DynamicFieldSequence<MT, SeqT, IdxT>
   : reverse<SeqT>
 {
   typedef SeqT                          NextSeqT;
@@ -80,13 +80,13 @@ struct DynamicFieldSequence<empty, SeqT, IdxT>
 template <typename T, bool IsHaveDynamicT = false >
 struct DynamicFields_Impl
 { 
-  typedef empty       type;
+  typedef MT       type;
 };
 
 // HasDynamic implementation for type_containers *******************************
 template <typename T>
 struct DynamicFields_Impl<T, true>
-  : DynamicFieldSequence<T, empty, 0>
+  : DynamicFieldSequence<T, MT, 0>
 { };
 
 } // namespace detail

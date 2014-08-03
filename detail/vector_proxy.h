@@ -59,27 +59,16 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
 
   typedef typename
     field_type::index_type              index_type;
-                                        ///< The type extracted at the current
+                                        ///< The raw type extracted at the current
                                         ///  index defined in the parent TypeList.
-
   typedef typename
-    index_type::value_type              data_type;
-                                        ///< The value type of the element extracted 
-                                        ///  at the current index defined in the 
-                                        ///  parent TypeList.
-
-  //  Constants ****************************************************************
-  static const
-    size_t k_offset = OffsetOf<IdxT, FormatT>::value
-                    + OffsetT;          ///< The offset in the buffer where this 
-                                        ///  msg field is located.
-  static 
-    const size_t k_extent = Hg::SizeOf<index_type>::value 
-                          / Hg::SizeOf<data_type >::value;
-                                        ///< The number of elements in the vector.
-
-  //  Typedefs *****************************************************************
-  typedef std::vector< data_type >      value_type;
+    field_type::value_type              value_type;
+                                        ///< The vector type defined in the 
+                                        ///  message format. This type definition
+                                        ///  is possibly altered to appropriately
+                                        ///  manage the type, such as nested types.
+  typedef typename
+    value_type::value_type              data_type;
                                         ///< The data type managed by this Vector.
                                         ///  This is the type of data that will 
                                         ///  be written to the attached buffer.
@@ -200,6 +189,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   void resize(size_t count, 
               const data_type& value)             { get().resize(count, value); }
 
+  // TODO: What is this about, correct or remove.
   //  **************************************************************************
   /// Returns the number of bytes that are required to hold this vector in a buffer.
   /// 
@@ -224,9 +214,9 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   /// 
   /// @param value  The array which will initialize this object.
   /// 
-  void set(const data_type (&value)[k_extent])
+  template <size_t ExtentT>
+  void set(const data_type (&value)[ExtentT])
   {
-    // TODO: Return and make proper adjustments to handle the k_extent calculation.
     if (!value)
     {
       // TODO: Return and add exception handling. 
@@ -234,7 +224,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
     }
 
     std::copy( &value[0], 
-              (&value[0]) + k_extent, 
+              (&value[0]) + ExtentT, 
                 std::back_inserter(get()));
   }
 

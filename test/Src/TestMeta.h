@@ -298,7 +298,7 @@ void TestMeta::Test_type_container_T(void)
 //  ****************************************************************************
 void TestMeta::Test_type_container_empty(void)
 {
-  typedef Hg::empty sut_t;
+  typedef Hg::MT sut_t;
   TS_ASSERT_EQUALS(false, Hg::type_container<sut_t>::value);
 }
 
@@ -469,7 +469,7 @@ void TestMeta::TestSizeOf_double(void)
 //  ****************************************************************************
 void TestMeta::TestSizeOf_empty(void)
 {
-  typedef Hg::empty sut_t;
+  typedef Hg::MT sut_t;
   TS_ASSERT_EQUALS(1, Hg::SizeOf<sut_t>::value);
 }
 

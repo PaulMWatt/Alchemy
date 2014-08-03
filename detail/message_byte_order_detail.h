@@ -250,7 +250,7 @@ struct ByteOrderConversionFunctor
     typedef typename
       proxy_type::value_type                                  value_type;
                                       
-
+// TODO: Review this file and remove dead and commented out code.
     //value_type from_value  = input.template FieldAt<Idx>().get();
     //value_type to_value;
     value_type from_value  = input.template FieldAt<Idx>().get();

@@ -253,6 +253,8 @@ void TestVectorProxySuite::TestOpEquals_false(void)
   vector_data sut(k_control);
   ++(sut[0]);
 
+  vector_data::value_type vvv;
+
   bool result = sut == k_control;
   TS_ASSERT(!result);
 }
@@ -670,7 +672,7 @@ void TestVectorProxySuite::TestPushBack_empty(void)
 
   vector_data   sut;
 
-  // SUT: Populate the empty vector with new data at the end.
+  // SUT: Populate the MT vector with new data at the end.
   sut.push_back(k_first);
   sut.push_back(k_second);
 
@@ -694,7 +696,7 @@ void TestVectorProxySuite::TestPopBack(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestPopBack_empty(void)
 {
-  // SUT: Popback on an empty value should not change the vector.
+  // SUT: Popback on an MT value should not change the vector.
   vector_data   sut;
   sut.pop_back();
 

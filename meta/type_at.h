@@ -59,12 +59,12 @@ struct TypeAt
 };
 
 //  ****************************************************************************
-/// Specialization for an empty Type Container
+/// Specialization for an MT Type Container
 ///
 template<>
-struct front< empty >
+struct front< MT >
 { 
-  typedef empty     type;
+  typedef MT     type;
 };
 
 //  ****************************************************************************
@@ -77,12 +77,12 @@ struct pop_front< TypeNode<T1, T2> >
 };
 
 //  ****************************************************************************
-/// Specialization for an empty TypeList: results with type T and empty.
+/// Specialization for an MT TypeList: results with type T and empty.
 /// 
 template<typename T>
-struct push_front<empty, T>
+struct push_front<MT, T>
 {
-  typedef TypeNode<T, empty> type;
+  typedef TypeNode<T, MT> type;
 };
 
 //  ****************************************************************************
@@ -95,10 +95,10 @@ struct push_front< TypeNode<T1, T2>, T>
 };
 
 //  ****************************************************************************
-/// Specialization for an empty TypeList
+/// Specialization for an MT TypeList
 /// 
 template<>
-struct back< empty >
+struct back< MT >
 { };
 
 

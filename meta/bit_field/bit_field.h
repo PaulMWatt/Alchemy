@@ -112,7 +112,7 @@ private:
 
 
 // ****************************************************************************
-/// A specialization to allow empty bit_fields to convert to the nil type.
+/// A specialization to allow MT bit_fields to convert to the nil type.
 ///           
 template <size_t OffsetT,
           typename T>

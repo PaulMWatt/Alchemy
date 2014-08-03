@@ -145,12 +145,15 @@ cd "../.."</Command>
     <ClInclude Include="..\meta\type_list\type_at.h" />
     <ClInclude Include="..\meta\type_node.h" />
     <ClInclude Include="..\storage_policy.h" />
+    <ClInclude Include="geometry_testdata.h" />
+    <ClInclude Include="geometry_typelist.h" />
     <ClInclude Include="msgtest_typelist.h" />
     <ClInclude Include="Src\TestAlchemyTypes.h" />
     <ClInclude Include="Src\TestArrayProxySuite.h" />
     <ClInclude Include="Src\TestBitSetMsgFieldSuite.h" />
     <ClInclude Include="Src\TestByteOrder.h" />
     <ClInclude Include="Src\TestDynamicMessageSuite.h" />
+    <ClInclude Include="Src\TestDynTypePermsSuite.h" />
     <ClInclude Include="Src\TestMsgFieldSuite.h" />
     <ClInclude Include="Src\TestMsgBufferSuite.h" />
     <ClInclude Include="Src\TestMessageSuite.h" />

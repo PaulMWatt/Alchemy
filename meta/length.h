@@ -26,9 +26,9 @@ struct length
   : std::integral_constant<size_t, 1>
 { };
 
-// Specialization to handle the case of an empty container. *******************
+// Specialization to handle the case of an MT container. *******************
 template <>
-struct length< empty > 
+struct length< MT > 
   : std::integral_constant<size_t, 1>
 { };
 

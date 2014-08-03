@@ -109,15 +109,15 @@ HG_END_FORMAT
 //
 typedef TypeList
 <
-  int32_t,      
-  int32_t,     
-  int32_t
+  uint32_t,      
+  uint32_t,     
+  uint32_t
 > point_format_t;
 
 HG_BEGIN_FORMAT(point_format_t)
-  HG_DATUM (int32_t, X)
-  HG_DATUM (int32_t, Y)
-  HG_DATUM (int32_t, Z)
+  HG_DATUM (uint32_t, X)
+  HG_DATUM (uint32_t, Y)
+  HG_DATUM (uint32_t, Z)
 HG_END_FORMAT
 
 //  ****************************************************************************

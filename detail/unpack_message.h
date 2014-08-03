@@ -197,6 +197,14 @@ struct UnpackDatum<IdxT, MessageT, BufferT, vector_trait>
     
     // Query the message object for the number of elements in the buffer;
     size_t      count = msg.Size(buffer, msg.template FieldAt<IdxT>());
+
+    // For zero-size move on.
+    if (0 == count)
+    {
+      return;
+    }
+
+    // Allocate space for the incoming data.
     value.resize(count);
 
     data_type *pFirst = &value[0];

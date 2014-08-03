@@ -41,9 +41,14 @@ namespace Hg
 {
 
 //  ****************************************************************************
-/// A type to represent an empty type for defining type lists and type arrays.
+/// A type to represent an MT type for defining type lists and type arrays.
 /// 
-struct empty { };
+struct MT { };
+
+//  ****************************************************************************
+/// An alias that may be more readable.
+/// 
+typedef MT        empty;
 
 //  ****************************************************************************
 /// This construct provides mechanism to declare and 
@@ -137,11 +142,11 @@ template<>
 struct type_check<false>;
 
 //  ***************************************************************************
-/// Compares types against the empty type.
+/// Compares types against the MT type.
 ///
 template <typename T>
 struct empty_type
-  : std::is_same<T, empty>
+  : std::is_same<T, MT>
 { };
 
 //  Boolean Operations ********************************************************
@@ -248,7 +253,7 @@ struct type_container
 
 //  A specialization of the emtpy type because it acts as a teminator. ********
 template<>
-struct type_container<empty>
+struct type_container<MT>
   : std::integral_constant<bool, false>
 {  };
 
@@ -262,7 +267,7 @@ struct nested_value
 
 //  A specialization of the emtpy type because it acts as a teminator. ********
 template<>
-struct nested_value<empty>
+struct nested_value<MT>
   : std::integral_constant<bool, false>
 { };
 
@@ -298,7 +303,7 @@ struct vector_value
 
 //  ***************************************************************************
 template<>
-struct vector_value<empty>
+struct vector_value<MT>
   : std::integral_constant<bool, false>
 { };
 
@@ -346,7 +351,7 @@ struct sequence_value
 
 //  ***************************************************************************
 template<>
-struct sequence_value<empty>
+struct sequence_value<MT>
   : std::integral_constant<bool, false>
 { };
 

@@ -69,20 +69,20 @@ namespace Hg
 ///           TypeNode<T29,  
 ///           TypeNode<T30,  
 ///           TypeNode<T31, 
-///           TypeNode<T32, empty> 
+///           TypeNode<T32, MT> 
 ///         > > > > > > > > > > > > > > > 
 ///         > > > > > > > > > > > > > > > >                type;
 /// };
 /// ~~~
 /// 
-template <typename T0, typename T1 = empty, typename T2 = empty, typename T3 = empty,
-	typename T4 = empty, typename T5 = empty, typename T6 = empty, typename T7 = empty,
-	typename T8 = empty, typename T9 = empty, typename T10 = empty, typename T11 = empty,
-	typename T12 = empty, typename T13 = empty, typename T14 = empty, typename T15 = empty,
-	typename T16 = empty, typename T17 = empty, typename T18 = empty, typename T19 = empty,
-	typename T20 = empty, typename T21 = empty, typename T22 = empty, typename T23 = empty,
-	typename T24 = empty, typename T25 = empty, typename T26 = empty, typename T27 = empty,
-	typename T28 = empty, typename T29 = empty, typename T30 = empty, typename T31 = empty
+template <typename T0,       typename T1 = MT,  typename T2 = MT,  typename T3 = MT,
+  	      typename T4 = MT,  typename T5 = MT,  typename T6 = MT,  typename T7 = MT,
+	        typename T8 = MT,  typename T9 = MT,  typename T10 = MT, typename T11 = MT,
+	        typename T12 = MT, typename T13 = MT, typename T14 = MT, typename T15 = MT,
+	        typename T16 = MT, typename T17 = MT, typename T18 = MT, typename T19 = MT,
+	        typename T20 = MT, typename T21 = MT, typename T22 = MT, typename T23 = MT,
+	        typename T24 = MT, typename T25 = MT, typename T26 = MT, typename T27 = MT,
+	        typename T28 = MT, typename T29 = MT, typename T30 = MT, typename T31 = MT
 >
 struct TypeList
   : container_trait
@@ -94,7 +94,7 @@ struct TypeList
 	// listed in the comments for this type.
 	// The DECLARE_TYPE_LIST MACRO us an indirection because the generated
 	// code contains a comma.
-#define DECLARE_TYPE_LIST  TMP_ARRAY_32(TypeNode<T), empty TMP_REPEAT_32(>)
+#define DECLARE_TYPE_LIST  TMP_ARRAY_32(TypeNode<T), MT TMP_REPEAT_32(>)
 	typedef DECLARE_TYPE_LIST  type;
 };
 
@@ -113,7 +113,7 @@ struct TypeList
 /// { 
 ///   typedef TypeNode<T1, 
 ///           TypeNode<T2, 
-///           TypeNode<T3, empty> 
+///           TypeNode<T3, MT> 
 ///         > >                                            type;
 /// };
 /// ~~~
@@ -123,7 +123,7 @@ template <TMP_ARRAY_##S(typename T)>                                          \
 struct TypeList<TMP_ARRAY_##S(T)>                                             \
   : container_trait                                                           \
 {                                                                             \
-typedef TMP_ARRAY_##S(TypeNode<T), empty TMP_REPEAT_##S(>)  type;             \
+typedef TMP_ARRAY_##S(TypeNode<T), MT TMP_REPEAT_##S(>)  type;             \
 }
 
 // Define specializations of this array from 1 to 31 elements *****************

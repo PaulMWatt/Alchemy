@@ -81,7 +81,7 @@ template  < typename  RootT,
             size_t    IndexT,
             size_t    OffsetT
           >
-struct BitFieldNode< RootT, IndexT, OffsetT, empty>
+struct BitFieldNode< RootT, IndexT, OffsetT, MT>
   : public RootT
 {
   //  Typedefs *******************************************************************

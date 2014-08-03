@@ -29,3 +29,5 @@ Alchemy.sdf
 test/Src/Generated/TestAlchemyTypesRunner.cpp
 *.ilk
 test/Src/Generated/TestAlchemyTypesRunner.cpp
+*.opensdf
+test/Src/Generated/TestAlchemyTypesRunner.cpp

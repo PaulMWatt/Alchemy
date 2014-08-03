@@ -58,6 +58,7 @@ HG_END_FORMAT
 
 //  ****************************************************************************
 //  A single point with with a specified color.
+//  This format covers a nested type that contains a nested type and a bit-list.
 // 
 typedef TypeList
 <

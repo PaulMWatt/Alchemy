@@ -22,6 +22,14 @@
 # error Do not include this file directly. Use <alchemy.h> instead
 #endif
 
+//  ****************************************************************************
+//  We're potentially using some pretty long type definitions.
+//  For any moderately complex message format, we will almost certainly
+//  trigger this warning with Visual C++.
+#if defined(_MSC_VER)
+#pragma warning(disable : 4503) // decorated name length exceeded, name was truncated
+#endif
+
 //  Includes *******************************************************************
 #include <meta/meta_fwd.h>
 #include <meta/auto_index.h>
@@ -83,6 +91,12 @@ struct message_size_trait
   template< size_t   kt_offset >                                               \
   struct F##Format;                                                            \
                                                                                \
+  template <>                                                                  \
+  struct detail::field_data_t <F>                                              \
+  {                                                                            \
+  typedef F##Format<0>      value_type;                                        \
+  };                                                                           \
+                                                                               \
   template< size_t   kt_offset >                                               \
   struct detail::FieldTypes <F,kt_offset>                                      \
       : F##Format<kt_offset>                                                   \
@@ -115,7 +129,6 @@ struct message_size_trait
       return FieldAtIndex(datum_type_t());                                     \
     }                                                                          \
     BEGIN_COUNTER
-
 
 // *****************************************************************************
 #define DECLARE_DATUM_FORMAT_IDX(IDX,T,P)                                      \

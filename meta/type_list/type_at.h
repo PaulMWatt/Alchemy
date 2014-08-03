@@ -139,9 +139,9 @@ struct pop_front<TypeList<TPop, TMP_ARRAY_31(T)> >
 };
 
 template<TMP_ARRAY_31(typename T)>
-struct pop_front<TypeList<empty, TMP_ARRAY_31(T)> >
+struct pop_front<TypeList<MT, TMP_ARRAY_31(T)> >
 {
-  typedef empty type;
+  typedef MT type;
 };
 
 //  ****************************************************************************

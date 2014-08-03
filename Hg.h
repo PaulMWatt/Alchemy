@@ -244,7 +244,7 @@ public:
 
   //  **************************************************************************
   /// Releases any reference to internal memory buffers.
-  /// The message will be empty after this call.
+  /// The message will be MT after this call.
   ///
   void clear()
   {

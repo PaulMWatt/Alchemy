@@ -215,6 +215,15 @@
     <ClInclude Include="..\meta\integer_sequence.h">
       <Filter>Header Files\Alchemy\Meta</Filter>
     </ClInclude>
+    <ClInclude Include="Src\TestDynTypePermsSuite.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_testdata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_typelist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\TestAlchemyTypesRunner.cpp">

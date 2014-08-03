@@ -46,15 +46,15 @@ namespace Hg
   /// intrinsic and regular user-defined types.
   /// 
   /// This specialization is the equivalent of applying the EBO. Otherwise, the 
-  /// size of the empty type all by itself will add the mandatory 1 extra byte. 
+  /// size of the MT type all by itself will add the mandatory 1 extra byte. 
   /// This creates an off-by-one error for all objects since this is the 
   /// terminator case.
   ///
   template <typename H>
-  struct TypeNode<H, empty>
+  struct TypeNode<H, MT>
   {
     typedef H     head;
-    typedef empty tail;
+    typedef MT tail;
   private:
     unsigned char                     size_info_[sizeof(H)];
 
