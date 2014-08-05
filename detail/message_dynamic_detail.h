@@ -11,6 +11,7 @@
 #include <meta/dynamic.h>
 #include <meta/meta_foreach.h>
 #include <meta/type_at.h>
+#include <detail/deduce_type_trait.h>
 
 namespace Hg
 {
@@ -44,12 +45,109 @@ class Message;
 //}
 
 //  ****************************************************************************
+/// Determines the number of bytes required to serialize a vector.
+///    
+template< typename T,
+          typename A,
+          typename TypeTraitT
+        >
+struct SizeOfVector
+{
+  //  **************************************************************************
+  size_t operator()(const std::vector<T,A>& field)
+  {
+    return field.size() * sizeof(T);
+  }
+};
+
+//  ****************************************************************************
+/// Determines the number of bytes required to serialize a vector.
+/// This version handles a vector with sub-messages.
+///    
+template< typename T,
+          typename A
+        >
+struct SizeOfVector<T,A,nested_trait>
+{
+  //  **************************************************************************
+  size_t operator()(const std::vector<T,A>& field)
+  {
+    typedef typename 
+      T::format_type          format_type;
+    return GetSize<has_dynamic<format_type>::value>(field);
+  }
+
+private:
+  //  **************************************************************************
+  //  Returns the size of a message format that has nested vectors.
+  //
+  template< bool IsDynamicSizeT>
+  size_t GetSize(const std::vector<T,A>& field)
+  {
+    size_t total_size = 0;
+
+    for (size_t index = 0; index < field.size(); ++index)
+    {
+      // Type T is the MessageT parameter of a message definition.
+      // Therefore there will be a format_type that can be used
+      // to tag dispatch this variation of the DynamicSizeWorker.
+      total_size += 
+        DynamicSizeWorker<T, true>().size(field[index]);
+    }
+
+    return total_size;
+  }
+
+  //  **************************************************************************
+  //  Returns the size of a message format that has a fixed-size.
+  //
+  template<>
+  size_t GetSize<false>(const std::vector<T,A>& field)
+  {
+    return  field.size() * Hg::SizeOf<typename T::format_type>::value;
+  }
+
+};
+
+//  ****************************************************************************
+/// Determines the number of bytes required to serialize a vector.
+/// This version handles a vector with variable-length types.
+///    
+template< typename T,
+          typename A
+        >
+struct SizeOfVector<T,A,vector_trait>
+{
+  //  **************************************************************************
+  size_t operator()(const std::vector<T,A>& field)
+  {
+    size_t total_size = 0;
+
+    SizeOfVector< typename T::value_type, 
+                  typename T::allocator_type, 
+                  typename DeduceTypeTrait<T::value_type>::type
+                > Size;
+
+    for (size_t index = 0; index < field.size(); ++index)
+    {
+      total_size += Size(field[index]);
+    }
+
+    return total_size;
+  }
+};
+
+
+//  ****************************************************************************
 /// Reports the total size of the dynamic buffers required for this message.
 ///    
-template <typename T>
-size_t dynamic_size(const std::vector<T>& field)
+template< typename T,
+          typename A
+        >
+size_t dynamic_size(const std::vector<T,A>& field)
 {
-  return sizeof(T) * field.size();
+  SizeOfVector<T,A, DeduceTypeTrait<T>::type> Size;
+  return Size(field);
 }
 
 //  ****************************************************************************

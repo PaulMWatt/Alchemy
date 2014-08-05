@@ -115,7 +115,6 @@ public:
   Message(const Message& rhs)
   {
     *static_cast<message_type*>(this) = rhs;
-    m_spMsgBuffer                     = rhs.m_spMsgBuffer;
   }
 
   //  **************************************************************************
