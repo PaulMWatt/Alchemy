@@ -205,8 +205,14 @@ struct PackDatum<IdxT, MessageT, BufferT, vector_trait>
       return;
     }
 
+    // Calculate the total size of this dynamic-field.
+    size_t length = dynamic_size(value);
+
+
     size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
                       + dynamic_offset;
+
+
 
     // Calculate the full size of the buffer that will be written.
     // Size() from the value is the number of elements that are contained.
@@ -374,7 +380,13 @@ size_t pack_message(MessageT &msg_values,
   size_t length = Hg::SizeOf<typename MessageT::format_type>::value;
 
   size_t org_offset = buffer.offset();
-  buffer.offset(offset);
+
+  // The new adjusted offset must be cumulative in order to 
+  // avoid deep nested sub-structures from writing over
+  // previously written material.
+  //
+  // Writing constantly progresses further into the buffer.
+  buffer.offset(offset + org_offset);
   detail::PackMessageWorker < 0, 
                               Hg::length<typename MessageT::format_type>::value,
                               MessageT,
@@ -449,13 +461,18 @@ size_t pack_message(MessageT &msg_values,
   size_t length = Hg::SizeOf<typename MessageT::format_type>::value;
 
   size_t org_offset = buffer.offset();
-  buffer.offset(offset);
+  // The new adjusted offset must be cumulative in order to 
+  // avoid deep nested sub-structures from writing over
+  // previously written material.
+  //
+  // Writing constantly progresses further into the buffer.
+  buffer.offset(org_offset + offset);
   detail::PackMessageWorker < 0, 
                               Hg::length<typename MessageT::format_type>::value,
                               MessageT,
                               BufferT
                             > pack;
-//  pack(msg_values, buffer);
+  pack(msg_values, buffer);
   // Restore the orignal offset of this buffer.
   buffer.offset(org_offset);
 

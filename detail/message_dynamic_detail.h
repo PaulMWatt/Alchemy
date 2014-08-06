@@ -86,13 +86,19 @@ private:
   {
     size_t total_size = 0;
 
+    // This specialization represents vectors of nested traits. 
+    // Therefore, T must have a defined format_type.
+    const size_t k_fixed_size = Hg::SizeOf<typename T::format_type>::value;
+
     for (size_t index = 0; index < field.size(); ++index)
     {
       // Type T is the MessageT parameter of a message definition.
       // Therefore there will be a format_type that can be used
       // to tag dispatch this variation of the DynamicSizeWorker.
-      total_size += 
-        DynamicSizeWorker<T, true>().size(field[index]);
+      //
+      // Add both the fixed-size as well as the actual dynamic-size.
+      total_size += k_fixed_size
+                  + DynamicSizeWorker<T, true>().size(field[index]);
     }
 
     return total_size;

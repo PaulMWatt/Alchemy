@@ -26,20 +26,20 @@ struct SizeOf_Impl
   : std::integral_constant<size_t, sizeof(T)>
 { };
 
-// SizeOf implementation for type_containers ***********************************
-template <typename T>
-struct SizeOf_Impl<T, true>
-  : std::integral_constant< size_t,
-                            ContainerSize<T>::value
-                          >
-{ };
-
 //  Vectors size is dynamically determined at runtime. ************************
 template< typename T,
           typename A
         >
 struct SizeOf_Impl<std::vector<T,A>, false>
   : std::integral_constant< size_t, 0>
+{ };
+
+// SizeOf implementation for type_containers ***********************************
+template <typename T>
+struct SizeOf_Impl<T, true>
+  : std::integral_constant< size_t,
+                            ContainerSize<T>::value
+                          >
 { };
 
 } // namespace detail

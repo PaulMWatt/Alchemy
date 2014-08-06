@@ -27,7 +27,7 @@ namespace Hg
 template< typename T >
 size_t dynamic_size_of(const T& msg)
 {
-  return detail::DynamicSizeWorker<T, has_dynamic<T>::value>.size(msg);
+  return detail::DynamicSizeWorker<T, has_dynamic<T>::value>().size(msg);
 }
 
 
