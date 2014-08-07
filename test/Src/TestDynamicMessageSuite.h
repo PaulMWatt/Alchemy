@@ -1,6 +1,11 @@
 /// @file TestDynamicMessageSuite.hpp
 /// 
-/// This test suite verifies the msg Template which provides the capability to interface with a binary buffer with a formatted msg definition.
+/// This test suite verifies the msg Template which provides the capability to 
+/// interface with a binary buffer with a formatted msg definition.
+///
+/// The tests in this group first verify a basic definition.
+/// The a second section contains tests with more focused scenarios
+/// that have required extra attention during development.
 /// 
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
@@ -404,6 +409,38 @@ public:
   void Testto_network(void);
   void Testto_big_endian(void);
   void Testto_little_endian(void);
+
+  //  Focused Scenario Tests *****************************************************
+  void Test_write_nested_at_correct_offset(void);
+
+  void Test_write_vector_with_nested_fixed_size(void);
+  void Test_read_vector_with_nested_fixed_size(void);
+
+  void Test_write_vector_with_nested_dynamic_size(void);
+  void Test_read_vector_with_nested_dynamic_size(void);
+
+  void Test_write_vector_with_nested_mixed_size(void);
+  void Test_read_vector_with_nested_mixed_size(void);
+
+  void Test_write_array_of_bitsets(void);
+  void Test_read_array_of_bitsets(void);
+
+  void Test_write_array_of_arrays(void);
+  void Test_read_array_of_arrays(void);
+
+  void Test_write_array_of_vectors(void);
+  void Test_read_array_of_vectors(void);
+
+  void Test_write_vector_of_bitsets(void);
+  void Test_read_vector_of_bitsets(void);
+
+  void Test_write_vector_of_arrays(void);
+  void Test_read_vector_of_arrays(void);
+
+  void Test_write_vector_of_vectors(void);
+  void Test_read_vector_of_vectors(void);
+
+
 };
 
 //  ****************************************************************************
@@ -597,9 +634,6 @@ void TestDynamicMessageSuite::Testdata(void)
   sut.word_1       = k_word_1;
   sut.word_2       = k_word_2;
 
-
-
-
   // allocate and copy with the vector assign
   uint8_t* seq8_first = &seq_8[0];
   uint8_t* seq8_last  = seq8_first;
@@ -723,6 +757,123 @@ void TestDynamicMessageSuite::Testto_little_endian(void)
 
   TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
   TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
+}
+
+
+//  ****************************************************************************
+//  Focused Scenario Tests *****************************************************
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_write_nested_at_correct_offset(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_write_vector_with_nested_fixed_size(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_read_vector_with_nested_fixed_size(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_write_vector_with_nested_dynamic_size(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_read_vector_with_nested_dynamic_size(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_write_vector_with_nested_mixed_size(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_read_vector_with_nested_mixed_size(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_write_array_of_bitsets(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_read_array_of_bitsets(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_write_array_of_arrays(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_read_array_of_arrays(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_write_array_of_vectors(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_read_array_of_vectors(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_write_vector_of_bitsets(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_read_vector_of_bitsets(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_write_vector_of_arrays(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_read_vector_of_arrays(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_write_vector_of_vectors(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestDynamicMessageSuite::Test_read_vector_of_vectors(void)
+{
+
 }
 
 
