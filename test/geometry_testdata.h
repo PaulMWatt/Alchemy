@@ -19,11 +19,15 @@
 #ifndef GEOMETRY_TESTDATA_H_INCLUDED
 #define GEOMETRY_TESTDATA_H_INCLUDED
 #include <Alchemy.h>
+#include <vector>
 
 namespace test
 {
 namespace data
 {
+
+typedef std::vector<uint8_t>            byte_vector;
+
 
 // A few basic color definitions
 static const uint32_t k_black = 0x00000000;
@@ -54,6 +58,31 @@ const point k_cube[8] =
   {1,1,1},
   {0,1,1}
 };
+
+const point k_eight_pts[8] =
+{
+  {0xFEEDF00D,0xDEADC0DE,0x0BADF1A6},
+  {0xF1A6BALL,0xC0DEBAD0,0xF00DDEAD},
+  {0x0BAD0DAD,0xF1A6F00D,0xC0DEF1A6},
+  {0xDEADBA11,0x0FEEDBA6,0x0BADA550},
+  {0x0A55401E,0xBEEF600D,0x0BADBEEF},
+  {0xC0DEF1A6,0x0BADF1A6,0x0FEEDBA6},
+  {0x0BADA550,0x0A55401E,0xC0DEBAD0},
+  {0x0FEEDBA6,0x0BADA550,0xF1A6BALL}
+};
+
+const uint32_t k_eight_colors[8] =
+{
+  k_white,
+  k_red,
+  k_gray,
+  k_black,
+  0xFF881165,
+  0x88AD6502,
+  0x66554433,
+  0x221100CC
+};
+
 
 // Ray definitions
 struct Ray
@@ -117,6 +146,31 @@ Vertex make_vertex(const point &pt, uint32_t color)
 {
   Vertex result = {pt,color};
   return result;
+}
+
+inline
+void to_buffer(const Vertex &vertex, byte_vector &buffer)
+{
+  // 1 pt (3 4-byte value) + 1 color (4 bytes)
+  const size_t k_org_size    = buffer.size();
+  const size_t k_vertex_size = 16;
+  buffer.resize(k_org_size + k_vertex_size);
+
+  const size_t k_field_size = sizeof(uint32_t);
+  byte_vector::value_type *pCur = &buffer[0];
+  std::advance(pCur, k_org_size);
+
+  ::memcpy(pCur, &vertex.pt.X, k_field_size);
+  std::advance(pCur, k_field_size);
+
+  ::memcpy(pCur, &vertex.pt.Y, k_field_size);
+  std::advance(pCur, k_field_size);
+
+  ::memcpy(pCur, &vertex.pt.Z, k_field_size);
+  std::advance(pCur, k_field_size);
+
+  ::memcpy(pCur, &vertex.color, k_field_size);
+  std::advance(pCur, k_field_size);
 }
 
 //  Triangle definitions
