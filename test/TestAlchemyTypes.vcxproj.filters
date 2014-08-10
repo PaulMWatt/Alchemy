@@ -224,6 +224,9 @@
     <ClInclude Include="geometry_typelist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\TestFocusedDynamicMessageSuite.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\TestAlchemyTypesRunner.cpp">

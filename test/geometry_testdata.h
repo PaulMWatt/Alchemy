@@ -40,14 +40,37 @@ static const uint8_t  k_opaque= 0xFF;
 static const uint8_t  k_clear = 0x00;
 
 // Point definitions 
-struct point
+struct Point
 {
   int32_t X;
   int32_t Y;
   int32_t Z;
 };
 
-const point k_cube[8] =
+//  ****************************************************************************
+inline
+void to_buffer(const Point &point, byte_vector &buffer)
+{
+  // 1 pt (3 4-byte value)
+  const size_t k_org_size    = buffer.size();
+  const size_t k_point_size  = 12;
+  buffer.resize(k_org_size + k_point_size);
+
+  const size_t k_field_size = sizeof(uint32_t);
+  byte_vector::value_type *pCur = &buffer[0];
+  std::advance(pCur, k_org_size);
+
+  ::memcpy(pCur, &point.X, k_field_size);
+  std::advance(pCur, k_field_size);
+
+  ::memcpy(pCur, &point.Y, k_field_size);
+  std::advance(pCur, k_field_size);
+
+  ::memcpy(pCur, &point.Z, k_field_size);
+  std::advance(pCur, k_field_size);
+}
+
+const Point k_cube[8] =
 {
   {0,0,0},
   {1,0,0},
@@ -59,7 +82,7 @@ const point k_cube[8] =
   {0,1,1}
 };
 
-const point k_eight_pts[8] =
+const Point k_eight_pts[8] =
 {
   {0xFEEDF00D,0xDEADC0DE,0x0BADF1A6},
   {0xF1A6BALL,0xC0DEBAD0,0xF00DDEAD},
@@ -87,8 +110,8 @@ const uint32_t k_eight_colors[8] =
 // Ray definitions
 struct Ray
 {
-  point start;
-  point magnitude;
+  Point start;
+  Point magnitude;
 };
 
 const Ray k_normal_x =
@@ -130,7 +153,7 @@ const Ray k_normal_z_neg =
 // Vertex definitions
 struct Vertex
 {
-  point     pt;
+  Point     pt;
   uint32_t  color;
 };
 
@@ -142,7 +165,7 @@ Vertex make_vertex(int32_t X, int32_t Y, int32_t Z, uint32_t color)
 }
 
 inline
-Vertex make_vertex(const point &pt, uint32_t color)
+Vertex make_vertex(const Point &pt, uint32_t color)
 {
   Vertex result = {pt,color};
   return result;
@@ -214,9 +237,9 @@ const Triangle k_cube_triangles[12] =
 // Camera definitions.
 struct Camera
 {
-  point eye;
-  point at;
-  point up;
+  Point eye;
+  Point at;
+  Point up;
 };
 
 const Camera k_camera = 
@@ -252,7 +275,7 @@ const double k_transform[9] =
 struct Instance
 {
   uint8_t object_index;
-  point   location;
+  Point   location;
   double  transform[3][3];
 };
 

@@ -154,6 +154,7 @@ cd "../.."</Command>
     <ClInclude Include="Src\TestByteOrder.h" />
     <ClInclude Include="Src\TestDynamicMessageSuite.h" />
     <ClInclude Include="Src\TestDynTypePermsSuite.h" />
+    <ClInclude Include="Src\TestFocusedDynamicMessageSuite.h" />
     <ClInclude Include="Src\TestMsgFieldSuite.h" />
     <ClInclude Include="Src\TestMsgBufferSuite.h" />
     <ClInclude Include="Src\TestMessageSuite.h" />

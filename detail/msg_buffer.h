@@ -292,15 +292,12 @@ public:
   ///               
   /// @tparam T               [typename] The parameterized type to be read 
   ///                         by the caller.
-  /// @param first            Contains the first item to read from the buffer.
+  /// @param pBuffer          Pointer to the first element in the array to 
+  ///                         be written into.
   ///
-  /// @param last             Contains the item one past the last item to read.
-  ///                         This item may point to an element that is not 
-  ///                         valid to de-reference. Similar to C+++ Standard Library.
-  ///
-  ///                         Last must be greater than than the first time,
-  ///                         and they must be part of the same range of elements
-  ///                         otherwise the behavior is undefined.
+  /// @param length           The number of bytes to read in.
+  ///                         pBuffer must contain at least length number of
+  ///                         bytes.
   ///
   /// @param pos              The offset from the beginning of the buffer to
   ///                         read the input value.
@@ -308,35 +305,28 @@ public:
   /// @return       true -    Data was successfully read from the buffer.
   ///               false-    Date could not be read from the buffer.
   ///
-  template <typename OutputIt>
-//  bool get_range(OutputIt first, OutputIt last, size_t pos) const
-  bool get_range(OutputIt first, size_t range_size, size_t pos) const
+  bool get_range(void* pBuffer, size_t length, size_t pos) const
   {
-    if (empty())
+    if ( empty()
+      || 0 == pBuffer
+      || 0 == length)
     {
       return false;
     }
 
-    // Return if first and last are the same.
-    //if (first == last)
-    //{
-    //  return true;
-    //}
-
     // Read from the user supplied offset as well as the base offset 
     // configured for this Packet Buffer.
     size_t total_offset = static_cast<size_t>(offset()) + pos;
-//    size_t range_size   = size;
 
     // Verify the data can be safely written within the bounds of the buffer.
     bool isSuccess = false;
     size_t total_size = this->size();
     if ( (total_offset >= 0)
-      && (total_offset + range_size) <= total_size)
+      && (total_offset + length) <= total_size)
     {
       isSuccess = storage_type::read( data(),
-                                      first,
-                                      range_size,
+                                      pBuffer,
+                                      length,
                                       total_offset);
     }
 

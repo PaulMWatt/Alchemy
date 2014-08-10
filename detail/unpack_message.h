@@ -168,6 +168,25 @@ template< size_t   IdxT,
         >
 struct UnpackDatum<IdxT, MessageT, BufferT, vector_trait>
 {
+  //  Typedefs *****************************************************************
+  typedef typename
+    Hg::detail::DeduceProxyType 
+      < IdxT,
+        typename MessageT::format_type,
+        MessageT::k_base_offset
+      >::type                                     proxy_type;
+
+  typedef typename
+    proxy_type::value_type                        value_type;
+  typedef typename
+    value_type::value_type                        data_type;
+  typedef typename
+    value_type::allocator_type                    allocator_type;
+  typedef typename 
+    Hg::detail::DeduceTypeTrait
+      < data_type >::type                         data_type_trait;
+
+
   //  **************************************************************************
   //  Reads a dynamically-size field from the specified buffer.
   // 
@@ -182,14 +201,6 @@ struct UnpackDatum<IdxT, MessageT, BufferT, vector_trait>
                   const BufferT  &buffer,
                         size_t   &dynamic_offset)
   {
-    typedef typename
-      Hg::detail::DeduceProxyType < IdxT,
-                                    typename MessageT::format_type,
-                                    MessageT::k_base_offset>::type      proxy_type;
-    typedef typename
-      proxy_type::value_type                                            value_type;
-    typedef typename
-      value_type::value_type                                            data_type;
 
     value_type value  = value_type();
     size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
@@ -207,20 +218,51 @@ struct UnpackDatum<IdxT, MessageT, BufferT, vector_trait>
     // Allocate space for the incoming data.
     value.resize(count);
 
-    data_type *pFirst = &value[0];
-    data_type *pLast  = pFirst;
-    std::advance(pLast, count);
-
-    // TODO: Revisit and create a more general solution. For now, simply specifying the size of bytes to be read from the buffer.
-    buffer.get_range(pFirst, count*sizeof(data_type), offset);
+    size_t bytes_read = 
+      Import< data_type_trait>( value, 
+                                count, 
+                                buffer, 
+                                offset);
+    
+    // TODO: Look into reading directly into the vector without the copy.
     msg.template FieldAt<IdxT>().set(value);
 
-    // Calculate the number of bytes that will be read from the buffer.
-    size_t size = count * sizeof(data_type);
-
-    dynamic_offset += size;
+    dynamic_offset += bytes_read;
   }
+
+private:
+  //  **************************************************************************
+  //  Imports data into the vector for fixed-size POD types.
+  //
+  template<typename TraitT>
+  size_t Import(      value_type &value, 
+                      size_t      count, 
+                const BufferT    &buffer,
+                      size_t      offset)
+  {
+    return  buffer.get_range(&value[0], count * sizeof(data_type), offset)
+            ? count * sizeof(data_type)
+            : 0;
+  }
+
+  //  **************************************************************************
+  template< >
+  size_t Import<nested_trait>(      
+                      value_type &value, 
+                      size_t      count, 
+                const BufferT    &buffer,
+                      size_t      offset)
+  {
+
+    return 0;
+  }
+
+
+
+
 };
+
+
 
 //  ****************************************************************************
 /// Creates a serializer object to read a single datum from the message buffer.
