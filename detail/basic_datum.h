@@ -35,11 +35,18 @@ struct field_data_t
                                         ///  the same type as the index type.
 };
 
-  //static
-  //void copy_value_type(value_type& to, const value_type& from)
-  //{
-  //  to = from;
-  //}
+//  ****************************************************************************
+/// Generalized copy function for message field value types.
+///
+/// @param to       A reference to the variable to copy the into.
+/// @param from     A reference to the data to copy from.
+///
+template< typename T >
+void copy_value_type(T& to, const T& from)
+{
+  to = from;
+}
+
 
 //  ****************************************************************************
 /// (Fixed-Array Specialization) Type definitions for field in type-container.
@@ -191,19 +198,6 @@ struct FieldTypes
                                         ///  instances of this Datum.
 
 };
-
-
-//  ****************************************************************************
-/// Generalized copy function for message field value types.
-///
-/// @param to       A reference to the variable to copy the into.
-/// @param from     A reference to the data to copy from.
-///
-template< typename T >
-void copy_value_type(T& to, const T& from)
-{
-  to = from;
-}
 
 
 //  ****************************************************************************

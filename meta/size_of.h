@@ -8,12 +8,17 @@
 //  ****************************************************************************
 #ifndef SIZE_OF_H_INCLUDED
 #define SIZE_OF_H_INCLUDED
-/* Includes ******************************************************************/
+// Includes ********************************************************************
 #include <meta/meta_fwd.h>
 #include <meta/container_size.h>
 
 namespace Hg
 {
+
+//  Forward Declaraions ********************************************************
+template <typename T>
+struct SizeOf;
+
 
 // This namespace contains specialized versions of the SizeOf implementation
 // to help differentiate between type_containers and intrinsic types.
@@ -24,6 +29,14 @@ namespace detail
 template <typename T, bool isContainer = false >
 struct SizeOf_Impl
   : std::integral_constant<size_t, sizeof(T)>
+{ };
+
+//  Arrays size should only include the elements in the array. ****************
+template< typename T,
+          size_t   N
+        >
+struct SizeOf_Impl<std::array<T,N>, false>
+  : std::integral_constant< size_t, Hg::SizeOf<T>::value * N>
 { };
 
 //  Vectors size is dynamically determined at runtime. ************************
