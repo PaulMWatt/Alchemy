@@ -214,6 +214,10 @@ struct message_size_trait
       : base_type(data_field)                                                  \
     { }                                                                        \
                                                                                \
+    C& operator=(const C &rhs)                                                 \
+    { m_data = rhs.m_data;                                                     \
+      return *this;                                                            \
+    }                                                                          \
     C& operator=(const value_type &data_field)                                 \
     { m_data = data_field;                                                     \
       return *this;                                                            \

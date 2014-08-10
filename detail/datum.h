@@ -303,7 +303,7 @@ protected:
   /// 
   void SetShadow(const value_type &value)                
   { 
-    RefShadowData() = value; 
+    Hg::detail::copy_value_type(RefShadowData(), value);
   }
 };
 

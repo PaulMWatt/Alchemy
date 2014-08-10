@@ -35,6 +35,12 @@ struct field_data_t
                                         ///  the same type as the index type.
 };
 
+  //static
+  //void copy_value_type(value_type& to, const value_type& from)
+  //{
+  //  to = from;
+  //}
+
 //  ****************************************************************************
 /// (Fixed-Array Specialization) Type definitions for field in type-container.
 ///
@@ -53,12 +59,39 @@ struct field_data_t
 //  typedef typename 
 //    field_data_t<sub_type>::value_type  value_sub_type;
 //
-//  typedef 
-//    std::array< value_sub_type, N>      value_type;
+//  typedef typename
+//    std::conditional
+//      < nested_value<sub_type>::value,
+//        std::array< value_sub_type, N>,
+//        std::array< sub_type, N>
+//      >::type                           value_type;
 //                                        ///< The proper value_type definition
 //                                        ///  deduced from the type-container
 //                                        ///  and the specified array sub-type.
+//  static
+//  void copy_value_type(value_type& to, const value_type& from)
+//  {
+//    //to = from;
+//  }
 //};
+
+//  ****************************************************************************
+/// (Fixed-Array Specialization) To copy from one instance to another.
+///
+/// @paramt SubTypeT          [typename] This parameterized type declares the
+///                           sub-type of the array defined at the location 
+///                           in the parent type container.
+/// @paramt N                 [size_t] The number of elements in the array.
+///
+template< typename SubTypeT,
+          size_t   N
+        >
+void copy_value_type(       std::array<SubTypeT, N>& to, 
+                      const std::array<SubTypeT, N>& from)
+{
+  std::copy(from.begin(), from.end(), to.begin());
+}
+
 
 //  ****************************************************************************
 /// (Dynamic-Array Specialization) Type definitions for field in type-container.
@@ -92,6 +125,25 @@ struct field_data_t < std::vector<SubTypeT, AllocT> >
 };
 
 //  ****************************************************************************
+/// (Dynamic-Array Specialization) To copy from one instance to another.
+///
+/// @param SubTypeT           [typename] This parameterized type declares the
+///                           sub-type of the vector defined at the location 
+///                           in the parent type container.
+/// @param AllocT             [typename] The defined allocator of the vector.
+///
+template< typename SubTypeT,
+          typename AllocT
+        >
+void copy_value_type(       std::vector<SubTypeT, AllocT>& to, 
+                      const std::vector<SubTypeT, AllocT>& from)
+{
+  // Empty the existing elements before inserting the new data.
+  to.clear();
+  std::copy(from.begin(), from.end(), std::back_inserter(to));
+}
+
+//  ****************************************************************************
 /// Provides the index and data field type definitions.
 /// 
 /// This class acts as a discriminator object to choose the proper msg field types.
@@ -116,16 +168,16 @@ struct field_data_t < std::vector<SubTypeT, AllocT> >
 /// @paramt kt_offset         [size_t] This is the offset of the current 
 ///                           data field found in its parent type container.
 /// 
-template< typename field_t,
+template< typename FieldT,
           size_t   kt_offset = 0
         >
 struct FieldTypes
 {
   typedef 
-    field_t             index_type;     ///< The type at the index of the
+    FieldT              index_type;     ///< The type at the index of the
                                         ///  parent type container.
   typedef typename
-    field_data_t<field_t>::value_type
+    field_data_t<index_type>::value_type
                         value_type;     ///< The specified value type for 
                                         ///  the current Datum.
 
@@ -139,6 +191,19 @@ struct FieldTypes
                                         ///  instances of this Datum.
 
 };
+
+
+//  ****************************************************************************
+/// Generalized copy function for message field value types.
+///
+/// @param to       A reference to the variable to copy the into.
+/// @param from     A reference to the data to copy from.
+///
+template< typename T >
+void copy_value_type(T& to, const T& from)
+{
+  to = from;
+}
 
 
 //  ****************************************************************************
