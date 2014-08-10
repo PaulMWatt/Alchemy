@@ -92,8 +92,6 @@ public:
   typedef typename
     message_size_trait<format_type>::type     size_trait;
 
-
-  size_trait SIZE_TRAIT_VAR;
   //  Constants ****************************************************************
   enum { k_size = SizeOf<format_type>::value };
                                         ///< Indicates the size in bytes of the

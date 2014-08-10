@@ -20,16 +20,18 @@ namespace Hg
 ///
 /// @param msg_values         The message structure that contains the values
 ///                           to be read.
+/// @param buffer             The buffer this data should be read from.
 ///
-/// @return                   The buffer that has been allocated to store the 
-///                           message.
+/// @return                   The message object populated by the input buffer.
+///                           This is simply the same message object reference
+///                           passed as input for expressive syntax.
 ///
 template< typename MessageT,
           typename BufferT,
           typename SizeTraitT
         >
-std::shared_ptr<BufferT>
-  unpack_message(MessageT& msg_values);
+MessageT& unpack_message(       MessageT &msg_values,
+                          const BufferT  &buffer);
 
 
 //  ****************************************************************************
@@ -40,8 +42,7 @@ std::shared_ptr<BufferT>
 /// @param buffer             The buffer this data should be read from.
 /// @param offset             The offset the reading should occur.
 ///
-/// @return                   The buffer that has been allocated to store the 
-///                           message.
+/// @return                   The number of bytes that were read in from the buffer.
 ///
 template< typename MessageT,
           typename BufferT,
@@ -57,19 +58,19 @@ namespace detail
 {
 
 //  ****************************************************************************
-/// A functor to assist in the reading of fundamental types from the message buffer.
-/// This is also the most basic reader, therefore it will act as the default.
-///
-/// @tparam IdxT              [size_t] The index of the field to read.
-/// @tparam MessageT          [typename] The message defintition used to parse the
-///                           buffer.
-/// @tparam BufferT           [typename] The buffer type that provides the data
-///                           to read into the message.  
-/// @tparam TraitT            [typename] Specifies the type trait of T.
-///                           This field acts as a descriminator for selecting
-///                           the most appropriate construct to read the current
-///                           value type from the buffer.
-/// 
+//  A functor to assist in the reading of fundamental types from the message buffer.
+//  This is also the most basic reader, therefore it will act as the default.
+// 
+//  @tparam IdxT              [size_t] The index of the field to read.
+//  @tparam MessageT          [typename] The message defintition used to parse the
+//                            buffer.
+//  @tparam BufferT           [typename] The buffer type that provides the data
+//                            to read into the message.  
+//  @tparam TraitT            [typename] Specifies the type trait of T.
+//                            This field acts as a descriminator for selecting
+//                            the most appropriate construct to read the current
+//                            value type from the buffer.
+//  
 template< size_t   IdxT,      
           typename MessageT, 
           typename BufferT,
@@ -106,14 +107,14 @@ struct UnpackDatum
 };
 
 //  ****************************************************************************
-/// A specialized functor to read nested types.
-///
-/// @tparam IdxT              [size_t] The index of the field to read.
-/// @tparam MessageT          [typename] The message defintition used to parse the
-///                           buffer.
-/// @tparam BufferT           [typename] The buffer type that provides the data
-///                           to read into the message.  
-/// 
+//  A specialized functor to read nested types.
+// 
+//  @tparam IdxT              [size_t] The index of the field to read.
+//  @tparam MessageT          [typename] The message defintition used to parse the
+//                            buffer.
+//  @tparam BufferT           [typename] The buffer type that provides the data
+//                            to read into the message.  
+//  
 template< size_t   IdxT,      
           typename MessageT,
           typename BufferT
@@ -154,14 +155,14 @@ struct UnpackDatum<IdxT, MessageT, BufferT, nested_trait>
 };
 
 //  ****************************************************************************
-/// A specialized functor to read vector types.
-///
-/// @tparam IdxT              [size_t] The index of the field to read.
-/// @tparam MessageT          [typename] The message defintition used to parse the
-///                           buffer.
-/// @tparam BufferT           [typename] The buffer type that provides the data
-///                           to read into the message.  
-/// 
+//  A specialized functor to read vector types.
+// 
+//  @tparam IdxT              [size_t] The index of the field to read.
+//  @tparam MessageT          [typename] The message defintition used to parse the
+//                            buffer.
+//  @tparam BufferT           [typename] The buffer type that provides the data
+//                            to read into the message.  
+//  
 template< size_t   IdxT,      
           typename MessageT,
           typename BufferT
@@ -246,6 +247,10 @@ private:
   }
 
   //  **************************************************************************
+  //  This version reads each item from the raw buffer individually.
+  //  These fields may be because they are distinct fields of a nested definition,
+  //  or variable length items.
+  //
   template< >
   size_t Import<nested_trait>(      
                       value_type &value, 
@@ -253,20 +258,45 @@ private:
                 const BufferT    &buffer,
                       size_t      offset)
   {
+    // TODO:  Will need to modify the definitions for:
+    //          data_type::format_type
+    //        To be a more robust version to properly support
+    //        vectors of vectors and vectors of arrays.
 
-    return 0;
+    // An important typedef for selecting the proper
+    // version of the unpack function for the sub-elements.
+    typedef typename
+      message_size_trait<data_type::format_type>::type     size_trait;
+
+
+    size_t bytes_read = 0;
+
+    // Process each item individually.
+    for (size_t index = 0; index < count; ++index)
+    {
+      // The offset for each item progressively increases
+      // by the number of bytes read from the input buffer.
+      size_t item_offset = offset + bytes_read;
+
+      size_t last_read =
+        unpack_message< data_type,
+                        BufferT,
+                        size_trait
+                      >(value[index], buffer, item_offset);
+
+      bytes_read += last_read;
+    }
+
+    return bytes_read;
   }
-
-
-
-
 };
 
 
 
 //  ****************************************************************************
-/// Creates a serializer object to read a single datum from the message buffer.
-///
+//  ****************************************************************************
+//  Creates a serializer object to read a single datum from the message buffer.
+//
 template< size_t   IdxT,      
           typename MessageT,
           typename BufferT
@@ -291,15 +321,15 @@ void ReadDatum(       MessageT& message,
 }
 
 //  ****************************************************************************
-/// Reads the data of the specified field from the message buffer.
-///
-/// @tparam Idx                 [size_t] The index of this Datum in the container.
-/// @tparam Count               [size_t] The number of fields in the container.
-/// @tparam MessageT            [typename] The message type, which is a 
-///                             collection of Datum fields.
-/// @param msg                  A reference to the msg instance with the data fields.
-/// @param buffer               A reference to the buffer that data will be read from.
-/// 
+//  Reads the data of the specified field from the message buffer.
+// 
+//  @tparam Idx                 [size_t] The index of this Datum in the container.
+//  @tparam Count               [size_t] The number of fields in the container.
+//  @tparam MessageT            [typename] The message type, which is a 
+//                              collection of Datum fields.
+//  @param msg                  A reference to the msg instance with the data fields.
+//  @param buffer               A reference to the buffer that data will be read from.
+//  
 template <size_t    Idx,
           size_t    Count,
           typename  MessageT,
@@ -332,9 +362,9 @@ struct UnpackMessageWorker
 };
 
 //  ****************************************************************************
-/// Terminating specialization for the UnpackMessageWorker recursive function.
-/// This function captures the case when the index = count.
-///
+//  Terminating specialization for the UnpackMessageWorker recursive function.
+//  This function captures the case when the index = count.
+// 
 template <size_t    Idx,
           typename  MessageT,
           typename  BufferT
@@ -357,14 +387,14 @@ struct UnpackMessageWorker< Idx,
 
 
 //  ****************************************************************************
-/// Reads the values of a message structure from a packed memory buffer.
-///
-/// @param msg_values         The message structure that contains the values
-///                           to be read.
-///
-/// @return                   The buffer that has been allocated to store the 
-///                           message.
-///
+//  Reads the values of a message structure from a packed memory buffer.
+// 
+//  @param msg_values         The message structure that contains the values
+//                            to be read.
+// 
+//  @return                   The buffer that has been allocated to store the 
+//                            message.
+// 
 template< typename MessageT,
           typename BufferT
         >
@@ -392,16 +422,16 @@ MessageT& unpack_message(       MessageT &msg_values,
 
 
 //  ****************************************************************************
-/// Reads the values of a message structure from a packed memory buffer.
-///
-/// @param msg_values         The message structure that contains the values
-///                           to be read.
-/// @param buffer             The buffer this data should be read from.
-/// @param offset             The offset the reading should occur.
-///
-/// @return                   The buffer that has been allocated to store the 
-///                           message.
-///
+//  Reads the values of a message structure from a packed memory buffer.
+// 
+//  @param msg_values         The message structure that contains the values
+//                            to be read.
+//  @param buffer             The buffer this data should be read from.
+//  @param offset             The offset the reading should occur.
+// 
+//  @return                   The buffer that has been allocated to store the 
+//                            message.
+// 
 template< typename MessageT,
           typename BufferT
         >
@@ -430,14 +460,14 @@ size_t unpack_message (       MessageT  &msg_values,
 
 
 //  ****************************************************************************
-/// Reads the values of a message structure from a packed memory buffer.
-///
-/// @param msg_values         The message structure that contains the values
-///                           to be read.
-/// @param buffer               The buffer to read from.
-///
-/// @return                   The populated message values are returned.
-///
+//  Reads the values of a message structure from a packed memory buffer.
+// 
+//  @param msg_values         The message structure that contains the values
+//                            to be read.
+//  @param buffer               The buffer to read from.
+// 
+//  @return                   The populated message values are returned.
+// 
 template< typename MessageT,
           typename BufferT
         >
@@ -467,16 +497,16 @@ MessageT& unpack_message(       MessageT &msg_values,
 
 
 //  ****************************************************************************
-/// Reads the values of a message structure from a packed memory buffer.
-///
-/// @param msg_values         The message structure that contains the values
-///                           to be read.
-/// @param buffer             The buffer this data should be read from.
-/// @param offset             The offset the reading should occur.
-///
-/// @return                   The buffer that has been allocated to store the 
-///                           message.
-///
+//  Reads the values of a message structure from a packed memory buffer.
+// 
+//  @param msg_values         The message structure that contains the values
+//                            to be read.
+//  @param buffer             The buffer this data should be read from.
+//  @param offset             The offset the reading should occur.
+// 
+//  @return                   The buffer that has been allocated to store the 
+//                            message.
+// 
 template< typename MessageT,
           typename BufferT
         >
