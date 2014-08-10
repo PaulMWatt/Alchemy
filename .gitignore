@@ -32,3 +32,4 @@ test/Src/Generated/TestAlchemyTypesRunner.cpp
 *.opensdf
 test/Src/Generated/TestAlchemyTypesRunner.cpp
 test/Src/Generated/TestAlchemyTypesRunner.cpp
+*.i

@@ -1,6 +1,16 @@
 /// @file meta/bit_field_list.h
 /// 
 /// Defines a collector for bit-fields parameters used with Alchemy message formats.
+/// The BitFieldList is the top-level container used to collect all of the 
+/// individual bit-fields.
+///
+/// Each bit-field is contained withing a BitFieldNode. These nodes are 
+/// organized as a static link-list. One new node is added for each bit-field
+/// that is part of the full bit list.
+///
+/// The current limit is 32 bit-field entries. 
+/// Expanding this limit requires expanding the size of the integer_sequence
+/// and the Format_bitlist structures.
 /// 
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
@@ -48,14 +58,13 @@ struct BitFieldNode
   typedef typename RootT::value_type                      value_type;
 
   //  Construction ***************************************************************
-  BitFieldNode(BitFieldNode &rhs)
+  BitFieldNode(const BitFieldNode &rhs)
     : base_type(rhs)
     , m_field( RootT::GetFieldAddress(m_field) )
   {
-  // The assignment in the constructor assigns the reference of
-  // data_field to the data member, m_field.
-  // 
-
+    // The assignment in the constructor assigns the reference of
+    // data_field to the data member, m_field.
+    // 
     m_field.attach((value_type*)&rhs.m_field);
   }
 
@@ -63,7 +72,7 @@ struct BitFieldNode
     : base_type(data_field)
     , m_field(GetFieldAddress<IndexT>(m_field))
   {
-  // The assignment in the constructor assigns the reference of
+    // The assignment in the constructor assigns the reference of
     // data_field to the data member, m_data.
     // 
     m_field.attach(&data_field);
@@ -90,13 +99,11 @@ struct BitFieldNode< RootT, IndexT, OffsetT, MT>
   //  Construction ***************************************************************
   BitFieldNode(const BitFieldNode &rhs)
     : RootT(rhs)
-  {
-  }
+  { }
 
   BitFieldNode(value_type &data_field)
     : RootT(data_field)
-  {
-  }
+  { }
 
 protected:
 
@@ -145,9 +152,7 @@ struct BitFieldList
   //  Construction *************************************************************
   BitFieldList(value_type &data_field)
     : base_type(data_field)
-  {
-    // No other operations.
-  }
+  { }
 
   operator value_type() const
   {

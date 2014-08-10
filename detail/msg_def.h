@@ -206,9 +206,18 @@ struct message_size_trait
       : base_type()                                                            \
     { }                                                                        \
                                                                                \
+    C(const C &rhs)                                                            \
+      : base_type(rhs)                                                         \
+    { }                                                                        \
+                                                                               \
     C(value_type &data_field)                                                  \
       : base_type(data_field)                                                  \
     { }                                                                        \
+                                                                               \
+    C& operator=(const value_type &data_field)                                 \
+    { m_data = data_field;                                                     \
+      return *this;                                                            \
+    }                                                                          \
                                                                                \
     enum { k_offset_0 = 0 };                                                   \
                                                                                \
