@@ -8,6 +8,10 @@
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
+#define MULTIVAL_DATA_H_INCLUDED
+
+
+
 #ifndef MULTIVAL_DATA_H_INCLUDED
 #define MULTIVAL_DATA_H_INCLUDED
 //  Includes ******************************************************************

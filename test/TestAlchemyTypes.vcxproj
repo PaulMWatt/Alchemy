@@ -104,7 +104,15 @@ cd "../.."</Command>
     <ClInclude Include="..\detail\bitlist_field_proxy.h" />
     <ClInclude Include="..\detail\message_dynamic.h" />
     <ClInclude Include="..\detail\message_dynamic_detail.h" />
-    <ClInclude Include="..\detail\message_iterator.h" />
+    <ClInclude Include="..\detail\msg_fwd.h" />
+    <ClInclude Include="..\detail\pack_array.h" />
+    <ClInclude Include="..\detail\pack_message_detail.h" />
+    <ClInclude Include="..\detail\pack_nested.h" />
+    <ClInclude Include="..\detail\pack_vector.h" />
+    <ClInclude Include="..\detail\unpack_array.h" />
+    <ClInclude Include="..\detail\unpack_message_detail.h" />
+    <ClInclude Include="..\detail\unpack_nested.h" />
+    <ClInclude Include="..\detail\unpack_vector.h" />
     <ClInclude Include="..\detail\vector_proxy.h" />
     <ClInclude Include="..\detail\message_byte_order.h" />
     <ClInclude Include="..\detail\message_byte_order_detail.h" />

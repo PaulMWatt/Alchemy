@@ -24,6 +24,19 @@ HG_BEGIN_BIT_SET (uint32_t, color4)
 HG_END_BIT_SET
 
 //  ****************************************************************************
+//  Indexed Color Table
+//  This type represents a fixed-size array of bit-fields.
+// 
+typedef TypeList
+<
+  std::array<color4, 16>
+> color_map_t;
+
+HG_BEGIN_FORMAT(color_map_t)
+  HG_DATUM ((std::array<color4, 16>), table)
+HG_END_FORMAT
+
+//  ****************************************************************************
 //  Type definition that represents a 3-dimensional point.
 //  This type is a nested type with simple sub-types.
 // 

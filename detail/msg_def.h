@@ -206,10 +206,6 @@ struct message_size_trait
       : base_type()                                                            \
     { }                                                                        \
                                                                                \
-    C(const C &rhs)                                                            \
-      : base_type(rhs)                                                         \
-    { }                                                                        \
-                                                                               \
     C(value_type &data_field)                                                  \
       : base_type(data_field)                                                  \
     { }                                                                        \
@@ -236,7 +232,7 @@ struct message_size_trait
       return nil_bits;                                                         \
     }
 
-
+ 
 // *****************************************************************************
 #define DECLARE_BIT_FIELD(IDX,P,N)                                             \
   typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \

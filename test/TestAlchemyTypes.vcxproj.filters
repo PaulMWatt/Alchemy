@@ -30,6 +30,27 @@
     <Filter Include="Header Files\Alchemy\Meta\type_list">
       <UniqueIdentifier>{10ef4796-b8a8-4596-8c00-5effa52e78ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Alchemy\Detail\Pack">
+      <UniqueIdentifier>{ed7d4f09-b783-488e-8361-1423926d35a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Detail\Unpack">
+      <UniqueIdentifier>{2c8e96d1-a41e-4627-9eba-dfef47115c23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Detail\Proxy">
+      <UniqueIdentifier>{a65438c6-cf82-4632-a452-f45d24b1594c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Detail\Datum">
+      <UniqueIdentifier>{3c8916ee-2479-4ff0-8db9-bb879e8ad26d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Detail\ByteOrder">
+      <UniqueIdentifier>{372ff55c-1f91-461c-8010-f9e0d2a97d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Detail\Unused">
+      <UniqueIdentifier>{f98db0ac-3634-4b9d-94c1-9bf52d650b84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Detail\Traits">
+      <UniqueIdentifier>{594672d0-eef9-4fe6-b303-2bfd3d699215}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -55,9 +76,6 @@
     </ClInclude>
     <ClInclude Include="Src\TestMeta.h">
       <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\bitlist_field_proxy.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
     </ClInclude>
     <ClInclude Include="..\detail\msg_buffer.h">
       <Filter>Header Files\Alchemy\Detail</Filter>
@@ -143,15 +161,6 @@
     <ClInclude Include="..\storage_policy.h">
       <Filter>Header Files\Alchemy</Filter>
     </ClInclude>
-    <ClInclude Include="..\detail\datum.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\data_proxy.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\basic_datum.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
     <ClInclude Include="Src\TestMsgBufferSuite.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
@@ -161,41 +170,14 @@
     <ClInclude Include="..\Hg.h">
       <Filter>Header Files\Alchemy</Filter>
     </ClInclude>
-    <ClInclude Include="..\detail\multival_data.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
     <ClInclude Include="msgtest_typelist.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\message_byte_order_detail.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\pack_message.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\unpack_message.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\message_byte_order.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\array_proxy.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\deduce_type_trait.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\deduce_proxy_type.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
     </ClInclude>
     <ClInclude Include="Src\TestArrayProxySuite.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
     <ClInclude Include="Src\TestVectorProxySuite.h">
       <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\vector_proxy.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
     </ClInclude>
     <ClInclude Include="..\meta\dynamic.h">
       <Filter>Header Files\Alchemy\Meta</Filter>
@@ -207,9 +189,6 @@
       <Filter>Header Files\Alchemy\Detail</Filter>
     </ClInclude>
     <ClInclude Include="..\detail\message_dynamic_detail.h">
-      <Filter>Header Files\Alchemy\Detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\detail\message_iterator.h">
       <Filter>Header Files\Alchemy\Detail</Filter>
     </ClInclude>
     <ClInclude Include="..\meta\integer_sequence.h">
@@ -226,6 +205,72 @@
     </ClInclude>
     <ClInclude Include="Src\TestFocusedDynamicMessageSuite.h">
       <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\array_proxy.h">
+      <Filter>Header Files\Alchemy\Detail\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\bitlist_field_proxy.h">
+      <Filter>Header Files\Alchemy\Detail\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\data_proxy.h">
+      <Filter>Header Files\Alchemy\Detail\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\vector_proxy.h">
+      <Filter>Header Files\Alchemy\Detail\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\basic_datum.h">
+      <Filter>Header Files\Alchemy\Detail\Datum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\datum.h">
+      <Filter>Header Files\Alchemy\Detail\Datum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\pack_message.h">
+      <Filter>Header Files\Alchemy\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\unpack_message.h">
+      <Filter>Header Files\Alchemy\Detail\Unpack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\message_byte_order.h">
+      <Filter>Header Files\Alchemy\Detail\ByteOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\message_byte_order_detail.h">
+      <Filter>Header Files\Alchemy\Detail\ByteOrder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\deduce_proxy_type.h">
+      <Filter>Header Files\Alchemy\Detail\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\multival_data.h">
+      <Filter>Header Files\Alchemy\Detail\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\deduce_type_trait.h">
+      <Filter>Header Files\Alchemy\Detail\Traits</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\pack_array.h">
+      <Filter>Header Files\Alchemy\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\pack_nested.h">
+      <Filter>Header Files\Alchemy\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\pack_vector.h">
+      <Filter>Header Files\Alchemy\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\msg_fwd.h">
+      <Filter>Header Files\Alchemy\Detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\pack_message_detail.h">
+      <Filter>Header Files\Alchemy\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\unpack_array.h">
+      <Filter>Header Files\Alchemy\Detail\Unpack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\unpack_message_detail.h">
+      <Filter>Header Files\Alchemy\Detail\Unpack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\unpack_nested.h">
+      <Filter>Header Files\Alchemy\Detail\Unpack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\detail\unpack_vector.h">
+      <Filter>Header Files\Alchemy\Detail\Unpack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

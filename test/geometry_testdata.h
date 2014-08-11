@@ -39,6 +39,40 @@ static const uint32_t k_blue  = 0x0000FF00;
 static const uint8_t  k_opaque= 0xFF;
 static const uint8_t  k_clear = 0x00;
 
+// VGA color codes
+static const uint32_t k_White   = 0xFFFFFF00;
+static const uint32_t k_Fuchsia = 0xFF00FF00;
+static const uint32_t k_Aqua    = 0x00FFFF00;
+static const uint32_t k_Yellow  = 0xFFFF0000;
+static const uint32_t k_Purple  = 0x80008000;
+static const uint32_t k_Teal    = 0x00808000;
+static const uint32_t k_Olive   = 0x80800000;
+static const uint32_t k_Silver  = 0xC0C0C000;
+static const uint32_t k_Blue    = 0x0000FF00;
+static const uint32_t k_Lime    = 0x00FF0000;
+static const uint32_t k_Red     = 0xFF000000;
+static const uint32_t k_Gray    = 0x80808000;
+static const uint32_t k_Navy    = 0x00008000;
+static const uint32_t k_Green   = 0x00800000;
+static const uint32_t k_Maroon  = 0x80000000;
+static const uint32_t k_Black   = 0x00000000;
+
+
+
+//  ****************************************************************************
+inline
+void to_buffer(const uint32_t value, byte_vector &buffer)
+{
+  const size_t k_org_size    = buffer.size();
+  buffer.resize(k_org_size + sizeof(uint32_t));
+
+  byte_vector::value_type *pCur = &buffer[0];
+  std::advance(pCur, k_org_size);
+
+  ::memcpy(pCur, &value, sizeof(uint32_t));
+}
+
+
 // Point definitions 
 struct Point
 {
