@@ -33,6 +33,7 @@
 #include <msgtest_typelist.h>
 #include <Hg.h>
 #include <algorithm>
+#include <string>
 
 #include <geometry_typelist.h>
 #include <geometry_testdata.h>
@@ -202,6 +203,8 @@ void populate_msg(SUT &msg)
 } // namespace test
 
 //  ****************************************************************************
+//  Tests 
+//  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_fixed_size(void)
 {
   using namespace test::nested::fixed;
@@ -255,6 +258,8 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_fixed_size(voi
 }
 
 //  ****************************************************************************
+//  Tests 
+//  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_dynamic_size(void)
 {
 }
@@ -265,6 +270,8 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_dynamic_size(v
 
 }
 
+//  ****************************************************************************
+//  Tests 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_mixed_size(void)
 {
@@ -345,6 +352,8 @@ void populate_msg(SUT &msg)
 } // namespace test
 
 //  ****************************************************************************
+//  Tests 
+//  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_array_of_bitsets(void)
 {
   using namespace test::fixed_array::bit_list;
@@ -402,6 +411,8 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_bitsets(void)
 }
 
 //  ****************************************************************************
+//  Tests 
+//  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_array_of_arrays(void)
 {
 
@@ -414,6 +425,8 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_arrays(void)
 }
 
 //  ****************************************************************************
+//  Tests 
+//  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_array_of_vectors(void)
 {
 
@@ -425,6 +438,8 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_vectors(void)
 
 }
 
+//  ****************************************************************************
+//  Tests 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_vector_of_bitsets(void)
 {
@@ -544,6 +559,8 @@ void populate_msg(SUT &msg)
 } // namespace test
 
 //  ****************************************************************************
+//  Tests 
+//  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_vector_of_arrays(void)
 {
   using namespace test::vector::fixed_array;
@@ -611,15 +628,258 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_arrays(void)
 }
 
 //  ****************************************************************************
+namespace Hg {
+
+// Define a message format that consists of a collection of 
+// NULL terminated strings, with a double-NULL terminator.
+typedef std::vector<char>         char_str;
+
+
+//  ****************************************************************************
+//  Field-size functor
+//  Count the number of non-empty character sequences until an empty string.
+//  The empty string must occur before the end of the buffer (buffer + length).
+//  The entire buffer does not need to be used before the empty string.
+//
+size_t StringCount(uint8_t* pBuffer, size_t length)
+{
+  size_t count = 0;
+
+  char const* pCur =  reinterpret_cast<char const*>(pBuffer);
+  char const* pLast = pCur;
+  std::advance(pLast, length);
+
+  size_t  len = 1;
+  while (pCur < pLast)
+  {
+    len = std::char_traits<char>::length(pCur);
+    if (0 == len)
+      break;
+
+    ++count;
+    std::advance(pCur, len);
+  }
+
+  return count;
+}
+
+// Message definition
+typedef TypeList
+<
+  std::vector<char_str>          
+> string_vec_t;                   
+
+//HG_BEGIN_FORMAT(string_vec_t)
+//  HG_DYN_DATUM ((std::vector<char_str>), items, StringCount)
+//HG_END_FORMAT
+
+
+template< size_t kt_offset > struct string_vec_tFormat; template <> struct detail::field_data_t <string_vec_t> { typedef string_vec_tFormat<0> value_type;
+};
+template< size_t kt_offset > struct detail::FieldTypes <string_vec_t,kt_offset> : string_vec_tFormat<kt_offset> { typedef string_vec_t index_type;
+typedef string_vec_tFormat < kt_offset > value_type;
+FieldTypes() : m_shadow_data(This()) { } value_type& This() {return *this;
+} value_type &m_shadow_data;
+};
+template< size_t kt_offset > struct string_vec_tFormat : nested_trait { typedef string_vec_t format_type;
+enum { k_size = SizeOf<format_type>::value };
+enum { k_length = length<format_type>::value };
+enum { k_base_offset = kt_offset };
+template< size_t IDX> Datum<IDX, format_type, k_base_offset>& FieldAt() { typedef Datum < IDX, format_type, k_base_offset> datum_type_t;
+return FieldAtIndex(datum_type_t());
+} template <int L> struct decrement_until_match;
+template<int N> struct enum_begin : std::integral_constant<int, N> { };
+template<int N, bool IsValidT = false> struct enum_entry : std::integral_constant<bool, IsValidT> { };
+template<int N> struct enum_entry<N, true> : std::true_type {};
+template<> struct enum_entry<0, true> : std::true_type {};
+template <int L> struct index_before : std::integral_constant< int, decrement_until_match<L - 1>::value > { };
+template <int L> struct auto_index : std::integral_constant< int, index_before<L>::value + 1 > { };
+template <> struct auto_index<0> : std::integral_constant< int, -1> { };
+template <int L> struct decrement_until_match : std::integral_constant< int, value_if< enum_entry<L>::value, int, auto_index<L>::value, decrement_until_match<L - 1>::value >::value > { };
+template <> struct decrement_until_match<0> : std::integral_constant <int, -1> { };
+typedef std::integral_constant<int, 672> enum_base;
+
+  template<> struct enum_entry<(673 - enum_base::value)> : std::true_type { };
+  typedef typename Hg::detail::DeduceProxyType < (auto_index<673- enum_base::value>::value), format_type, k_base_offset>::type Proxyitems;
+  typedef typename Proxyitems::datum_type datum_items;
+  Proxyitems items;
+  datum_items& FieldAtIndex(const datum_items&) { return *static_cast<datum_items*>(&items);
+  } const char* FieldName(const Proxyitems&) { return "items";
+  } template <typename U> size_t Size(U& buffer, datum_items&) { return DatumSize(StringCount, buffer);
+  }
+
+
+
+private: 
+
+  template <typename T, typename U> 
+  size_t DatumSize( typename std::enable_if<std::is_integral<T>::value, T>::type value,
+                    U&) 
+  { 
+    return value;
+  } 
+
+
+  //template <typename T, typename U> 
+  //size_t DatumSize(T value, U&) 
+  //{ 
+  //  return value;
+  //} 
+  
+  template <typename U> 
+  size_t DatumSize(pfnGetDatumSize ftor, U& buffer) 
+  { 
+    if (buffer.empty()) 
+    { 
+      return 0;
+    } 
+    
+    size_t x = ftor(buffer.data(), buffer.size());
+    return 0;
+  }
+};
+
+
+
+
+
+} // namespace Hg
+
+//  Vector of vectors **********************************************************
+namespace test
+{
+namespace vec
+{
+namespace vec
+{
+typedef Hg::Message<Hg::string_vec_tFormat<0> >   MsgStrVec;
+typedef MsgStrVec                                 SUT;
+
+//  Constants **************************
+const size_t k_count = 7;
+char* pStrings[k_count] =
+{
+  "Dog", 
+  "cAt", 
+  "FiSh", 
+  "HoRsE", 
+  "cHiCkEn",
+  "SpIdEr",
+  "MoLd"
+};
+
+//  ************************************
+inline
+void to_buffer(const char *pStr,
+               byte_vector &buffer)
+{
+  const size_t k_org_size    = buffer.size();
+  const size_t len = ::strlen(pStr) + 1;
+  buffer.resize(k_org_size + len);
+
+  byte_vector::value_type *pCur = &buffer[0];
+  std::advance(pCur, k_org_size);
+
+  ::memcpy(pCur, pStr, len);
+}
+
+//  ************************************
+//  A message buffer with the expected 
+//  test results.
+
+void make_buffer(byte_vector &buffer)
+{
+  buffer.clear();
+
+  // to_buffer allocates its own space for the vector.
+  to_buffer("Dog", buffer);
+  to_buffer("cAt", buffer);
+  to_buffer("FiSh", buffer);
+  to_buffer("HoRsE", buffer);
+  to_buffer("cHiCkEn", buffer);
+  to_buffer("SpIdEr", buffer);
+  to_buffer("MoLd", buffer);
+
+  buffer.push_back(0);
+}
+
+//  ************************************
+void populate_msg(SUT &msg)
+{
+  using Hg::char_str;
+
+  for ( size_t index = 0; 
+        index < test::vec::vec::k_count; 
+        ++index)
+  {
+    char_str entry;
+    entry.assign(pStrings[index], pStrings[index] + strlen(pStrings[index]));
+    entry.push_back(0);
+
+    msg.items.push_back(entry);
+  }
+
+  char_str empty_str;
+  empty_str.push_back(0);
+
+  msg.items.push_back(empty_str);
+}
+
+} // namespace vec
+} // namespace vec
+} // namespace test
+
+//  ****************************************************************************
+//  Tests 
+//  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_vector_of_vectors(void)
 {
+  using namespace test::vec::vec;
+  using namespace test::data;
 
+  // Place them in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the SUT with the test values.
+  SUT sut;
+  populate_msg(sut);
+
+  //SUT: Serialize into a buffer.
+  uint8_t const* pData = sut.data();
+
+  TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
 }
 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_read_vector_of_vectors(void)
 {
+  using namespace test::vec::vec;
+  using namespace test::data;
 
+  // Place three points in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the expected structure for comparison.
+  MsgStrVec expected;
+  populate_msg(expected);
+
+  // SUT
+  SUT sut;
+  sut.assign(&buffer[0], buffer.size());
+
+  // Verify the results for all of the fields.
+//  TS_ASSERT_EQUALS(k_count   , sut.count );
+
+  //TS_ASSERT_EQUALS(0x11223344, sut.items[0]); 
+
+  //TS_ASSERT_EQUALS(0x66778899, sut.items[1][0] ); 
+
+  //TS_ASSERT_EQUALS(0xBEEFBA11, sut.items[2][0] ); 
+
+  //TS_ASSERT_EQUALS(0xEEFF0011, sut.items[3][0] ); 
 }
 
 //  ****************************************************************************

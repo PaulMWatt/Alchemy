@@ -39,8 +39,8 @@ template <size_t CurIndex,
           typename Function>
 class ForEachTypeHelper
 {
-  static_assert((CurIndex < EndIndex), 
-                "The Current Index must be less than the End Index");
+  //static_assert((CurIndex < EndIndex), 
+  //              "The Current Index must be less than the End Index");
   static_assert(type_container<ContainerT>::value, 
                 "ContainerT must be derived from \"container_trait\"");
 
@@ -150,8 +150,8 @@ template <size_t   BeginIndex,
           typename Function>
 Function& ForEachType(Function   &fn)
 {
-  static_assert (BeginIndex < EndIndex,
-                "The Begin Index must be less than the End Index");
+//  static_assert (BeginIndex < EndIndex,
+//                "The Begin Index must be less than the End Index");
   static_assert (type_container<ContainerT>::value,
                   "ContainerT must be derived from \"container_trait\"");
   static_assert (length<ContainerT>::value > 0,

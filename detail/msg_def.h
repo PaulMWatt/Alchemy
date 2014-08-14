@@ -61,7 +61,7 @@ typedef size_t (*pfnGetDatumSize)(uint8_t*, size_t);
 /// @return       A typedef called *type* is defined to return the size trait.
 ///               - static_size_trait indicates a fixed-size message whose
 ///                                   size is completely known at compile-time.
-///               - dynamic_size_trate indicates a dyanmically sized message.
+///               - dynamic_size_trait indicates a dyanmically sized message.
 ///                                    At least some part of the message requires
 ///                                    runtime processing to determine the size
 ///                                    of the message.
@@ -177,7 +177,8 @@ struct message_size_trait
     size_t DatumSize(pfnGetDatumSize ftor, U& buffer)                          \
     {                                                                          \
       if (!buffer) { return 0; }                                               \
-      return ftor(buffer.get(), buffer.size());                                \
+      size_t x = ftor(buffer.get(), buffer.size());                                \
+      return 0;\
     }                                                                          \
   };
 

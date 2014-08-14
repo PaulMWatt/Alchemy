@@ -143,7 +143,7 @@
 ///                   * Specify a function pointer to a user-defined function
 ///                     that will inspect the data and return the size.
 ///                     the function should have the following signature:
-///                         size_t pfn_GetDatumSize(uint8_t*, size_t)
+///                         size_t pfn_GetDatumSize(uint8_t* pCur, size_t len)
 ///
 ///             
 #define HG_DYN_DATUM(TYPE,PARAM,DATUM_SZ)\
