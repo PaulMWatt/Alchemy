@@ -59,14 +59,20 @@ struct Serializer
                 buffer_type  &buffer,
                 size_t        offset)
   {
+    // TODO: Currently it appears that the full-length in bytes is required 
+    //       rather than the count, like an iterator would require.
+    //       Revisit and verify this is correct.
+    size_t size = count * sizeof(value_type);
+
+
     value_type *pFirst = &value[0];
     value_type *pLast  = pFirst;
-    std::advance(pLast, count);
+    std::advance(pLast, size);
     buffer.set_range( pFirst, 
                       pLast, 
                       offset);
 
-    return count * sizeof(value_type);
+    return size;
   }
 
 
