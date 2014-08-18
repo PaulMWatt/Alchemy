@@ -176,9 +176,8 @@ struct message_size_trait
     template <typename U>                                                      \
     size_t DatumSize(pfnGetDatumSize ftor, U& buffer)                          \
     {                                                                          \
-      if (!buffer) { return 0; }                                               \
-      size_t x = ftor(buffer.get(), buffer.size());                                \
-      return 0;\
+      if (buffer.empty()) { return 0; }                                        \
+      return ftor(buffer.data(), buffer.size());                               \
     }                                                                          \
   };
 
