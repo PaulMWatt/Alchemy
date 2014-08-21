@@ -177,7 +177,6 @@ struct Serializer <ValueT, AllocatorT, BufferT, array_trait>
                 size_t          offset)
   {
     return SerializeInBulk(value, buffer, offset);
-   // return 0;
   }  
 
   //  **************************************************************************
@@ -290,7 +289,7 @@ size_t SerializeInBulk( ValueT     &value,
                       data_type_trait>  serializer;
 
   size_t bytes_written = 0;
-
+// TODO: Return and add this optimization for bulk writes if possible.
   // Process each item individually.
   for (size_t index = 0; index < count; ++index)
   {
@@ -461,7 +460,8 @@ struct PackDatum<IdxT, MessageT, BufferT, vector_trait>
     }
 
     // Calculate the total size of this dynamic-field.
-    size_t length = dynamic_size(value);
+// TODO: Unused, determine its original intent and remove if not needed.
+//    size_t length = dynamic_size(value);
 
     size_t     offset = Hg::OffsetOf<IdxT, message_type::format_type>::value
                       + dynamic_offset;

@@ -262,8 +262,8 @@ template< typename ValueT,
           typename BufferT
         >
 size_t SerializeInBulk( ValueT     &value, 
-                              BufferT    &buffer,
-                              size_t      offset)
+                        BufferT    &buffer,
+                        size_t      offset)
 {
   typedef ValueT                        array_type;
 
@@ -465,22 +465,6 @@ struct PackDatum< IdxT,
     // Update the accumulated dynamic size with the 
     // new length added by the size of this field.
     dynamic_offset += bytes_written;
-
-
-// TODO: Return to determine how offsets should be managed with an array.
-
-    //// Calculate the full size of the buffer that will be written.
-    //// Size() from the value is the number of elements that are contained.
-    //size_t count= value.size();
-    //// Adjust with the size of the actual elements in the container.
-    //size_t size = count * Hg::SizeOf<value_type::value_type>::value;
-    //
-    //value_type::value_type *pFirst = &value[0];
-    //value_type::value_type *pLast  = pFirst;
-    //std::advance(pLast, size);
-    //buffer.set_range( pFirst, 
-    //                  pLast, 
-    //                  offset);
   }
 };
 

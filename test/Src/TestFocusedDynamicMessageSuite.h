@@ -657,7 +657,8 @@ size_t StringCount(uint8_t* pBuffer, size_t length)
       break;
 
     ++count;
-    std::advance(pCur, len);
+    // Advance past this current item, including the NULL.
+    std::advance(pCur, len+1);
   }
 
   return count;
@@ -666,7 +667,7 @@ size_t StringCount(uint8_t* pBuffer, size_t length)
 // Message definition
 typedef TypeList
 <
-  std::vector<char_str>          
+  std::vector<char_str>
 > string_vec_t;                   
 
 HG_BEGIN_FORMAT(string_vec_t)
@@ -798,18 +799,29 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_vectors(void)
 
   // SUT
   SUT sut;
-//  sut.assign(&buffer[0], buffer.size());
+  sut.assign(&buffer[0], buffer.size());
 
   // Verify the results for all of the fields.
-//  TS_ASSERT_EQUALS(k_count   , sut.count );
+  size_t count = StringCount(&buffer[0], buffer.size());
+  TS_ASSERT_EQUALS(k_count, count );
 
-  //TS_ASSERT_EQUALS(0x11223344, sut.items[0]); 
+//  TS_ASSERT_SAME_DATA(pStrings[0], sut.items[0], ::strlen(pStrings[0]);
+  char_str entry_0 = sut.items[0];
+  
+  
+  //const char *e = &entry_0[0];
 
-  //TS_ASSERT_EQUALS(0x66778899, sut.items[1][0] ); 
+  //char d = entry_0[0];
 
-  //TS_ASSERT_EQUALS(0xBEEFBA11, sut.items[2][0] ); 
+  //TS_ASSERT_SAME_DATA(pStrings[0], entry_0[0], ::strlen(pStrings[0]);
 
-  //TS_ASSERT_EQUALS(0xEEFF0011, sut.items[3][0] ); 
+//  TS_ASSERT_EQUALS(0x11223344, sut.items[0][0]); 
+
+//  TS_ASSERT_EQUALS(0x66778899, sut.items[1][0] ); 
+
+//  TS_ASSERT_EQUALS(0xBEEFBA11, sut.items[2][0] ); 
+
+//  TS_ASSERT_EQUALS(0xEEFF0011, sut.items[3][0] ); 
 }
 
 //  ****************************************************************************

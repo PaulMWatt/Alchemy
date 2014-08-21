@@ -258,15 +258,15 @@ public:
   /// @param pos              The offset from the beginning of the buffer to
   ///                         read the output value.
   ///                         
-  /// @return       true -    Data was successfully read from the buffer.
-  ///               false-    Date could not be read from the buffer.
+  /// @return       The number of bytes read from the buffer is returned.
+  ///               It is possible for a successful case to return 0.
   /// 
   template <typename T>
-  bool get_data(T& value, ptrdiff_t pos) const
+  size_t get_data(T& value, ptrdiff_t pos) const
   {
     if (empty())
     {
-      return false;
+      return 0;
     }
 
     // Read from the user supplied offset as well as the base offset 
@@ -274,17 +274,20 @@ public:
     ptrdiff_t total_offset = offset() + pos;
 
     // Verify the requested data can be read from the buffer.
-    bool is_success = false;
+    size_t bytes_read = 0;
     if ( total_offset >= 0
       && total_offset + sizeof(value) <= size())
     {
-      is_success = storage_type::read(data(),
-                                      &value,
-                                      sizeof(T),
-                                      total_offset);
+      bytes_read =
+        storage_type::read( data(),
+                            &value,
+                            sizeof(T),
+                            total_offset)
+        ? sizeof(T)
+        : 0;
     }
 
-    return is_success;
+    return bytes_read;
   }
 
   //  **************************************************************************
@@ -302,16 +305,16 @@ public:
   /// @param pos              The offset from the beginning of the buffer to
   ///                         read the input value.
   ///                         
-  /// @return       true -    Data was successfully read from the buffer.
-  ///               false-    Date could not be read from the buffer.
+  /// @return       The number of bytes read from the buffer is returned.
+  ///               It is possible for a successful case to return 0.
   ///
-  bool get_range(void* pBuffer, size_t length, size_t pos) const
+  size_t get_range(void* pBuffer, size_t length, size_t pos) const
   {
     if ( empty()
       || 0 == pBuffer
       || 0 == length)
     {
-      return false;
+      return 0;
     }
 
     // Read from the user supplied offset as well as the base offset 
@@ -319,18 +322,21 @@ public:
     size_t total_offset = static_cast<size_t>(offset()) + pos;
 
     // Verify the data can be safely written within the bounds of the buffer.
-    bool isSuccess = false;
+    size_t bytes_read = 0;
     size_t total_size = this->size();
     if ( (total_offset >= 0)
       && (total_offset + length) <= total_size)
     {
-      isSuccess = storage_type::read( data(),
-                                      pBuffer,
-                                      length,
-                                      total_offset);
+      bytes_read = 
+        storage_type::read( data(),
+                            pBuffer,
+                            length,
+                            total_offset)
+        ? length
+        : 0;
     }
 
-    return isSuccess;
+    return bytes_read;
   }
 
   //  **************************************************************************
@@ -342,15 +348,15 @@ public:
   /// @param pos              The offset from the beginning of the buffer to
   ///                         write the input value.
   ///                         
-  /// @return       true -    Data was successfully written to the buffer.
-  ///               false-    Date could not be written to the buffer.
+  /// @return       The number of bytes written to the buffer is returned.
+  ///               It is possible for a successful case to return 0.
   ///
   template <typename T>
-  bool set_data(const T& value, size_t pos)
+  size_t set_data(const T& value, size_t pos)
   {
     if (empty())
     {
-      return false;
+      return 0;
     }
 
     // Read from the user supplied offset as well as the base offset 
@@ -358,18 +364,21 @@ public:
     size_t total_offset = static_cast<size_t>(offset()) + pos;
 
     // Verify the data can be safely written within the bounds of the buffer.
-    bool isSuccess = false;
+    size_t bytes_written = 0;
     size_t total_size = size();
     if ( (total_offset >= 0)
       && (total_offset + Hg::SizeOf<T>::value) <= total_size)
     {
-      isSuccess = storage_type::write(data(),
-                                      &value,
-                                      Hg::SizeOf<T>::value,
-                                      total_offset);
+      bytes_written = 
+        storage_type::write ( data(),
+                              &value,
+                              Hg::SizeOf<T>::value,
+                              total_offset)
+        ? Hg::SizeOf<T>::value
+        : 0;
     }
 
-    return isSuccess;
+    return bytes_written;
   }
 
   //  **************************************************************************
@@ -390,21 +399,21 @@ public:
   /// @param pos              The offset from the beginning of the buffer to
   ///                         write the input value.
   ///                         
-  /// @return       true -    Data was successfully written to the buffer.
-  ///               false-    Date could not be written to the buffer.
+  /// @return       The number of bytes written to the buffer is returned.
+  ///               It is possible for a successful case to return 0.
   ///
   template <typename InputIt>
-  bool set_range(InputIt first, InputIt last, size_t pos)
+  size_t set_range(InputIt first, InputIt last, size_t pos)
   {
     if (empty())
     {
-      return false;
+      return 0;
     }
 
     // Return if first and last are the same.
     if (first == last)
     {
-      return true;
+      return 0;
     }
 
     // Read from the user supplied offset as well as the base offset 
@@ -413,18 +422,21 @@ public:
     size_t range_size   = std::distance(first, last);
 
     // Verify the data can be safely written within the bounds of the buffer.
-    bool isSuccess = false;
+    size_t bytes_written = 0;
     size_t total_size = size();
     if ( (total_offset >= 0)
       && (total_offset + range_size) <= total_size)
     {
-      isSuccess = storage_type::write(data(),
-                                      first,
-                                      range_size,
-                                      total_offset);
+      bytes_written = 
+        storage_type::write ( data(),
+                              first,
+                              range_size,
+                              total_offset)
+        ? range_size
+        : 0;
     }
 
-    return isSuccess;
+    return bytes_written;
   }
 
   //  **************************************************************************

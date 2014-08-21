@@ -444,39 +444,39 @@ void TestMsgBufferSuite::Testget_data(void)
 
   // SUT: Test every parameter
   int8_t c8 = 0;
-  bool status = sut.get_data(c8, Hg::OffsetOf<0,format_type>::value);
+  size_t size_read = sut.get_data(c8, Hg::OffsetOf<0,format_type>::value);
 
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(c8), size_read);
   TS_ASSERT_EQUALS(k_signed8_t, c8);
 
   int16_t s16 = 0;
-  status = sut.get_data(s16, Hg::OffsetOf<1, format_type>::value);
+  size_read = sut.get_data(s16, Hg::OffsetOf<1, format_type>::value);
 
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(s16), size_read);
   TS_ASSERT_EQUALS(k_signed16_t, s16);
 
   int32_t l32 = 0;
-  status = sut.get_data(l32, Hg::OffsetOf<2, format_type>::value);
+  size_read = sut.get_data(l32, Hg::OffsetOf<2, format_type>::value);
 
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(l32), size_read);
   TS_ASSERT_EQUALS(k_signed32_t, l32);
 
   uint16_t us16 = 0;
-  status = sut.get_data(us16, Hg::OffsetOf<3, format_type>::value);
+  size_read = sut.get_data(us16, Hg::OffsetOf<3, format_type>::value);
 
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(us16), size_read);
   TS_ASSERT_EQUALS(k_unsigned16_t, us16);
 
   uint32_t ul32 = 0;
-  status = sut.get_data(ul32, Hg::OffsetOf<4, format_type>::value);
+  size_read = sut.get_data(ul32, Hg::OffsetOf<4, format_type>::value);
 
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(ul32), size_read);
   TS_ASSERT_EQUALS(k_unsigned32_t, ul32);
 
   uint8_t uc8 = 0;
-  status = sut.get_data(uc8, Hg::OffsetOf<5, format_type>::value);
+  size_read = sut.get_data(uc8, Hg::OffsetOf<5, format_type>::value);
 
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(uc8), size_read);
   TS_ASSERT_EQUALS(k_unsigned8_t, uc8);
 }
 
@@ -488,9 +488,9 @@ void TestMsgBufferSuite::Testget_data_OOB_OffsetLTZero(void)
 
   // SUT
   int32_t l32 = 0;
-  bool status = sut.get_data(l32, -1);
+  size_t status = sut.get_data(l32, -1);
 
-  TS_ASSERT_EQUALS(false, status);
+  TS_ASSERT_DIFFERS(sizeof(l32), status);
   TS_ASSERT_EQUALS(0, l32);
 }
 
@@ -502,9 +502,9 @@ void TestMsgBufferSuite::Testget_data_OOB_ExceedsSize(void)
 
   // SUT
   int32_t l32 = 0;
-  bool status = sut.get_data(l32, sut.size());
+  size_t status = sut.get_data(l32, sut.size());
 
-  TS_ASSERT_EQUALS(false, status);
+  TS_ASSERT_DIFFERS(sizeof(l32), status);
   TS_ASSERT_EQUALS(0, l32);
 }
 
@@ -515,9 +515,9 @@ void TestMsgBufferSuite::Testget_data_NotValid(void)
 
   // SUT
   int32_t l32 = 0xAAAAAAAA;
-  bool status = sut.get_data(l32, Hg::OffsetOf<2,format_type>::value);
+  size_t status = sut.get_data(l32, Hg::OffsetOf<2,format_type>::value);
 
-  TS_ASSERT_EQUALS(false, status);
+  TS_ASSERT_DIFFERS(sizeof(l32), status);
   TS_ASSERT_EQUALS(0xAAAAAAAA, l32);
 }
 
@@ -529,28 +529,28 @@ void TestMsgBufferSuite::TestSetData(void)
 
   // SUT
   int8_t c8 = k_signed8_t;
-  bool status = sut.set_data(c8, Hg::OffsetOf<0,format_type>::value);
-  TS_ASSERT_EQUALS(true, status);
+  size_t status = sut.set_data(c8, Hg::OffsetOf<0,format_type>::value);
+  TS_ASSERT_EQUALS(sizeof(c8), status);
 
   int16_t s16 = k_signed16_t;
   status = sut.set_data(s16, Hg::OffsetOf<1,format_type>::value);
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(s16), status);
 
   int32_t l32 = k_signed32_t;
   status = sut.set_data(l32, Hg::OffsetOf<2,format_type>::value);
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(l32), status);
 
   uint16_t us16 = k_unsigned16_t;
   status = sut.set_data(us16, Hg::OffsetOf<3,format_type>::value);
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(us16), status);
 
   uint32_t ul32 = k_unsigned32_t;
   status = sut.set_data(ul32, Hg::OffsetOf<4,format_type>::value);
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(ul32), status);
 
   uint8_t uc8 = k_unsigned8_t;
   status = sut.set_data(uc8, Hg::OffsetOf<5,format_type>::value);
-  TS_ASSERT_EQUALS(true, status);
+  TS_ASSERT_EQUALS(sizeof(uc8), status);
 
   // Verify the buffer.
   host_buffer expected;
@@ -566,9 +566,9 @@ void TestMsgBufferSuite::TestSetData_OOB_ExceedsSize(void)
 
   // SUT
   int32_t l32 = 0;
-  bool status = sut.set_data(l32, sut.size());
+  size_t status = sut.set_data(l32, sut.size());
 
-  TS_ASSERT_EQUALS(false, status);
+  TS_ASSERT_DIFFERS(sizeof(l32), status);
 }
 
 //  ****************************************************************************
@@ -578,9 +578,9 @@ void TestMsgBufferSuite::TestSetData_NotValid(void)
 
   // SUT
   int32_t l32 = k_signed32_t;
-  bool status = sut.set_data(l32, Hg::OffsetOf<2,format_type>::value);
+  size_t status = sut.set_data(l32, Hg::OffsetOf<2,format_type>::value);
 
-  TS_ASSERT_EQUALS(false, status);
+  TS_ASSERT_DIFFERS(sizeof(l32), status);
 }
 
 //  ****************************************************************************
