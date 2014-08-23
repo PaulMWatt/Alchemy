@@ -9,7 +9,7 @@
 #define BASIC_DATUM_H_INCLUDED
 //  Includes ******************************************************************
 #include <meta/meta_fwd.h>
-#include <detail/msg_buffer.h>
+#include <Hg/msg_buffer.h>
 
 namespace Hg
 {

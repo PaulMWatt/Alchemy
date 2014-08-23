@@ -13,6 +13,7 @@
 #include <meta/byte_order.h>
 #include <meta/meta_foreach.h>
 #include <storage_policy.h>
+
 #include <algorithm>
 
 namespace Hg

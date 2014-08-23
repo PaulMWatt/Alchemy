@@ -40,7 +40,7 @@
 #include <meta/size_of.h>
 #include <meta/meta_math.h>
 #include <meta/dynamic.h>
-#include <detail/deduce_proxy_type.h>
+#include <Hg/proxy/deduce_proxy_type.h>
 
 //  ****************************************************************************
 //  Utility Constructs For Use With Hg Message Types ***************************

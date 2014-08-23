@@ -41,7 +41,7 @@
 #include <cxxtest/TestSuite.h>
 #include <alchemy.h>
 #include <test_def.h>
-#include <detail/multival_data.h>
+//#include <detail/multival_data.h>
 
 //  ****************************************************************************
 /// Verifies a variety of utility meta-templateconstructs.

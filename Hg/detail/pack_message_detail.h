@@ -16,8 +16,8 @@
 #endif
 
 //  Includes *******************************************************************
-#include <detail/msg_def.h>
-#include <detail/msg_buffer.h>
+//#include <Hg/msg_def.h>
+//#include <Hg/msg_buffer.h>
 
 namespace Hg
 {

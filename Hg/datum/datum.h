@@ -12,7 +12,7 @@
 //  Includes *******************************************************************
 #include <meta/meta_fwd.h>
 #include <meta/type_at.h>
-#include <detail/basic_datum.h>
+#include <Hg/datum/basic_datum.h>
 
 namespace Hg
 {

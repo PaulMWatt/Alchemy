@@ -33,7 +33,7 @@
 #include <cxxtest/TestSuite.h>
 #include <alchemy.h>
 #include <storage_policy.h>
-#include <detail/array_proxy.h>
+#include <Hg/proxy/array_proxy.h>
 
 #include <test_helper.h>
 #include <test_def.h>

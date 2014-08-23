@@ -8,7 +8,7 @@
 #ifndef MESSAGE_DYNAMIC_H_INCLUDED
 #define MESSAGE_DYNAMIC_H_INCLUDED
 //  Includes *******************************************************************
-#include <detail/message_dynamic_detail.h>
+#include <Hg/detail/message_dynamic_detail.h>
 
 namespace Hg
 {

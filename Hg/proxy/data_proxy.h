@@ -17,7 +17,7 @@
 #include <meta/length.h>
 #include <meta/type_list.h>
 #include <meta/type_at.h>
-#include <detail/datum.h>
+#include <Hg/datum/datum.h>
 #include <storage_policy.h>
 
 namespace Hg

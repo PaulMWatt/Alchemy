@@ -8,11 +8,11 @@
 #ifndef PACK_MESSAGE_H_INCLUDED
 #define PACK_MESSAGE_H_INCLUDED
 //  Includes *******************************************************************
-#include <detail/msg_fwd.h>
-#include <detail/pack_message_detail.h>
-#include <detail/pack_array.h>
-#include <detail/pack_nested.h>
-#include <detail/pack_vector.h>
+#include <Hg/msg_fwd.h>
+#include <Hg/detail/pack_message_detail.h>
+#include <Hg/detail/pack_array.h>
+#include <Hg/detail/pack_nested.h>
+#include <Hg/detail/pack_vector.h>
 
 namespace Hg
 {

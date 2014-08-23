@@ -8,7 +8,7 @@
 #ifndef BITLIST_FIELD_PROXY_H_INCLUDED
 #define BITLIST_FIELD_PROXY_H_INCLUDED
 //  Includes *******************************************************************
-#include <detail/datum.h>
+#include <Hg/datum/datum.h>
 #include <meta/bit_field_list.h>
 
 namespace Hg

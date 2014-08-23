@@ -31,7 +31,7 @@
 #include <cxxtest/TestSuite.h>
 #include <test_helper.h>
 #include <Alchemy.h>
-#include <detail/bitlist_field_proxy.h>
+#include <Hg/proxy/bitlist_field_proxy.h>
 #include <vector>
 
 //  Test Types *****************************************************************

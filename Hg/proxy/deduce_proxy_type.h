@@ -13,11 +13,11 @@
 #ifndef DEDUCE_PROXY_TYPE_H_INCLUDED
 #define DEDUCE_PROXY_TYPE_H_INCLUDED
 //  Includes ******************************************************************
-#include <detail/deduce_type_trait.h>
-#include <detail/data_proxy.h>
-#include <detail/bitlist_field_proxy.h>
-#include <detail/vector_proxy.h>
-#include <detail/array_proxy.h>
+#include <Hg/deduce_type_trait.h>
+#include <Hg/proxy/data_proxy.h>
+#include <Hg/proxy/bitlist_field_proxy.h>
+#include <Hg/proxy/vector_proxy.h>
+#include <Hg/proxy/array_proxy.h>
 
 namespace Hg
 {

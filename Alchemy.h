@@ -62,7 +62,7 @@
 #define ALCHEMY_H_INCLUDED
 
 //  Includes ******************************************************************
-#include <detail/msg_def.h>
+#include <Hg/msg_def.h>
 
 //  ****************************************************************************
 /// Marks the beginning of a message format.

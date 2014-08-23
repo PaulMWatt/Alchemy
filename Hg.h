@@ -30,9 +30,9 @@
 #define HG_H_INCLUDED
 //  Includes *******************************************************************
 #include <alchemy.h>
-#include <detail/msg_buffer.h>
-#include <detail/pack_message.h>
-#include <detail/unpack_message.h>
+#include <Hg/msg_buffer.h>
+#include <Hg/pack_message.h>
+#include <Hg/unpack_message.h>
 #include <meta/dynamic.h>
 
 namespace Hg
@@ -312,7 +312,7 @@ private:
 } // namespace Hg
 
 //  Includes *******************************************************************
-#include <detail/message_byte_order.h>
-#include <detail/message_dynamic.h>
+#include <Hg/message_byte_order.h>
+#include <Hg/message_dynamic.h>
 
 #endif

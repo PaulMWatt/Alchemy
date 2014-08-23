@@ -11,7 +11,7 @@
 #include <meta/dynamic.h>
 #include <meta/meta_foreach.h>
 #include <meta/type_at.h>
-#include <detail/deduce_type_trait.h>
+#include <Hg/deduce_type_trait.h>
 
 namespace Hg
 {

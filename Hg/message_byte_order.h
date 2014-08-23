@@ -8,7 +8,7 @@
 #ifndef MESSAGE_BYTE_ORDER_H_INCLUDED
 #define MESSAGE_BYTE_ORDER_H_INCLUDED
 //  Includes *******************************************************************
-#include <detail/message_byte_order_detail.h>
+#include <Hg/detail/message_byte_order_detail.h>
 
 namespace Hg
 {
