@@ -1,8 +1,9 @@
 /// @file Alchemy.h
 /// 
+/// Network Alchemy is a message and structured data processing framework.
+///
 /// Include this file for access to the alchemy message structure framework.
 ///
-/// Alchemy is a message and structured data processing framework. 
 /// This framework provides the ability to define structured message formats,
 /// which can be used portably across platforms. These structured definitions
 /// will facilitate the population of the data in the memoery buffers for
@@ -22,7 +23,7 @@
 /// Refer to the appropriate MACROs documentation for details on correct usage:
 /// 
 ///   - HG_BEGIN_FORMAT(TYPE_LIST)
-///   - HG_MSG_FIELD(TYPE,PARAM)
+///   - HG_MSG_FIELD(TYPE,NAME)
 ///   - HG_END_FORMAT
 ///
 /// Hg provides a portable bit-field interface that works by generating the
@@ -32,7 +33,7 @@
 ///
 ///   - HG_BEGIN_BIT_SET(TYPE,BITSET)
 ///   - HG_END_BIT_SET
-///   - HG_BIT_FIELD(INDEX,COUNT,PARAM)
+///   - HG_BIT_FIELD(INDEX,COUNT,NAME)
 /// 
 /// The MIT License(MIT)
 /// 
@@ -119,10 +120,24 @@
 /// name the property associated with this message format field.
 ///             
 /// @param TYPE     The type to use for this field
-/// @param PARAM    The name to assign this parameter in the message definition.
-///                 PARAM will be the name used to access this field directly.
+/// @param NAME     The name to assign this parameter in the message definition.
+///                 NAME will be the name used to access this field directly.
 ///             
-#define HG_DATUM(TYPE,PARAM)            DECLARE_DATUM_FORMAT(TYPE,PARAM)
+#define HG_DATUM(TYPE,NAME)            DECLARE_DATUM_FORMAT(TYPE,NAME)
+
+//  ****************************************************************************
+/// Adds a fixed-size array field to the message definition.
+/// 
+/// This MACRO generates code based on the TypeList specified in the 
+/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
+/// name the property associated with this message format field.
+///             
+/// @param TYPE     The type to use for this field
+/// @param COUNT    The number of elements allocated for the array.
+/// @param NAME     The name to assign this parameter in the message definition.
+///                 NAME will be the name used to access this field directly.
+///             
+#define HG_ARRAY(TYPE,COUNT,NAME)      DECLARE_ARRAY_FORMAT(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size to the message definition.
@@ -134,9 +149,7 @@
 /// large the field should be when reading data on input.
 ///             
 /// @param TYPE     The type to use for this field
-/// @param PARAM    The name to assign this parameter in the message definition.
-///                 PARAM will be the name used to access this field directly.
-/// @param DATUM_SZ Specifies how the size of the field is determined on input.
+/// @param COUNT    Specifies how the size of the field is determined on input.
 ///                 There are a few possible ways to indicate the method:
 ///                   * Reference a field previously defined in the message that
 ///                     indicates the number of entries.
@@ -144,25 +157,40 @@
 ///                     that will inspect the data and return the size.
 ///                     the function should have the following signature:
 ///                         size_t pfn_GetDatumSize(uint8_t* pCur, size_t len)
+/// @param NAME     The name to assign this parameter in the message definition.
+///                 NAME will be the name used to access this field directly.
 ///
 ///             
-#define HG_DYN_DATUM(TYPE,PARAM,DATUM_SZ)\
-                                        DECLARE_DYN_DATUM_FORMAT(TYPE,PARAM,DATUM_SZ)
+#define HG_DYNAMIC(TYPE,COUNT,NAME)\
+                                        DECLARE_DYNAMIC_FORMAT(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
-/// Adds a fixed-size array field to the message definition.
+/// Adds a field with a dynamic size controlled by a user specified allocator.
 /// 
 /// This MACRO generates code based on the TypeList specified in the 
 /// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
-/// name the property associated with this message format field.
+/// name the property associated with this message format field. 
+/// A field is provided for the user to indicate how the field can determine
+/// its own size. This MACRO is similar to HG_DYNAMIC, with the exception
+/// that a user specified allocator can be used.
 ///             
-/// @param TYPE     The type to use for this field
-/// @param COUNT    The number of elements allocated for the array.
-/// @param PARAM    The name to assign this parameter in the message definition.
-///                 PARAM will be the name used to access this field directly.
+/// @param TYPE       The type to use for this field
+/// @param ALLOCATOR  An allocator that will be used to allocate space for
+///                   the dynamically sized field.
+/// @param COUNT      Specifies how the size of the field is determined on input.
+///                   There are a few possible ways to indicate the method:
+///                   * Reference a field previously defined in the message that
+///                     indicates the number of entries.
+///                   * Specify a function pointer to a user-defined function
+///                     that will inspect the data and return the size.
+///                     the function should have the following signature:
+///                         size_t pfn_GetDatumSize(uint8_t* pCur, size_t len)
+/// @param NAME       The name to assign this parameter in the message definition.
+///                   NAME will be the name used to access this field directly.
+///
 ///             
-#define HG_ARRAY(TYPE,COUNT,PARAM)      DECLARE_ARRAY_FORMAT(TYPE,COUNT,PARAM)
-
+#define HG_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)\
+                                        DECLARE_ALLOCATOR_FORMAT(TYPE,ALLOCATOR,COUNT,NAME)
 
 //  ****************************************************************************
 /// Marks the end of a message format.
@@ -199,10 +227,10 @@
 ///   {
 ///   
 ///   HG_BEGIN_BIT_SET (uint8_t, flags)
-///     HG_BIT_FIELD   (0,1,   is_visible)
-///     HG_BIT_FIELD   (1,1,   is_light)
-///     HG_BIT_FIELD   (2,3,   ambient)
-///     HG_BIT_FIELD   (3,3,   diffuse)
+///     HG_BIT_FIELD   (0, is_visible, 1)
+///     HG_BIT_FIELD   (1, is_light  , 1)
+///     HG_BIT_FIELD   (2, ambient   , 3)
+///     HG_BIT_FIELD   (3, diffuse   , 3)
 ///   HG_END_BIT_SET
 ///     
 ///   } // namespace Hg
@@ -230,12 +258,12 @@
 /// this field should occupy.
 ///             
 /// @param INDEX    The index of this bit-field in the definition.
-/// @param PARAM    The name to assign this parameter in the bit-set definition.
-///                 PARAM will be the name used to access this bit-field directly.
+/// @param NAME     The name to assign this parameter in the bit-set definition.
+///                 NAME will be the name used to access this bit-field directly.
 /// @param COUNT    The number of bits this Bit-Field occupies.
 ///             
-#define HG_BIT_FIELD(INDEX,PARAM,COUNT)\
-                                        DECLARE_BIT_FIELD(INDEX, PARAM, COUNT)
+#define HG_BIT_FIELD(INDEX,NAME,COUNT)\
+                                        DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
 
 
 //  ****************************************************************************

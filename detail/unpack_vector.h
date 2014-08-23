@@ -316,6 +316,9 @@ struct Deserializer <ValueT, AllocatorT, BufferT, vector_trait>
     // Since this is the vector handler, 
     // all single value entries passed in will
     // be vectors themselves.
+
+
+// TODO: No space has been allocated for nested vectors here. A method to determine the size of the field needs to be created.
     size_t bytes_written = 
       DeserializeVector < data_type,
                         allocator_type,

@@ -100,17 +100,17 @@ typedef TypeList
 > dyn_test_format_t;
 
 HG_BEGIN_FORMAT(dyn_test_format_t)
-  HG_DATUM    (uint8_t,                  size_8)
-  HG_DATUM    (uint8_t,                  size_16)
-  HG_DATUM    (uint8_t,                  size_32)
-  HG_DATUM    (uint8_t,                  size_64)
-  HG_DATUM    (uint32_t,                 word_0)
-  HG_DYN_DATUM((std::vector<uint8_t>),   seq_8,  size_8)
-  HG_DYN_DATUM((std::vector<uint16_t>),  seq_16, size_16)
-  HG_DATUM    (uint32_t,                 word_1)
-  HG_DYN_DATUM((std::vector<uint32_t>),  seq_32, size_32)
-  HG_DYN_DATUM((std::vector<uint64_t>),  seq_64, size_64)
-  HG_DATUM    (uint32_t,                 word_2)
+  HG_DATUM    (uint8_t,             size_8)
+  HG_DATUM    (uint8_t,             size_16)
+  HG_DATUM    (uint8_t,             size_32)
+  HG_DATUM    (uint8_t,             size_64)
+  HG_DATUM    (uint32_t,            word_0)
+  HG_DYNAMIC  (uint8_t,  size_8,    seq_8)
+  HG_DYNAMIC  (uint16_t, size_16,   seq_16)
+  HG_DATUM    (uint32_t,            word_1)
+  HG_DYNAMIC  (uint32_t, size_32,   seq_32)
+  HG_DYNAMIC  (uint64_t, size_64,   seq_64)
+  HG_DATUM    (uint32_t,            word_2)
 HG_END_FORMAT
 
 typedef dyn_test_format_tFormat<0> dyn_message_type;

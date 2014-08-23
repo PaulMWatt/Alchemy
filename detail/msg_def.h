@@ -152,16 +152,40 @@ struct message_size_trait
 
 
 // *****************************************************************************
-#define DECLARE_DYN_DATUM_FORMAT_IDX(IDX,T,P,S)                                \
-  DECLARE_DATUM_FORMAT_IDX(IDX,T,P)                                            \
-  template <typename U>                                                        \
-  size_t Size(U& buffer, datum_##P&)  { return DatumSize(S, buffer); }
+#define DECLARE_ARRAY_FORMAT_IDX(IDX,T,N,P)                                    \
+  DECLARE_DATUM_FORMAT_IDX(IDX,(std::array<T,N>),P)
 
 
 // *****************************************************************************
-#define DECLARE_DYN_DATUM_FORMAT(T, P, S)                                      \
+#define DECLARE_ARRAY_FORMAT(T, N, P)                                          \
   INC_COUNTER                                                                  \
-  DECLARE_DYN_DATUM_FORMAT_IDX(COUNTER_VALUE, T, P, S)
+  DECLARE_ARRAY_FORMAT_IDX(COUNTER_VALUE, T, N, P)
+
+
+// *****************************************************************************
+#define DECLARE_DYNAMIC_FORMAT_IDX(IDX,T,N,P)                                  \
+  DECLARE_DATUM_FORMAT_IDX(IDX,(std::vector<T>),P)                             \
+  template <typename U>                                                        \
+  size_t Size(U& buffer, datum_##P&)  { return DatumSize(N, buffer); }
+
+
+// *****************************************************************************
+#define DECLARE_DYNAMIC_FORMAT(T, N, P)                                        \
+  INC_COUNTER                                                                  \
+  DECLARE_DYNAMIC_FORMAT_IDX(COUNTER_VALUE, T, N, P)
+
+
+// *****************************************************************************
+#define DECLARE_ALLOCATOR_FORMAT_IDX(IDX,T,N,P)                                \
+  DECLARE_DATUM_FORMAT_IDX(IDX,(std::vector<T,A>),P)                           \
+  template <typename U>                                                        \
+  size_t Size(U& buffer, datum_##P&)  { return DatumSize(N, buffer); }
+
+
+// *****************************************************************************
+#define DECLARE_ALLOCATOR_FORMAT(T, A, N, P)                                   \
+  INC_COUNTER                                                                  \
+  DECLARE_ALLOCATOR_FORMAT_IDX(COUNTER_VALUE, T, A, N, P)
 
 
 // *****************************************************************************

@@ -130,8 +130,8 @@ typedef TypeList
 > object_t;
 
 HG_BEGIN_FORMAT(object_t)
-  HG_DATUM      (uint32_t,                  count)
-  HG_DYN_DATUM  ((std::vector<triangle_t>), surfaces, count)
+  HG_DATUM    (uint32_t,          count)
+  HG_DYNAMIC  (triangle_t, count, surfaces)
 HG_END_FORMAT
 
 //  ****************************************************************************
@@ -178,16 +178,16 @@ typedef TypeList
 > world_t;
 
 HG_BEGIN_FORMAT(world_t)
-  HG_DATUM    (uint16_t,                width)
-  HG_DATUM    (uint16_t,                height)
-  HG_DATUM    (camera_t,                camera)
-  HG_DATUM    (uint16_t,                fov)
-  HG_DATUM    (color4,                  ambient)
-  HG_DATUM    (vertex_t,                light)
-  HG_DATUM    (uint8_t,                 object_count)
-  HG_DYN_DATUM(std::vector<object_t>,   objects, object_count)
-  HG_DATUM    (uint8_t,                 instance_count)
-  HG_DYN_DATUM(std::vector<instance_t>, instances, instance_count)
+  HG_DATUM    (uint16_t,                  width)
+  HG_DATUM    (uint16_t,                  height)
+  HG_DATUM    (camera_t,                  camera)
+  HG_DATUM    (uint16_t,                  fov)
+  HG_DATUM    (color4,                    ambient)
+  HG_DATUM    (vertex_t,                  light)
+  HG_DATUM    (uint8_t,                   object_count)
+  HG_DYNAMIC  (object_t, object_count,    objects)
+  HG_DATUM    (uint8_t,                   instance_count)
+  HG_DYNAMIC  (instance_t, instance_count, instances)
 HG_END_FORMAT
 
 } // namespace Hg

@@ -139,8 +139,8 @@ typedef TypeList
 > points_t;                       // total:         = 14
 
 HG_BEGIN_FORMAT(points_t)
-  HG_DATUM (uint16_t, count)
-  HG_DYN_DATUM ((std::vector<pt3d_t>), pts, count)
+  HG_DATUM   (uint16_t, count)
+  HG_DYNAMIC (pt3d_t,   count, pts)
 HG_END_FORMAT
 
 
@@ -464,8 +464,8 @@ typedef TypeList
 > vec_array_t;                    // total:         = 22 * ?
 
 HG_BEGIN_FORMAT(vec_array_t)
-  HG_DATUM     (uint16_t, count)
-  HG_DYN_DATUM ((std::vector<u32_array_t>), items, count)
+  HG_DATUM   (uint16_t,    count)
+  HG_DYNAMIC (u32_array_t, count, items)
 HG_END_FORMAT
 
 
@@ -671,7 +671,7 @@ typedef TypeList
 > string_vec_t;                   
 
 HG_BEGIN_FORMAT(string_vec_t)
-  HG_DYN_DATUM ((std::vector<char_str>), items, &StringCount)
+  HG_DYNAMIC (char_str, &StringCount, items)
 HG_END_FORMAT
 
 } // namespace Hg
@@ -809,7 +809,7 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_vectors(void)
   char_str entry_0 = sut.items[0];
   
   
-  //const char *e = &entry_0[0];
+//  const char *e = &entry_0[0];
 
   //char d = entry_0[0];
 
