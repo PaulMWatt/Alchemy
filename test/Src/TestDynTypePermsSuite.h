@@ -138,10 +138,7 @@ protected:
     bool isValue = Hg::nested_value<triangle_tFormat<0> >::value;
     bool isType  = Hg::nested_value<triangle_t>::value;
 
-    Hg::detail::DeduceTypeTrait<triangle_t>::type         i;
-//    Hg::detail::DeduceTypeTrait<triangle_t>::value_type   j;
-    Hg::detail::DeduceTypeTrait<triangle_tFormat<0> >::type         k;
-//    Hg::detail::DeduceTypeTrait<triangle_tFormat<0> >::value_type   l;
+// TODO: Work in progress. Fixing Dynamic focused tests first.
 
     Hg::detail::field_data_t<triangle_tFormat<0> >::value_type m;
     Hg::detail::field_data_t<triangle_tFormat<0> >::value_type n;
