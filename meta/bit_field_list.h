@@ -58,6 +58,11 @@ struct BitFieldNode
   typedef typename RootT::value_type                      value_type;
 
   //  Construction ***************************************************************
+  //  ****************************************************************************
+  /// Copy constructor for this type of node.
+  /// This is important because it provides a location that contains the 
+  /// actual integer-type value this field is stored within.
+  ///
   BitFieldNode(const BitFieldNode &rhs)
     : base_type(rhs)
     , m_field( RootT::GetFieldAddress(m_field) )
@@ -68,6 +73,11 @@ struct BitFieldNode
     m_field.attach((value_type*)&rhs.m_field);
   }
 
+  //  ****************************************************************************
+  /// Value constructor 
+  /// This is important because it provides a location that contains the 
+  /// actual integer-type value this field is stored within.
+  ///
   BitFieldNode(value_type &data_field)
     : base_type(data_field)
     , m_field(GetFieldAddress<IndexT>(m_field))
@@ -97,10 +107,12 @@ struct BitFieldNode< RootT, IndexT, OffsetT, MT>
   typedef typename RootT::value_type              value_type;
 
   //  Construction ***************************************************************
+  //  ****************************************************************************
   BitFieldNode(const BitFieldNode &rhs)
     : RootT(rhs)
   { }
 
+  //  ****************************************************************************
   BitFieldNode(value_type &data_field)
     : RootT(data_field)
   { }
@@ -150,21 +162,33 @@ struct BitFieldList
   typedef typename BitFieldNode< RootT, 0, 0, SeqT >      base_type;
 
   //  Construction *************************************************************
+  //  **************************************************************************
+  /// Value constructor.
+  ///
   BitFieldList(value_type &data_field)
     : base_type(data_field)
   { }
 
+  //  **************************************************************************
+  /// Value conversion operator allows the entire integer to be extracted.
+  ///
   operator value_type() const
   {
     return RootT::m_data;
   }
 
+  //  **************************************************************************
+  /// Assignment operator, changes the value but does not change the storage address.
+  ///
   BitFieldList& operator=(const BitFieldList &rhs)
   {
     RootT::m_data = static_cast<RootT>(rhs).m_data;
     return *this;
   }
 
+  //  **************************************************************************
+  /// Assignment operator, changes the value but does not change the storage address.
+  ///
   value_type& operator=(const value_type &rhs)
   {
     RootT::m_data = rhs;
@@ -172,6 +196,9 @@ struct BitFieldList
   }
 
   //  Methods *******************************************************************
+  //  ***************************************************************************
+  /// Returns the size of the base integer type used in the bit list.
+  ///
   static
   size_t size()
   {

@@ -1,9 +1,9 @@
-/// @file meta/BitField/basic_list.h
-/// 
-/// Defines a collector for bit-fields.
-/// 
-/// The MIT License(MIT)
-/// @copyright 2014 Paul M Watt
+//  @file meta/BitField/basic_list.h
+//  
+//  Defines a collector for bit-fields.
+//  
+//  The MIT License(MIT)
+//  @copyright 2014 Paul M Watt
 //  ****************************************************************************
 #ifndef META_BIT_FIELD_BASIC_LIST_H_INCLUDED
 #define META_BIT_FIELD_BASIC_LIST_H_INCLUDED
@@ -15,6 +15,8 @@ namespace Hg
 {
 
 //  ****************************************************************************
+//  A trait-type to define constants and common parameterized typedefs.
+//
 template< size_t    IndexT,
           typename  HostT,
           size_t    CountT
@@ -29,6 +31,8 @@ struct FieldIndex
 };
 
 //  ****************************************************************************
+//  A specialization for a bit-field representing the empty type.
+//
 template<>
 struct FieldIndex<0,MT,0>
 {
@@ -43,6 +47,9 @@ struct FieldIndex<0,MT,0>
 typedef FieldIndex<0,MT,0>     idx_empty_t;
 
 //  ****************************************************************************
+//  The base container definition for a list of bit-fields.
+//  This object contains type definitions 
+// 
 template <typename T,
           typename FieldsT>
 struct BasicBitList
@@ -50,8 +57,8 @@ struct BasicBitList
   , public bitfield_trait
 { 
   // Define each of these types for the base.
-  // This will insure the types exist if less than 
-  // eight bit-fields are defined.
+  // This will ensure the types exist if less than 
+  // the maximum number of bit-fields are defined.
   typedef idx_empty_t   idx_0;
   typedef idx_empty_t   idx_1;
   typedef idx_empty_t   idx_2;
@@ -96,40 +103,44 @@ struct BasicBitList
   enum { k_offset_0 = 0 };
 
   //  **************************************************************************
+  //  Returns the value of the entire storage buffer.
+  // 
   value_type value()
   { 
     return m_data; 
   }
 
-
   value_type            &m_data;
 
 protected:
   //  **************************************************************************
-  ///
-  ///
+  //  Prevent direct creation of this class; must use a derived class.
+  // 
   BasicBitList()
     : m_data(empty_data)
     , empty_data(0)
   { }
 
   //  **************************************************************************
-  ///
-  ///
+  //  Prevent direct creation of this class; must use a derived class.
+  // 
   BasicBitList(value_type &data_field)
     : m_data(data_field)
   { }
+                                        //   TODO: Would like to explore options 
+                                        //   for removing this data fields
+                                        //   without adding buffer validity tests.
 
-  value_type            empty_data;     ///< The MT data value field 
-                                        ///  provides a location to reference
-                                        ///  for the default constructor.
+  value_type            empty_data;     // The MT data value field 
+                                        // provides a location to reference
+                                        // for the default constructor.
 
   //  **************************************************************************
-  /// Endian swap provides a specialization to handle the unique structure 
-  /// created to provide bit-field support.
-  /// The function is declared and implemented as a friend function to simplify
-  /// the declaration and namespace lookup for proper endian order conversions.
-  ///
+  //  Endian swap provides a specialization to handle the unique structure 
+  //  created to provide bit-field support.
+  //  The function is declared and implemented as a friend function to simplify
+  //  the declaration and namespace lookup for proper endian order conversions.
+  // 
   friend inline
     field_type EndianSwap(field_type &input)
   { 
