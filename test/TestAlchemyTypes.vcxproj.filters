@@ -278,6 +278,12 @@
     <ClInclude Include="..\Hg\datum\datum.h">
       <Filter>Header Files\Alchemy\Hg\Datum</Filter>
     </ClInclude>
+    <ClInclude Include="TestBitFieldArray.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\meta\bit_field\bit_field_array.h">
+      <Filter>Header Files\Alchemy\Meta\bit_field</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\TestAlchemyTypesRunner.cpp">

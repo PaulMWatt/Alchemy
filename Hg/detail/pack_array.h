@@ -91,6 +91,58 @@ struct Serializer
 
 
 //  ****************************************************************************
+//  Exports arrays of bit-field values into a packed buffer.
+//
+template< typename T,
+          size_t   N,
+          typename BufferT
+        >
+struct Serializer <std::array<T,N>, BufferT, bitfield_trait>
+{
+  typedef std::array<T,N>               array_type;
+
+  typedef typename
+    array_type::value_type              bitfield_type;
+
+  typedef typename 
+    bitfield_type::value_type           value_type;
+
+  typedef BufferT                       buffer_type;
+
+  typedef nested_trait                  data_type_trait;
+
+  //  **************************************************************************
+  template <typename TraitT>
+  size_t Write( array_type     &value, 
+                buffer_type    &buffer,
+                size_t          offset)
+  {
+    size_t bytes_written = 0;
+
+    // Process each item individually.
+    const size_t k_count = N;
+    for (size_t index = 0; index < k_count; ++index)
+    {
+      // The offset for each item progressively increases
+      // by the number of bytes read from the input buffer.
+      size_t item_offset = offset + bytes_written;
+
+//      value[index].value_type();
+
+
+      //value_type t = value[index];
+      //buffer.set_data(t, 
+      //                item_offset);
+
+      bytes_written += Hg::SizeOf<bitfield_type>::value;
+    }
+
+    return bytes_written;
+  }  
+};
+
+
+//  ****************************************************************************
 //  Exports a nested_trait with each sub-item written individually.
 //
 template< typename T,
