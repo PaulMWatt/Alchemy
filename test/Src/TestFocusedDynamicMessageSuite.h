@@ -86,15 +86,6 @@ protected:
 
 public:
   // Test Cases ****************************************************************
-  void Test_write_vector_with_nested_fixed_size(void);
-  void Test_read_vector_with_nested_fixed_size(void);
-
-  void Test_write_vector_with_nested_dynamic_size(void);
-  void Test_read_vector_with_nested_dynamic_size(void);
-
-  void Test_write_vector_with_nested_mixed_size(void);
-  void Test_read_vector_with_nested_mixed_size(void);
-
   void Test_write_array_of_bitsets(void);
   void Test_read_array_of_bitsets(void);
 
@@ -103,6 +94,15 @@ public:
 
   void Test_write_array_of_vectors(void);
   void Test_read_array_of_vectors(void);
+
+  void Test_write_vector_with_nested_fixed_size(void);
+  void Test_read_vector_with_nested_fixed_size(void);
+
+  void Test_write_vector_with_nested_dynamic_size(void);
+  void Test_read_vector_with_nested_dynamic_size(void);
+
+  void Test_write_vector_with_nested_mixed_size(void);
+  void Test_read_vector_with_nested_mixed_size(void);
 
   void Test_write_vector_of_bitsets(void);
   void Test_read_vector_of_bitsets(void);
@@ -127,9 +127,146 @@ public:
 //  collisions with similar definitions for the other tests.
 //
 
+//  Array of Bitsets ***********************************************************
+namespace test
+{
+namespace fixed_array
+{
+namespace bit_list
+{
+typedef Hg::Message<Hg::color_map_tFormat<0> >    MsgColorMap;
+typedef MsgColorMap                               SUT;
+
+//  ************************************
+//  A message buffer with the expected 
+//  test results.
+//
+void make_buffer(byte_vector &buffer)
+{
+  using namespace test::data;
+
+  buffer.clear();
+
+  // to_buffer allocates its own space for the vector.
+  to_buffer(k_White  , buffer);
+  to_buffer(k_Fuchsia, buffer);
+  to_buffer(k_Aqua   , buffer);
+  to_buffer(k_Yellow , buffer);
+  to_buffer(k_Purple , buffer);
+  to_buffer(k_Teal   , buffer);
+  to_buffer(k_Olive  , buffer);
+  to_buffer(k_Silver , buffer);
+  to_buffer(k_Blue   , buffer);
+  to_buffer(k_Lime   , buffer);
+  to_buffer(k_Red    , buffer);
+  to_buffer(k_Gray   , buffer);
+  to_buffer(k_Navy   , buffer);
+  to_buffer(k_Green  , buffer);
+  to_buffer(k_Maroon , buffer);
+  to_buffer(k_Black  , buffer);
+}
+
+//  ************************************
+void populate_msg(SUT &msg)
+{
+  using namespace test::data;
+
+  msg.table[0]  = k_White  ;
+  msg.table[1]  = k_Fuchsia;
+  msg.table[2]  = k_Aqua   ;
+  msg.table[3]  = k_Yellow ;
+  msg.table[4]  = k_Purple ;
+  msg.table[5]  = k_Teal   ;
+  msg.table[6]  = k_Olive  ;
+  msg.table[7]  = k_Silver ;
+  msg.table[8]  = k_Blue   ;
+  msg.table[9]  = k_Lime   ;
+  msg.table[10] = k_Red    ;
+  msg.table[11] = k_Gray   ;
+  msg.table[12] = k_Navy   ;
+  msg.table[13] = k_Green  ;
+  msg.table[14] = k_Maroon ;
+  msg.table[15] = k_Black  ;
+}
+
+
+} // namespace bit_list
+} // namespace fixed_array
+} // namespace test
+
+//  ****************************************************************************
+//  Tests 
+//  ****************************************************************************
+void TestFocusedDynamicMessageSuite::Test_write_array_of_bitsets(void)
+{
+  // TODO: Bitset arrays will be getting a customize implementation to hold the 
+  //       memory in a contiguous sequence and still provide mask and shift operations.
+  //       This will allow proper construction and all other actions to be performed.
+
+  using namespace test::fixed_array::bit_list;
+
+  // Place them in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the SUT with the test values.
+  SUT sut;
+  populate_msg(sut);
+
+// TODO: Not part of test, remove when complete
+uint32_t r = sut.table[6].R;
+uint32_t g = sut.table[6].G;
+uint32_t b = sut.table[6].B;
+uint32_t a = sut.table[6].A;
+
+
+  // SUT: Serialize into a buffer.
+  uint8_t const* pData = sut.data();
+
+  //TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  //TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+}
+
+//  ****************************************************************************
+void TestFocusedDynamicMessageSuite::Test_read_array_of_bitsets(void)
+{
+  using namespace test::fixed_array::bit_list;
+  using namespace test::data;
+
+  // Place three points in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the expected structure for comparison.
+  MsgColorMap expected;
+  populate_msg(expected);
+
+  // SUT
+  SUT sut;
+  sut.assign(&buffer[0], buffer.size());
+
+  // Verify the results for all of the fields.
+  //TS_ASSERT_EQUALS(k_White  , sut.table[0] );
+  //TS_ASSERT_EQUALS(k_Fuchsia, sut.table[1] );
+  //TS_ASSERT_EQUALS(k_Aqua   , sut.table[2] );
+  //TS_ASSERT_EQUALS(k_Yellow , sut.table[3] );
+  //TS_ASSERT_EQUALS(k_Purple , sut.table[4] );
+  //TS_ASSERT_EQUALS(k_Teal   , sut.table[5] );
+  //TS_ASSERT_EQUALS(k_Olive  , sut.table[6] );
+  //TS_ASSERT_EQUALS(k_Silver , sut.table[7] );
+  //TS_ASSERT_EQUALS(k_Blue   , sut.table[8] );
+  //TS_ASSERT_EQUALS(k_Lime   , sut.table[9] );
+  //TS_ASSERT_EQUALS(k_Red    , sut.table[10]);
+  //TS_ASSERT_EQUALS(k_Gray   , sut.table[11]);
+  //TS_ASSERT_EQUALS(k_Navy   , sut.table[12]);
+  //TS_ASSERT_EQUALS(k_Green  , sut.table[13]);
+  //TS_ASSERT_EQUALS(k_Maroon , sut.table[14]);
+  //TS_ASSERT_EQUALS(k_Black  , sut.table[15]);
+}
 
 
 //  ****************************************************************************
+
 namespace Hg {
 
 typedef TypeList
@@ -202,6 +339,39 @@ void populate_msg(SUT &msg)
 } // namespace nested
 } // namespace test
 
+//  ****************************************************************************
+//  Tests 
+//  ****************************************************************************
+void TestFocusedDynamicMessageSuite::Test_write_array_of_arrays(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestFocusedDynamicMessageSuite::Test_read_array_of_arrays(void)
+{
+
+}
+
+//  ****************************************************************************
+//  Tests 
+//  ****************************************************************************
+void TestFocusedDynamicMessageSuite::Test_write_array_of_vectors(void)
+{
+
+}
+
+//  ****************************************************************************
+void TestFocusedDynamicMessageSuite::Test_read_array_of_vectors(void)
+{
+
+}
+
+
+//  ****************************************************************************
+//  ****************************************************************************
+//  ****************************************************************************
+//  Vectors
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
@@ -284,159 +454,6 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_mixed_size(voi
 
 }
 
-//  Array of Bitsets ***********************************************************
-namespace test
-{
-namespace fixed_array
-{
-namespace bit_list
-{
-typedef Hg::Message<Hg::color_map_tFormat<0> >    MsgColorMap;
-typedef MsgColorMap                               SUT;
-
-//  ************************************
-//  A message buffer with the expected 
-//  test results.
-//
-void make_buffer(byte_vector &buffer)
-{
-  using namespace test::data;
-
-  buffer.clear();
-
-  // to_buffer allocates its own space for the vector.
-  to_buffer(k_White  , buffer);
-  to_buffer(k_Fuchsia, buffer);
-  to_buffer(k_Aqua   , buffer);
-  to_buffer(k_Yellow , buffer);
-  to_buffer(k_Purple , buffer);
-  to_buffer(k_Teal   , buffer);
-  to_buffer(k_Olive  , buffer);
-  to_buffer(k_Silver , buffer);
-  to_buffer(k_Blue   , buffer);
-  to_buffer(k_Lime   , buffer);
-  to_buffer(k_Red    , buffer);
-  to_buffer(k_Gray   , buffer);
-  to_buffer(k_Navy   , buffer);
-  to_buffer(k_Green  , buffer);
-  to_buffer(k_Maroon , buffer);
-  to_buffer(k_Black  , buffer);
-}
-
-//  ************************************
-void populate_msg(SUT &msg)
-{
-  using namespace test::data;
-
-  msg.table[0]  = k_White  ;
-  msg.table[1]  = k_Fuchsia;
-  msg.table[2]  = k_Aqua   ;
-  msg.table[3]  = k_Yellow ;
-  msg.table[4]  = k_Purple ;
-  msg.table[5]  = k_Teal   ;
-  msg.table[6]  = k_Olive  ;
-  msg.table[7]  = k_Silver ;
-  msg.table[8]  = k_Blue   ;
-  msg.table[9]  = k_Lime   ;
-  msg.table[10] = k_Red    ;
-  msg.table[11] = k_Gray   ;
-  msg.table[12] = k_Navy   ;
-  msg.table[13] = k_Green  ;
-  msg.table[14] = k_Maroon ;
-  msg.table[15] = k_Black  ;
-}
-
-
-} // namespace bit_list
-} // namespace fixed_array
-} // namespace test
-
-//  ****************************************************************************
-//  Tests 
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_array_of_bitsets(void)
-{
-  using namespace test::fixed_array::bit_list;
-
-  // Place them in a buffer.
-  byte_vector buffer;
-  make_buffer(buffer);
-
-  // Populate the SUT with the test values.
-  SUT sut;
-  populate_msg(sut);
-
-  // SUT: Serialize into a buffer.
-  uint8_t const* pData = sut.data();
-
-  //TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  //TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
-}
-
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_array_of_bitsets(void)
-{
-  using namespace test::fixed_array::bit_list;
-  using namespace test::data;
-
-  // Place three points in a buffer.
-  byte_vector buffer;
-  make_buffer(buffer);
-
-  // Populate the expected structure for comparison.
-  MsgColorMap expected;
-  populate_msg(expected);
-
-  // SUT
-  SUT sut;
-  sut.assign(&buffer[0], buffer.size());
-
-  // Verify the results for all of the fields.
-  //TS_ASSERT_EQUALS(k_White  , sut.table[0] );
-  //TS_ASSERT_EQUALS(k_Fuchsia, sut.table[1] );
-  //TS_ASSERT_EQUALS(k_Aqua   , sut.table[2] );
-  //TS_ASSERT_EQUALS(k_Yellow , sut.table[3] );
-  //TS_ASSERT_EQUALS(k_Purple , sut.table[4] );
-  //TS_ASSERT_EQUALS(k_Teal   , sut.table[5] );
-  //TS_ASSERT_EQUALS(k_Olive  , sut.table[6] );
-  //TS_ASSERT_EQUALS(k_Silver , sut.table[7] );
-  //TS_ASSERT_EQUALS(k_Blue   , sut.table[8] );
-  //TS_ASSERT_EQUALS(k_Lime   , sut.table[9] );
-  //TS_ASSERT_EQUALS(k_Red    , sut.table[10]);
-  //TS_ASSERT_EQUALS(k_Gray   , sut.table[11]);
-  //TS_ASSERT_EQUALS(k_Navy   , sut.table[12]);
-  //TS_ASSERT_EQUALS(k_Green  , sut.table[13]);
-  //TS_ASSERT_EQUALS(k_Maroon , sut.table[14]);
-  //TS_ASSERT_EQUALS(k_Black  , sut.table[15]);
-}
-
-//  ****************************************************************************
-//  Tests 
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_array_of_arrays(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_array_of_arrays(void)
-{
-
-}
-
-//  ****************************************************************************
-//  Tests 
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_array_of_vectors(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_array_of_vectors(void)
-{
-
-}
 
 //  ****************************************************************************
 //  Tests 
