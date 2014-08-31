@@ -162,6 +162,7 @@ cd "../.."</Command>
     <ClInclude Include="msgtest_typelist.h" />
     <ClInclude Include="Src\TestAlchemyTypes.h" />
     <ClInclude Include="Src\TestArrayProxySuite.h" />
+    <ClInclude Include="Src\TestBitFieldArray.h" />
     <ClInclude Include="Src\TestBitSetMsgFieldSuite.h" />
     <ClInclude Include="Src\TestByteOrder.h" />
     <ClInclude Include="Src\TestDynamicMessageSuite.h" />
@@ -172,7 +173,6 @@ cd "../.."</Command>
     <ClInclude Include="Src\TestMessageSuite.h" />
     <ClInclude Include="Src\TestMeta.h" />
     <ClInclude Include="Src\TestVectorProxySuite.h" />
-    <ClInclude Include="TestBitFieldArray.h" />
     <ClInclude Include="test_def.h" />
     <ClInclude Include="test_helper.h" />
   </ItemGroup>

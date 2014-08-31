@@ -10,7 +10,7 @@
 ///
 /// The current limit is 32 bit-field entries. 
 /// Expanding this limit requires expanding the size of the integer_sequence
-/// and the Format_bitlist structures.
+/// and the DeduceBitFieldList structures.
 /// 
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
@@ -208,18 +208,14 @@ struct BitFieldList
 
 
 //  ****************************************************************************
-/// A proxy container to adapt the inner type to a message field. 
-/// This object will also deduce a BitFieldList object type from the 
-/// type defined in a type container at a specified index.
+/// Type-trait class that contains common definitions used by every bit-list.
+/// This class is also used to conveniently define a bit-list type from a
+/// generic type-list format.
 ///             
-template< size_t    Idx,
-          typename  format_type>
-struct Format_bitlist
+template< typename  base_type>
+struct DeclareBitFieldList
 {
-  typedef 
-    typename TypeAt < Idx,
-                      format_type
-                    >::type                   base_t;
+  typedef base_type                     base_t;
 
   typedef BitFieldList
                 < base_t,
@@ -257,7 +253,65 @@ struct Format_bitlist
                     base_t::idx_30::k_size,
                     base_t::idx_31::k_size
                   >
-                >                             type;
+                >                       type;
+};
+
+
+//  ****************************************************************************
+/// Type-trait class that contains common definitions used by every bit-list.
+/// This class is also used to conveniently define a bit-list type from a
+/// generic type-list format.
+///             
+template< size_t    Idx,
+          typename  format_type
+        >
+struct DeduceBitFieldList
+{
+  typedef 
+    typename TypeAt < Idx,
+                      format_type
+                    >::type                   base_t;
+
+  typedef typename
+    DeclareBitFieldList<base_t>::type         type;
+
+  //typedef BitFieldList
+  //              < base_t,
+  //                integer_sequence
+  //                < base_t::idx_0::k_size,
+  //                  base_t::idx_1::k_size,
+  //                  base_t::idx_2::k_size,
+  //                  base_t::idx_3::k_size,
+  //                  base_t::idx_4::k_size,
+  //                  base_t::idx_5::k_size,
+  //                  base_t::idx_6::k_size,
+  //                  base_t::idx_7::k_size,
+  //                  base_t::idx_8::k_size,
+  //                  base_t::idx_9::k_size,
+  //                  base_t::idx_10::k_size,
+  //                  base_t::idx_11::k_size,
+  //                  base_t::idx_12::k_size,
+  //                  base_t::idx_13::k_size,
+  //                  base_t::idx_14::k_size,
+  //                  base_t::idx_15::k_size,
+  //                  base_t::idx_16::k_size,
+  //                  base_t::idx_17::k_size,
+  //                  base_t::idx_18::k_size,
+  //                  base_t::idx_19::k_size,
+  //                  base_t::idx_20::k_size,
+  //                  base_t::idx_21::k_size,
+  //                  base_t::idx_22::k_size,
+  //                  base_t::idx_23::k_size,
+  //                  base_t::idx_24::k_size,
+  //                  base_t::idx_25::k_size,
+  //                  base_t::idx_26::k_size,
+  //                  base_t::idx_27::k_size,
+  //                  base_t::idx_28::k_size,
+  //                  base_t::idx_29::k_size,
+  //                  base_t::idx_30::k_size,
+  //                  base_t::idx_31::k_size
+  //                >
+  //              >                             type;
 };
 
 } // namespace Hg

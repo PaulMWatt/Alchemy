@@ -114,6 +114,7 @@ struct BasicBitList
 
 protected:
   //  **************************************************************************
+  //  Default Constructor
   //  Prevent direct creation of this class; must use a derived class.
   // 
   BasicBitList()
@@ -122,6 +123,7 @@ protected:
   { }
 
   //  **************************************************************************
+  //  Value constructor that associates the address of the storage with this list.
   //  Prevent direct creation of this class; must use a derived class.
   // 
   BasicBitList(value_type &data_field)

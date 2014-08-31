@@ -42,13 +42,6 @@
 namespace Hg
 {
 
-// TODO: Create instances of this test class for these types:
-//        Nested
-//        Multi-dimensional arrays.
-//        Vector
-//        BitFields
-
-
 //  Constants ******************************************************************
 static const size_t k_array_8_size = 8;
 
@@ -59,7 +52,6 @@ typedef TypeList
 <
   uint32_t,
   std::array<uint8_t, k_array_8_size>,
-  //uint8_t[8],
   uint8_t
 > array_t;
 

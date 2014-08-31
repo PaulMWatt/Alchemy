@@ -30,7 +30,7 @@ template <size_t    kt_idx,
         >
 struct DataProxy<bitfield_trait, kt_idx, format_t, kt_offset>
   : public Datum<kt_idx, format_t, kt_offset>
-  , public Format_bitlist<kt_idx, format_t>::type
+  , public DeduceBitFieldList<kt_idx, format_t>::type
 {
   typedef typename 
     Datum < kt_idx,
@@ -39,9 +39,9 @@ struct DataProxy<bitfield_trait, kt_idx, format_t, kt_offset>
           >                                       datum_type;
 
   typedef typename 
-    Format_bitlist< kt_idx,
-                    format_t
-                  >::type                         host_type;
+    DeduceBitFieldList< kt_idx,
+                        format_t
+                      >::type                     host_type;
 
   typedef typename 
     host_type::value_type                         value_type;

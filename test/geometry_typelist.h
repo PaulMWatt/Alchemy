@@ -23,6 +23,7 @@ HG_BEGIN_BIT_SET (uint32_t, color4)
   HG_BIT_FIELD   (3,   A, 8)
 HG_END_BIT_SET
 
+
 //  ****************************************************************************
 //  Indexed Color Table
 //  This type represents a fixed-size array of bit-fields.

@@ -70,10 +70,10 @@ public:
 
 protected:
   // Test Suite Data ***********************************************************
-  typedef Hg::Format_bitlist<0, Hg::Bitset_format>::type   TypeA;
+  typedef Hg::DeduceBitFieldList<0, Hg::Bitset_format>::type   TypeA;
   typedef TypeA::value_type                                          value_type_a;
 
-  typedef Hg::Format_bitlist<1, Hg::Bitset_format>::type   TypeB;
+  typedef Hg::DeduceBitFieldList<1, Hg::Bitset_format>::type   TypeB;
   typedef TypeB::value_type                                          value_type_b;
 
 public:
