@@ -126,6 +126,8 @@ public:
   void TestValueAssignment(void);
 
   // Status and Methods
+  void TestEmpty_true(void);
+  void TestEmpty_false(void);
   void TestSize(void);
   void TestSizeOf(void);
 
@@ -221,6 +223,28 @@ void TestBitFieldArray::TestValueAssignment(void)
   sut = k_color_values;
 
   TS_ASSERT_SAME_DATA(control.data(), sut.data(), sut.data_size());
+}
+
+//  ****************************************************************************
+void TestBitFieldArray::TestEmpty_true(void)
+{
+  Hg::BitFieldArray<SUT_bit_field_type,0> sut;
+
+  // SUT
+  bool result = sut.empty();
+
+  TS_ASSERT_EQUALS(true, result);
+}
+
+//  ****************************************************************************
+void TestBitFieldArray::TestEmpty_false(void)
+{
+  SUT sut;
+
+  // SUT
+  bool result = sut.empty();
+
+  TS_ASSERT_EQUALS(false, result);
 }
 
 //  ****************************************************************************

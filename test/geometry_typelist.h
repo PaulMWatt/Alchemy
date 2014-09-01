@@ -7,8 +7,8 @@
 //  ****************************************************************************
 #ifndef GEOMETRY_TYPELIST_H_INCLUDED
 #define GEOMETRY_TYPELIST_H_INCLUDED
-#include <Alchemy.h>
-
+#include <alchemy.h>
+#include <meta/bit_field/bit_field_array.h>
 namespace Hg
 {
 
@@ -30,11 +30,12 @@ HG_END_BIT_SET
 // 
 typedef TypeList
 <
-  std::array<color4, 16>
+  //std::array<color4, 16>
+  Hg::BitFieldArray<color4, 16>
 > color_map_t;
 
 HG_BEGIN_FORMAT(color_map_t)
-  HG_DATUM ((std::array<color4, 16>), table)
+  HG_ARRAY (color4, 16, table)
 HG_END_FORMAT
 
 //  ****************************************************************************
@@ -97,8 +98,8 @@ typedef TypeList
 > triangle_t;
 
 HG_BEGIN_FORMAT(triangle_t)
-  HG_DATUM ((std::array<uint16_t, 3>), pts)
-  HG_DATUM (ray_t,                     normal)
+  HG_ARRAY (uint16_t, 3,  pts)
+  HG_DATUM (ray_t,        normal)
 HG_END_FORMAT
 
 //  ****************************************************************************

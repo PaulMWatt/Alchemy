@@ -19,27 +19,48 @@ namespace Hg
 template <typename T>
 struct SizeOf;
 
+template< typename T,
+          size_t   N
+        >
+struct BitFieldArray;
+
 
 // This namespace contains specialized versions of the SizeOf implementation
 // to help differentiate between type_containers and intrinsic types.
 namespace detail
 {
 
-// Parameterized implementation of SizeOf **************************************
+//  ****************************************************************************
+//  Parameterized implementation of SizeOf 
+//
 template <typename T, bool isContainer = false >
 struct SizeOf_Impl
   : std::integral_constant<size_t, sizeof(T)>
 { };
 
-//  Arrays size should only include the elements in the array. ****************
+//  ****************************************************************************
+//  Arrays size should only include the elements in the array.
+//
 template< typename T,
           size_t   N
         >
-struct SizeOf_Impl<std::array<T,N>, false>
+struct SizeOf_Impl<Hg::BitFieldArray<T,N>, true>
   : std::integral_constant< size_t, Hg::SizeOf<T>::value * N>
 { };
 
-//  Vectors size is dynamically determined at runtime. ************************
+//  ****************************************************************************
+//  Arrays size should only include the elements in the array. 
+//
+template< typename T,
+          size_t   N
+        >
+struct SizeOf_Impl<std::array<T,N>, true>
+  : std::integral_constant< size_t, Hg::SizeOf<T>::value * N>
+{ };
+
+//  ****************************************************************************
+//  Vectors size is dynamically determined at runtime. 
+//
 template< typename T,
           typename A
         >
@@ -47,7 +68,10 @@ struct SizeOf_Impl<std::vector<T,A>, false>
   : std::integral_constant< size_t, 0>
 { };
 
-// SizeOf implementation for type_containers ***********************************
+
+//  ****************************************************************************
+//  SizeOf implementation for type_containers
+//
 template <typename T>
 struct SizeOf_Impl<T, true>
   : std::integral_constant< size_t,

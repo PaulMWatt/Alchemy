@@ -61,9 +61,7 @@ struct Serializer
                 buffer_type  &buffer,
                 size_t        offset)
   {
-    // TODO: Currently it appears that the full-length in bytes is required 
-    //       rather than the count, like an iterator would require.
-    //       Revisit and verify this is correct.
+    // Calculate the size of data to write in bytes.
     size_t size = value.size() * sizeof(value_type);
 
     value_type *pFirst = &value[0];
@@ -97,48 +95,47 @@ template< typename T,
           size_t   N,
           typename BufferT
         >
-struct Serializer <std::array<T,N>, BufferT, bitfield_trait>
+struct Serializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
 {
-  typedef std::array<T,N>               array_type;
+  typedef Hg::BitFieldArray<T,N>        array_type;
 
   typedef typename
-    array_type::value_type              bitfield_type;
-
-  typedef typename 
-    bitfield_type::value_type           value_type;
+    array_type::value_type              value_type;
 
   typedef BufferT                       buffer_type;
 
-  typedef nested_trait                  data_type_trait;
+  typedef bitfield_trait                data_type_trait;
 
   //  **************************************************************************
   template <typename TraitT>
-  size_t Write( array_type     &value, 
-                buffer_type    &buffer,
-                size_t          offset)
+  size_t Write( array_type   &value, 
+                buffer_type  &buffer,
+                size_t        offset)
   {
-    size_t bytes_written = 0;
+    // Calculate the size of data to write in bytes.
+    size_t size = value.size() * sizeof(value_type);
 
-    // Process each item individually.
-    const size_t k_count = N;
-    for (size_t index = 0; index < k_count; ++index)
-    {
-      // The offset for each item progressively increases
-      // by the number of bytes read from the input buffer.
-      size_t item_offset = offset + bytes_written;
+    value_type *pFirst = value.data();
+    value_type *pLast  = pFirst;
 
-//      value[index].value_type();
+    std::advance(pLast, size);
+    buffer.set_range( pFirst, 
+                      pLast, 
+                      offset);
+
+    return size;
+  }
 
 
-      //value_type t = value[index];
-      //buffer.set_data(t, 
-      //                item_offset);
+  //  **************************************************************************
+  size_t Write( value_type   &value, 
+                buffer_type  &buffer,
+                size_t        offset)
+  {
+    buffer.set_data( value, offset);
+    return sizeof(value_type);
+  }
 
-      bytes_written += Hg::SizeOf<bitfield_type>::value;
-    }
-
-    return bytes_written;
-  }  
 };
 
 
@@ -413,24 +410,23 @@ size_t SerializeByItem( ValueT     &value,
 //
 template< typename T,
           size_t   N,
-          typename BufferT
+          typename BufferT,
+          template <typename, size_t> class ArrayT
         >
-size_t SerializeArray(std::array<T,N>  &value,
-                      BufferT          &buffer,
-                      size_t            offset)
+size_t SerializeArray(ArrayT<T,N> &value,
+                      BufferT     &buffer,
+                      size_t      offset)
 {
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of serializing the data.
-  typedef std::array<T,N>               array_type;
+  typedef ArrayT<T,N>                   array_type;
 
-  typedef typename
-    array_type::value_type              value_type;
+  typedef T                             value_type;
 
   typedef typename 
     Hg::detail::DeduceTypeTrait
       < value_type >::type              value_type_trait;
-
 
   // Define the correct type of serialize functor 
   // based on the type contained within the vector.

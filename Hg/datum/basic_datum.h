@@ -10,6 +10,7 @@
 //  Includes ******************************************************************
 #include <meta/meta_fwd.h>
 #include <Hg/msg_buffer.h>
+#include <meta/bit_field/bit_field_array.h>
 
 namespace Hg
 {
@@ -47,6 +48,39 @@ void copy_value_type(T& to, const T& from)
   to = from;
 }
 
+//  ****************************************************************************
+/// (Dynamic-Array Specialization) Type definitions for field in type-container.
+///
+/// @param SubTypeT           [typename] This parameterized type declares the
+///                           sub-type of the vector defined at the location 
+///                           in the parent type container.
+/// @param AllocT             [typename] The defined allocator of the vector.
+///
+template< typename SubTypeT,
+          size_t   N
+        >
+struct field_data_t < Hg::BitFieldArray<SubTypeT, N> >
+{
+  typedef 
+    SubTypeT                            sub_type;
+
+  //typedef typename 
+  //  field_data_t<sub_type>::value_type  value_sub_type;
+
+  typedef 
+    Hg::BitFieldArray<SubTypeT, N>      value_type;
+  
+  //typedef typename
+  //  std::conditional
+  //    < nested_value<sub_type>::value,
+  //      std::vector< value_sub_type, AllocT>,
+  //      std::vector< sub_type, AllocT>
+  //    >::type                           value_type;
+                                        ///< The proper value_type definition
+                                        ///  deduced from the type-container
+                                        ///  and the specified array sub-type.
+};
+
 
 //  ****************************************************************************
 /// (Fixed-Array Specialization) Type definitions for field in type-container.
@@ -75,11 +109,11 @@ void copy_value_type(T& to, const T& from)
 //                                        ///< The proper value_type definition
 //                                        ///  deduced from the type-container
 //                                        ///  and the specified array sub-type.
-//  static
-//  void copy_value_type(value_type& to, const value_type& from)
-//  {
-//    //to = from;
-//  }
+//  //static
+//  //void copy_value_type(value_type& to, const value_type& from)
+//  //{
+//  //  //to = from;
+//  //}
 //};
 
 //  ****************************************************************************

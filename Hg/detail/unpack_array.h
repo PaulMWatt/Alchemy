@@ -12,6 +12,8 @@
 #ifndef UNPACK_MESSAGE_H_INCLUDED
 # error Do not include this file directly. Use <detail/unpack_message.h> instead
 #endif
+//  Includes *******************************************************************
+#include <meta/bit_field/bit_field_array.h>
 
 namespace Hg
 {
@@ -37,7 +39,7 @@ namespace Array
 {
 
 //  ****************************************************************************
-//  Exports data from the aryy for fixed-size POD types.
+//  Imports data from the aryy for fixed-size POD types.
 //
 template< typename ArrayT,
           typename BufferT,
@@ -56,7 +58,8 @@ struct Deserializer
 
   // TODO: This is not guaranteed to be the correct size. Work towards getting the array size deduction method to work.
   static 
-    const size_t value = sizeof(array_type)/sizeof(value_type);
+    const size_t value = sizeof(array_type)
+                       / sizeof(value_type);
 
   //  **************************************************************************
   template <typename TraitT>
@@ -70,9 +73,7 @@ struct Deserializer
       return 0;
     }
 
-    // TODO: Currently it appears that the full-length in bytes is required 
-    //       rather than the count, like an iterator would require.
-    //       Revisit and verify this is correct.
+    // Calculate the size of data to write in bytes.
     size_t size = count * sizeof(value_type);
 
 
@@ -97,8 +98,64 @@ struct Deserializer
 };
 
 
+
+
 //  ****************************************************************************
-//  Exports a array of nested types with each sub-item written individually.
+//  Imports an array of bit-list fields.
+//
+template< typename T,
+          size_t   N,
+          typename BufferT
+        >
+struct Deserializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
+  : public std::integral_constant<size_t, N>
+{
+  typedef Hg::BitFieldArray<T,N>        array_type;
+
+  typedef typename
+    array_type::value_type              value_type;
+
+  typedef BufferT                       buffer_type;
+
+  typedef bitfield_trait                data_type_trait;
+
+  //  **************************************************************************
+  template <typename TraitT>
+  size_t Read ( array_type   &value, 
+                size_t        count, 
+                buffer_type  &buffer,
+                size_t        offset)
+  {
+    if (0 == count)
+    {
+      return 0;
+    }
+
+    // Calculate the size of data to write in bytes.
+    size_t size = count * sizeof(value_type);
+
+    value_type *pFirst = value.data();
+
+// TODO: Make the interfaces consistent between the set and get.
+    //value_type *pLast  = pFirst;
+    //std::advance(pLast, size);
+
+    return buffer.get_range(pFirst, size, offset);
+  }
+
+  //  **************************************************************************
+  size_t Read ( value_type   &value, 
+                buffer_type  &buffer,
+                size_t        offset)
+  {
+    return buffer.get_data( value, offset);
+  }
+
+
+};
+
+//  ****************************************************************************
+//  Imports an array of nested types with each sub-item written individually.
 //
 template< typename T,
           size_t   N,
@@ -158,7 +215,7 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
 
 
 //  ****************************************************************************
-//  Exports a array of arrays with each sub-item written individually.
+//  Imports a array of arrays with each sub-item written individually.
 //
 template< typename T,
           size_t   N,
@@ -201,7 +258,7 @@ struct Deserializer <std::array<T,N>, BufferT, array_trait>
 };
     
 //  ****************************************************************************
-//  Exports a array of vectors with each sub-item written individually.
+//  Imports a array of vectors with each sub-item written individually.
 //
 template< typename T,
           size_t   N,
@@ -367,33 +424,32 @@ size_t DeserializeByItem( ValueT     &value,
 }
 
 //  ****************************************************************************
-//  Adapter function to simplify deserializing a buffer from a vector-field.
+//  Adapter function to simplify deserializing a buffer from an array-field.
 //
 template< typename T,
           size_t   N,
-          typename BufferT
+          typename BufferT,
+          template <typename, size_t> class ArrayT
         >
-size_t DeserializeArray ( std::array<T, N> &value,
+size_t DeserializeArray ( ArrayT<T, N> &value,
                           BufferT  &buffer,
                           size_t    offset)
 {
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of deserializing the data.
-  typedef std::array<T,N>               array_type;
+  typedef ArrayT<T,N>                   array_type;
 
-  typedef typename
-    array_type::value_type              value_type;
+  typedef T                             value_type;
 
   typedef typename 
     Hg::detail::DeduceTypeTrait
       < value_type >::type              value_type_trait;
 
-
   // Define the correct type of deserialize functor 
   // based on the type contained within the vector.
   typedef Array::Deserializer < array_type,
-                                BufferT, 
+                                BufferT,
                                 value_type_trait
                               >           deserializer_t;
   typedef typename
@@ -402,8 +458,6 @@ size_t DeserializeArray ( std::array<T, N> &value,
   deserializer_t deserializer;
   return deserializer.Read<data_type_trait>(value, N, buffer, offset);
 }
-
-
 
 //  ****************************************************************************
 //  A specialized functor to read array types.

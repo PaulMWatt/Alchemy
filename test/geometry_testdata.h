@@ -18,7 +18,7 @@
 //  ****************************************************************************
 #ifndef GEOMETRY_TESTDATA_H_INCLUDED
 #define GEOMETRY_TESTDATA_H_INCLUDED
-#include <Alchemy.h>
+#include <alchemy.h>
 #include <vector>
 
 namespace test

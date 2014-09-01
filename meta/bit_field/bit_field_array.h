@@ -18,6 +18,8 @@
 #define BIT_FIELD_ARRAY_H_INCLUDED
 //  Includes ******************************************************************
 #include <meta/compiler.h>
+#include <meta/meta_util.h>
+#include <meta/bit_field_list.h>
 #include <array>
 
 
@@ -40,6 +42,7 @@ template< typename T,
           size_t   N
         >
 struct BitFieldArray
+  : array_trait
 {
 public:
   //  Typedefs *****************************************************************
@@ -145,48 +148,68 @@ public:
     return *this;
   }
 
-  // TODO: I do not believe these will be needed at this level.
-  ////  **************************************************************************
-  ///// Conversion operator to a base Datum Type.
-  ///// 
-  ///// @note         The converted Datum base provides access to specialized
-  /////               functions related to the type held by the proxy.
-  ///// 
-  //operator reference()
-  //{
-  //  return *static_cast<datum_type*>(this);
-  //}
-
-  ////  **************************************************************************
-  ///// Value Conversion Operator (value_type)
-  ///// 
-  ///// Allows the entire BitSet to be extracted and assigned as a value to
-  ///// the host value type.
-  ///// 
-  //operator value_type() const
-  //{
-  //  return static_cast<const datum_type*>(this)->operator value_type();
-  //}
-
   //  **************************************************************************
   /// Returns a pointer to the raw data buffer for the container for reference.
   /// 
-  const value_type* data() const                  { return &m_data[0]; }
+  const value_type* data() const                  
+  { 
+    return &m_data[0]; 
+  }
 
   //  **************************************************************************
   /// Returns a pointer to the raw data buffer for the container for assignment.
   /// 
-  value_type* data()                              { return &m_data[0]; }
+  value_type* data()                              
+  { 
+    return &m_data[0]; 
+  }
+
+  //  **************************************************************************
+  /// Indicates if this container contains 0 elements.
+  /// 
+  bool empty() const
+  {
+    return size() == 0;
+  }
 
   //  **************************************************************************
   /// Returns the number of elements within the array.
   /// 
-  size_t size() const                             { return m_data.size(); }
+  size_t size() const                             
+  { 
+    return m_data.size(); 
+  }
 
   //  **************************************************************************
   /// Returns the number of bytes required to hold the entire array of data.
   /// 
-  size_t data_size() const                        { return size() * sizeof(value_type); }
+  size_t data_size() const                        
+  { 
+    return size() * sizeof(value_type); 
+  }
+
+  //  **************************************************************************
+  /// Conversion operator to the value_type reference.
+  /// 
+  /// @note         The converted array interface provides direct access values.
+  /// 
+  operator reference()
+  {
+    //return *static_cast<datum_type*>(this);
+    return reference();
+  }
+
+  //  **************************************************************************
+  /// Value Conversion Operator (value_type)
+  /// 
+  /// Allows the entire BitSet to be extracted and assigned as a value to
+  /// the host value type.
+  /// 
+  operator value_type() const
+  {
+//    return static_cast<const datum_type*>(this)->operator value_type();
+    return value_type();
+  }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
@@ -204,7 +227,10 @@ public:
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
   /// 
-  reference at(size_t idx)                        { return reference(m_data.at(idx)); }
+  reference at(size_t idx)                        
+  { 
+    return reference(m_data.at(idx)); 
+  }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
@@ -222,7 +248,10 @@ public:
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
   /// 
-  reference operator[](size_t idx)                { return reference(m_data[idx]); }
+  reference operator[](size_t idx)                
+  { 
+    return reference(m_data[idx]); 
+  }
 
   //  **************************************************************************
   /// Accesses the first value in the array data..
@@ -240,7 +269,10 @@ public:
   //  **************************************************************************
   /// Accesses the first value in the array data..
   /// 
-  reference front()                               { return reference(m_data.front()); }
+  reference front()                               
+  { 
+    return reference(m_data.front()); 
+  }
 
   //  **************************************************************************
   /// Accesses the last valid value in the array data..
@@ -258,7 +290,10 @@ public:
   //  **************************************************************************
   /// Accesses the last valid value in the array data..
   /// 
-  reference back()                                { return reference(m_data.back()); }
+  reference back()                                
+  { 
+    return reference(m_data.back()); 
+  }
 
   //  Iterator Functions *******************************************************
   //  **************************************************************************
@@ -296,7 +331,6 @@ private:
   array_type                  m_data;   ///< The data buffers that hold the 
                                         ///  raw values for the collection of
                                         ///  bit-fields.
-
 };
 
 

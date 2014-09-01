@@ -14,6 +14,7 @@
 #include <meta/type_list.h>
 #include <meta/type_at.h>
 #include <Hg/datum/datum.h>
+#include <meta/bit_field/bit_field_array.h>
 #include <storage_policy.h>
 
 namespace Hg
@@ -71,12 +72,29 @@ struct DataProxy <array_trait, IdxT, FormatT, OffsetT>
                                         ///< The number of elements in the array.
 
   //  Typedefs *****************************************************************
-  typedef std::array< data_type, 
-                      k_extent
-                    >                   value_type;
+  typedef typename 
+  std::conditional< std::is_base_of<array_trait, index_type>::value,
+                    index_type,                  
+//  Hg::BitFieldArray<data_type, k_extent>,
+                    std::array<data_type, k_extent>
+                  >::type
+
+                                        value_type;
+
+
+  //typedef std::array< data_type, 
+  //                    k_extent
+  //                  >                   value_type;
                                         ///< The data type managed by this Array.
                                         ///  This is the type of data that will 
                                         ///  be written to the attached buffer.
+                                        ///
+                                        ///  The index_type is redefined here
+                                        ///  in order to capture and convert array
+                                        ///  definitions like this: "(&T) [N]"
+                                        ///  To the form: std::array<T,N>
+
+
   
   typedef typename                      ///  Reference to an element in the array.
     value_type::reference               reference;

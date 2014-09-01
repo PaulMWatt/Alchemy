@@ -116,7 +116,6 @@ public:
   void TestReserve(void);
   void TestCapacity(void);
   void TestSize(void);
-  void TestSizeOf(void);
 
   // Accessors
   void TestGet(void);
@@ -360,18 +359,6 @@ void TestVectorProxySuite::TestSize(void)
   // SUT
   vector_data sut;
   size_t result = sut.size();
-
-  TS_ASSERT_EQUALS(k_control, result);
-}
-
-//  ****************************************************************************
-void TestVectorProxySuite::TestSizeOf(void)
-{
-  const size_t k_control = Hg::SizeOf<vector_data>::value;
-
-  // SUT
-  vector_data sut;
-  size_t result = sut.size_of();
 
   TS_ASSERT_EQUALS(k_control, result);
 }

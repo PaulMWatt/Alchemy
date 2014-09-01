@@ -66,9 +66,7 @@ struct Deserializer
       return 0;
     }
 
-    // TODO: Currently it appears that the full-length in bytes is required 
-    //       rather than the count, like an iterator would require.
-    //       Revisit and verify this is correct.
+    // Calculate the size of data to write in bytes.
     size_t size = count * sizeof(value_type);
 
 
@@ -91,66 +89,6 @@ struct Deserializer
   }
 
 };
-
-
-  ////  **************************************************************************
-  ////  Imports data into the vector for fixed-size POD types.
-  ////
-  //template<typename TraitT>
-  //size_t Import(      value_type &value, 
-  //                    size_t      count, 
-  //              const BufferT    &buffer,
-  //                    size_t      offset)
-  //{
-  //  return  buffer.get_range(&value[0], count * sizeof(data_type), offset)
-  //          ? count * sizeof(data_type)
-  //          : 0;
-  //}
-
-  ////  **************************************************************************
-  ////  This version reads each item from the raw buffer individually.
-  ////  These fields may be because they are distinct fields of a nested definition,
-  ////  or variable length items.
-  ////
-  //template< >
-  //size_t Import<nested_trait>(      
-  //                    value_type &value, 
-  //                    size_t      count, 
-  //              const BufferT    &buffer,
-  //                    size_t      offset)
-  //{
-  //  // TODO:  Will need to modify the definitions for:
-  //  //          data_type::format_type
-  //  //        To be a more robust version to properly support
-  //  //        vectors of vectors and vectors of arrays.
-
-  //  // An important typedef for selecting the proper
-  //  // version of the unpack function for the sub-elements.
-  //  typedef typename
-  //    message_size_trait<data_type::format_type>::type     size_trait;
-
-
-  //  size_t bytes_read = 0;
-
-  //  // Process each item individually.
-  //  for (size_t index = 0; index < count; ++index)
-  //  {
-  //    // The offset for each item progressively increases
-  //    // by the number of bytes read from the input buffer.
-  //    size_t item_offset = offset + bytes_read;
-
-  //    size_t last_read =
-  //      unpack_message< data_type,
-  //                      BufferT,
-  //                      size_trait
-  //                    >(value[index], buffer, item_offset);
-
-  //    bytes_read += last_read;
-  //  }
-
-  //  return bytes_read;
-  //}
-
 
 
 //  ****************************************************************************
@@ -245,7 +183,6 @@ struct Deserializer <ValueT, AllocatorT, BufferT, array_trait>
                 size_t          offset)
   {
     return DeserializeInBulk(value, buffer, offset);
-//    return 0;
   }  
 
   //  **************************************************************************
@@ -254,7 +191,6 @@ struct Deserializer <ValueT, AllocatorT, BufferT, array_trait>
                 size_t        offset)
   {
     return DeserializeByItem(value, buffer, offset);
-//    return 0;
   }  
 };
     

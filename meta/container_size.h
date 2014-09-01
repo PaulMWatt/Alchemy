@@ -36,23 +36,6 @@ struct ContainerSize_Impl
                           >
 { };
 
-//  ContainerSize_Impl implementation for type_containers **********************
-//  ****************************************************************************
-/// Calculates the maximum size required for a homogenous container of values.
-/// This value is k_max * sizeof(T).
-///             
-/// @note       type_check: ContainerT must be a multivar_value
-///             This can include both the array_value and vector_value types.
-///             Intrinsic value types such as char, float, int as well as
-///             a basic type_container class will trigger this assertion.
-///             
-template <typename T>
-struct ContainerSize_Impl <T, true>
-  : std::integral_constant< size_t, 
-                            T::k_max * sizeof(typename T::data_type)
-                          >
-{ };
-
 } // namespace detail
 
 //  ****************************************************************************

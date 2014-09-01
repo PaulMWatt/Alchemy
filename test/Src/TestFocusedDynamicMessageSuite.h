@@ -199,10 +199,6 @@ void populate_msg(SUT &msg)
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_array_of_bitsets(void)
 {
-  // TODO: Bitset arrays will be getting a customize implementation to hold the 
-  //       memory in a contiguous sequence and still provide mask and shift operations.
-  //       This will allow proper construction and all other actions to be performed.
-
   using namespace test::fixed_array::bit_list;
 
   // Place them in a buffer.
@@ -213,18 +209,11 @@ void TestFocusedDynamicMessageSuite::Test_write_array_of_bitsets(void)
   SUT sut;
   populate_msg(sut);
 
-// TODO: Not part of test, remove when complete
-uint32_t r = sut.table[6].R;
-uint32_t g = sut.table[6].G;
-uint32_t b = sut.table[6].B;
-uint32_t a = sut.table[6].A;
-
-
   // SUT: Serialize into a buffer.
   uint8_t const* pData = sut.data();
 
-  //TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  //TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+  TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
 }
 
 //  ****************************************************************************
@@ -246,22 +235,22 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_bitsets(void)
   sut.assign(&buffer[0], buffer.size());
 
   // Verify the results for all of the fields.
-  //TS_ASSERT_EQUALS(k_White  , sut.table[0] );
-  //TS_ASSERT_EQUALS(k_Fuchsia, sut.table[1] );
-  //TS_ASSERT_EQUALS(k_Aqua   , sut.table[2] );
-  //TS_ASSERT_EQUALS(k_Yellow , sut.table[3] );
-  //TS_ASSERT_EQUALS(k_Purple , sut.table[4] );
-  //TS_ASSERT_EQUALS(k_Teal   , sut.table[5] );
-  //TS_ASSERT_EQUALS(k_Olive  , sut.table[6] );
-  //TS_ASSERT_EQUALS(k_Silver , sut.table[7] );
-  //TS_ASSERT_EQUALS(k_Blue   , sut.table[8] );
-  //TS_ASSERT_EQUALS(k_Lime   , sut.table[9] );
-  //TS_ASSERT_EQUALS(k_Red    , sut.table[10]);
-  //TS_ASSERT_EQUALS(k_Gray   , sut.table[11]);
-  //TS_ASSERT_EQUALS(k_Navy   , sut.table[12]);
-  //TS_ASSERT_EQUALS(k_Green  , sut.table[13]);
-  //TS_ASSERT_EQUALS(k_Maroon , sut.table[14]);
-  //TS_ASSERT_EQUALS(k_Black  , sut.table[15]);
+  TS_ASSERT_EQUALS(k_White  , sut.table[0] );
+  TS_ASSERT_EQUALS(k_Fuchsia, sut.table[1] );
+  TS_ASSERT_EQUALS(k_Aqua   , sut.table[2] );
+  TS_ASSERT_EQUALS(k_Yellow , sut.table[3] );
+  TS_ASSERT_EQUALS(k_Purple , sut.table[4] );
+  TS_ASSERT_EQUALS(k_Teal   , sut.table[5] );
+  TS_ASSERT_EQUALS(k_Olive  , sut.table[6] );
+  TS_ASSERT_EQUALS(k_Silver , sut.table[7] );
+  TS_ASSERT_EQUALS(k_Blue   , sut.table[8] );
+  TS_ASSERT_EQUALS(k_Lime   , sut.table[9] );
+  TS_ASSERT_EQUALS(k_Red    , sut.table[10]);
+  TS_ASSERT_EQUALS(k_Gray   , sut.table[11]);
+  TS_ASSERT_EQUALS(k_Navy   , sut.table[12]);
+  TS_ASSERT_EQUALS(k_Green  , sut.table[13]);
+  TS_ASSERT_EQUALS(k_Maroon , sut.table[14]);
+  TS_ASSERT_EQUALS(k_Black  , sut.table[15]);
 }
 
 

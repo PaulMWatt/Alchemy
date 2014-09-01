@@ -190,13 +190,6 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   void resize(size_t count, 
               const data_type& value)             { get().resize(count, value); }
 
-  // TODO: What is this about, correct or remove.
-  //  **************************************************************************
-  /// Returns the number of bytes that are required to hold this vector in a buffer.
-  /// 
-  size_t size_of() const                          { return sizeof(get()); }
-
-
   //  **************************************************************************
   /// Updates the value of this VectorProxy with a std::vector type. 
   /// 
