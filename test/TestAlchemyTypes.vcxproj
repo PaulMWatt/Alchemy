@@ -133,6 +133,7 @@ cd "../.."</Command>
     <ClInclude Include="..\meta\bit_field\basic_list.h" />
     <ClInclude Include="..\meta\bit_field\bit_field.h" />
     <ClInclude Include="..\meta\bit_field\bit_field_array.h" />
+    <ClInclude Include="..\meta\bit_field\bit_field_vector.h" />
     <ClInclude Include="..\meta\bit_field_list.h" />
     <ClInclude Include="..\meta\byte_order.h" />
     <ClInclude Include="..\meta\compiler.h" />

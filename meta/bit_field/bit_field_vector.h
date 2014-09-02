@@ -1,10 +1,10 @@
-/// @file bit_field_array.h
+/// @file bit_field_vector.h
 /// 
-/// Defines the BitFieldArray construct for Alchemy Message Fields.
+/// Defines the BitFieldVector construct for Alchemy Message Fields.
 /// This is a specialized meta object the keeps track of a series of bit-field 
 /// definitions for a message structure. 
 ///
-/// Note: Currently the array of bit-fields is inefficient due to the number
+/// Note: Currently the vector of bit-fields is inefficient due to the number
 ///       of temporary objects that are constructed. This sub-type will be
 ///       optimized after the first mile-stone release.
 ///       The optimization will require an alternative bit-field list implementation
@@ -14,13 +14,13 @@
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
-#ifndef BIT_FIELD_ARRAY_H_INCLUDED
-#define BIT_FIELD_ARRAY_H_INCLUDED
+#ifndef BIT_FIELD_VECTOR_H_INCLUDED
+#define BIT_FIELD_VECTOR_H_INCLUDED
 //  Includes ******************************************************************
 #include <meta/compiler.h>
 #include <meta/meta_util.h>
 #include <meta/bit_field_list.h>
-#include <array>
+#include <vector>
 
 
 namespace Hg
@@ -32,27 +32,27 @@ namespace Hg
 ///           
 /// This object requires a Hg bit-field definition for the type definition of
 /// this object. The base integer type that is defined for the bit-field 
-/// will be used to define the type for allocation of memory for the array.
+/// will be used to define the type for allocation of memory for the vector.
 /// 
-/// Each field allocated in the array will accessible either by the base
+/// Each field allocated in the vector will accessible either by the base
 /// integer type or with the bit-field interface provided supplied to the
 /// definition.
 ///
 template< typename T,
-          size_t   N
+          typename A = std::allocator<T>
         >
-struct BitFieldArray
-  : array_trait
+struct BitFieldVector
+  : vector_trait
 {
 public:
   //  Typedefs *****************************************************************
-  typedef BitFieldArray<T,N>            this_type;
+  typedef BitFieldVector<T,A>           this_type;
                                         ///< An alias for this classes definition.
 
   typedef T                             user_bit_field_type;
                                         ///< The type of bit-field interface 
                                         ///  defined by the user to access 
-                                        ///  individual value entries in the array.
+                                        ///  individual value entries in the vector.
 
   typedef typename
     DeclareBitFieldList
@@ -63,16 +63,16 @@ public:
 
   typedef typename
     T::value_type                       value_type;
-                                        ///< The data type managed by this Array.
+                                        ///< The data type managed by this vector.
                                         ///  This is the type of data that will 
                                         ///  be written to the attached buffer.
 
-  typedef std::array<value_type, N>     array_type;
+  typedef std::vector<value_type, A>    vector_type;
 
-  typedef typename                      ///  Reference to an element in the array.
+  typedef typename                      ///  Reference to an element in the vector.
     bit_field_type                      reference;
                                                                                 
-  typedef typename                      ///  Const Reference to an element in the array.
+  typedef typename                      ///  Const Reference to an element in the vector.
     const reference                     const_reference;
 
 
@@ -80,23 +80,23 @@ public:
   //       the user is actually receiving an iterator to an integer.
 
   typedef typename                      ///  An iterator to a value_type index.
-    array_type::iterator                iterator;
+    vector_type::iterator               iterator;
 
   typedef typename                      ///  A const iterator to a value_type index.
-    array_type::const_iterator          const_iterator;
+    vector_type::const_iterator         const_iterator;
 
   typedef typename                      ///  A reverse iterator to a value_type index.
-    array_type::reverse_iterator        reverse_iterator;
+    vector_type::reverse_iterator       reverse_iterator;
 
   typedef typename                      ///  A const reverse iterator to a value_type index.
-    array_type::const_reverse_iterator  const_reverse_iterator;
+    vector_type::const_reverse_iterator const_reverse_iterator;
 
 
   //  Construction *************************************************************
   //  **************************************************************************
   /// Default Constructor
   /// 
-  BitFieldArray()
+  BitFieldVector()
   {
     // TODO: Considering a compilation flag to not initialize buffers for performance conscieous users.
     std::fill(m_data.begin(), m_data.end(), value_type());
@@ -106,7 +106,7 @@ public:
   //  **************************************************************************
   /// Copy Constructor.
   /// 
-  BitFieldArray(const BitFieldArray &rhs)
+  BitFieldVector(const BitFieldVector &rhs)
   {
     std::copy( rhs.begin(), 
                rhs.end(), 
@@ -114,37 +114,19 @@ public:
   }
 
   //  **************************************************************************
-  /// Value constructor based on an array of raw integer type data.
-  /// 
-  BitFieldArray(const value_type (&rhs)[N])
-  {
-    ::memcpy(&m_data[0], &rhs[0], sizeof(value_type) * N);
-  }
-
-  //  **************************************************************************
   /// Destructor
   /// 
-  ~BitFieldArray()
+  ~BitFieldVector()
   { }
 
   //  **************************************************************************
   /// Assignment operator.
   /// 
-  BitFieldArray& operator=(const BitFieldArray &rhs)
+  BitFieldVector& operator=(const BitFieldVector &rhs)
   {
     std::copy( rhs.begin(), 
                rhs.end(), 
                begin());  
-    return *this;
-  }
-
-  //  **************************************************************************
-  /// Value Assignment operator (Assigns a raw array of the correct size.)
-  /// 
-  BitFieldArray& operator=(const value_type (&rhs)[N])
-  {
-    ::memcpy(&m_data[0], &rhs[0], sizeof(value_type) * N);
-
     return *this;
   }
 
@@ -173,7 +155,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Returns the number of elements within the array.
+  /// Returns the number of elements within the vector.
   /// 
   size_t size() const                             
   { 
@@ -181,7 +163,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Returns the number of bytes required to hold the entire array of data.
+  /// Returns the number of bytes required to hold the entire vector of data.
   /// 
   size_t data_size() const                        
   { 
@@ -191,11 +173,10 @@ public:
   //  **************************************************************************
   /// Conversion operator to the value_type reference.
   /// 
-  /// @note         The converted array interface provides direct access values.
+  /// @note         The converted vector interface provides direct access values.
   /// 
   operator reference()
   {
-// TODO: Investigate if this is necessary, and add the correct implementation.
     //return *static_cast<datum_type*>(this);
     return reference();
   }
@@ -213,7 +194,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Accesses the value at the specified index in the array data..
+  /// Accesses the value at the specified index in the vector data..
   /// 
   const_reference at(size_t idx) const            
   { 
@@ -226,7 +207,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Accesses the value at the specified index in the array data..
+  /// Accesses the value at the specified index in the vector data..
   /// 
   reference at(size_t idx)                        
   { 
@@ -234,7 +215,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Accesses the value at the specified index in the array data..
+  /// Accesses the value at the specified index in the vector data..
   /// 
   const_reference operator[](size_t idx) const
   { 
@@ -247,7 +228,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Accesses the value at the specified index in the array data..
+  /// Accesses the value at the specified index in the vector data..
   /// 
   reference operator[](size_t idx)                
   { 
@@ -255,7 +236,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Accesses the first value in the array data..
+  /// Accesses the first value in the vector data..
   /// 
   const_reference front() const
   { 
@@ -268,7 +249,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Accesses the first value in the array data..
+  /// Accesses the first value in the vector data..
   /// 
   reference front()                               
   { 
@@ -276,7 +257,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Accesses the last valid value in the array data..
+  /// Accesses the last valid value in the vector data..
   /// 
   const_reference back() const
   { 
@@ -289,7 +270,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Accesses the last valid value in the array data..
+  /// Accesses the last valid value in the vector data..
   /// 
   reference back()                                
   { 
@@ -298,38 +279,110 @@ public:
 
   //  Iterator Functions *******************************************************
   //  **************************************************************************
-  /// Returns an iterator to the first item in the array.
+  /// Returns an iterator to the first item in the vector.
   /// 
   iterator begin()                                { return m_data.begin();  }
   const_iterator begin()  const                   { return m_data.begin();  }
   const_iterator cbegin() const                   { return m_data.cbegin(); }
 
   //  **************************************************************************
-  /// Returns an iterator to the item one passed the end of the array.
+  /// Returns an iterator to the item one passed the end of the vector.
   /// 
   iterator end()                                  { return m_data.end();    }
   const_iterator end()  const                     { return m_data.end();    }
   const_iterator cend() const                     { return m_data.cend();   }
 
   //  **************************************************************************
-  /// Returns an iterator to the last item of the array moving in reverse.
+  /// Returns an iterator to the last item of the vector moving in reverse.
   /// 
   reverse_iterator rbegin()                       { return m_data.rbegin(); }
   const_reverse_iterator rbegin()  const          { return m_data.rbegin(); }
   const_reverse_iterator crbegin() const          { return m_data.crbegin();}
 
   //  **************************************************************************
-  /// Returns an iterator to the item one passed the beginning of the array,
+  /// Returns an iterator to the item one passed the beginning of the vector,
   /// moving in reverse.
   /// 
   reverse_iterator rend()                         { return m_data.rend();   }
   const_reverse_iterator rend()  const            { return m_data.rend();   }
   const_reverse_iterator crend() const            { return m_data.crend();  } 
 
+  //  Modifiers ****************************************************************
+  //  **************************************************************************
+  /// Removes the specified element from this container.
+  ///
+  /// @param pos    Iterator that points to the element to be removed.
+  ///
+  /// @return       The iterator that follows the last item removed is returned.
+  ///
+  /// @note         All iterators at or after this point of erasure will be
+  ///               invalidated.
+  ///
+  iterator erase(iterator pos)                    { return m_data.erase(pos);   }
+
+  //  **************************************************************************
+  /// Removes the range of specified elements from this container.
+  ///
+  /// @param first  Iterator that points to the first element to be removed.
+  /// @param last   Iterator that points to the last element to be removed.
+  ///
+  /// @return       The iterator that follows the last item removed is returned.
+  ///
+  /// @note         All iterators at or after this point of erasure will be
+  ///               invalidated.
+  ///
+  iterator erase(iterator first, iterator last)   { return m_data.erase(first, last);}
+
+  //  **************************************************************************
+  /// Removes the specified element from this container.
+  ///
+  /// @param pos    Iterator that points to the element to be removed.
+  ///
+  /// @return       The iterator that follows the last item removed is returned.
+  ///
+  /// @note         All iterators at or after this point of erasure will be
+  ///               invalidated.
+  ///
+  void push_back(const vector_type& value)        { m_data.push_back(value);   }
+
+  //  **************************************************************************
+  /// Removes the last element in the container.
+  ///
+  /// @note: Iterators that point to the last element and end will be 
+  ///        invalidated after this call.
+  ///
+  void pop_back()                                 { if (!m_data.empty()) {
+                                                      m_data.pop_back(); 
+                                                    }
+                                                  }
+
+  //  **************************************************************************
+  /// Exchanges the contents of this BitFieldVector container with those of other.
+  /// This version does not invoke any move, copy, or swap operations on
+  /// the individual elements.
+  ///
+  /// Iterators and references will remain valid, with the exception to the
+  /// end iterators.
+  ///
+  /// @param other    The other vector to swap elements.
+  ///
+  void swap(BitFieldVector& other)                 { m_data.swap(other.m_data); }
+
+  //  **************************************************************************
+  /// Exchanges the contents of the container with those of other.
+  /// This version does not invoke any move, copy, or swap operations on
+  /// the individual elements.
+  ///
+  /// Iterators and references will remain valid, with the exception to the
+  /// end iterators.
+  ///
+  /// @param other    The other vector to swap elements.
+  ///
+  void swap(value_type& other)                    { m_data.swap(other);   }
 
 private:
   //  Data Members *************************************************************
-  array_type                  m_data;   ///< The data buffers that hold the 
+  vector_type                 m_data;   ///< The data buffers that hold the 
                                         ///  raw values for the collection of
                                         ///  bit-fields.
 };

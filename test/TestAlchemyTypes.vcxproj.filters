@@ -284,6 +284,9 @@
     <ClInclude Include="Src\TestBitFieldArray.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
+    <ClInclude Include="..\meta\bit_field\bit_field_vector.h">
+      <Filter>Header Files\Alchemy\Meta\bit_field</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\TestAlchemyTypesRunner.cpp">
