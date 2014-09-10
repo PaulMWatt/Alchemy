@@ -11,12 +11,14 @@
 #include <meta/meta_fwd.h>
 #include <Hg/msg_buffer.h>
 #include <meta/bit_field/bit_field_array.h>
+#include <meta/bit_field/bit_field_vector.h>
 
 namespace Hg
 {
 
 namespace detail
 {
+
 //  ****************************************************************************
 /// Type definition that indicates the parameterized-type
 /// located at an index in a type container.
@@ -36,6 +38,7 @@ struct field_data_t
                                         ///  the same type as the index type.
 };
 
+
 //  ****************************************************************************
 /// Generalized copy function for message field value types.
 ///
@@ -48,13 +51,14 @@ void copy_value_type(T& to, const T& from)
   to = from;
 }
 
+
 //  ****************************************************************************
-/// (Dynamic-Array Specialization) Type definitions for field in type-container.
+/// (Static-Array Specialization) Type definitions for bit-fields in type-container.
 ///
 /// @param SubTypeT           [typename] This parameterized type declares the
-///                           sub-type of the vector defined at the location 
+///                           sub-type of the array defined at the location 
 ///                           in the parent type container.
-/// @param AllocT             [typename] The defined allocator of the vector.
+/// @param N                  [size_t] The number of elements in the array.
 ///
 template< typename SubTypeT,
           size_t   N
@@ -64,22 +68,68 @@ struct field_data_t < Hg::BitFieldArray<SubTypeT, N> >
   typedef 
     SubTypeT                            sub_type;
 
-  //typedef typename 
-  //  field_data_t<sub_type>::value_type  value_sub_type;
-
   typedef 
     Hg::BitFieldArray<SubTypeT, N>      value_type;
-  
-  //typedef typename
-  //  std::conditional
-  //    < nested_value<sub_type>::value,
-  //      std::vector< value_sub_type, AllocT>,
-  //      std::vector< sub_type, AllocT>
-  //    >::type                           value_type;
-                                        ///< The proper value_type definition
-                                        ///  deduced from the type-container
-                                        ///  and the specified array sub-type.
 };
+
+
+//  ****************************************************************************
+/// (Fixed-Array Specialization) To copy from one instance to another.
+///
+/// @paramt SubTypeT          [typename] This parameterized type declares the
+///                           sub-type of the array defined at the location 
+///                           in the parent type container.
+/// @paramt N                 [size_t] The number of elements in the array.
+///
+template< typename SubTypeT,
+          size_t   N
+        >
+void copy_value_type(       BitFieldArray<SubTypeT, N>& to, 
+                      const BitFieldArray<SubTypeT, N>& from)
+{
+  std::copy(from.begin(), from.end(), to.begin());
+}
+
+
+//  ****************************************************************************
+/// (Dynamic-Array Specialization) Type definitions for bit-field in type-container.
+///
+/// @param SubTypeT           [typename] This parameterized type declares the
+///                           sub-type of the vector defined at the location 
+///                           in the parent type container.
+/// @param AllocT             [typename] The defined allocator of the vector.
+///
+template< typename SubTypeT,
+          typename AllocT
+        >
+struct field_data_t < Hg::BitFieldVector<SubTypeT, AllocT> >
+{
+  typedef 
+    SubTypeT                                      sub_type;
+
+  typedef 
+    Hg::BitFieldVector<SubTypeT, AllocT>          value_type;
+};
+
+
+//  ****************************************************************************
+/// (Dynamic-Array Specialization) To copy from one instance to another.
+///
+/// @param SubTypeT           [typename] This parameterized type declares the
+///                           sub-type of the vector defined at the location 
+///                           in the parent type container.
+/// @param AllocT             [typename] The defined allocator of the vector.
+///
+template< typename SubTypeT,
+          typename AllocT
+        >
+void copy_value_type(       BitFieldVector<SubTypeT, AllocT>& to, 
+                      const BitFieldVector<SubTypeT, AllocT>& from)
+{
+  // Empty the existing elements before inserting the new data.
+  to.clear();
+  //std::copy(from.begin(), from.end(), std::back_inserter(to));
+}
 
 
 //  ****************************************************************************
@@ -165,6 +215,7 @@ struct field_data_t < std::vector<SubTypeT, AllocT> >
                                         ///  and the specified array sub-type.
 };
 
+
 //  ****************************************************************************
 /// (Dynamic-Array Specialization) To copy from one instance to another.
 ///
@@ -183,6 +234,7 @@ void copy_value_type(       std::vector<SubTypeT, AllocT>& to,
   to.clear();
   std::copy(from.begin(), from.end(), std::back_inserter(to));
 }
+
 
 //  ****************************************************************************
 /// Provides the index and data field type definitions.
