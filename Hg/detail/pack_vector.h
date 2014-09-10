@@ -44,38 +44,6 @@ template< typename VectorT,
           typename TraitT
         >
 struct Serializer;
-//{
-//  typedef VectorT                       vector_type;
-//
-//  typedef typename
-//    vector_type::value_type             value_type;
-//
-//  typedef BufferT                       buffer_type;
-//
-//  typedef TraitT                        data_type_trait;
-//
-//  // TODO: These types should appear in this version:
-//  //       - fundamental_trait
-//
-//  //  **************************************************************************
-//  size_t Write( vector_type   &value, 
-//                buffer_type   &buffer,
-//                size_t         offset)
-//  {
-//    // Calculate the size of data to write in bytes.
-//    size_t size = value.size() * sizeof(value_type);
-//
-//    const value_type *pFirst = &value[0];
-//    const value_type *pLast  = pFirst;
-//    std::advance(pLast, size);
-//    buffer.set_range( pFirst, 
-//                      pLast, 
-//                      offset);
-//
-//    return size;
-//  }
-//};
-
 //  ****************************************************************************
 //  Exports data from the vector for fixed-size fundamental types.
 //
@@ -98,8 +66,8 @@ struct Serializer <VectorT, BufferT, fundamental_trait>
 
   //  **************************************************************************
   size_t Write( vector_type   &value, 
-                buffer_type         &buffer,
-                size_t              offset)
+                buffer_type   &buffer,
+                size_t        offset)
   {
     // Calculate the size of data to write in bytes.
     size_t size = value.size() * sizeof(value_type);
@@ -240,17 +208,6 @@ struct Serializer <std::vector<ValueT, AllocatorT>, BufferT, array_trait>
       < value_type >::type              data_type_trait;
 
   //  **************************************************************************
-// TODO: Not used, but cannot remove until the template parameter is removed.
-  //template <typename TraitT>
-  //size_t Write( vector_type    &value, 
-  //              buffer_type    &buffer,
-  //              size_t          offset)
-  //{
-  //  return SerializeInBulk(value, buffer, offset);
-  //}  
-  //template <>
-  //size_t Write<array_trait> ( vector_type    &value, 
-
   size_t Write( vector_type   &items, 
                 buffer_type   &buffer,
                 size_t         offset)
@@ -258,6 +215,7 @@ struct Serializer <std::vector<ValueT, AllocatorT>, BufferT, array_trait>
     return SerializeByItem(items, buffer, offset);
   }  
 
+  //  **************************************************************************
   size_t Write( value_type  &value, 
                 buffer_type &buffer,
                 size_t       offset)
@@ -289,16 +247,6 @@ struct Serializer <std::vector<ValueT, AllocatorT>, BufferT, vector_trait>
   typedef typename 
     Hg::detail::DeduceTypeTrait
       < value_type >::type              data_type_trait;
-
-  //  **************************************************************************
-// TODO: Not used, but cannot remove until the template parameter is removed.
-  //template <typename TraitT>
-  //size_t Write( vector_type  &value, 
-  //              buffer_type  &buffer,
-  //              size_t        offset)
-  //{
-  //  return SerializeInBulk(value, buffer, offset);
-  //}  
 
   //  **************************************************************************
   size_t Write( vector_type  &value, 
@@ -401,25 +349,9 @@ size_t SerializeByItem( std::vector<T,A>  &value,
     Hg::detail::DeduceTypeTrait
       < data_type >::type               data_type_trait;
 
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < vector_type >::type             vector_type_trait;
-
-  //Vector::Serializer< data_type, 
-  //                    BufferT, 
-  //                    data_type_trait>  serializer;
-
-  //Vector::Serializer< data_type, 
-  //                    BufferT, 
-  //                    vector_type_trait>  serializer;
-
   Vector::Serializer< vector_type, 
                       BufferT, 
                       data_type_trait>  serializer;
-
-  //Vector::Serializer< vector_type, 
-  //                    BufferT, 
-  //                    vector_type_trait>  serializer;
 
   size_t bytes_written = 0;
 
@@ -471,8 +403,6 @@ size_t SerializeVector (VectorT<T, A> &value,
                       BufferT, 
                       value_type_trait
                     >                   serializer_t;
-  typedef typename
-    serializer_t::data_type_trait       data_type_trait;
 
   serializer_t serializer;
   return serializer.Write(value, buffer, offset);
