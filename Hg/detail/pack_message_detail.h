@@ -15,10 +15,6 @@
 # error Do not include this file directly. Use <detail/pack_message.h> instead
 #endif
 
-//  Includes *******************************************************************
-//#include <Hg/msg_def.h>
-//#include <Hg/msg_buffer.h>
-
 namespace Hg
 {
 
@@ -49,9 +45,9 @@ struct PackDatum
   //  @param dynamic_size An additional offset for messages with dynamically 
   //                      sized fields.
   //
-  void operator()(const MessageT &msg,
-                        BufferT  &buffer,
-                        size_t    dynamic_offset)
+  void operator()(MessageT &msg,
+                  BufferT  &buffer,
+                  size_t    dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType 
@@ -63,11 +59,12 @@ struct PackDatum
     typedef typename
       proxy_type::value_type                      value_type;
 
-    value_type value  = const_cast<MessageT&>(msg).template FieldAt<IdxT>().get();
+    value_type value  = msg.template FieldAt<IdxT>().get();
     size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
                       + dynamic_offset;
     buffer.set_data(value, offset);
   }
+
 };
 
 
@@ -78,9 +75,9 @@ template< size_t   IdxT,
           typename MessageT,
           typename BufferT
         >
-void WriteDatum(const MessageT& message, 
-                      BufferT&  buffer, 
-                      size_t&   dynamic_offset)
+void WriteDatum(MessageT& message, 
+                BufferT&  buffer, 
+                size_t&   dynamic_offset)
 {
   typedef typename
     Hg::detail::DeduceProxyType < IdxT,
@@ -114,26 +111,26 @@ template <size_t    Idx,
          >
 struct PackMessageWorker
 { 
-  void operator()(const MessageT &msg,
-                        BufferT  &buffer)
+  void operator()(MessageT &message,
+                  BufferT  &buffer)
   {
     // Write the current value, then move to the next value for the message.
     size_t dynamic_offset = 0;
-    WriteDatum< Idx, MessageT, BufferT>(msg, buffer,dynamic_offset);
+    WriteDatum< Idx, MessageT, BufferT>(message, buffer,dynamic_offset);
 
     PackMessageWorker < Idx+1, Count, MessageT, BufferT> pack;
-    pack(msg, buffer);
+    pack(message, buffer);
   }
 
-  void operator()(const MessageT &msg,
-                        BufferT  &buffer,
-                        size_t   &dynamic_offset)
+  void operator()(MessageT &message,
+                  BufferT  &buffer,
+                  size_t   &dynamic_offset)
   {
     // Write the current value, then move to the next value for the message.
-    WriteDatum< Idx, MessageT, BufferT>(msg, buffer, dynamic_offset);
+    WriteDatum< Idx, MessageT, BufferT>(message, buffer, dynamic_offset);
 
     PackMessageWorker < Idx+1, Count, MessageT, BufferT> pack;
-    pack(msg, buffer, dynamic_offset);
+    pack(message, buffer, dynamic_offset);
   }
 };
 
@@ -151,13 +148,13 @@ struct PackMessageWorker< Idx,
                           BufferT
                         >
 { 
-  void operator()(const MessageT& msg, 
-                        BufferT& buffer)
+  void operator()(MessageT& msg, 
+                  BufferT& buffer)
   { }
 
-  void operator()(const MessageT& msg, 
-                        BufferT& buffer,
-                        size_t   dynamic_offset)
+  void operator()(MessageT& msg, 
+                  BufferT& buffer,
+                  size_t   dynamic_offset)
   { }
 };
 
@@ -178,7 +175,7 @@ template< typename MessageT,
         >
 std::shared_ptr<BufferT>
   pack_message( MessageT& msg_values, 
-                size_t    size,
+                size_t          size,
                 const static_size_trait&)
 {
   // Allocate a new buffer manager.
@@ -209,9 +206,9 @@ std::shared_ptr<BufferT>
 template< typename MessageT,
           typename BufferT
         >
-size_t pack_message(MessageT &msg_values,
-                    BufferT  &buffer,
-                    size_t    offset, 
+size_t pack_message(MessageT  &msg_values,
+                    BufferT   &buffer,
+                    size_t     offset, 
                     const static_size_trait&)
 {
   // Calculate the number of bytes that is expected to be written.
@@ -255,8 +252,8 @@ template< typename MessageT,
           typename BufferT
         >
 std::shared_ptr<BufferT>
-  pack_message( MessageT& msg_values, 
-                size_t    size,
+  pack_message( MessageT  &msg_values, 
+                size_t          size,
                 const dynamic_size_trait&)
 {
   // Allocate a new buffer manager.
@@ -290,8 +287,8 @@ std::shared_ptr<BufferT>
 template< typename MessageT,
           typename BufferT
         >
-size_t pack_message(MessageT &msg_values,
-                    BufferT  &buffer,
+size_t pack_message(MessageT  &msg_values,
+                    BufferT   &buffer,
                     size_t    offset,
                     const dynamic_size_trait&)
 {

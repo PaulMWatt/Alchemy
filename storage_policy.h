@@ -69,7 +69,7 @@ struct StoragePolicy
 {
   typedef unsigned char                 data_type;
   typedef data_type*                    pointer;
-  typedef const pointer                 const_pointer;
+  typedef const data_type*              const_pointer;
   typedef std::shared_ptr<data_type>    s_pointer;
   typedef std::weak_ptr<data_type>      w_pointer;
   

@@ -105,21 +105,60 @@ struct BasicBitList
   //  **************************************************************************
   //  Returns the value of the entire storage buffer.
   // 
-  value_type value()
+  const value_type& value() const
   { 
-    return m_data; 
+    return *m_pData; 
   }
 
-  value_type            &m_data;
+  //  **************************************************************************
+  //  Returns the value of the entire storage buffer.
+  // 
+  value_type& value()
+  { 
+    return *m_pData; 
+  }
+
+  //  **************************************************************************
+  //  Sets the value of the entire storage buffer.
+  // 
+  void value(value_type value)
+  { 
+    *m_pData = value; 
+  }
+
+  //  **************************************************************************
+  //  Attaches an externally referenced data buffer for storage.
+  //
+  void set_buffer(value_type &buffer)
+  { 
+    m_pData = &buffer; 
+  }
 
 protected:
+  //  Member Data **************************************************************
+
+  value_type            *m_pData;       // Points to the local buffer that 
+                                        // stores the values for the proxy.
+                                        // This type must be a pointer as opposed
+                                        // to a reference because of containers
+                                        // such as the array that allocate in bulk,
+                                        // they can only use the default constructor.
+
+                                        //   TODO: Would like to explore options 
+                                        //   for removing this data fields
+                                        //   without adding buffer validity tests.
+
+  value_type            temp_data;      // The MT data value field 
+                                        // provides a location to reference
+                                        // for the default constructor.
+
   //  **************************************************************************
   //  Default Constructor
   //  Prevent direct creation of this class; must use a derived class.
   // 
   BasicBitList()
-    : m_data(empty_data)
-    , empty_data(0)
+    : m_pData(&temp_data)
+    , temp_data(0)
   { }
 
   //  **************************************************************************
@@ -127,15 +166,12 @@ protected:
   //  Prevent direct creation of this class; must use a derived class.
   // 
   BasicBitList(value_type &data_field)
-    : m_data(data_field)
-  { }
-                                        //   TODO: Would like to explore options 
-                                        //   for removing this data fields
-                                        //   without adding buffer validity tests.
+    : temp_data(0)
 
-  value_type            empty_data;     // The MT data value field 
-                                        // provides a location to reference
-                                        // for the default constructor.
+  { 
+    m_pData = &data_field;
+  }
+
 
   //  **************************************************************************
   //  Endian swap provides a specialization to handle the unique structure 

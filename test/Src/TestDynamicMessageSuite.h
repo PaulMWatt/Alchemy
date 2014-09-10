@@ -59,7 +59,7 @@ HG_BEGIN_FORMAT(no_dyn_format_t)
   HG_DATUM ((std::array<uint32_t,20>),  arry_3)
 HG_END_FORMAT
 
-typedef no_dyn_format_tFormat<0> no_dyn_type;
+typedef no_dyn_format_t_HgFormat<0> no_dyn_type;
 
 //  ****************************************************************************
 //  A type list used to create a basic message with a dynamic value.
@@ -79,7 +79,7 @@ HG_BEGIN_FORMAT(dyn_basic_format_t)
   HG_DATUM (uint32_t,                 word_2)
 HG_END_FORMAT
 
-typedef dyn_basic_format_tFormat<0> dyn_basic_type;
+typedef dyn_basic_format_t_HgFormat<0> dyn_basic_type;
 
 //  ****************************************************************************
 //  A type list used to create the base message field.
@@ -113,7 +113,7 @@ HG_BEGIN_FORMAT(dyn_test_format_t)
   HG_DATUM    (uint32_t,            word_2)
 HG_END_FORMAT
 
-typedef dyn_test_format_tFormat<0> dyn_message_type;
+typedef dyn_test_format_t_HgFormat<0> dyn_message_type;
 
 } // namespace Hg
 

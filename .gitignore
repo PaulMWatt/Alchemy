@@ -34,3 +34,5 @@ test/Src/Generated/TestAlchemyTypesRunner.cpp
 test/Src/Generated/TestAlchemyTypesRunner.cpp
 *.i
 *.user
+*.sdf
+Tests/HgTypeListTestSuite/Src/Generated/HgTypeListTestSuiteRunner.cpp

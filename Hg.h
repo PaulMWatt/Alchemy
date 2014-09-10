@@ -74,9 +74,9 @@ public:
   typedef typename 
     storage_type::data_type                   data_type;
   typedef data_type*                          pointer;
-  typedef const pointer                       const_pointer;
-  typedef message_type&                       reference;
-  typedef const reference                     const_reference;
+  typedef const data_type*                    const_pointer;
+  typedef MessageT&                           reference;
+  typedef const MessageT&                     const_reference;
 
   typedef ByteOrderT                          byte_order_type;
 
@@ -281,12 +281,9 @@ public:
   ///
   const_pointer data() const
   {
-// TODO: Add code to determine of the data has changed from the Datum obects, and only allocate adn write if teh buffer is dirty.
     Message *pThis = const_cast<Message*>(this);
-    pThis->m_spMsgBuffer = pack_message < message_type, 
-                                          buffer_type,
-                                          size_trait
-                                        >(pThis->values(), size());
+    pThis->pack_data();
+
     return m_spMsgBuffer->data();
   }
 
@@ -295,6 +292,17 @@ private:
   //  Private Data Members *****************************************************
   buffer_sptr       m_spMsgBuffer;
 
+  //  **************************************************************************
+  /// Returns a pointer to the memory buffer that contains the packed message.
+  ///
+  void pack_data()
+  {
+// TODO: Add code to determine of the data has changed from the Datum obects, and only allocate adn write if teh buffer is dirty.
+    m_spMsgBuffer = pack_message < message_type, 
+                                   buffer_type,
+                                   size_trait
+                                 >(values(), size());
+  }
 
   // Give friendship to message instantiations of other types for conversion.
   // Conversion between ByteOrderT has been provided.

@@ -66,6 +66,9 @@ public:
                                         ///< The data type managed by this vector.
                                         ///  This is the type of data that will 
                                         ///  be written to the attached buffer.
+  typedef A                             allocator_type;
+                                        ///< The allocator used by this vector.
+
 
   typedef std::vector<value_type, A>    vector_type;
 
@@ -144,6 +147,14 @@ public:
   value_type* data()                              
   { 
     return &m_data[0]; 
+  }
+
+  //  **************************************************************************
+  /// Erases every element in the vector.
+  /// 
+  void clear()
+  {
+    m_data.clear();  
   }
 
   //  **************************************************************************

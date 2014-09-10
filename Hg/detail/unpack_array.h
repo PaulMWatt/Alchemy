@@ -98,8 +98,6 @@ struct Deserializer
 };
 
 
-
-
 //  ****************************************************************************
 //  Imports an array of bit-list fields.
 //
@@ -111,12 +109,9 @@ struct Deserializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
   : public std::integral_constant<size_t, N>
 {
   typedef Hg::BitFieldArray<T,N>        array_type;
-
   typedef typename
     array_type::value_type              value_type;
-
   typedef BufferT                       buffer_type;
-
   typedef bitfield_trait                data_type_trait;
 
   //  **************************************************************************
@@ -165,12 +160,8 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
   : public std::integral_constant<size_t, N>
 {
   typedef std::array<T,N>               array_type;
-
-  typedef typename
-    array_type::value_type              value_type;
-
+  typedef T                             value_type;
   typedef BufferT                       buffer_type;
-
   typedef nested_trait                  data_type_trait;
 
   //  **************************************************************************
@@ -185,30 +176,32 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
       return 0;
     }
 
-    // An important typedef for selecting the proper
-    // version of the unpack function for the sub-elements.
-    typedef typename
-      message_size_trait<value_type::format_type>::type     size_trait;
+    //// An important typedef for selecting the proper
+    //// version of the unpack function for the sub-elements.
+    //typedef typename
+    //  message_size_trait<value_type::format_type>::type     size_trait;
 
-    size_t bytes_written = 0;
+    //size_t bytes_written = 0;
 
-    // Process each item individually.
-    for (size_t index = 0; index < count; ++index)
-    {
-      // The offset for each item progressively increases
-      // by the number of bytes read from the input buffer.
-      size_t item_offset = offset + bytes_written;
+    //// Process each item individually.
+    //for (size_t index = 0; index < count; ++index)
+    //{
+    //  // The offset for each item progressively increases
+    //  // by the number of bytes read from the input buffer.
+    //  size_t item_offset = offset + bytes_written;
 
-      size_t read_len =
-        unpack_message< value_type,
-                        buffer_type,
-                        size_trait
-                      >(value[index], buffer, item_offset);
+    //  size_t read_len =
+    //    unpack_message< value_type,
+    //                    buffer_type,
+    //                    size_trait
+    //                  >(value[index], buffer, item_offset);
 
-      bytes_written += read_len;
-    }
+    //  bytes_written += read_len;
+    //}
 
-    return bytes_written;
+    //return bytes_written;
+
+    return 0;
   }  
 };
 
@@ -224,8 +217,7 @@ template< typename T,
 struct Deserializer <std::array<T,N>, BufferT, array_trait>
   : public std::integral_constant<size_t, N>
 {
-  typedef typename
-    std::array<T,N>                     array_type;
+  typedef std::array<T,N>               array_type;
 
   typedef typename
     array_type::value_type              value_type;
@@ -268,9 +260,7 @@ struct Deserializer <std::array<T,N>, BufferT, vector_trait>
   : public std::integral_constant<size_t, N>
 {
   typedef std::array<T,N>               array_type;
-  typedef typename
-    array_type::value_type              value_type;
-
+  typedef T                             value_type;
   typedef BufferT                       buffer_type;
 
   // The next step discriminates on the value_type managed
@@ -325,14 +315,15 @@ struct Deserializer <std::array<T,N>, BufferT, vector_trait>
 //  **************************************************************************
 //  This version reads all of the items to the buffer at once.
 //
-template< typename ValueT,
-          typename BufferT
+template< class   T,
+          size_t  N,
+          class   BufferT
         >
-size_t DeserializeInBulk( ValueT     &value, 
-                          BufferT    &buffer,
-                          size_t      offset)
+size_t DeserializeInBulk( std::array<T,N> &value, 
+                          BufferT         &buffer,
+                          size_t          offset)
 {
-  typedef ValueT                        array_type;
+  typedef std::array<T,N>               array_type;
 
   typedef typename
     array_type::value_type              data_type;
@@ -381,14 +372,15 @@ size_t DeserializeInBulk( ValueT     &value,
 //  ValueT        Must be a type that contains a sub-type defined as value_type.
 //                Such as std::vector or std::array
 //
-template< typename ValueT,
-          typename BufferT
+template< class   T,
+          size_t  N,
+          class   BufferT
         >
-size_t DeserializeByItem( ValueT     &value, 
-                          BufferT    &buffer,
-                          size_t      offset)
+size_t DeserializeByItem( std::array<T,N> &value, 
+                          BufferT         &buffer,
+                          size_t          offset)
 {
-  typedef ValueT                        array_type;
+  typedef std::array<T,N>               array_type;
 
   typedef typename
     array_type::value_type              data_type;
@@ -426,9 +418,9 @@ size_t DeserializeByItem( ValueT     &value,
 //  ****************************************************************************
 //  Adapter function to simplify deserializing a buffer from an array-field.
 //
-template< typename T,
-          size_t   N,
-          typename BufferT,
+template< class     T,
+          size_t    N,
+          class     BufferT,
           template <typename, size_t> class ArrayT
         >
 size_t DeserializeArray ( ArrayT<T, N> &value,
@@ -472,7 +464,10 @@ template< size_t   IdxT,
           typename MessageT,
           typename BufferT
         >
-struct UnpackDatum<IdxT, MessageT, BufferT, array_trait>
+struct UnpackDatum< IdxT, 
+                    MessageT, 
+                    BufferT, 
+                    array_trait>
 {
   //  Typedefs *****************************************************************
   typedef typename

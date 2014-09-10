@@ -95,6 +95,9 @@ public:
   void Test_write_array_of_vectors(void);
   void Test_read_array_of_vectors(void);
 
+  void Test_write_vector_fundamental(void);
+  void Test_read_vector_fundamental(void);
+
   void Test_write_vector_with_nested_fixed_size(void);
   void Test_read_vector_with_nested_fixed_size(void);
 
@@ -134,7 +137,7 @@ namespace fixed_array
 {
 namespace bit_list
 {
-typedef Hg::Message<Hg::color_map_tFormat<0> >    MsgColorMap;
+typedef Hg::Message<Hg::color_map_t_HgFormat<0> > MsgColorMap;
 typedef MsgColorMap                               SUT;
 
 //  ************************************
@@ -260,13 +263,11 @@ namespace Hg {
 
 typedef TypeList
 <
-  uint16_t,                       // size:          =  2
-  std::vector<pt3d_t>             // size: (3 * 4)  = 12
-> points_t;                       // total:         = 14
+  std::array<pt3d_t,3>            // size: (3 * 4)  = 12
+> points_t;                       // total:         = 12
 
 HG_BEGIN_FORMAT(points_t)
-  HG_DATUM   (uint16_t, count)
-  HG_DYNAMIC (pt3d_t,   count, pts)
+  HG_ARRAY (pt3d_t, 3, pts)
 HG_END_FORMAT
 
 
@@ -280,21 +281,13 @@ namespace nested
 {
 namespace fixed
 {
-typedef Hg::Message<Hg::points_tFormat<0> >    MsgPoints;
-typedef MsgPoints                              SUT;
-
-const   size_t k_count = 3;
+typedef Hg::Message<Hg::points_t_HgFormat<0> >    MsgPoints;
+typedef MsgPoints                                 SUT;
 
 //  ************************************
 void make_buffer(byte_vector &buffer)
 {
   using namespace test::data;
-
-  // allocate space for the size fields (2-bytes).
-  buffer.resize(sizeof(uint16_t));
-
-  uint16_t count = k_count;
-  ::memcpy(&buffer[0], &count, sizeof(count));
 
   // to_buffer allocates its own space for the vector.
   to_buffer(k_eight_pts[0], buffer);
@@ -306,9 +299,6 @@ void make_buffer(byte_vector &buffer)
 void populate_msg(SUT &msg)
 {
   using namespace test::data;
-
-  msg.count = k_count;
-  msg.pts.resize(msg.count);
 
   msg.pts[0].X   = k_eight_pts[0].X;
   msg.pts[0].Y   = k_eight_pts[0].Y;
@@ -333,13 +323,43 @@ void populate_msg(SUT &msg)
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_array_of_arrays(void)
 {
+  using namespace test::nested::fixed;
 
+  // Place them in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the SUT with the test values.
+  SUT sut;
+  populate_msg(sut);
+
+  // SUT: Serialize into a buffer.
+  uint8_t const* pData = sut.data();
+
+  TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
 }
 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_read_array_of_arrays(void)
 {
+  using namespace test::nested::fixed;
+  using namespace test::data;
 
+  // Place three points in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the expected structure for comparison.
+  MsgPoints expected;
+  populate_msg(expected);
+
+  // SUT
+  SUT sut;
+  sut.assign(&buffer[0], buffer.size());
+
+  //// Verify the results for all of the fields.
+  
 }
 
 //  ****************************************************************************
@@ -364,9 +384,194 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_vectors(void)
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
+//  ****************************************************************************
+
+namespace Hg {
+
+typedef TypeList
+<
+  uint8_t,
+  std::vector<char>            
+> vstr_t;
+
+HG_BEGIN_FORMAT(vstr_t)
+  HG_DATUM   (uint8_t,  len)
+  HG_DYNAMIC (char,     len, str)
+HG_END_FORMAT
+
+} // namespace Hg
+
+//  Nested-Fixed sub-fields ****************************************************
+namespace test
+{
+namespace dynamic
+{
+namespace fundamental
+{
+typedef Hg::Message<Hg::vstr_t_HgFormat<0> >   MsgStr;
+typedef MsgStr                                 SUT;
+
+const char   k_test_str[] = "- Happy Fun Ball -";
+const size_t k_count      = ::strlen(k_test_str);
+
+//  ************************************
+void make_buffer(byte_vector &buffer)
+{
+  using namespace test::data;
+
+  uint8_t len = ::strlen(k_test_str);
+  buffer.push_back(len);
+
+  const char* pFirst = &k_test_str[0];
+  const char* pLast  = pFirst;
+  std::advance(pLast, len);
+
+  std::copy(pFirst, pLast, std::back_inserter(buffer));
+}
+
+//  ************************************
+void populate_msg(SUT &msg)
+{
+  using namespace test::data;
+
+  msg.len = ::strlen(k_test_str);
+  msg.str.resize(msg.len);
+
+  ::memcpy(&msg.str[0], k_test_str, msg.len);
+}
+
+
+} // namespace fundamental
+} // namespace dynamic
+} // namespace test
+
+
+
+//  ****************************************************************************
+void TestFocusedDynamicMessageSuite::Test_write_vector_fundamental(void)
+{
+  using namespace test::dynamic::fundamental;
+  using namespace test;
+
+  // Place them in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the SUT with the test values.
+  SUT sut;
+  populate_msg(sut);
+
+  // SUT: Serialize into a buffer.
+  uint8_t const* pData = sut.data();
+
+  TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+}
+
+//  ****************************************************************************
+void TestFocusedDynamicMessageSuite::Test_read_vector_fundamental(void)
+{
+  using namespace test::dynamic::fundamental;
+  using namespace test;
+
+  // Place three points in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the expected structure for comparison.
+  MsgStr expected;
+  populate_msg(expected);
+
+  // SUT
+  SUT sut;
+  sut.assign(&buffer[0], buffer.size());
+
+  // Verify the results for all of the fields.
+  TS_ASSERT_EQUALS(k_count, sut.len);
+  // Verify the sequence of bytes after the first, which is the count.
+  TS_ASSERT_SAME_DATA(&buffer[1], &sut.str[0], k_count);
+}
+
+
+namespace Hg {
+
+typedef TypeList
+<
+  uint16_t,
+  std::vector<pt3d_t>            
+> vpoints_t;
+
+HG_BEGIN_FORMAT(vpoints_t)
+  HG_DATUM   (uint16_t, count)
+  HG_DYNAMIC (pt3d_t,   count, pts)
+HG_END_FORMAT
+
+
+} // namespace Hg
+
+
+//  Nested-Fixed sub-fields ****************************************************
+namespace test
+{
+namespace dynamic
+{
+namespace nested
+{
+namespace fixed
+{
+typedef Hg::Message<Hg::vpoints_t_HgFormat<0> >   MsgPoints;
+typedef MsgPoints                                 SUT;
+
+// 2 for count field, 3 * 4 for data = 14
+const size_t k_buffer_size  = 14;
+const size_t k_count        = 3;
+
+//  ************************************
+void make_buffer(byte_vector &buffer)
+{
+  using namespace test::data;
+
+  buffer.resize(2);
+  ::memcpy(&buffer[0], &k_count, sizeof(uint16_t));
+
+  // to_buffer allocates its own space for the vector.
+  to_buffer(k_eight_pts[0], buffer);
+  to_buffer(k_eight_pts[1], buffer);
+  to_buffer(k_eight_pts[2], buffer);
+}
+
+//  ************************************
+void populate_msg(SUT &msg)
+{
+  using namespace test::data;
+
+  msg.count = k_count;
+  msg.pts.resize(k_count);
+
+  msg.pts[0].X   = k_eight_pts[0].X;
+  msg.pts[0].Y   = k_eight_pts[0].Y;
+  msg.pts[0].Z   = k_eight_pts[0].Z;
+  
+  msg.pts[1].X   = k_eight_pts[1].X;
+  msg.pts[1].Y   = k_eight_pts[1].Y;
+  msg.pts[1].Z   = k_eight_pts[1].Z;
+
+  msg.pts[2].X   = k_eight_pts[2].X;
+  msg.pts[2].Y   = k_eight_pts[2].Y;
+  msg.pts[2].Z   = k_eight_pts[2].Z;
+}
+
+
+} // namespace fixed
+} // namespace nested
+} // namespace dynamic
+} // namespace test
+
+
+//  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_fixed_size(void)
 {
-  using namespace test::nested::fixed;
+  using namespace test::dynamic::nested::fixed;
 
   // Place them in a buffer.
   byte_vector buffer;
@@ -386,7 +591,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_fixed_size(vo
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_fixed_size(void)
 {
-  using namespace test::nested::fixed;
+  using namespace test::dynamic::nested::fixed;
   using namespace test::data;
 
   // Place three points in a buffer.
@@ -444,12 +649,118 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_mixed_size(voi
 }
 
 
+//  Array of Bitsets ***********************************************************
+namespace Hg
+{
+//  ****************************************************************************
+//  Dynamically Sized Color Table
+//  This type represents a fixed-size array of bit-fields.
+// 
+typedef TypeList
+<
+  size_t,
+// TODO: Need to Preprocess the Typelist given by the user to substitute the actual types that should be used in the Typelist. Ex. array<BitField> with BitFieldArray<BitField>
+  std::vector<color4>
+  //Hg::BitFieldVector<color4>
+> color_table_t;
+
+HG_BEGIN_FORMAT(color_table_t)
+  HG_DATUM   (size_t, count)
+  HG_DYNAMIC (color4, count, table)
+HG_END_FORMAT
+
+} // namespace Hg
+
+namespace test
+{
+namespace dynamic
+{
+namespace bit_list
+{
+typedef Hg::Message<Hg::color_table_t_HgFormat<0> >  MsgColorTable;
+typedef MsgColorTable                                SUT;
+
+//  ************************************
+//  A message buffer with the expected 
+//  test results.
+//
+void make_buffer(byte_vector &buffer)
+{
+  using namespace test::data;
+
+  buffer.clear();
+
+  // to_buffer allocates its own space for the vector.
+  to_buffer(size_t(16), buffer);
+
+  to_buffer(k_White  , buffer);
+  to_buffer(k_Fuchsia, buffer);
+  to_buffer(k_Aqua   , buffer);
+  to_buffer(k_Yellow , buffer);
+  to_buffer(k_Purple , buffer);
+  to_buffer(k_Teal   , buffer);
+  to_buffer(k_Olive  , buffer);
+  to_buffer(k_Silver , buffer);
+  to_buffer(k_Blue   , buffer);
+  to_buffer(k_Lime   , buffer);
+  to_buffer(k_Red    , buffer);
+  to_buffer(k_Gray   , buffer);
+  to_buffer(k_Navy   , buffer);
+  to_buffer(k_Green  , buffer);
+  to_buffer(k_Maroon , buffer);
+  to_buffer(k_Black  , buffer);
+}
+
+//  ************************************
+void populate_msg(SUT &msg)
+{
+  using namespace test::data;
+
+  //msg.count     = 16;
+  //msg.table.push_back(k_White);
+  //msg.table.push_back(k_Fuchsia);
+  //msg.table.push_back(k_Aqua);
+  //msg.table.push_back(k_Yellow);
+  //msg.table.push_back(k_Purple);
+  //msg.table.push_back(k_Teal);
+  //msg.table.push_back(k_Olive);
+  //msg.table.push_back(k_Silver);
+  //msg.table.push_back(k_Blue);
+  //msg.table.push_back(k_Lime);
+  //msg.table.push_back(k_Red);
+  //msg.table.push_back(k_Gray);
+  //msg.table.push_back(k_Navy);
+  //msg.table.push_back(k_Green);
+  //msg.table.push_back(k_Maroon);
+  //msg.table.push_back(k_Black);
+}
+
+
+} // namespace bit_list
+} // namespace dynamic
+} // namespace test
+
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_vector_of_bitsets(void)
 {
+  // Reuse the data defined for the bit_list array tests
+  using namespace test::dynamic::bit_list;
 
+  // Place them in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the SUT with the test values.
+  //SUT sut;
+  //populate_msg(sut);
+
+  // SUT: Serialize into a buffer.
+  //uint8_t const* pData = sut.data();
+
+  //TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  //TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
 }
 
 //  ****************************************************************************
@@ -484,8 +795,8 @@ namespace vector
 {
 namespace fixed_array
 {
-typedef Hg::Message<Hg::vec_array_tFormat<0> >    MsgVecArray;
-typedef MsgVecArray                               SUT;
+typedef Hg::Message<Hg::vec_array_t_HgFormat<0> >    MsgVecArray;
+typedef MsgVecArray                                  SUT;
 
 
 inline
@@ -647,7 +958,7 @@ typedef std::vector<char>         char_str;
 //  The empty string must occur before the end of the buffer (buffer + length).
 //  The entire buffer does not need to be used before the empty string.
 //
-size_t StringCount(uint8_t* pBuffer, size_t length)
+size_t StringCount(const uint8_t* pBuffer, size_t length)
 {
   size_t count = 0;
 
@@ -689,8 +1000,8 @@ namespace vec
 {
 namespace vec
 {
-typedef Hg::Message<Hg::string_vec_tFormat<0> >   MsgStrVec;
-typedef MsgStrVec                                 SUT;
+typedef Hg::Message<Hg::string_vec_t_HgFormat<0> >   MsgStrVec;
+typedef MsgStrVec                                   SUT;
 
 //  Constants **************************
 const size_t k_count = 7;
@@ -811,13 +1122,13 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_vectors(void)
   size_t count = StringCount(&buffer[0], buffer.size());
   TS_ASSERT_EQUALS(k_count, count );
 
-//  TS_ASSERT_SAME_DATA(pStrings[0], sut.items[0], ::strlen(pStrings[0]);
-  char_str entry_0 = sut.items[0];
+  //TS_ASSERT_SAME_DATA(pStrings[0], &sut.items[0], ::strlen(pStrings[0]));
+  //char_str entry_0 = sut.items[0];
   
   
 //  const char *e = &entry_0[0];
 
-  //char d = entry_0[0];
+//  char d = entry_0[0];
 
   //TS_ASSERT_SAME_DATA(pStrings[0], entry_0[0], ::strlen(pStrings[0]);
 

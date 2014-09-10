@@ -30,8 +30,7 @@ HG_END_BIT_SET
 // 
 typedef TypeList
 <
-  //std::array<color4, 16>
-  Hg::BitFieldArray<color4, 16>
+  std::array<color4, 16>
 > color_map_t;
 
 HG_BEGIN_FORMAT(color_map_t)

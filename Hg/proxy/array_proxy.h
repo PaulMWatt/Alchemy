@@ -15,13 +15,37 @@
 #include <meta/type_at.h>
 #include <Hg/datum/datum.h>
 #include <meta/bit_field/bit_field_array.h>
+#include <meta/bit_field/bit_field_vector.h>
 #include <storage_policy.h>
+#include <array>
 
 namespace Hg
 {
 
 namespace detail
 {
+
+//  Forward Declarations (No Default Implementation) ***************************
+template< class ArrayT >
+struct array_size;
+
+
+//  ****************************************************************************
+/// Extracts the array extent from a std::array definition.
+///
+template< class T, size_t N>
+struct array_size< std::array<T, N> > 
+  : std::integral_constant<size_t, N>
+{ };
+
+//  ****************************************************************************
+/// Extracts the array extent from a std::array definition.
+///
+template< class T, size_t N>
+struct array_size< Hg::BitFieldArray<T, N> > 
+  : std::integral_constant<size_t, N>
+{ };
+
 
 //  ****************************************************************************
 /// A template to provide access to sequences of data fields.
@@ -40,11 +64,11 @@ struct DataProxy <array_trait, IdxT, FormatT, OffsetT>
   //  Typedefs *****************************************************************
   typedef FormatT                       format_type;
 
-    typedef typename 
-      Hg::Datum < IdxT,
-                  format_type,
-                  OffsetT
-                >                       datum_type;
+  typedef typename 
+    Hg::Datum < IdxT,
+                format_type,
+                OffsetT
+              >                         datum_type;
 
   typedef typename
     detail::DefineFieldType < IdxT, 
@@ -67,24 +91,18 @@ struct DataProxy <array_trait, IdxT, FormatT, OffsetT>
 
   //  Constants ****************************************************************
   static 
-    const size_t k_extent = Hg::SizeOf<index_type>::value 
-                          / Hg::SizeOf<data_type >::value;
+    const size_t k_extent = array_size<index_type>::value;
                                         ///< The number of elements in the array.
 
   //  Typedefs *****************************************************************
   typedef typename 
   std::conditional< std::is_base_of<array_trait, index_type>::value,
                     index_type,                  
-//  Hg::BitFieldArray<data_type, k_extent>,
-                    std::array<data_type, k_extent>
+                    typename field_type::value_type                  
                   >::type
-
+//std::array<data_type, k_extent>
                                         value_type;
 
-
-  //typedef std::array< data_type, 
-  //                    k_extent
-  //                  >                   value_type;
                                         ///< The data type managed by this Array.
                                         ///  This is the type of data that will 
                                         ///  be written to the attached buffer.
