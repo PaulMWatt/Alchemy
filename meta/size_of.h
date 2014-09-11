@@ -11,6 +11,7 @@
 // Includes ********************************************************************
 #include <meta/meta_fwd.h>
 #include <meta/container_size.h>
+#include <meta/dynamic.h>
 
 namespace Hg
 {
@@ -40,6 +41,8 @@ struct SizeOf_Impl
 
 //  ****************************************************************************
 //  Arrays size should only include the elements in the array.
+//  However, if the array contains a dynamically sized field, the size cannot
+//  be determined at compile-time and must be performed at runtime.
 //
 template< typename T,
           size_t   N
@@ -67,7 +70,6 @@ template< typename T,
 struct SizeOf_Impl<std::vector<T,A>, false>
   : std::integral_constant< size_t, 0>
 { };
-
 
 //  ****************************************************************************
 //  SizeOf implementation for type_containers

@@ -176,30 +176,30 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
       return 0;
     }
 
-    //// An important typedef for selecting the proper
-    //// version of the unpack function for the sub-elements.
-    //typedef typename
-    //  message_size_trait<value_type::format_type>::type     size_trait;
+    // An important typedef for selecting the proper
+    // version of the unpack function for the sub-elements.
+    typedef typename
+      message_size_trait<value_type::format_type>::type     size_trait;
 
-    //size_t bytes_written = 0;
+    size_t bytes_written = 0;
 
-    //// Process each item individually.
-    //for (size_t index = 0; index < count; ++index)
-    //{
-    //  // The offset for each item progressively increases
-    //  // by the number of bytes read from the input buffer.
-    //  size_t item_offset = offset + bytes_written;
+    // Process each item individually.
+    for (size_t index = 0; index < count; ++index)
+    {
+      // The offset for each item progressively increases
+      // by the number of bytes read from the input buffer.
+      size_t item_offset = offset + bytes_written;
 
-    //  size_t read_len =
-    //    unpack_message< value_type,
-    //                    buffer_type,
-    //                    size_trait
-    //                  >(value[index], buffer, item_offset);
+      size_t read_len =
+        unpack_message< value_type,
+                        buffer_type,
+                        size_trait
+                      >(value[index], buffer, item_offset);
 
-    //  bytes_written += read_len;
-    //}
+      bytes_written += read_len;
+    }
 
-    //return bytes_written;
+    return bytes_written;
 
     return 0;
   }  

@@ -53,8 +53,7 @@ class TestFocusedDynamicMessageSuite : public CxxTest::TestSuite
 public:
 
   TestFocusedDynamicMessageSuite()
-  { 
-  }
+  { }
 
   // Fixture Management ********************************************************
   // setUp will be called before each test case in order to setup common fixtures.
@@ -70,19 +69,6 @@ protected:
   typedef test::byte_vector             byte_vector;
 
   //  Constants ******************************************************************
-
-  // Helper Functions ************************************************************
-  //  ****************************************************************************
-  template <typename SUT_t>
-  void PopulateBaseValues(SUT_t& msg)
-  {
-  }
-
-  //  ****************************************************************************
-  template <typename SUT_t>
-  void PopulateOtherValues(SUT_t& msg)
-  {
-  }
 
 public:
   // Test Cases ****************************************************************
@@ -104,9 +90,6 @@ public:
   void Test_write_vector_with_nested_dynamic_size(void);
   void Test_read_vector_with_nested_dynamic_size(void);
 
-  void Test_write_vector_with_nested_mixed_size(void);
-  void Test_read_vector_with_nested_mixed_size(void);
-
   void Test_write_vector_of_bitsets(void);
   void Test_read_vector_of_bitsets(void);
 
@@ -120,6 +103,15 @@ public:
   void Test_write_nested_at_correct_offset(void);
 
 };
+
+namespace Hg
+{
+
+// Define a message format that consists of a collection of 
+// NULL terminated strings, with a double-NULL terminator.
+typedef std::vector<char>         char_str;
+
+}
 
 
 //  ****************************************************************************
@@ -358,22 +350,139 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_arrays(void)
   SUT sut;
   sut.assign(&buffer[0], buffer.size());
 
-  //// Verify the results for all of the fields.
-  
+  // Verify the results for all of the fields.
+  TS_ASSERT_EQUALS(expected.size(), sut.size());
+  TS_ASSERT_EQUALS(expected.pts[0].X, sut.pts[0].X);
+  TS_ASSERT_EQUALS(expected.pts[0].Y, sut.pts[0].Y);
+  TS_ASSERT_EQUALS(expected.pts[0].Z, sut.pts[0].Z);
+                           
+  TS_ASSERT_EQUALS(expected.pts[1].X, sut.pts[1].X);
+  TS_ASSERT_EQUALS(expected.pts[1].Y, sut.pts[1].Y);
+  TS_ASSERT_EQUALS(expected.pts[1].Z, sut.pts[1].Z);
+                           
+  TS_ASSERT_EQUALS(expected.pts[2].X, sut.pts[2].X);
+  TS_ASSERT_EQUALS(expected.pts[2].Y, sut.pts[2].Y);
+  TS_ASSERT_EQUALS(expected.pts[2].Z, sut.pts[2].Z);
 }
 
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
+//  Array of Vectors ***********************************************************
+
+namespace Hg
+{
+// Message definition
+typedef TypeList
+<
+  std::array<char_str,5>
+> string_arr_t;                   
+
+HG_BEGIN_FORMAT(string_arr_t)
+  HG_ARRAY (char_str, 5, items)
+HG_END_FORMAT
+}
+
+
+namespace test
+{
+namespace fixed
+{
+namespace vec
+{
+typedef Hg::Message<Hg::string_arr_t_HgFormat<0> >   MsgStrArr;
+typedef MsgStrArr                                    SUT;
+
+//  Constants **************************
+const size_t k_count = 5;
+char* pStrings[k_count] =
+{
+  "desk", 
+  "chair", 
+  "cabinet", 
+  "shelf", 
+  "drawer"
+};
+
+//  ************************************
+inline
+void to_buffer(const char *pStr,
+               byte_vector &buffer)
+{
+  const size_t k_org_size    = buffer.size();
+  const size_t len = ::strlen(pStr) + 1;
+  buffer.resize(k_org_size + len);
+
+  byte_vector::value_type *pCur = &buffer[0];
+  std::advance(pCur, k_org_size);
+
+  ::memcpy(pCur, pStr, len);
+}
+
+//  ************************************
+//  A message buffer with the expected 
+//  test results.
+
+void make_buffer(byte_vector &buffer)
+{
+  buffer.clear();
+
+  // to_buffer allocates its own space for the vector.
+  to_buffer("desk", buffer);
+  to_buffer("chair", buffer);
+  to_buffer("cabinet", buffer);
+  to_buffer("shelf", buffer);
+  to_buffer("drawer", buffer);
+}
+
+//  ************************************
+void populate_msg(SUT &msg)
+{
+  using Hg::char_str;
+
+  for ( size_t index = 0; 
+        index < test::fixed::vec::k_count; 
+        ++index)
+  {
+    char_str entry;
+    entry.assign(pStrings[index], pStrings[index] + strlen(pStrings[index]));
+    entry.push_back(0);
+
+    msg.items[index] = entry;
+  }
+}
+
+} // namespace vec
+} // namespace fixed
+} // namespace test
+
+
+
 void TestFocusedDynamicMessageSuite::Test_write_array_of_vectors(void)
 {
+  using namespace test::fixed::vec;
+  using namespace test::data;
 
+  // Place them in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the SUT with the test values.
+  SUT sut;
+  populate_msg(sut);
+
+  //SUT: Serialize into a buffer.
+  uint8_t const* pData = sut.data();
+
+  TS_WARN("The array calculates based on fixed sizes. This will be resolved by converting arrays that contain dynamic sub-fields to vectors with a specified size.");
+  //TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
 }
 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_read_array_of_vectors(void)
 {
-
+  TS_WARN("Test implementation required.");
 }
 
 
@@ -493,6 +602,8 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_fundamental(void)
 }
 
 
+//  Nested-Fixed sub-fields ****************************************************
+
 namespace Hg {
 
 typedef TypeList
@@ -510,7 +621,6 @@ HG_END_FORMAT
 } // namespace Hg
 
 
-//  Nested-Fixed sub-fields ****************************************************
 namespace test
 {
 namespace dynamic
@@ -621,31 +731,85 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_fixed_size(voi
   TS_ASSERT_EQUALS(k_eight_pts[2].Z, sut.pts[2].Z);
 }
 
+
+//  Dynamic Nested-Dynamic sub-fields ******************************************
+namespace Hg {
+
+typedef TypeList
+<
+  uint16_t,
+  std::vector<object_t>            
+> vobjs_t;
+
+HG_BEGIN_FORMAT(vobjs_t)
+  HG_DATUM   (uint16_t, count)
+  HG_DYNAMIC (object_t, count, obj)
+HG_END_FORMAT
+
+
+} // namespace Hg
+
+
+namespace test
+{
+namespace dynamic
+{
+namespace nested
+{
+namespace dynamic
+{
+typedef Hg::Message<Hg::vobjs_t_HgFormat<0> >     MsgObjects;
+typedef MsgObjects                                SUT;
+
+// 2 for count field, 3 * 4 for data = 14
+const size_t k_buffer_size  = 14;
+const size_t k_count        = 3;
+
+//  ************************************
+void make_buffer(byte_vector &buffer)
+{
+  using namespace test::data;
+
+  buffer.resize(2);
+  ::memcpy(&buffer[0], &k_count, sizeof(uint16_t));
+
+  // to_buffer allocates its own space for the vector.
+  to_buffer(k_eight_pts[0], buffer);
+  to_buffer(k_eight_pts[1], buffer);
+  to_buffer(k_eight_pts[2], buffer);
+}
+
+//  ************************************
+void populate_msg(SUT &msg)
+{
+  using namespace test::data;
+
+  msg.count = k_count;
+  msg.obj.resize(k_count);
+
+  msg.obj[0];
+  
+}
+
+
+} // namespace dynamic
+} // namespace nested
+} // namespace dynamic
+} // namespace test
+
+
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_dynamic_size(void)
 {
+  TS_WARN("Test Implementation Required.");
 }
 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_dynamic_size(void)
 {
-
-}
-
-//  ****************************************************************************
-//  Tests 
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_mixed_size(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_mixed_size(void)
-{
-
+  TS_WARN("Test Implementation Required.");
 }
 
 
@@ -659,9 +823,7 @@ namespace Hg
 typedef TypeList
 <
   size_t,
-// TODO: Need to Preprocess the Typelist given by the user to substitute the actual types that should be used in the Typelist. Ex. array<BitField> with BitFieldArray<BitField>
   std::vector<color4>
-  //Hg::BitFieldVector<color4>
 > color_table_t;
 
 HG_BEGIN_FORMAT(color_table_t)
@@ -715,8 +877,8 @@ void make_buffer(byte_vector &buffer)
 void populate_msg(SUT &msg)
 {
   using namespace test::data;
-
-  //msg.count     = 16;
+  TS_WARN("Test Code commented out during development; fails to compile.");
+  msg.count     = 16;
   //msg.table.push_back(k_White);
   //msg.table.push_back(k_Fuchsia);
   //msg.table.push_back(k_Aqua);
@@ -752,9 +914,10 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_of_bitsets(void)
   byte_vector buffer;
   make_buffer(buffer);
 
+  TS_WARN("Test commented out.");
   // Populate the SUT with the test values.
-  //SUT sut;
-  //populate_msg(sut);
+  SUT sut;
+  populate_msg(sut);
 
   // SUT: Serialize into a buffer.
   //uint8_t const* pData = sut.data();
@@ -947,11 +1110,6 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_arrays(void)
 //  ****************************************************************************
 namespace Hg {
 
-// Define a message format that consists of a collection of 
-// NULL terminated strings, with a double-NULL terminator.
-typedef std::vector<char>         char_str;
-
-
 //  ****************************************************************************
 //  Field-size functor
 //  Count the number of non-empty character sequences until an empty string.
@@ -1122,29 +1280,21 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_vectors(void)
   size_t count = StringCount(&buffer[0], buffer.size());
   TS_ASSERT_EQUALS(k_count, count );
 
-  //TS_ASSERT_SAME_DATA(pStrings[0], &sut.items[0], ::strlen(pStrings[0]));
-  //char_str entry_0 = sut.items[0];
-  
-  
-//  const char *e = &entry_0[0];
+  TS_WARN("Test commented out.");
 
-//  char d = entry_0[0];
-
-  //TS_ASSERT_SAME_DATA(pStrings[0], entry_0[0], ::strlen(pStrings[0]);
-
-//  TS_ASSERT_EQUALS(0x11223344, sut.items[0][0]); 
-
-//  TS_ASSERT_EQUALS(0x66778899, sut.items[1][0] ); 
-
-//  TS_ASSERT_EQUALS(0xBEEFBA11, sut.items[2][0] ); 
-
-//  TS_ASSERT_EQUALS(0xEEFF0011, sut.items[3][0] ); 
+  //TS_ASSERT_EQUALS(std::string("Dog"),      std::string(&sut.items[0][0])); 
+  //TS_ASSERT_EQUALS(std::string("cAt"),      std::string(&sut.items[1][0])); 
+  //TS_ASSERT_EQUALS(std::string("FiSh"),     std::string(&sut.items[2][0])); 
+  //TS_ASSERT_EQUALS(std::string("HoRsE"),    std::string(&sut.items[3][0])); 
+  //TS_ASSERT_EQUALS(std::string("cHiCkEn"),  std::string(&sut.items[4][0])); 
+  //TS_ASSERT_EQUALS(std::string("SpIdEr"),   std::string(&sut.items[5][0])); 
+  //TS_ASSERT_EQUALS(std::string("MoLd"),     std::string(&sut.items[6][0])); 
 }
 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_nested_at_correct_offset(void)
 {
-
+  TS_WARN("Test implementation required.");
 }
 
 

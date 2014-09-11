@@ -296,7 +296,6 @@ struct Serializer <std::array<T,N>, BufferT, vector_trait>
                         allocator_type,
                         buffer_type
                       >(value, 
-                        value.size(), 
                         buffer, 
                         offset);
 
@@ -371,7 +370,7 @@ size_t SerializeByItem( std::array<T,N> &value,
                         BufferT         &buffer,
                         size_t          offset)
 {
-  typedef ValueT                        array_type;
+  typedef std::array<T,N>               array_type;
 
   typedef typename
     array_type::value_type              data_type;
