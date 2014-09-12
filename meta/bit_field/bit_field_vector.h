@@ -76,7 +76,7 @@ public:
     bit_field_type                      reference;
                                                                                 
   typedef typename                      ///  Const Reference to an element in the vector.
-    const reference                     const_reference;
+    const bit_field_type                const_reference;
 
 
   // TODO: Bit-field access through the iterator is not yet supported, 

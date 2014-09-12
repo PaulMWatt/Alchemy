@@ -13,6 +13,7 @@
 #include <Hg/proxy/deduce_proxy_type.h>
 #include <meta/bit_field/bit_field_array.h>
 #include <meta/bit_field/bit_field_vector.h>
+#include <meta/dynamic.h>
 
 namespace Hg
 {
@@ -48,9 +49,9 @@ namespace detail
 //
 //  Array         Fundamental     none
 //  Array         BitField        BitFieldArray
-//  Array         Nested          yes  / make_Hg_type_list<S>::type
-//  Array         Array           yes  / Sub-type also processed
-//  Array         Vector          yes  / Sub-type also processed
+//  Array         Nested          yes    / make_Hg_type_list<S>::type
+//  Array         Array           yes    / Sub-type also processed
+//  Array         Vector          vector / Sub-type also processed
 //
 //  Vector        Fundamental     none
 //  Vector        BitField        BitFieldVector
@@ -242,10 +243,28 @@ struct ReplaceType< ArrayT, array_trait>
   typedef typename
     DeduceTypeTrait<value_type>::type   type_trait;
 
+  // If the value type has a dynamic size, then the array will be converted
+  // to a vector, with a pre-allocated size.
+  // This greatly simplifies serialization.
+  // It also allows pure fixed-size constructs to be optimized as such.
   typedef typename
     DeclareTypeSequence < ArrayT, 
                           type_trait
-                        >::type         type;
+                        >::type         array_type;
+
+  typedef typename
+    DeclareTypeSequence < std::vector<value_type>, 
+                          type_trait
+                        >::type         vector_type;
+
+  
+  // TODO: Need to find a solution for redefined symbols when the array is converted to a vector.
+  typedef array_type                    type;
+  //typedef typename
+  //  std::conditional< has_dynamic<value_type>::value, 
+  //                    vector_type, 
+  //                    array_type
+  //                  >::type             type;
 };
 
 //  ****************************************************************************

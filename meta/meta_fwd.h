@@ -25,10 +25,16 @@ namespace Hg
 
 
   template <typename ContainerT>
-  struct front;
+  struct front
+  {
+    typedef Hg::MT      type;
+  };
 
   template <typename ContainerT>
-  struct pop_front;
+  struct pop_front
+  {
+    typedef Hg::MT      type; 
+  };
 
   template <typename ContainerT,
     typename T>

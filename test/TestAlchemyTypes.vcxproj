@@ -103,7 +103,6 @@ cd "../.."</Command>
     <ClInclude Include="..\Hg\datum\basic_datum.h" />
     <ClInclude Include="..\Hg\datum\datum.h" />
     <ClInclude Include="..\Hg\deduce_type_trait.h" />
-    <ClInclude Include="..\Hg\detail\make_Hg_type_list.h" />
     <ClInclude Include="..\Hg\detail\message_byte_order_detail.h" />
     <ClInclude Include="..\Hg\detail\message_dynamic_detail.h" />
     <ClInclude Include="..\Hg\detail\pack_array.h" />
@@ -114,6 +113,7 @@ cd "../.."</Command>
     <ClInclude Include="..\Hg\detail\unpack_message_detail.h" />
     <ClInclude Include="..\Hg\detail\unpack_nested.h" />
     <ClInclude Include="..\Hg\detail\unpack_vector.h" />
+    <ClInclude Include="..\Hg\make_Hg_type_list.h" />
     <ClInclude Include="..\Hg\message_byte_order.h" />
     <ClInclude Include="..\Hg\message_dynamic.h" />
     <ClInclude Include="..\Hg\msg_buffer.h" />

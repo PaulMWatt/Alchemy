@@ -40,6 +40,14 @@ struct HasDynamic_Impl<T, true>
             >
 { };
 
+// Explicit HasDynamic implementation for vectors ******************************
+template< class T,
+          class A,
+          bool  isContainerT
+        >
+struct HasDynamic_Impl<std::vector<T,A>, isContainerT>
+  : std::true_type
+{ };
 
 //  ****************************************************************************
 template< typename ListT,
@@ -97,8 +105,7 @@ struct DynamicFields_Impl<T, true>
 /// This template will test the type T to determine if it is a type_container. 
 /// If so a specialize version of the dynamic type test will be used.
 ///             
-/// A dynamically sized type itself is not considered dynamic. 
-/// Sequential types that contain dynamically sized elements is considered 
+/// Sequential types that contain dynamically sized elements are considered 
 /// dynamic.
 /// 
 /// 

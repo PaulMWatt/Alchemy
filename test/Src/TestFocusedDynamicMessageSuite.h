@@ -475,7 +475,7 @@ void TestFocusedDynamicMessageSuite::Test_write_array_of_vectors(void)
   uint8_t const* pData = sut.data();
 
   TS_WARN("The array calculates based on fixed sizes. This will be resolved by converting arrays that contain dynamic sub-fields to vectors with a specified size.");
-  //TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  TS_ASSERT_EQUALS(buffer.size(), sut.size());
   TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
 }
 
