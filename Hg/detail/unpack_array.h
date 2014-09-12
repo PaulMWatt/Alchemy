@@ -39,7 +39,7 @@ namespace Array
 {
 
 //  ****************************************************************************
-//  Imports data from the aryy for fixed-size POD types.
+//  Imports data from the array for fixed-size POD types.
 //
 template< typename ArrayT,
           typename BufferT,
@@ -62,7 +62,6 @@ struct Deserializer
                        / sizeof(value_type);
 
   //  **************************************************************************
-  template <typename TraitT>
   size_t Read ( array_type   &value, 
                 size_t        count, 
                 buffer_type  &buffer,
@@ -115,27 +114,13 @@ struct Deserializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
   typedef bitfield_trait                data_type_trait;
 
   //  **************************************************************************
-  template <typename TraitT>
   size_t Read ( array_type   &value, 
-                size_t        count, 
+                size_t        count,
                 buffer_type  &buffer,
                 size_t        offset)
   {
-    if (0 == count)
-    {
-      return 0;
-    }
-
-    // Calculate the size of data to write in bytes.
-    size_t size = count * sizeof(value_type);
-
-    value_type *pFirst = value.data();
-
-// TODO: Make the interfaces consistent between the set and get.
-    //value_type *pLast  = pFirst;
-    //std::advance(pLast, size);
-
-    return buffer.get_range(pFirst, size, offset);
+    // TODO: Return and implement properly.
+    return 0;
   }
 
   //  **************************************************************************
@@ -145,9 +130,8 @@ struct Deserializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
   {
     return buffer.get_data( value, offset);
   }
-
-
 };
+
 
 //  ****************************************************************************
 //  Imports an array of nested types with each sub-item written individually.
@@ -165,7 +149,6 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
   typedef nested_trait                  data_type_trait;
 
   //  **************************************************************************
-  template <typename TraitT>
   size_t Read ( array_type     &value, 
                 size_t          count, 
                 buffer_type    &buffer,
@@ -176,11 +159,6 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
       return 0;
     }
 
-    // An important typedef for selecting the proper
-    // version of the unpack function for the sub-elements.
-    typedef typename
-      message_size_trait<value_type::format_type>::type     size_trait;
-
     size_t bytes_written = 0;
 
     // Process each item individually.
@@ -190,19 +168,29 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
       // by the number of bytes read from the input buffer.
       size_t item_offset = offset + bytes_written;
 
-      size_t read_len =
-        unpack_message< value_type,
-                        buffer_type,
-                        size_trait
-                      >(value[index], buffer, item_offset);
-
-      bytes_written += read_len;
+      bytes_written += Read(value[index], buffer, item_offset);
     }
 
     return bytes_written;
 
     return 0;
   }  
+
+  //  **************************************************************************
+  size_t Read ( value_type     &value, 
+                buffer_type    &buffer,
+                size_t          offset)
+  {
+    // An important typedef for selecting the proper
+    // version of the unpack function for the sub-elements.
+    typedef typename
+      message_size_trait<value_type::format_type>::type     size_trait;
+
+    return  unpack_message< value_type,
+                            buffer_type,
+                            size_trait
+                          >(value, buffer, offset);
+  }
 };
 
 
@@ -210,9 +198,9 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
 //  ****************************************************************************
 //  Imports a array of arrays with each sub-item written individually.
 //
-template< typename T,
-          size_t   N,
-          typename BufferT
+template< class   T,
+          size_t  N,
+          class   BufferT
         >
 struct Deserializer <std::array<T,N>, BufferT, array_trait>
   : public std::integral_constant<size_t, N>
@@ -232,20 +220,40 @@ struct Deserializer <std::array<T,N>, BufferT, array_trait>
       < value_type >::type              data_type_trait;
 
   //  **************************************************************************
-  template <typename TraitT>
   size_t Read ( array_type     &value, 
+                size_t          count, 
                 buffer_type    &buffer,
                 size_t          offset)
   {
-    return DeserializeInBulk(value, N, buffer, offset);
+    return DeserializeByItem(value, buffer, offset);
   }  
 
   //  **************************************************************************
-  size_t Read ( array_type   &value, 
-                buffer_type  &buffer,
-                size_t        offset)
+template< class    SubT,
+          size_t   SubN,
+          class    buffer_type,
+          template <class, size_t> class ArrayT
+        >
+  size_t Read ( ArrayT<SubT,SubN> &value, 
+                buffer_type       &buffer,
+                size_t            offset)
   {
-    return DeserializeByItem(value, buffer, offset);
+    typedef typename
+      ArrayT<SubT,SubN>                 sub_array_type;
+    typedef typename
+      sub_array_type::value_type        data_type;
+
+    const size_t  k_sub_count = Hg::detail::array_size<sub_array_type>::value;
+
+    // Since this is the array handler, 
+    // all single value entries passed in will
+    // be arrays themselves.
+    // Recurse, and start a new decomposition 
+    // of array deserialization.
+    size_t bytes_written = 
+      DeserializeArray( value, buffer, offset);
+
+    return bytes_written;
   }  
 };
     
@@ -271,21 +279,10 @@ struct Deserializer <std::array<T,N>, BufferT, vector_trait>
       < value_type >::type              data_type_trait;
 
   //  **************************************************************************
-  template <typename TraitT>
-  size_t Read ( array_type   &value, 
+  size_t Read ( array_type  &value, 
                 size_t        count, 
                 buffer_type  &buffer,
                 size_t        offset)
-  {
-    return DeserializeInBulk(value, count, buffer, offset);
-  }  
-
-  //  **************************************************************************
-  template <>
-  size_t Read <vector_trait>( array_type  &value, 
-                              size_t        count, 
-                              buffer_type  &buffer,
-                              size_t        offset)
   {
     return DeserializeByItem(value, count, buffer, offset);
   }  
@@ -399,7 +396,7 @@ size_t DeserializeByItem( std::array<T,N> &value,
   size_t bytes_written = 0;
 
   // Process each item individually.
-  for (size_t index = 0; index < count; ++index)
+  for (size_t index = 0; index < N; ++index)
   {
     // The offset for each item progressively increases
     // by the number of bytes read from the input buffer.
@@ -444,11 +441,9 @@ size_t DeserializeArray ( ArrayT<T, N> &value,
                                 BufferT,
                                 value_type_trait
                               >           deserializer_t;
-  typedef typename
-    deserializer_t::data_type_trait       data_type_trait;
 
   deserializer_t deserializer;
-  return deserializer.Read<data_type_trait>(value, N, buffer, offset);
+  return deserializer.Read(value, N, buffer, offset);
 }
 
 //  ****************************************************************************

@@ -307,11 +307,15 @@ size_t DeserializeInBulk( std::vector<T,A> &value,
     Hg::detail::DeduceTypeTrait
       < data_type >::type               data_type_trait;
 
-  Vector::Deserializer< vector_type, 
-                        BufferT, 
-                        data_type_trait>  deserializer;
+  typedef 
+    Vector::Deserializer
+      < vector_type, 
+        BufferT, 
+        data_type_trait
+      >                                 deserializer_t;
 
-  size_t bytes_written = 0;
+  deserializer_t  deserializer;
+  size_t          bytes_written = 0;
 // TODO: Return and add this optimization for bulk reads if possible.
 
   // Process each item individually.

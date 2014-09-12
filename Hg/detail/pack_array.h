@@ -18,19 +18,32 @@ namespace Hg
 
 namespace detail
 {
-
 //  Forward Declarations *******************************************************
-template< typename T,
-          size_t   N,
+template< typename ValueT,
           typename BufferT
         >
-size_t SerializeInBulk( std::array<T,N>&, BufferT&, size_t);
+size_t SerializeInBulk( ValueT  &value, 
+                        BufferT &buffer,
+                        size_t  offset);
 
-template< typename T,
-          size_t   N,
+template< typename ValueT,
           typename BufferT
         >
-size_t SerializeByItem( std::array<T,N>&, BufferT&, size_t);
+size_t SerializeByItem( ValueT  &value, 
+                        BufferT &buffer,
+                        size_t  offset);
+
+//template< typename T,
+//          size_t   N,
+//          typename BufferT
+//        >
+//size_t SerializeInBulk( std::array<T,N>&, BufferT&, size_t);
+//
+//template< typename T,
+//          size_t   N,
+//          typename BufferT
+//        >
+//size_t SerializeByItem( std::array<T,N>&, BufferT&, size_t);
 
 
 namespace Array
