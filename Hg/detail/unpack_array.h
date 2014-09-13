@@ -56,10 +56,8 @@ struct Deserializer
 
   typedef TraitT                        data_type_trait;
 
-  // TODO: This is not guaranteed to be the correct size. Work towards getting the array size deduction method to work.
   static 
-    const size_t value = sizeof(array_type)
-                       / sizeof(value_type);
+    const size_t value = Hg::detail::array_size<array_type>::value;
 
   //  **************************************************************************
   size_t Read ( array_type   &value, 
@@ -75,13 +73,7 @@ struct Deserializer
     // Calculate the size of data to write in bytes.
     size_t size = count * sizeof(value_type);
 
-
     value_type *pFirst = &value[0];
-
-    // TODO: Make the interfaces consistent between the set and get.
-    //value_type *pLast  = pFirst;
-    //std::advance(pLast, size);
-
     return buffer.get_range(pFirst, size, offset);
   }
 
@@ -119,8 +111,17 @@ struct Deserializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
                 buffer_type  &buffer,
                 size_t        offset)
   {
-    // TODO: Return and implement properly.
-    return 0;
+    if (0 == count)
+    {
+      return 0;
+    }
+
+    // Calculate the size of data to write in bytes.
+    size_t size = count * sizeof(value_type);
+
+    value_type *pFirst = &(value[0].value());
+
+    return buffer.get_range(pFirst, size, offset);
   }
 
   //  **************************************************************************
@@ -159,21 +160,19 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
       return 0;
     }
 
-    size_t bytes_written = 0;
+    size_t bytes_read = 0;
 
     // Process each item individually.
     for (size_t index = 0; index < count; ++index)
     {
       // The offset for each item progressively increases
       // by the number of bytes read from the input buffer.
-      size_t item_offset = offset + bytes_written;
+      size_t item_offset = offset + bytes_read;
 
-      bytes_written += Read(value[index], buffer, item_offset);
+      bytes_read += Read(value[index], buffer, item_offset);
     }
 
-    return bytes_written;
-
-    return 0;
+    return bytes_read;
   }  
 
   //  **************************************************************************
@@ -341,8 +340,8 @@ size_t DeserializeInBulk( std::array<T,N> &value,
   const size_t      k_count = value.size();
   deserializer_t    deserializer;
   size_t bytes_written = 0;
-// TODO: Return and add this optimization for bulk reads if possible.
 
+  // TODO: Return and add this optimization for bulk reads if possible.
   // Process each item individually.
   for (size_t index = 0; index < k_count; ++index)
   {

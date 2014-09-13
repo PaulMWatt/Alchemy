@@ -218,7 +218,7 @@ struct DynamicSizeFunctor
       proxy_type::value_type                                  value_type;
                                       
     message_type &msg = const_cast<message_type&>(message);
-    value_type &value  = msg.template FieldAt<IdxT>().get();
+    value_type value  = msg.template FieldAt<IdxT>().get();
     m_dynamic_size += dynamic_size(value);
   }
 

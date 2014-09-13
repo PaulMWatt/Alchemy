@@ -20,17 +20,30 @@ namespace detail
 {
 
 //  Forward Declarations *******************************************************
-template< class T,
-          class A,
-          class BufferT
+template< typename ValueT,
+          typename BufferT
         >
-size_t SerializeInBulk( std::vector<T,A>&, BufferT&, size_t);
+size_t SerializeInBulk( ValueT  &value, 
+                        BufferT &buffer,
+                        size_t  offset);
 
-template< class T,
-          class A,
-          class BufferT
+template< typename ValueT,
+          typename BufferT
         >
-size_t SerializeByItem( std::vector<T,A>&, BufferT&, size_t);
+size_t SerializeByItem( ValueT  &value, 
+                        BufferT &buffer,
+                        size_t  offset);
+//template< class T,
+//          class A,
+//          class BufferT
+//        >
+//size_t SerializeInBulk( std::vector<T,A>&, BufferT&, size_t);
+//
+//template< class T,
+//          class A,
+//          class BufferT
+//        >
+//size_t SerializeByItem( std::vector<T,A>&, BufferT&, size_t);
 
 
 namespace Vector
@@ -74,6 +87,7 @@ struct Serializer <VectorT, BufferT, fundamental_trait>
 
     const value_type *pFirst = &value[0];
     const value_type *pLast  = pFirst;
+
     std::advance(pLast, size);
     buffer.set_range( pFirst, 
                       pLast, 
@@ -81,6 +95,16 @@ struct Serializer <VectorT, BufferT, fundamental_trait>
 
     return size;
   }
+
+  //  **************************************************************************
+  size_t Write( value_type   &value, 
+                buffer_type  &buffer,
+                size_t        offset)
+  {
+    buffer.set_data( value, offset);
+    return sizeof(value_type);
+  }
+
 };
 
 //  ****************************************************************************

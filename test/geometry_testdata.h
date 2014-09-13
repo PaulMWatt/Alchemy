@@ -335,8 +335,8 @@ struct Instance
 
 const Instance k_instances[2] =
 {
-  {0, 0, 0, 0,  {1,0,0,0,1,0,0,0,1}},
-  {0, 3, 0, -4, {1,0,0,0,1,0,0,0,1}}
+  {0, 1, -2, 3,  {1,0,0,0,1,0,0,0,1}},
+  {0, 3, 1, -4,  {1,0,0,0,1,0,0,0,1}}
 };
 
 const Vertex k_light = make_vertex(-2, 5, -2, k_white);
@@ -452,15 +452,15 @@ const Instance k_other_instances[2] =
 {
   {
     0,
-    Hg::EndianSwap<int32_t>(0),
-    Hg::EndianSwap<int32_t>(0),
-    Hg::EndianSwap<int32_t>(0),
+    Hg::EndianSwap<int32_t>(1),
+    Hg::EndianSwap<int32_t>(-2),
+    Hg::EndianSwap<int32_t>(3),
     {1,0,0,0,1,0,0,0,1}
   },
   {
     0,
     Hg::EndianSwap<int32_t>(3),
-    Hg::EndianSwap<int32_t>(0),
+    Hg::EndianSwap<int32_t>(1),
     Hg::EndianSwap<int32_t>(-4),
     {1,0,0,0,1,0,0,0,1}
   }

@@ -872,7 +872,6 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_dynamic_size(
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_dynamic_size(void)
 {
-  TS_WARN("Test Implementation Required.");
   using namespace test::dynamic::nested::dynamic;
   using namespace test::data;
 
@@ -988,24 +987,25 @@ void make_buffer(byte_vector &buffer)
 void populate_msg(SUT &msg)
 {
   using namespace test::data;
-  TS_WARN("Test Code commented out during development; fails to compile.");
   msg.count     = 16;
-  //msg.table.push_back(k_White);
-  //msg.table.push_back(k_Fuchsia);
-  //msg.table.push_back(k_Aqua);
-  //msg.table.push_back(k_Yellow);
-  //msg.table.push_back(k_Purple);
-  //msg.table.push_back(k_Teal);
-  //msg.table.push_back(k_Olive);
-  //msg.table.push_back(k_Silver);
-  //msg.table.push_back(k_Blue);
-  //msg.table.push_back(k_Lime);
-  //msg.table.push_back(k_Red);
-  //msg.table.push_back(k_Gray);
-  //msg.table.push_back(k_Navy);
-  //msg.table.push_back(k_Green);
-  //msg.table.push_back(k_Maroon);
-  //msg.table.push_back(k_Black);
+
+  msg.table.resize(16);
+  msg.table[0] = k_White;
+  msg.table[0] = k_Fuchsia;
+  msg.table[0] = k_Aqua;
+  msg.table[0] = k_Yellow;
+  msg.table[0] = k_Purple;
+  msg.table[0] = k_Teal;
+  msg.table[0] = k_Olive;
+  msg.table[0] = k_Silver;
+  msg.table[0] = k_Blue;
+  msg.table[0] = k_Lime;
+  msg.table[0] = k_Red;
+  msg.table[0] = k_Gray;
+  msg.table[0] = k_Navy;
+  msg.table[0] = k_Green;
+  msg.table[0] = k_Maroon;
+  msg.table[0] = k_Black;
 }
 
 
@@ -1025,22 +1025,21 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_of_bitsets(void)
   byte_vector buffer;
   make_buffer(buffer);
 
-  TS_WARN("Test commented out.");
   // Populate the SUT with the test values.
   SUT sut;
   populate_msg(sut);
 
   // SUT: Serialize into a buffer.
-  //uint8_t const* pData = sut.data();
+  uint8_t const* pData = sut.data();
 
-  //TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  //TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+  TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
 }
 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_read_vector_of_bitsets(void)
 {
-
+  TS_WARN("Test requires implementation.");
 }
 
 //  ****************************************************************************
@@ -1392,6 +1391,7 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_vectors(void)
   TS_ASSERT_EQUALS(k_count, count );
 
   TS_WARN("Test commented out.");
+  TS_WARN("Internally, the vector processing needs a way to know how many bytes to read from the input buffer.");
 
   //TS_ASSERT_EQUALS(std::string("Dog"),      std::string(&sut.items[0][0])); 
   //TS_ASSERT_EQUALS(std::string("cAt"),      std::string(&sut.items[1][0])); 
@@ -1405,7 +1405,7 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_vectors(void)
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_nested_at_correct_offset(void)
 {
-  TS_WARN("Test implementation required.");
+  TS_WARN("Test implementation required. I do not remember the case that prompted this test declaration, but there is a valid case t be tested.");
 }
 
 

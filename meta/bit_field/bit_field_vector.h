@@ -182,6 +182,23 @@ public:
   }
 
   //  **************************************************************************
+  /// Changes the number of elements stored.
+  ///
+  /// @param n      The number of elements the container should now hold.
+  /// 
+  void resize(size_t count)                       { resize(count, value_type()); }
+
+  //  **************************************************************************
+  /// Changes the number of elements stored.
+  ///
+  /// @param n      The number of elements the container should now hold.
+  /// @param value  Default value to initialize elements if the resize
+  ///               causes new elements to be added to the container.
+  /// 
+  void resize(size_t     count, 
+              value_type value)                   { m_data.resize(count, value); }
+
+  //  **************************************************************************
   /// Conversion operator to the value_type reference.
   /// 
   /// @note         The converted vector interface provides direct access values.

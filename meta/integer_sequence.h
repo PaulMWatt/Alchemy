@@ -15,8 +15,8 @@
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
-#ifndef integer_sequence_H_INCLUDED
-#define integer_sequence_H_INCLUDED
+#ifndef INTEGER_SEQUENCE_H_INCLUDED
+#define INTEGER_SEQUENCE_H_INCLUDED
 // Includes *******************************************************************
 #include <meta/meta_fwd.h>
 #include <meta/meta_macros.h>

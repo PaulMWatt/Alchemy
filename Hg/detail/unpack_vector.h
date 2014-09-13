@@ -66,9 +66,6 @@ struct Deserializer <VectorT, BufferT, fundamental_trait>
 
   typedef fundamental_trait             data_type_trait;
 
-  // TODO: These types should appear in this version:
-  //       - fundamental_trait
-
   //  **************************************************************************
   size_t Read ( vector_type   &value, 
                 size_t        count,
@@ -83,19 +80,22 @@ struct Deserializer <VectorT, BufferT, fundamental_trait>
     // Calculate the size of data to write in bytes.
     size_t size = count * sizeof(value_type);
 
-
     value_type *pFirst = &value[0];
-
-    // TODO: Make the interfaces consistent between the set and get.
-    //value_type *pLast  = pFirst;
-    //std::advance(pLast, size);
-
     return buffer.get_range(pFirst, size, offset);
   }
+
+  //  **************************************************************************
+  size_t Read ( value_type   &value, 
+                buffer_type  &buffer,
+                size_t        offset)
+  {
+    return buffer.get_data( value, offset);
+  }
+
 };
 
 //  ****************************************************************************
-//  Imports an vector of bit-list fields.
+//  Imports a vector of bit-list fields.
 //
 template< typename T,
           typename A,
@@ -104,7 +104,8 @@ template< typename T,
 struct Deserializer <Hg::BitFieldVector<T,A>, BufferT, bitfield_trait>
 {
   typedef Hg::BitFieldVector<T,A>       vector_type;
-  typedef T                             value_type;
+  typedef typename
+    vector_type::value_type             value_type;
   typedef BufferT                       buffer_type;
   typedef bitfield_trait                data_type_trait;
 
@@ -122,11 +123,7 @@ struct Deserializer <Hg::BitFieldVector<T,A>, BufferT, bitfield_trait>
     // Calculate the size of data to write in bytes.
     size_t size = count * sizeof(value_type);
 
-    value_type *pFirst = value.data();
-
-// TODO: Make the interfaces consistent between the set and get.
-    //value_type *pLast  = pFirst;
-    //std::advance(pLast, size);
+    value_type *pFirst = &(value[0].value());
 
     return buffer.get_range(pFirst, size, offset);
   }
@@ -138,8 +135,6 @@ struct Deserializer <Hg::BitFieldVector<T,A>, BufferT, bitfield_trait>
   {
     return buffer.get_data( value, offset);
   }
-
-
 };
 
 
@@ -168,31 +163,36 @@ struct Deserializer <std::vector<T, A>, BufferT, nested_trait>
       return 0;
     }
 
-    // An important typedef for selecting the proper
-    // version of the unpack function for the sub-elements.
-    typedef typename
-      message_size_trait<value_type::format_type>::type     size_trait;
-
-    size_t bytes_written = 0;
+    size_t bytes_read = 0;
 
     // Process each item individually.
     for (size_t index = 0; index < count; ++index)
     {
       // The offset for each item progressively increases
       // by the number of bytes read from the input buffer.
-      size_t item_offset = offset + bytes_written;
+      size_t item_offset = offset + bytes_read;
 
-      size_t read_len =
-        unpack_message< value_type,
-                        buffer_type,
-                        size_trait
-                      >(value[index], buffer, item_offset);
-
-      bytes_written += read_len;
+      bytes_read += Read(value[index], buffer, item_offset);
     }
 
-    return bytes_written;
+    return bytes_read;
   }  
+
+  //  **************************************************************************
+  size_t Read ( value_type     &value, 
+                buffer_type    &buffer,
+                size_t          offset)
+  {
+    // An important typedef for selecting the proper
+    // version of the unpack function for the sub-elements.
+    typedef typename
+      message_size_trait<value_type::format_type>::type     size_trait;
+
+    return  unpack_message< value_type,
+                            buffer_type,
+                            size_trait
+                          >(value, buffer, offset);
+  }
 };
 
 
@@ -316,8 +316,8 @@ size_t DeserializeInBulk( std::vector<T,A> &value,
 
   deserializer_t  deserializer;
   size_t          bytes_written = 0;
-// TODO: Return and add this optimization for bulk reads if possible.
-
+  
+  // TODO: Return and add this optimization for bulk reads if possible.
   // Process each item individually.
   for (size_t index = 0; index < count; ++index)
   {

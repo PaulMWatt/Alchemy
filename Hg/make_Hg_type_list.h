@@ -130,32 +130,21 @@ template< class   T,
         >
 struct DeclareTypeSequence < ArrayT<T,N>, nested_trait >
 {
+  //// Define a corrected type T.
+  //typedef typename
+  //make_Hg_type_list<T>::type            sub_type;
+
+  //// Define the Hg type sequence.
+  //typedef typename 
+  //  std::array< sub_type, N>            type;
+
   // Define a typedef that represents the actual data-type
   // that reprsents the type-list T passed into this array.
   typedef typename
     FieldTypes <T, 0>::value_type       value_type;
 
-  // TODO: Ignore proxies for now, simply substitute with the field::value_type for a nested value.
-  // TODO: Undoubtedly we will need to return and recursively process this type even if a nested type is determined to be unnecessary.
   typedef typename 
     std::array< value_type, N>          type;
-
-  //typedef typename 
-  //  make_Hg_type_list<T>::type          datum_type;
-
-  //typedef Hg::detail::DataProxy 
-  //          < nested_trait,
-  //            0,
-  //            typename StartTypeList<datum_type>::type,
-  //            0
-  //          >                           proxy_type;
-
-  //typedef typename 
-  //  std::array< datum_type, N>          type;
-
-  // TODO: The nested processing needs to catch up to this definition.
-  //typedef typename 
-  //  std::array< proxy_type, N>          type;
 };
 
 //  ****************************************************************************
@@ -176,7 +165,7 @@ struct DeclareTypeSequence < VectorT<T,A>, bitfield_trait >
 };
 
 //  ****************************************************************************
-//  Declares a BitFieldVector in place of the vector<bit_field> definition.
+//  Processes a nested field recursively to correct any vector definitions.
 // 
 //  @paramt VectorT       The vector definition type.
 //  @paramt T             The value type in the container.
@@ -193,27 +182,8 @@ struct DeclareTypeSequence < VectorT<T,A>, nested_trait  >
   typedef typename
     FieldTypes <T, 0>::value_type       value_type;
 
-  // TODO: Ignore proxies for now, simply substitute with the field::value_type for a nested value.
-  // TODO: Undoubtedly we will need to return and recursively process this type even if a nested proxy is determined to be unnecessary.
   typedef typename 
     std::vector< value_type, A>         type;
-
-  //typedef typename 
-  //  make_Hg_type_list<T>::type          datum_type;
-
-  //typedef Hg::detail::DataProxy 
-  //          < nested_trait,
-  //            0,
-  //            typename StartTypeList<datum_type>::type,
-  //            0
-  //          >                           proxy_type;
-
-  //typedef typename 
-  //  std::vector< datum_type, A>         type;
-
-  // TODO: The nested processing needs to catch up to this definition
-  //typedef typename 
-  //  std::vector< proxy_type, A>         type;
 };
 
 
