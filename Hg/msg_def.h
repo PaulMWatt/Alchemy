@@ -40,6 +40,7 @@
 #include <meta/size_of.h>
 #include <meta/meta_math.h>
 #include <meta/dynamic.h>
+#include <Hg/make_Hg_type_list.h>
 #include <Hg/proxy/deduce_proxy_type.h>
 
 //  ****************************************************************************
@@ -50,7 +51,7 @@ namespace Hg
 {
 
 //  Typedefs *******************************************************************
-typedef size_t (*pfnGetDatumSize)(uint8_t*, size_t);
+typedef size_t (*pfnGetDatumSize)(const uint8_t*, size_t);
 
 
 //  ****************************************************************************
@@ -87,7 +88,7 @@ struct message_size_trait
 // *****************************************************************************
 //  Primary Message Declaration MACROS *****************************************
 // *****************************************************************************
-#define DECLARE_FORMAT_HEADER(F)                                               \
+#define DEFINE_HG_FORMAT_HEADER(F)                                             \
   template< size_t   kt_offset >                                               \
   struct F##Format;                                                            \
                                                                                \
@@ -129,6 +130,11 @@ struct message_size_trait
       return FieldAtIndex(datum_type_t());                                     \
     }                                                                          \
     BEGIN_COUNTER
+
+// *****************************************************************************
+#define DECLARE_FORMAT_HEADER(F)                                               \
+  typedef Hg::make_Hg_type_list<F>::type                    F##_Hg;            \
+  DEFINE_HG_FORMAT_HEADER(F##_Hg)
 
 // *****************************************************************************
 #define DECLARE_DATUM_FORMAT_IDX(IDX,T,P)                                      \
@@ -230,16 +236,20 @@ struct message_size_trait
       : base_type()                                                            \
     { }                                                                        \
                                                                                \
+    C(const value_type &data_field)                                            \
+      : base_type()                                                            \
+    { value(data_field); }                                                     \
+                                                                               \
     C(value_type &data_field)                                                  \
       : base_type(data_field)                                                  \
     { }                                                                        \
                                                                                \
     C& operator=(const C &rhs)                                                 \
-    { m_data = rhs.m_data;                                                     \
+    { value(rhs.value());                                                      \
       return *this;                                                            \
     }                                                                          \
     C& operator=(const value_type &data_field)                                 \
-    { m_data = data_field;                                                     \
+    { value(data_field);                                                       \
       return *this;                                                            \
     }                                                                          \
                                                                                \

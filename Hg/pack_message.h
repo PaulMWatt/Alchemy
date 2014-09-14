@@ -27,9 +27,9 @@ namespace Hg
 /// @return                   The buffer that has been allocated to store the 
 ///                           message.
 ///
-template< typename MessageT,
-          typename BufferT,
-          typename SizeTraitT
+template< class MessageT,
+          class BufferT,
+          class SizeTraitT
         >
 std::shared_ptr<BufferT>
   pack_message( MessageT& msg_values,
@@ -55,9 +55,9 @@ std::shared_ptr<BufferT>
 /// @return                   The buffer that has been allocated to store the 
 ///                           message.
 ///
-template< typename MessageT,
-          typename BufferT,
-          typename SizeTraitT
+template< class MessageT,
+          class BufferT,
+          class SizeTraitT
         >
 size_t pack_message(MessageT &msg_values,
                     BufferT  &buffer,

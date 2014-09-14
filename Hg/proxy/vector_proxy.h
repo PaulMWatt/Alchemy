@@ -16,7 +16,7 @@
 #include <meta/type_list.h>
 #include <meta/type_at.h>
 #include <Hg/datum/datum.h>
-
+#include <meta/bit_field/bit_field_vector.h>
 #include <storage_policy.h>
 
 #include <vector>
@@ -62,17 +62,34 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
     field_type::index_type              index_type;
                                         ///< The raw type extracted at the current
                                         ///  index defined in the parent TypeList.
+
   typedef typename
-    field_type::value_type              value_type;
+    index_type::value_type              data_type;
+                                        ///< The value type of the element extracted 
+                                        ///  at the current index defined in the 
+                                        ///  parent TypeList.
+
+  //  Typedefs *****************************************************************
+  typedef typename 
+  std::conditional< std::is_base_of<vector_trait, index_type>::value,
+                    index_type,                  
+                    typename field_type::value_type                  
+                  >::type
+
+                                        value_type;
+
+//std::vector<data_type, typename index_type::allocator_type>
+  //typedef typename
+  //  field_type::value_type              value_type;
                                         ///< The vector type defined in the 
                                         ///  message format. This type definition
                                         ///  is possibly altered to appropriately
                                         ///  manage the type, such as nested types.
-  typedef typename
-    value_type::value_type              data_type;
-                                        ///< The data type managed by this Vector.
-                                        ///  This is the type of data that will 
-                                        ///  be written to the attached buffer.
+  //typedef typename
+  //  value_type::value_type              data_type;
+  //                                      ///< The data type managed by this Vector.
+  //                                      ///  This is the type of data that will 
+  //                                      ///  be written to the attached buffer.
   
   typedef typename                      ///  Reference to an element in the vector.
     value_type::reference               reference;
@@ -187,8 +204,8 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   /// @param value  Default value to initialize elements if the resize
   ///               causes new elements to be added to the container.
   /// 
-  void resize(size_t count, 
-              const data_type& value)             { get().resize(count, value); }
+  void resize(size_t    count, 
+              data_type value)                    { get().resize(count, value); }
 
   //  **************************************************************************
   /// Updates the value of this VectorProxy with a std::vector type. 
@@ -361,7 +378,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   /// @note         All iterators at or after this point of erasure will be
   ///               invalidated.
   ///
-  void push_back(const data_type& value)          { get().push_back(value);   }
+  void push_back(const_reference value)           { get().push_back(value);   }
 
   //  **************************************************************************
   /// Removes the last element in the container.

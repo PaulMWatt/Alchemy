@@ -17,7 +17,7 @@ namespace Hg
 /// Calculate the number of elements in the specified type container.
 /// One definition is required for every specialization of the list.
 /// The list currently supports 32 index entries. The hand written
-/// version of this function for the list is 500 lines longs.
+/// version of this function for the list is 150 lines longs.
 /// Therefore, the following MACRO will be used to create the
 /// required definitions:
 ///           

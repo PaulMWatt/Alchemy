@@ -33,28 +33,20 @@ template< typename MessageT,
 class Message;
 
 //  ****************************************************************************
-/// Reports the total size of the dynamic buffers required for this message.
-///    
-//template< typename MessageT,
-//          typename ByteOrderT,
-//          typename StorageT
-//        >
-//size_t dynamic_size(const Message<MessageT, ByteOrderT, StorageT>& msg)
-//{
-//  return DynamicSizeWorker<MessageT, has_dynamic<MessageT>::value>.size(msg);
-//}
-
-//  ****************************************************************************
 /// Determines the number of bytes required to serialize a vector.
 ///    
-template< typename T,
-          typename A,
-          typename TypeTraitT
+template< class T,
+          class A,
+          class TypeTraitT
         >
 struct SizeOfVector
 {
   //  **************************************************************************
-  size_t operator()(const std::vector<T,A>& field)
+  template< class T,
+            class A,
+            template <class, class> class VectorT
+          >
+  size_t operator()(const VectorT<T,A>& field)
   {
     return field.size() * sizeof(T);
   }
@@ -64,8 +56,8 @@ struct SizeOfVector
 /// Determines the number of bytes required to serialize a vector.
 /// This version handles a vector with sub-messages.
 ///    
-template< typename T,
-          typename A
+template< class T,
+          class A
         >
 struct SizeOfVector<T,A,nested_trait>
 {
@@ -143,12 +135,22 @@ struct SizeOfVector<T,A,vector_trait>
   }
 };
 
+//  ****************************************************************************
+/// Reports the total dynamic size of vector of bit-fields for this item.
+///    
+template< class T,
+          class A
+        >
+size_t dynamic_size(const Hg::BitFieldVector<T,A>& field)
+{
+  return field.size() * Hg::SizeOf<T>::value;
+}
 
 //  ****************************************************************************
 /// Reports the total size of the dynamic buffers required for this message.
 ///    
-template< typename T,
-          typename A
+template< class T,
+          class A
         >
 size_t dynamic_size(const std::vector<T,A>& field)
 {
@@ -218,7 +220,7 @@ struct DynamicSizeFunctor
       proxy_type::value_type                                  value_type;
                                       
     message_type &msg = const_cast<message_type&>(message);
-    value_type &value  = msg.template FieldAt<IdxT>().get();
+    value_type &value = msg.template FieldAt<IdxT>().get();
     m_dynamic_size += dynamic_size(value);
   }
 

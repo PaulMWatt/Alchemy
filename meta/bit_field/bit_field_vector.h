@@ -66,6 +66,9 @@ public:
                                         ///< The data type managed by this vector.
                                         ///  This is the type of data that will 
                                         ///  be written to the attached buffer.
+  typedef A                             allocator_type;
+                                        ///< The allocator used by this vector.
+
 
   typedef std::vector<value_type, A>    vector_type;
 
@@ -73,7 +76,7 @@ public:
     bit_field_type                      reference;
                                                                                 
   typedef typename                      ///  Const Reference to an element in the vector.
-    const reference                     const_reference;
+    const bit_field_type                const_reference;
 
 
   // TODO: Bit-field access through the iterator is not yet supported, 
@@ -108,6 +111,12 @@ public:
   /// 
   BitFieldVector(const BitFieldVector &rhs)
   {
+    if (rhs.empty())
+    {
+      return;
+    }
+
+    resize(rhs.size());
     std::copy( rhs.begin(), 
                rhs.end(), 
                begin());    
@@ -147,6 +156,14 @@ public:
   }
 
   //  **************************************************************************
+  /// Erases every element in the vector.
+  /// 
+  void clear()
+  {
+    m_data.clear();  
+  }
+
+  //  **************************************************************************
   /// Indicates if this container contains 0 elements.
   /// 
   bool empty() const
@@ -169,6 +186,23 @@ public:
   { 
     return size() * sizeof(value_type); 
   }
+
+  //  **************************************************************************
+  /// Changes the number of elements stored.
+  ///
+  /// @param n      The number of elements the container should now hold.
+  /// 
+  void resize(size_t count)                       { resize(count, value_type()); }
+
+  //  **************************************************************************
+  /// Changes the number of elements stored.
+  ///
+  /// @param n      The number of elements the container should now hold.
+  /// @param value  Default value to initialize elements if the resize
+  ///               causes new elements to be added to the container.
+  /// 
+  void resize(size_t     count, 
+              value_type value)                   { m_data.resize(count, value); }
 
   //  **************************************************************************
   /// Conversion operator to the value_type reference.

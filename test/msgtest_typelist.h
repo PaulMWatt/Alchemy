@@ -61,8 +61,6 @@ typedef TypeList
   std::array<size_t, 3>
 > base_format_t;
 
-//  HG_TYPE_ARRAY(size_t, 3)
-
 
 //  ****************************************************************************
 //  A type list definition for a single entry message.

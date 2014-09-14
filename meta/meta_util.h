@@ -191,6 +191,13 @@ struct static_size_trait { };
 struct dynamic_size_trait { };
 
 //  ***************************************************************************
+/// fundamental_trait identifies fundamental integral types.
+///
+struct fundamental_trait 
+  : static_size_trait
+{ };
+
+//  ***************************************************************************
 /// Bitfield_trait identifies fundamental integral types, that automatically
 /// perform bit-shift and mask operations to simulate bit-fields.
 ///

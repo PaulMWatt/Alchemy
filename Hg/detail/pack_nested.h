@@ -42,9 +42,9 @@ struct PackDatum<IdxT, MessageT, BufferT, nested_trait>
   //                        to this input value to report how much larger the
   //                        message has become. 
   //
-  void operator()(const MessageT &msg,
-                        BufferT  &buffer,
-                        size_t   &dynamic_offset)
+  void operator()(MessageT &msg,
+                  BufferT  &buffer,
+                  size_t   &dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
@@ -53,7 +53,7 @@ struct PackDatum<IdxT, MessageT, BufferT, nested_trait>
     typedef typename
       proxy_type::value_type                                            value_type;
 
-    value_type value  = const_cast<MessageT&>(msg).template FieldAt<IdxT>().get();
+    value_type value  = msg.template FieldAt<IdxT>().get();
     size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
                       + dynamic_offset;
     pack_message< value_type, 

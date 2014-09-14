@@ -18,19 +18,32 @@ namespace Hg
 
 namespace detail
 {
-
 //  Forward Declarations *******************************************************
-template< typename T,
-          size_t   N,
+template< typename ValueT,
           typename BufferT
         >
-size_t SerializeInBulk( std::array<T,N>&, BufferT&, size_t);
+size_t SerializeInBulk( ValueT  &value, 
+                        BufferT &buffer,
+                        size_t  offset);
 
-template< typename T,
-          size_t   N,
+template< typename ValueT,
           typename BufferT
         >
-size_t SerializeByItem( std::array<T,N>&, BufferT&, size_t);
+size_t SerializeByItem( ValueT  &value, 
+                        BufferT &buffer,
+                        size_t  offset);
+
+//template< typename T,
+//          size_t   N,
+//          typename BufferT
+//        >
+//size_t SerializeInBulk( std::array<T,N>&, BufferT&, size_t);
+//
+//template< typename T,
+//          size_t   N,
+//          typename BufferT
+//        >
+//size_t SerializeByItem( std::array<T,N>&, BufferT&, size_t);
 
 
 namespace Array
@@ -64,8 +77,8 @@ struct Serializer
     // Calculate the size of data to write in bytes.
     size_t size = value.size() * sizeof(value_type);
 
-    value_type *pFirst = &value[0];
-    value_type *pLast  = pFirst;
+    const value_type *pFirst = &value[0];
+    const value_type *pLast  = pFirst;
 
     std::advance(pLast, size);
     buffer.set_range( pFirst, 
@@ -115,8 +128,8 @@ struct Serializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
     // Calculate the size of data to write in bytes.
     size_t size = value.size() * sizeof(value_type);
 
-    value_type *pFirst = value.data();
-    value_type *pLast  = pFirst;
+    const value_type *pFirst = value.data();
+    const value_type *pLast  = pFirst;
 
     std::advance(pLast, size);
     buffer.set_range( pFirst, 
@@ -148,6 +161,9 @@ template< typename T,
         >
 struct Serializer <std::array<T,N>, BufferT, nested_trait>
 {
+  typedef typename
+    T::format_type                      format_type;
+
   typedef std::array<T,N>               array_type;
 
   typedef typename
@@ -166,12 +182,12 @@ struct Serializer <std::array<T,N>, BufferT, nested_trait>
     // An important typedef for selecting the proper
     // version of the unpack function for the sub-elements.
     typedef typename
-      message_size_trait<value_type::format_type>::type     size_trait;
+      message_size_trait<format_type>::type     size_trait;
 
     size_t bytes_written = 0;
 
     // Process each item individually.
-    for (size_t index = 0; index < count; ++index)
+    for (size_t index = 0; index < N; ++index)
     {
       // The offset for each item progressively increases
       // by the number of bytes read from the input buffer.
@@ -293,7 +309,6 @@ struct Serializer <std::array<T,N>, BufferT, vector_trait>
                         allocator_type,
                         buffer_type
                       >(value, 
-                        value.size(), 
                         buffer, 
                         offset);
 
@@ -310,9 +325,9 @@ struct Serializer <std::array<T,N>, BufferT, vector_trait>
 template< typename ValueT,
           typename BufferT
         >
-size_t SerializeInBulk( ValueT     &value, 
-                        BufferT    &buffer,
-                        size_t      offset)
+size_t SerializeInBulk( ValueT  &value, 
+                        BufferT &buffer,
+                        size_t  offset)
 {
   typedef ValueT                        array_type;
 
@@ -360,14 +375,15 @@ size_t SerializeInBulk( ValueT     &value,
 //  ValueT        Must be a type that contains a sub-type defined as value_type.
 //                Such as std::vector or std::array
 //
-template< typename ValueT,
-          typename BufferT
+template< class   T,
+          size_t  N,
+          class   BufferT
         >
-size_t SerializeByItem( ValueT     &value, 
-                        BufferT    &buffer,
-                        size_t      offset)
+size_t SerializeByItem( std::array<T,N> &value, 
+                        BufferT         &buffer,
+                        size_t          offset)
 {
-  typedef ValueT                        array_type;
+  typedef std::array<T,N>               array_type;
 
   typedef typename
     array_type::value_type              data_type;
@@ -379,15 +395,14 @@ size_t SerializeByItem( ValueT     &value,
     Hg::detail::DeduceTypeTrait
       < data_type >::type               data_type_trait;
 
-  Array::Serializer < data_type, 
-                      allocator_type,
+  Array::Serializer < array_type,
                       BufferT, 
                       data_type_trait>  serializer;
 
   size_t bytes_written = 0;
 
   // Process each item individually.
-  for (size_t index = 0; index < count; ++index)
+  for (size_t index = 0; index < N; ++index)
   {
     // The offset for each item progressively increases
     // by the number of bytes read from the input buffer.
@@ -486,11 +501,12 @@ struct PackDatum< IdxT,
   //                      will be added to this input value to report how much 
   //                      larger the message has become. 
   //
-  void operator()(const MessageT& msg,
-                        BufferT&  buffer,
-                        size_t&   dynamic_offset)
+  void operator()( MessageT& msg,
+                   BufferT&  buffer,
+                   size_t&   dynamic_offset)
   {
-    value_type value = const_cast<MessageT&>(msg).template FieldAt<IdxT>().get();
+    value_type value = msg.template FieldAt<IdxT>().get();
+//    value_type value = const_cast<MessageT&>(msg).template FieldAt<IdxT>().get();
     
     // Exit if there are no entries in this dynamic value.
     if (value.empty())
@@ -498,14 +514,9 @@ struct PackDatum< IdxT,
       return;
     }
 
-    // Calculate the total size of this dynamic-field.
-    size_t length = dynamic_size(value);
-
-
-    size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
-                      + dynamic_offset;
-
-    // The remaining size must be determined on an element-by-element basis.
+    // Calculate the total starting offset.
+    size_t offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
+                  + dynamic_offset;
 
     size_t bytes_written = 
       SerializeArray(value, buffer, offset);

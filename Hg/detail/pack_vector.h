@@ -23,12 +23,27 @@ namespace detail
 template< typename ValueT,
           typename BufferT
         >
-size_t SerializeInBulk( ValueT&, size_t, BufferT&, size_t);
+size_t SerializeInBulk( ValueT  &value, 
+                        BufferT &buffer,
+                        size_t  offset);
 
 template< typename ValueT,
           typename BufferT
         >
-size_t SerializeByItem( ValueT&, size_t, BufferT&, size_t);
+size_t SerializeByItem( ValueT  &value, 
+                        BufferT &buffer,
+                        size_t  offset);
+//template< class T,
+//          class A,
+//          class BufferT
+//        >
+//size_t SerializeInBulk( std::vector<T,A>&, BufferT&, size_t);
+//
+//template< class T,
+//          class A,
+//          class BufferT
+//        >
+//size_t SerializeByItem( std::vector<T,A>&, BufferT&, size_t);
 
 
 namespace Vector
@@ -37,38 +52,42 @@ namespace Vector
 //  ****************************************************************************
 //  Exports data from the vector for fixed-size POD types.
 //
-template< typename ValueT,
-          typename AllocatorT,
+template< typename VectorT,
           typename BufferT,
           typename TraitT
         >
-struct Serializer
+struct Serializer;
+//  ****************************************************************************
+//  Exports data from the vector for fixed-size fundamental types.
+//
+template< typename VectorT,
+          typename BufferT
+        >
+struct Serializer <VectorT, BufferT, fundamental_trait>
 {
-  typedef typename
-    std::vector<ValueT, 
-                AllocatorT>             vector_type;
+  typedef VectorT                       vector_type;
+
   typedef typename
     vector_type::value_type             value_type;
 
   typedef BufferT                       buffer_type;
 
-  typedef TraitT                        data_type_trait;
+  typedef fundamental_trait             data_type_trait;
+
+  // TODO: These types should appear in this version:
+  //       - fundamental_trait
 
   //  **************************************************************************
-  template <typename TraitT>
-  size_t Write( vector_type  &value, 
-                size_t        count, 
-                buffer_type  &buffer,
+  size_t Write( vector_type   &value, 
+                buffer_type   &buffer,
                 size_t        offset)
   {
-    // TODO: Currently it appears that the full-length in bytes is required 
-    //       rather than the count, like an iterator would require.
-    //       Revisit and verify this is correct.
-    size_t size = count * sizeof(value_type);
+    // Calculate the size of data to write in bytes.
+    size_t size = value.size() * sizeof(value_type);
 
+    const value_type *pFirst = &value[0];
+    const value_type *pLast  = pFirst;
 
-    value_type *pFirst = &value[0];
-    value_type *pLast  = pFirst;
     std::advance(pLast, size);
     buffer.set_range( pFirst, 
                       pLast, 
@@ -76,7 +95,6 @@ struct Serializer
 
     return size;
   }
-
 
   //  **************************************************************************
   size_t Write( value_type   &value, 
@@ -89,6 +107,54 @@ struct Serializer
 
 };
 
+//  ****************************************************************************
+//  Exports arrays of bit-field values into a packed buffer.
+//
+template< typename T,
+          typename A,
+          typename BufferT
+        >
+struct Serializer <Hg::BitFieldVector<T,A>, BufferT, bitfield_trait>
+{
+  typedef Hg::BitFieldVector<T,A>       vector_type;
+
+  typedef typename
+    vector_type::value_type             value_type;
+
+  typedef BufferT                       buffer_type;
+
+  typedef bitfield_trait                data_type_trait;
+
+  //  **************************************************************************
+  size_t Write( vector_type   &value, 
+                buffer_type   &buffer,
+                size_t         offset)
+  {
+    // Calculate the size of data to write in bytes.
+    size_t size = value.size() * sizeof(value_type);
+
+    value_type *pFirst = value.data();
+    value_type *pLast  = pFirst;
+
+    std::advance(pLast, size);
+    buffer.set_range( pFirst, 
+                      pLast, 
+                      offset);
+
+    return size;
+  }
+
+  //  **************************************************************************
+  size_t Write( value_type  &value, 
+                buffer_type &buffer,
+                size_t      offset)
+  {
+    int i = 10;
+    return 0;
+  }
+
+};
+
 
 //  ****************************************************************************
 //  Exports a vector of nested types with each sub-item written individually.
@@ -97,11 +163,10 @@ template< typename ValueT,
           typename AllocatorT,
           typename BufferT
         >
-struct Serializer <ValueT, AllocatorT, BufferT, nested_trait>
+struct Serializer <std::vector<ValueT, AllocatorT>, BufferT, nested_trait>
 {
-  typedef typename
-    std::vector<ValueT, 
-                AllocatorT>             vector_type;
+  typedef std::vector<ValueT, 
+                      AllocatorT>       vector_type;
   typedef typename
     vector_type::value_type             value_type;
 
@@ -110,11 +175,9 @@ struct Serializer <ValueT, AllocatorT, BufferT, nested_trait>
   typedef nested_trait                  data_type_trait;
 
   //  **************************************************************************
-  template <typename TraitT>
-  size_t Write( vector_type    &value, 
-                size_t          count, 
-                buffer_type    &buffer,
-                size_t          offset)
+  size_t Write( vector_type   &value, 
+                buffer_type   &buffer,
+                size_t         offset)
   {
     // An important typedef for selecting the proper
     // version of the unpack function for the sub-elements.
@@ -124,7 +187,7 @@ struct Serializer <ValueT, AllocatorT, BufferT, nested_trait>
     size_t bytes_written = 0;
 
     // Process each item individually.
-    for (size_t index = 0; index < count; ++index)
+    for (size_t index = 0; index < value.size(); ++index)
     {
       // The offset for each item progressively increases
       // by the number of bytes read from the input buffer.
@@ -152,11 +215,10 @@ template< typename ValueT,
           typename AllocatorT,
           typename BufferT
         >
-struct Serializer <ValueT, AllocatorT, BufferT, array_trait>
+struct Serializer <std::vector<ValueT, AllocatorT>, BufferT, array_trait>
 {
-  typedef typename
-    std::vector<ValueT, 
-                AllocatorT>             vector_type;
+  typedef std::vector<ValueT, 
+                      AllocatorT>       vector_type;
   typedef typename
     vector_type::value_type             value_type;
 
@@ -170,22 +232,21 @@ struct Serializer <ValueT, AllocatorT, BufferT, array_trait>
       < value_type >::type              data_type_trait;
 
   //  **************************************************************************
-  template <typename TraitT>
-  size_t Write( vector_type    &value, 
-                size_t          count, 
-                buffer_type    &buffer,
-                size_t          offset)
+  size_t Write( vector_type   &items, 
+                buffer_type   &buffer,
+                size_t         offset)
   {
-    return SerializeInBulk(value, buffer, offset);
+    return SerializeByItem(items, buffer, offset);
   }  
 
   //  **************************************************************************
-  size_t Write( vector_type  &value, 
-                buffer_type  &buffer,
-                size_t        offset)
+  size_t Write( value_type  &value, 
+                buffer_type &buffer,
+                size_t       offset)
   {
-    return SerializeByItem(value, buffer, offset);
+    return SerializeArray(value, buffer, offset);
   }  
+
 };
     
 //  ****************************************************************************
@@ -195,11 +256,10 @@ template< typename ValueT,
           typename AllocatorT,
           typename BufferT
         >
-struct Serializer <ValueT, AllocatorT, BufferT, vector_trait>
+struct Serializer <std::vector<ValueT, AllocatorT>, BufferT, vector_trait>
 {
-  typedef typename
-    std::vector<ValueT, 
-                AllocatorT>             vector_type;
+  typedef std::vector<ValueT, 
+                      AllocatorT>       vector_type;
   typedef typename
     vector_type::value_type             value_type;
 
@@ -213,47 +273,23 @@ struct Serializer <ValueT, AllocatorT, BufferT, vector_trait>
       < value_type >::type              data_type_trait;
 
   //  **************************************************************************
-  template <typename TraitT>
   size_t Write( vector_type  &value, 
-                size_t        count, 
                 buffer_type  &buffer,
                 size_t        offset)
   {
-    return SerializeInBulk(value, count, buffer, offset);
+    return SerializeByItem(value, buffer, offset);
   }  
 
   //  **************************************************************************
-  template <>
-  size_t Write<vector_trait>( vector_type  &value, 
-                              size_t        count, 
-                              buffer_type  &buffer,
-                              size_t        offset)
+  size_t Write( value_type  &value, 
+                buffer_type       &buffer,
+                size_t            offset)
   {
-    return SerializeByItem(value, count, buffer, offset);
-  }  
-
-  //  **************************************************************************
-  size_t Write( value_type   &value, 
-                buffer_type  &buffer,
-                size_t        offset)
-  {
-    typedef typename
-      value_type::value_type            data_type;
-
-    typedef typename
-      value_type::allocator_type        allocator_type;
-
-    // Since this is the vector handler, 
-    // all single value entries passed in will
-    // be vectors themselves.
     size_t bytes_written = 
-      SerializeVector < data_type,
-                        allocator_type,
-                        buffer_type
-                      >(value, value.size(), buffer, offset);
+      SerializeVector(value, buffer, offset);
 
     return bytes_written;
-  }  
+  }
 };
     
 } // namespace Vector
@@ -261,15 +297,15 @@ struct Serializer <ValueT, AllocatorT, BufferT, vector_trait>
 //  **************************************************************************
 //  This version writes all of the items to the buffer at once.
 //
-template< typename ValueT,
-          typename BufferT
+template< class T,
+          class A,
+          class BufferT
         >
-size_t SerializeInBulk( ValueT     &value, 
-                        size_t      count, 
-                        BufferT    &buffer,
-                        size_t      offset)
+size_t SerializeInBulk( const std::vector<T,A>  &value, 
+                        BufferT                 &buffer,
+                        size_t                  offset)
 {
-  typedef ValueT                        vector_type;
+  typedef std::vector<T,A>              vector_type;
 
   typedef typename
     vector_type::value_type             data_type;
@@ -283,13 +319,12 @@ size_t SerializeInBulk( ValueT     &value,
     Hg::detail::DeduceTypeTrait
       < data_type >::type               data_type_trait;
 
-  Vector::Serializer< data_type, 
-                      allocator_type,
+  Vector::Serializer< vector_type,
                       BufferT, 
                       data_type_trait>  serializer;
 
   size_t bytes_written = 0;
-// TODO: Return and add this optimization for bulk writes if possible.
+// TODO: Return and add this optimization for bulk writes for types that are possible.
   // Process each item individually.
   for (size_t index = 0; index < count; ++index)
   {
@@ -316,15 +351,15 @@ size_t SerializeInBulk( ValueT     &value,
 //  ValueT        Must be a type that contains a sub-type defined as value_type.
 //                Such as std::vector or std::array
 //
-template< typename ValueT,
-          typename BufferT
+template< class T,
+          class A,
+          class BufferT
         >
-size_t SerializeByItem( ValueT     &value, 
-                        size_t      count, 
-                        BufferT    &buffer,
-                        size_t      offset)
+size_t SerializeByItem( std::vector<T,A>  &value, 
+                        BufferT           &buffer,
+                        size_t             offset)
 {
-  typedef ValueT                        vector_type;
+  typedef std::vector<T,A>              vector_type;
 
   typedef typename
     vector_type::value_type             data_type;
@@ -338,15 +373,14 @@ size_t SerializeByItem( ValueT     &value,
     Hg::detail::DeduceTypeTrait
       < data_type >::type               data_type_trait;
 
-  Vector::Serializer< data_type, 
-                      allocator_type,
+  Vector::Serializer< vector_type, 
                       BufferT, 
                       data_type_trait>  serializer;
 
   size_t bytes_written = 0;
 
   // Process each item individually.
-  for (size_t index = 0; index < count; ++index)
+  for (size_t index = 0; index < value.size(); ++index)
   {
     // The offset for each item progressively increases
     // by the number of bytes read from the input buffer.
@@ -365,23 +399,21 @@ size_t SerializeByItem( ValueT     &value,
 //  ****************************************************************************
 //  Adapter function to simplify serializing a buffer from a vector-field.
 //
-template< typename ValueT,
-          typename AllocatorT,
-          typename BufferT
+template< class T,
+          class A,
+          class BufferT,
+          template <class, class> class VectorT
         >
-size_t SerializeVector (std::vector<ValueT, AllocatorT> &value,
-                        size_t    count,
-                        BufferT  &buffer,
-                        size_t    offset)
+size_t SerializeVector (VectorT<T, A> &value,
+                        BufferT       &buffer,
+                        size_t         offset)
 {
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of serializing the data.
-  typedef typename
-    std::vector<ValueT, 
-                AllocatorT>             vector_type;
-  typedef typename
-    vector_type::value_type             value_type;
+  typedef VectorT<T, A>                 vector_type;
+
+  typedef T                             value_type;
 
   typedef typename 
     Hg::detail::DeduceTypeTrait
@@ -391,16 +423,13 @@ size_t SerializeVector (std::vector<ValueT, AllocatorT> &value,
   // Define the correct type of serialize functor 
   // based on the type contained within the vector.
   typedef Vector::Serializer
-                    < ValueT,
-                      AllocatorT,
+                    < vector_type,
                       BufferT, 
                       value_type_trait
                     >                   serializer_t;
-  typedef typename
-    serializer_t::data_type_trait       data_type_trait;
 
   serializer_t serializer;
-  return serializer.Write<data_type_trait>(value, count, buffer, offset);
+  return serializer.Write(value, buffer, offset);
 }
 
 
@@ -416,7 +445,10 @@ template< size_t   IdxT,
           typename MessageT,
           typename BufferT
         >
-struct PackDatum<IdxT, MessageT, BufferT, vector_trait>
+struct PackDatum< IdxT, 
+                  MessageT, 
+                  BufferT, 
+                  vector_trait>
 {
   //  Typedefs *****************************************************************
   typedef typename
@@ -430,8 +462,6 @@ struct PackDatum<IdxT, MessageT, BufferT, vector_trait>
     proxy_type::value_type                        value_type;
   typedef typename
     value_type::value_type                        data_type;
-  typedef typename
-    value_type::allocator_type                    allocator_type;
 
   typedef MessageT                                message_type;
 
@@ -447,11 +477,11 @@ struct PackDatum<IdxT, MessageT, BufferT, vector_trait>
   //                      will be added to this input value to report how much 
   //                      larger the message has become. 
   //
-  void operator()(const message_type& msg,
-                        buffer_type&  buffer,
-                        size_t&       dynamic_offset)
+  void operator()(message_type& msg,
+                  buffer_type&  buffer,
+                  size_t&       dynamic_offset)
   {
-    value_type value = const_cast<message_type&>(msg).template FieldAt<IdxT>().get();
+    value_type value = msg.template FieldAt<IdxT>().get();
     
     // Exit if there are no entries in this dynamic value.
     if (value.empty())
@@ -459,24 +489,12 @@ struct PackDatum<IdxT, MessageT, BufferT, vector_trait>
       return;
     }
 
-    // Calculate the total size of this dynamic-field.
-// TODO: Unused, determine its original intent and remove if not needed.
-//    size_t length = dynamic_size(value);
-
-    size_t     offset = Hg::OffsetOf<IdxT, message_type::format_type>::value
-                      + dynamic_offset;
-
-    // Calculate the full size of the buffer that will be written.
-    // Query the value directly for the number of elements.
-    size_t count= value.size();
-
-    // The remaining size must be determined on an element-by-element basis.
+    // Calculate the total starting offset.
+    size_t offset = Hg::OffsetOf<IdxT, message_type::format_type>::value
+                  + dynamic_offset;
 
     size_t bytes_written = 
-      SerializeVector < data_type,
-                        allocator_type,
-                        buffer_type
-                      >(value, count, buffer, offset);
+      SerializeVector(value, buffer, offset);
 
     // Update the accumulated dynamic size with the 
     // new length added by the size of this field.

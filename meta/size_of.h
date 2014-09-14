@@ -11,6 +11,7 @@
 // Includes ********************************************************************
 #include <meta/meta_fwd.h>
 #include <meta/container_size.h>
+#include <meta/dynamic.h>
 
 namespace Hg
 {
@@ -19,10 +20,15 @@ namespace Hg
 template <typename T>
 struct SizeOf;
 
-template< typename T,
-          size_t   N
+template< class   T,
+          size_t  N
         >
 struct BitFieldArray;
+
+template< class T,
+          class A
+        >
+struct BitFieldVector;
 
 
 // This namespace contains specialized versions of the SizeOf implementation
@@ -40,6 +46,8 @@ struct SizeOf_Impl
 
 //  ****************************************************************************
 //  Arrays size should only include the elements in the array.
+//  However, if the array contains a dynamically sized field, the size cannot
+//  be determined at compile-time and must be performed at runtime.
 //
 template< typename T,
           size_t   N
@@ -59,15 +67,24 @@ struct SizeOf_Impl<std::array<T,N>, true>
 { };
 
 //  ****************************************************************************
+//  The size of BitFieldVectors must be determined at runtime.
+//
+template< class T,
+          class A
+        >
+struct SizeOf_Impl<Hg::BitFieldVector<T,A>, false>
+  : std::integral_constant< size_t, 0>
+{ };
+
+//  ****************************************************************************
 //  Vectors size is dynamically determined at runtime. 
 //
-template< typename T,
-          typename A
+template< class T,
+          class A
         >
 struct SizeOf_Impl<std::vector<T,A>, false>
   : std::integral_constant< size_t, 0>
 { };
-
 
 //  ****************************************************************************
 //  SizeOf implementation for type_containers

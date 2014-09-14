@@ -113,6 +113,7 @@ cd "../.."</Command>
     <ClInclude Include="..\Hg\detail\unpack_message_detail.h" />
     <ClInclude Include="..\Hg\detail\unpack_nested.h" />
     <ClInclude Include="..\Hg\detail\unpack_vector.h" />
+    <ClInclude Include="..\Hg\make_Hg_type_list.h" />
     <ClInclude Include="..\Hg\message_byte_order.h" />
     <ClInclude Include="..\Hg\message_dynamic.h" />
     <ClInclude Include="..\Hg\msg_buffer.h" />

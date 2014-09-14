@@ -59,7 +59,7 @@ HG_BEGIN_FORMAT(no_dyn_format_t)
   HG_DATUM ((std::array<uint32_t,20>),  arry_3)
 HG_END_FORMAT
 
-typedef no_dyn_format_tFormat<0> no_dyn_type;
+typedef no_dyn_format_t_HgFormat<0> no_dyn_type;
 
 //  ****************************************************************************
 //  A type list used to create a basic message with a dynamic value.
@@ -79,7 +79,7 @@ HG_BEGIN_FORMAT(dyn_basic_format_t)
   HG_DATUM (uint32_t,                 word_2)
 HG_END_FORMAT
 
-typedef dyn_basic_format_tFormat<0> dyn_basic_type;
+typedef dyn_basic_format_t_HgFormat<0> dyn_basic_type;
 
 //  ****************************************************************************
 //  A type list used to create the base message field.
@@ -113,7 +113,7 @@ HG_BEGIN_FORMAT(dyn_test_format_t)
   HG_DATUM    (uint32_t,            word_2)
 HG_END_FORMAT
 
-typedef dyn_test_format_tFormat<0> dyn_message_type;
+typedef dyn_test_format_t_HgFormat<0> dyn_message_type;
 
 } // namespace Hg
 
@@ -409,37 +409,6 @@ public:
   void Testto_network(void);
   void Testto_big_endian(void);
   void Testto_little_endian(void);
-
-  //  Focused Scenario Tests *****************************************************
-  void Test_write_nested_at_correct_offset(void);
-
-  void Test_write_vector_with_nested_fixed_size(void);
-  void Test_read_vector_with_nested_fixed_size(void);
-
-  void Test_write_vector_with_nested_dynamic_size(void);
-  void Test_read_vector_with_nested_dynamic_size(void);
-
-  void Test_write_vector_with_nested_mixed_size(void);
-  void Test_read_vector_with_nested_mixed_size(void);
-
-  void Test_write_array_of_bitsets(void);
-  void Test_read_array_of_bitsets(void);
-
-  void Test_write_array_of_arrays(void);
-  void Test_read_array_of_arrays(void);
-
-  void Test_write_array_of_vectors(void);
-  void Test_read_array_of_vectors(void);
-
-  void Test_write_vector_of_bitsets(void);
-  void Test_read_vector_of_bitsets(void);
-
-  void Test_write_vector_of_arrays(void);
-  void Test_read_vector_of_arrays(void);
-
-  void Test_write_vector_of_vectors(void);
-  void Test_read_vector_of_vectors(void);
-
 
 };
 
@@ -757,123 +726,6 @@ void TestDynamicMessageSuite::Testto_little_endian(void)
 
   TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
   TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
-}
-
-
-//  ****************************************************************************
-//  Focused Scenario Tests *****************************************************
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_write_nested_at_correct_offset(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_write_vector_with_nested_fixed_size(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_read_vector_with_nested_fixed_size(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_write_vector_with_nested_dynamic_size(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_read_vector_with_nested_dynamic_size(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_write_vector_with_nested_mixed_size(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_read_vector_with_nested_mixed_size(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_write_array_of_bitsets(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_read_array_of_bitsets(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_write_array_of_arrays(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_read_array_of_arrays(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_write_array_of_vectors(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_read_array_of_vectors(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_write_vector_of_bitsets(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_read_vector_of_bitsets(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_write_vector_of_arrays(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_read_vector_of_arrays(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_write_vector_of_vectors(void)
-{
-
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::Test_read_vector_of_vectors(void)
-{
-
 }
 
 

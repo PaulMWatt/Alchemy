@@ -43,7 +43,7 @@ public:
   typedef typename storage_type::w_pointer                  w_pointer;
 
   typedef data_type*                                        pointer;
-  typedef const pointer                                     const_pointer;
+  typedef const data_type*                                  const_pointer;
 
   //  Construction *************************************************************
   //  **************************************************************************
@@ -371,7 +371,7 @@ public:
       && (total_offset + Hg::SizeOf<T>::value) <= total_size)
     {
       bytes_written = 
-        storage_type::write ( data(),
+        storage_type::write ( raw_data(),
                               &value,
                               Hg::SizeOf<T>::value,
                               total_offset)
@@ -429,7 +429,7 @@ public:
       && (total_offset + range_size) <= total_size)
     {
       bytes_written = 
-        storage_type::write ( data(),
+        storage_type::write ( raw_data(),
                               first,
                               range_size,
                               total_offset)
@@ -477,6 +477,20 @@ private:
   ptrdiff_t         m_offset;             ///< The number of bytes from the 
                                           ///  beginning of the buffer that 
                                           ///  all data reads should occur from.
+
+  //  **************************************************************************
+  /// Provides access to the packed memory buffer.
+  /// 
+  /// @return       Returns a constant pointer to the buffer that contains the 
+  ///               packed memory.
+  ///               0 is returned if there is no memory associated with the buffer.
+  ///
+  pointer raw_data()
+  {
+    return &m_data[0];
+  }
+
+
 
   // Let all message buffer objects be friends for data transfer.
   template< typename T>

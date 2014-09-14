@@ -51,7 +51,7 @@ private:
   typedef typename 
     std::conditional< bitfield_value<value_type>::value,
                       bitfield_trait,
-                      value_type
+                      fundamental_trait
                     >::type                     basic_type;
 
   //  **************************************************************************

@@ -61,15 +61,22 @@ static const uint32_t k_Black   = 0x00000000;
 
 //  ****************************************************************************
 inline
-void to_buffer(const uint32_t value, byte_vector &buffer)
+void to_buffer(const uint8_t value, byte_vector &buffer)
+{
+  buffer.push_back(value);
+}
+
+
+template < class T >
+void to_buffer(const T value, byte_vector &buffer)
 {
   const size_t k_org_size    = buffer.size();
-  buffer.resize(k_org_size + sizeof(uint32_t));
+  buffer.resize(k_org_size + sizeof(T));
 
   byte_vector::value_type *pCur = &buffer[0];
   std::advance(pCur, k_org_size);
 
-  ::memcpy(pCur, &value, sizeof(uint32_t));
+  ::memcpy(pCur, &value, sizeof(T));
 }
 
 
@@ -297,6 +304,18 @@ const Object k_obj_cube =
   k_cube_triangles
 };
 
+inline
+void to_buffer(const double value, byte_vector &buffer)
+{
+  const size_t k_org_size    = buffer.size();
+  buffer.resize(k_org_size + sizeof(double));
+
+  byte_vector::value_type *pCur = &buffer[0];
+  std::advance(pCur, k_org_size);
+
+  ::memcpy(pCur, &value, sizeof(double));
+}
+
 // Transformation Matrix declaration.
 const double k_transform[9] = 
 {
@@ -316,8 +335,8 @@ struct Instance
 
 const Instance k_instances[2] =
 {
-  {0, 0, 0, 0,  {1,0,0,0,1,0,0,0,1}},
-  {0, 3, 0, -4, {1,0,0,0,1,0,0,0,1}}
+  {0, 1, -2, 3,  {1,0,0,0,1,0,0,0,1}},
+  {0, 3, 1, -4,  {1,0,0,0,1,0,0,0,1}}
 };
 
 const Vertex k_light = make_vertex(-2, 5, -2, k_white);
@@ -433,15 +452,15 @@ const Instance k_other_instances[2] =
 {
   {
     0,
-    Hg::EndianSwap<int32_t>(0),
-    Hg::EndianSwap<int32_t>(0),
-    Hg::EndianSwap<int32_t>(0),
+    Hg::EndianSwap<int32_t>(1),
+    Hg::EndianSwap<int32_t>(-2),
+    Hg::EndianSwap<int32_t>(3),
     {1,0,0,0,1,0,0,0,1}
   },
   {
     0,
     Hg::EndianSwap<int32_t>(3),
-    Hg::EndianSwap<int32_t>(0),
+    Hg::EndianSwap<int32_t>(1),
     Hg::EndianSwap<int32_t>(-4),
     {1,0,0,0,1,0,0,0,1}
   }
