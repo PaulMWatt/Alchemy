@@ -222,7 +222,7 @@ size_t unpack_message (       MessageT  &msg_values,
 
   size_t org_offset = buffer.offset();
   MutableBuffer working(buffer);
-  working.offset(offset);
+  working.offset(offset+org_offset);
   detail::UnpackMessageWorker < 0, 
                                 Hg::length<typename MessageT::format_type>::value,
                                 MessageT,
@@ -297,7 +297,7 @@ size_t unpack_message (       MessageT  &msg_values,
 
   size_t org_offset = buffer.offset();
   MutableBuffer working(buffer);
-  working.offset(offset);
+  working.offset(offset+org_offset);
   detail::UnpackMessageWorker < 0, 
                                 Hg::length<typename MessageT::format_type>::value,
                                 MessageT,

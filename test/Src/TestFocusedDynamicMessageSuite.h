@@ -458,7 +458,7 @@ void populate_msg(SUT &msg)
 } // namespace test
 
 
-
+//  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_array_of_vectors(void)
 {
   using namespace test::fixed::vec;
@@ -1438,7 +1438,9 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_vectors(void)
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_nested_at_correct_offset(void)
 {
-  TS_WARN("Test implementation required. I do not remember the case that prompted this test declaration, but there is a valid case t be tested.");
+  TS_WARN("Test implementation required.");
+  TS_WARN("The test focuses on the general pack_message_detail/unpack_message_detail.h implementation of unpack_message for versions with offsets.");
+  TS_WARN("There is a working buffer that is created, and the offset needs to be adjusted to account for the previous offset.");
 }
 
 
