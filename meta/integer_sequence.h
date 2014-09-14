@@ -248,7 +248,6 @@ struct GetTail<MT>
   typedef MT               type;
 };
 
-
 //  ***************************************************************************
 /// Returns the value of the item at the specified index.
 ///

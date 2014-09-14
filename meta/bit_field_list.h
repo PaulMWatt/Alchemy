@@ -171,6 +171,10 @@ struct BitFieldList
   typedef typename RootT::value_type                      value_type;
   typedef typename BitFieldNode< RootT, 0, 0, SeqT >      base_type;
 
+  //  Constants ****************************************************************
+  static 
+    const size_t k_size  = sizeof(value_type);
+
   //  Construction *************************************************************
 
   //  **************************************************************************
@@ -198,7 +202,8 @@ struct BitFieldList
   ///
   BitFieldList(value_type &data_field)
     : base_type(data_field)
-  { }
+  {
+  }
 
   //  **************************************************************************
   /// Value conversion operator allows the entire integer to be extracted.
@@ -233,7 +238,7 @@ struct BitFieldList
   static
   size_t size()
   {
-    return sizeof(value_type);
+    return k_size;
   }
 };
 

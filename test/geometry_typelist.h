@@ -8,7 +8,7 @@
 #ifndef GEOMETRY_TYPELIST_H_INCLUDED
 #define GEOMETRY_TYPELIST_H_INCLUDED
 #include <alchemy.h>
-#include <meta/bit_field/bit_field_array.h>
+
 namespace Hg
 {
 

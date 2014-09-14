@@ -40,9 +40,12 @@ template <size_t   Idx,
           size_t   kt_offset = 0
          >
 class Datum
-  : type_check< type_container<format_t>::value >
-  , public detail::DefineFieldType< Idx, format_t, kt_offset>::type
+  : public detail::DefineFieldType< Idx, format_t, kt_offset>::type
 {
+  // Concept check to verify a type container has been supplied.
+  // TODO: Convert to a static_assertion
+  // type_check< type_container<format_t>::value >;
+
 public:
   //  Constants ****************************************************************
   static const

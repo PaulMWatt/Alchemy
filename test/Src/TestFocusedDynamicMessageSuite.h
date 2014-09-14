@@ -30,6 +30,8 @@
 #define TEST_FOCUSED_DYNAMIC_MESSAGE_SUITE_H_INCLUDED
 //  Includes *******************************************************************
 #include <cxxtest/TestSuite.h>
+#include <meta/bit_field/bit_field_vector.h>
+
 #include <msgtest_typelist.h>
 #include <Hg.h>
 #include <algorithm>
@@ -991,21 +993,21 @@ void populate_msg(SUT &msg)
 
   msg.table.resize(16);
   msg.table[0] = k_White;
-  msg.table[0] = k_Fuchsia;
-  msg.table[0] = k_Aqua;
-  msg.table[0] = k_Yellow;
-  msg.table[0] = k_Purple;
-  msg.table[0] = k_Teal;
-  msg.table[0] = k_Olive;
-  msg.table[0] = k_Silver;
-  msg.table[0] = k_Blue;
-  msg.table[0] = k_Lime;
-  msg.table[0] = k_Red;
-  msg.table[0] = k_Gray;
-  msg.table[0] = k_Navy;
-  msg.table[0] = k_Green;
-  msg.table[0] = k_Maroon;
-  msg.table[0] = k_Black;
+  msg.table[1] = k_Fuchsia;
+  msg.table[2] = k_Aqua;
+  msg.table[3] = k_Yellow;
+  msg.table[4] = k_Purple;
+  msg.table[5] = k_Teal;
+  msg.table[6] = k_Olive;
+  msg.table[7] = k_Silver;
+  msg.table[8] = k_Blue;
+  msg.table[9] = k_Lime;
+  msg.table[10] = k_Red;
+  msg.table[11] = k_Gray;
+  msg.table[12] = k_Navy;
+  msg.table[13] = k_Green;
+  msg.table[14] = k_Maroon;
+  msg.table[15] = k_Black;
 }
 
 
@@ -1039,7 +1041,38 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_of_bitsets(void)
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_read_vector_of_bitsets(void)
 {
-  TS_WARN("Test requires implementation.");
+  using namespace test::dynamic::bit_list;
+  using namespace test::data;
+
+  // Place three points in a buffer.
+  byte_vector buffer;
+  make_buffer(buffer);
+
+  // Populate the expected structure for comparison.
+  MsgColorTable expected;
+  populate_msg(expected);
+
+  // SUT
+  SUT sut;
+  sut.assign(&buffer[0], buffer.size());
+
+  // Verify the results for all of the fields.
+  TS_ASSERT_EQUALS(k_White  , sut.table[0] );
+  TS_ASSERT_EQUALS(k_Fuchsia, sut.table[1] );
+  TS_ASSERT_EQUALS(k_Aqua   , sut.table[2] );
+  TS_ASSERT_EQUALS(k_Yellow , sut.table[3] );
+  TS_ASSERT_EQUALS(k_Purple , sut.table[4] );
+  TS_ASSERT_EQUALS(k_Teal   , sut.table[5] );
+  TS_ASSERT_EQUALS(k_Olive  , sut.table[6] );
+  TS_ASSERT_EQUALS(k_Silver , sut.table[7] );
+  TS_ASSERT_EQUALS(k_Blue   , sut.table[8] );
+  TS_ASSERT_EQUALS(k_Lime   , sut.table[9] );
+  TS_ASSERT_EQUALS(k_Red    , sut.table[10]);
+  TS_ASSERT_EQUALS(k_Gray   , sut.table[11]);
+  TS_ASSERT_EQUALS(k_Navy   , sut.table[12]);
+  TS_ASSERT_EQUALS(k_Green  , sut.table[13]);
+  TS_ASSERT_EQUALS(k_Maroon , sut.table[14]);
+  TS_ASSERT_EQUALS(k_Black  , sut.table[15]);
 }
 
 //  ****************************************************************************

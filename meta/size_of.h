@@ -20,10 +20,15 @@ namespace Hg
 template <typename T>
 struct SizeOf;
 
-template< typename T,
-          size_t   N
+template< class   T,
+          size_t  N
         >
 struct BitFieldArray;
+
+template< class T,
+          class A
+        >
+struct BitFieldVector;
 
 
 // This namespace contains specialized versions of the SizeOf implementation
@@ -62,10 +67,20 @@ struct SizeOf_Impl<std::array<T,N>, true>
 { };
 
 //  ****************************************************************************
+//  The size of BitFieldVectors must be determined at runtime.
+//
+template< class T,
+          class A
+        >
+struct SizeOf_Impl<Hg::BitFieldVector<T,A>, false>
+  : std::integral_constant< size_t, 0>
+{ };
+
+//  ****************************************************************************
 //  Vectors size is dynamically determined at runtime. 
 //
-template< typename T,
-          typename A
+template< class T,
+          class A
         >
 struct SizeOf_Impl<std::vector<T,A>, false>
   : std::integral_constant< size_t, 0>

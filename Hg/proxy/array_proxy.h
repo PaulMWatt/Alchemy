@@ -15,7 +15,6 @@
 #include <meta/type_at.h>
 #include <Hg/datum/datum.h>
 #include <meta/bit_field/bit_field_array.h>
-#include <meta/bit_field/bit_field_vector.h>
 #include <storage_policy.h>
 #include <array>
 

@@ -90,7 +90,6 @@ void copy_value_type(       BitFieldArray<SubTypeT, N>& to,
   std::copy(from.begin(), from.end(), to.begin());
 }
 
-
 //  ****************************************************************************
 /// (Dynamic-Array Specialization) Type definitions for bit-field in type-container.
 ///
@@ -120,51 +119,24 @@ struct field_data_t < Hg::BitFieldVector<SubTypeT, AllocT> >
 ///                           in the parent type container.
 /// @param AllocT             [typename] The defined allocator of the vector.
 ///
-template< typename SubTypeT,
-          typename AllocT
+template< class SubTypeT,
+          class A
         >
-void copy_value_type(       BitFieldVector<SubTypeT, AllocT>& to, 
-                      const BitFieldVector<SubTypeT, AllocT>& from)
+void copy_value_type(       BitFieldVector<SubTypeT, A>& to, 
+                      const BitFieldVector<SubTypeT, A>& from)
 {
-  // Empty the existing elements before inserting the new data.
   to.clear();
-  //std::copy(from.begin(), from.end(), std::back_inserter(to));
+  if (from.empty())
+  {
+    return;
+  }
+
+  to.resize(from.size());
+  std::copy( from.begin(), 
+             from.end(), 
+             to.begin());    
 }
 
-
-//  ****************************************************************************
-/// (Fixed-Array Specialization) Type definitions for field in type-container.
-///
-/// @param SubTypeT           [typename] This parameterized type declares the
-///                           sub-type of the array defined at the location 
-///                           in the parent type container.
-///
-//template< typename SubTypeT,
-//          size_t   N
-//        >
-//struct field_data_t < std::array<SubTypeT, N> >
-//{
-//  typedef 
-//    SubTypeT                            sub_type;
-//
-//  typedef typename 
-//    field_data_t<sub_type>::value_type  value_sub_type;
-//
-//  typedef typename
-//    std::conditional
-//      < nested_value<sub_type>::value,
-//        std::array< value_sub_type, N>,
-//        std::array< sub_type, N>
-//      >::type                           value_type;
-//                                        ///< The proper value_type definition
-//                                        ///  deduced from the type-container
-//                                        ///  and the specified array sub-type.
-//  //static
-//  //void copy_value_type(value_type& to, const value_type& from)
-//  //{
-//  //  //to = from;
-//  //}
-//};
 
 //  ****************************************************************************
 /// (Fixed-Array Specialization) To copy from one instance to another.

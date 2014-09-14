@@ -111,6 +111,12 @@ public:
   /// 
   BitFieldVector(const BitFieldVector &rhs)
   {
+    if (rhs.empty())
+    {
+      return;
+    }
+
+    resize(rhs.size());
     std::copy( rhs.begin(), 
                rhs.end(), 
                begin());    
