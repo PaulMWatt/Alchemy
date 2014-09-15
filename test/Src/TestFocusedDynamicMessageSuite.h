@@ -80,8 +80,6 @@ public:
   void Test_write_array_of_arrays(void);
   void Test_read_array_of_arrays(void);
 
-  void Test_write_array_of_vectors(void);
-
   void Test_write_vector_fundamental(void);
   void Test_read_vector_fundamental(void);
 
@@ -98,11 +96,6 @@ public:
   void Test_read_vector_of_arrays(void);
 
   void Test_write_vector_of_vectors(void);
-  void Test_read_vector_of_vectors(void);
-
-
-  void Test_write_nested_at_correct_offset(void);
-
 };
 
 namespace Hg
@@ -364,121 +357,6 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_arrays(void)
   TS_ASSERT_EQUALS(expected.pts[2].X, sut.pts[2].X);
   TS_ASSERT_EQUALS(expected.pts[2].Y, sut.pts[2].Y);
   TS_ASSERT_EQUALS(expected.pts[2].Z, sut.pts[2].Z);
-}
-
-//  ****************************************************************************
-//  Tests 
-//  ****************************************************************************
-//  Array of Vectors ***********************************************************
-
-namespace Hg
-{
-// Message definition
-typedef TypeList
-<
-  std::array<char_str,5>
-> string_arr_t;                   
-
-HG_BEGIN_FORMAT(string_arr_t)
-  HG_ARRAY (char_str, 5, items)
-HG_END_FORMAT
-}
-
-
-namespace test
-{
-namespace fixed
-{
-namespace vec
-{
-typedef Hg::Message<Hg::string_arr_t_HgFormat<0> >   MsgStrArr;
-typedef MsgStrArr                                    SUT;
-
-//  Constants **************************
-const size_t k_count = 5;
-char* pStrings[k_count] =
-{
-  "desk", 
-  "chair", 
-  "cabinet", 
-  "shelf", 
-  "drawer"
-};
-
-//  ************************************
-inline
-void to_buffer(const char *pStr,
-               byte_vector &buffer)
-{
-  const size_t k_org_size    = buffer.size();
-  const size_t len = ::strlen(pStr) + 1;
-  buffer.resize(k_org_size + len);
-
-  byte_vector::value_type *pCur = &buffer[0];
-  std::advance(pCur, k_org_size);
-
-  ::memcpy(pCur, pStr, len);
-}
-
-//  ************************************
-//  A message buffer with the expected 
-//  test results.
-
-void make_buffer(byte_vector &buffer)
-{
-  buffer.clear();
-
-  // to_buffer allocates its own space for the vector.
-  to_buffer("desk", buffer);
-  to_buffer("chair", buffer);
-  to_buffer("cabinet", buffer);
-  to_buffer("shelf", buffer);
-  to_buffer("drawer", buffer);
-}
-
-//  ************************************
-void populate_msg(SUT &msg)
-{
-  using Hg::char_str;
-
-  for ( size_t index = 0; 
-        index < test::fixed::vec::k_count; 
-        ++index)
-  {
-    char_str entry;
-    entry.assign(pStrings[index], pStrings[index] + strlen(pStrings[index]));
-    entry.push_back(0);
-
-    msg.items[index] = entry;
-  }
-}
-
-} // namespace vec
-} // namespace fixed
-} // namespace test
-
-
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_array_of_vectors(void)
-{
-  using namespace test::fixed::vec;
-  using namespace test::data;
-
-  // Place them in a buffer.
-  byte_vector buffer;
-  make_buffer(buffer);
-
-  // Populate the SUT with the test values.
-  SUT sut;
-  populate_msg(sut);
-
-  //SUT: Serialize into a buffer.
-  uint8_t const* pData = sut.data();
-
-  TS_WARN("This test is obsolete, Arrays of Vectors will be converted to vectors of vectors.");
-  TS_WARN("However, this test will remain until another test is created to appropriately verify that duplicate type lists can be used safely.");
-  TS_WARN("The array calculates based on fixed sizes. This will be resolved by converting arrays that contain dynamic sub-fields to vectors with a specified size.");
-  TS_ASSERT_EQUALS(buffer.size(), sut.size());
 }
 
 //  ****************************************************************************
@@ -1400,48 +1278,5 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_of_vectors(void)
   TS_ASSERT_EQUALS(buffer.size(), sut.size());
   TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
 }
-
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_vector_of_vectors(void)
-{
-  using namespace test::vec::vec;
-  using namespace test::data;
-
-  // Place three points in a buffer.
-  byte_vector buffer;
-  make_buffer(buffer);
-
-  // Populate the expected structure for comparison.
-  MsgStrVec expected;
-  populate_msg(expected);
-
-  // SUT
-  SUT sut;
-  sut.assign(&buffer[0], buffer.size());
-
-  // Verify the results for all of the fields.
-  size_t count = StringCount(&buffer[0], buffer.size());
-  TS_ASSERT_EQUALS(k_count, count );
-
-  TS_WARN("Test commented out.");
-  TS_WARN("Internally, the vector processing needs a way to know how many bytes to read from the input buffer.");
-
-  //TS_ASSERT_EQUALS(std::string("Dog"),      std::string(&sut.items[0][0])); 
-  //TS_ASSERT_EQUALS(std::string("cAt"),      std::string(&sut.items[1][0])); 
-  //TS_ASSERT_EQUALS(std::string("FiSh"),     std::string(&sut.items[2][0])); 
-  //TS_ASSERT_EQUALS(std::string("HoRsE"),    std::string(&sut.items[3][0])); 
-  //TS_ASSERT_EQUALS(std::string("cHiCkEn"),  std::string(&sut.items[4][0])); 
-  //TS_ASSERT_EQUALS(std::string("SpIdEr"),   std::string(&sut.items[5][0])); 
-  //TS_ASSERT_EQUALS(std::string("MoLd"),     std::string(&sut.items[6][0])); 
-}
-
-//  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_nested_at_correct_offset(void)
-{
-  TS_WARN("Test implementation required.");
-  TS_WARN("The test focuses on the general pack_message_detail/unpack_message_detail.h implementation of unpack_message for versions with offsets.");
-  TS_WARN("There is a working buffer that is created, and the offset needs to be adjusted to account for the previous offset.");
-}
-
 
 #endif

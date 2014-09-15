@@ -510,10 +510,5 @@ pkt_buffer_t& make_nil_buffer()
 } // namespace Hg
 
 
-// This is the Network to Host Conversion details
-//#include <detail/msg_buffer_host.inl>
-
-// This is the Host to Network Conversion details
-//#include <detail/msg_buffer_network.inl>
 
 #endif
