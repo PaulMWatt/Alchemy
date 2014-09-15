@@ -33,18 +33,6 @@ template< typename ValueT,
 size_t SerializeByItem( ValueT  &value, 
                         BufferT &buffer,
                         size_t  offset);
-//template< class T,
-//          class A,
-//          class BufferT
-//        >
-//size_t SerializeInBulk( std::vector<T,A>&, BufferT&, size_t);
-//
-//template< class T,
-//          class A,
-//          class BufferT
-//        >
-//size_t SerializeByItem( std::vector<T,A>&, BufferT&, size_t);
-
 
 namespace Vector
 {
@@ -149,10 +137,8 @@ struct Serializer <Hg::BitFieldVector<T,A>, BufferT, bitfield_trait>
                 buffer_type &buffer,
                 size_t      offset)
   {
-    int i = 10;
-    return 0;
+    return buffer.set_data( value, offset);
   }
-
 };
 
 

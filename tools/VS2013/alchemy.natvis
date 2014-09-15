@@ -77,9 +77,10 @@
 
   <!-- from   msg_buffer.h -->
   <Type Name="Hg::MsgBuffer&lt;*&gt;">
-    <DisplayString>{m_data}</DisplayString>
+    <DisplayString>offset: {m_offset}, {m_data}</DisplayString>
     <DisplayString Condition="empty()">empty</DisplayString>
     <Expand>
+      <ExpandedItem>m_offset</ExpandedItem>
       <ExpandedItem>m_data, view(simple)na</ExpandedItem>
     </Expand>
   </Type>
