@@ -33,11 +33,11 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\CxxTest.props" />
+    <Import Project="..\..\build\CxxTest.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\CxxTest.props" />
+    <Import Project="..\..\build\CxxTest.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -51,7 +51,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>./;../;Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../../;Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)\vc80.pdb</ProgramDataBaseFileName>
@@ -76,7 +76,7 @@ cd "../.."</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>"$(OutDir)\$(ProjectName).exe"</Command>
-      <Message>Perform test for TestAlchemyTypesPerform test for TestAlchemyTypes</Message>
+      <Message>Perform test for TestAlchemyTypes</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,67 +98,67 @@ cd "../.."</Command>
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Alchemy.h" />
-    <ClInclude Include="..\Hg.h" />
-    <ClInclude Include="..\Hg\datum\basic_datum.h" />
-    <ClInclude Include="..\Hg\datum\datum.h" />
-    <ClInclude Include="..\Hg\deduce_type_trait.h" />
-    <ClInclude Include="..\Hg\detail\message_byte_order_detail.h" />
-    <ClInclude Include="..\Hg\detail\message_dynamic_detail.h" />
-    <ClInclude Include="..\Hg\detail\pack_array.h" />
-    <ClInclude Include="..\Hg\detail\pack_message_detail.h" />
-    <ClInclude Include="..\Hg\detail\pack_nested.h" />
-    <ClInclude Include="..\Hg\detail\pack_vector.h" />
-    <ClInclude Include="..\Hg\detail\unpack_array.h" />
-    <ClInclude Include="..\Hg\detail\unpack_message_detail.h" />
-    <ClInclude Include="..\Hg\detail\unpack_nested.h" />
-    <ClInclude Include="..\Hg\detail\unpack_vector.h" />
-    <ClInclude Include="..\Hg\make_Hg_type_list.h" />
-    <ClInclude Include="..\Hg\message_byte_order.h" />
-    <ClInclude Include="..\Hg\message_dynamic.h" />
-    <ClInclude Include="..\Hg\msg_buffer.h" />
-    <ClInclude Include="..\Hg\msg_def.h" />
-    <ClInclude Include="..\Hg\msg_fwd.h" />
-    <ClInclude Include="..\Hg\pack_message.h" />
-    <ClInclude Include="..\Hg\proxy\array_proxy.h" />
-    <ClInclude Include="..\Hg\proxy\bitlist_field_proxy.h" />
-    <ClInclude Include="..\Hg\proxy\data_proxy.h" />
-    <ClInclude Include="..\Hg\proxy\deduce_proxy_type.h" />
-    <ClInclude Include="..\Hg\proxy\vector_proxy.h" />
-    <ClInclude Include="..\Hg\unpack_message.h" />
-    <ClInclude Include="..\Hg\unused\array_data.h" />
-    <ClInclude Include="..\Hg\unused\message_iterator.h" />
-    <ClInclude Include="..\Hg\unused\multival_data.h" />
-    <ClInclude Include="..\Hg\unused\select_proxy_type.h" />
-    <ClInclude Include="..\meta\auto_index.h" />
-    <ClInclude Include="..\meta\bit_field\basic_list.h" />
-    <ClInclude Include="..\meta\bit_field\bit_field.h" />
-    <ClInclude Include="..\meta\bit_field\bit_field_array.h" />
-    <ClInclude Include="..\meta\bit_field\bit_field_vector.h" />
-    <ClInclude Include="..\meta\bit_field_list.h" />
-    <ClInclude Include="..\meta\byte_order.h" />
-    <ClInclude Include="..\meta\compiler.h" />
-    <ClInclude Include="..\meta\container_size.h" />
-    <ClInclude Include="..\meta\dynamic.h" />
-    <ClInclude Include="..\meta\integer_sequence.h" />
-    <ClInclude Include="..\meta\length.h" />
-    <ClInclude Include="..\meta\meta_error.h" />
-    <ClInclude Include="..\meta\meta_foreach.h" />
-    <ClInclude Include="..\meta\meta_fwd.h" />
-    <ClInclude Include="..\meta\meta_macros.h" />
-    <ClInclude Include="..\meta\meta_math.h" />
-    <ClInclude Include="..\meta\meta_util.h" />
-    <ClInclude Include="..\meta\offset_of.h" />
-    <ClInclude Include="..\meta\size_at.h" />
-    <ClInclude Include="..\meta\size_of.h" />
-    <ClInclude Include="..\meta\type_at.h" />
-    <ClInclude Include="..\meta\type_list.h" />
-    <ClInclude Include="..\meta\type_list\length.h" />
-    <ClInclude Include="..\meta\type_list\offset_of.h" />
-    <ClInclude Include="..\meta\type_list\size_at.h" />
-    <ClInclude Include="..\meta\type_list\type_at.h" />
-    <ClInclude Include="..\meta\type_node.h" />
-    <ClInclude Include="..\storage_policy.h" />
+    <ClInclude Include="..\..\Alchemy.h" />
+    <ClInclude Include="..\..\Hg.h" />
+    <ClInclude Include="..\..\Hg\datum\basic_datum.h" />
+    <ClInclude Include="..\..\Hg\datum\datum.h" />
+    <ClInclude Include="..\..\Hg\deduce_type_trait.h" />
+    <ClInclude Include="..\..\Hg\detail\message_byte_order_detail.h" />
+    <ClInclude Include="..\..\Hg\detail\message_dynamic_detail.h" />
+    <ClInclude Include="..\..\Hg\detail\pack_array.h" />
+    <ClInclude Include="..\..\Hg\detail\pack_message_detail.h" />
+    <ClInclude Include="..\..\Hg\detail\pack_nested.h" />
+    <ClInclude Include="..\..\Hg\detail\pack_vector.h" />
+    <ClInclude Include="..\..\Hg\detail\unpack_array.h" />
+    <ClInclude Include="..\..\Hg\detail\unpack_message_detail.h" />
+    <ClInclude Include="..\..\Hg\detail\unpack_nested.h" />
+    <ClInclude Include="..\..\Hg\detail\unpack_vector.h" />
+    <ClInclude Include="..\..\Hg\make_Hg_type_list.h" />
+    <ClInclude Include="..\..\Hg\message_byte_order.h" />
+    <ClInclude Include="..\..\Hg\message_dynamic.h" />
+    <ClInclude Include="..\..\Hg\msg_buffer.h" />
+    <ClInclude Include="..\..\Hg\msg_def.h" />
+    <ClInclude Include="..\..\Hg\msg_fwd.h" />
+    <ClInclude Include="..\..\Hg\pack_message.h" />
+    <ClInclude Include="..\..\Hg\proxy\array_proxy.h" />
+    <ClInclude Include="..\..\Hg\proxy\bitlist_field_proxy.h" />
+    <ClInclude Include="..\..\Hg\proxy\data_proxy.h" />
+    <ClInclude Include="..\..\Hg\proxy\deduce_proxy_type.h" />
+    <ClInclude Include="..\..\Hg\proxy\vector_proxy.h" />
+    <ClInclude Include="..\..\Hg\unpack_message.h" />
+    <ClInclude Include="..\..\Hg\unused\array_data.h" />
+    <ClInclude Include="..\..\Hg\unused\message_iterator.h" />
+    <ClInclude Include="..\..\Hg\unused\multival_data.h" />
+    <ClInclude Include="..\..\Hg\unused\select_proxy_type.h" />
+    <ClInclude Include="..\..\meta\auto_index.h" />
+    <ClInclude Include="..\..\meta\bit_field\basic_list.h" />
+    <ClInclude Include="..\..\meta\bit_field\bit_field.h" />
+    <ClInclude Include="..\..\meta\bit_field\bit_field_array.h" />
+    <ClInclude Include="..\..\meta\bit_field\bit_field_vector.h" />
+    <ClInclude Include="..\..\meta\bit_field_list.h" />
+    <ClInclude Include="..\..\meta\byte_order.h" />
+    <ClInclude Include="..\..\meta\compiler.h" />
+    <ClInclude Include="..\..\meta\container_size.h" />
+    <ClInclude Include="..\..\meta\dynamic.h" />
+    <ClInclude Include="..\..\meta\integer_sequence.h" />
+    <ClInclude Include="..\..\meta\length.h" />
+    <ClInclude Include="..\..\meta\meta_error.h" />
+    <ClInclude Include="..\..\meta\meta_foreach.h" />
+    <ClInclude Include="..\..\meta\meta_fwd.h" />
+    <ClInclude Include="..\..\meta\meta_macros.h" />
+    <ClInclude Include="..\..\meta\meta_math.h" />
+    <ClInclude Include="..\..\meta\meta_util.h" />
+    <ClInclude Include="..\..\meta\offset_of.h" />
+    <ClInclude Include="..\..\meta\size_at.h" />
+    <ClInclude Include="..\..\meta\size_of.h" />
+    <ClInclude Include="..\..\meta\type_at.h" />
+    <ClInclude Include="..\..\meta\type_list.h" />
+    <ClInclude Include="..\..\meta\type_list\length.h" />
+    <ClInclude Include="..\..\meta\type_list\offset_of.h" />
+    <ClInclude Include="..\..\meta\type_list\size_at.h" />
+    <ClInclude Include="..\..\meta\type_list\type_at.h" />
+    <ClInclude Include="..\..\meta\type_node.h" />
+    <ClInclude Include="..\..\storage_policy.h" />
     <ClInclude Include="geometry_testdata.h" />
     <ClInclude Include="geometry_typelist.h" />
     <ClInclude Include="msgtest_typelist.h" />

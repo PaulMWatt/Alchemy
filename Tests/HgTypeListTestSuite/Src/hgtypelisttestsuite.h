@@ -121,8 +121,8 @@ void HgTypeListTestSuite::TestCase1(void)
 {
   typedef make_Hg_type_list<hg_list_t>::type     hg_type;
 
-  hg_list_t   org;
-  hg_type     var;
+  //hg_list_t   org;
+  //hg_type     var;
 
 }
 

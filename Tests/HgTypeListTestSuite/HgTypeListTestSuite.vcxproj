@@ -49,7 +49,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>./;../../;Src;C:/Development/CxxTest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../../;Src;../../cxxtest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)\vc80.pdb</ProgramDataBaseFileName>
@@ -67,7 +67,7 @@
     <PreBuildEvent>
       <Command>mkdir "./Src/Generated"
 cd "./Src/Generated"
-C:/python34/python.exe C:/Development/CxxTest\bin\cxxtestgen --runner=ParenPrinter  -o "HgTypeListTestSuiteRunner.cpp" "../*.h"
+$(GenCxxTestRunner) --runner=ParenPrinter  -o "HgTypeListTestSuiteRunner.cpp" "../*.h"
 cd "../.."</Command>
       <Message>Generate the test runner...
 </Message>
