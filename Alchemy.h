@@ -1,4 +1,4 @@
-/// @file Alchemy.h
+/// @file alchemy.h
 /// 
 /// Network Alchemy is a message and structured data processing framework.
 ///

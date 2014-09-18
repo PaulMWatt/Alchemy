@@ -5,10 +5,10 @@
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
-#ifndef __COMPILER_H
-#define __COMPILER_H
+#ifndef COMPILER_H_INCLUDED
+#define COMPILER_H_INCLUDED
 //  Includes *******************************************************************
-#include <cstdint>
+#include <detail/tr1_helper.h>
 
 // CxxUnit Testing *************************************************************
 // Change the mock namespace from T to cxx to reduce confusion with template semantics. 
@@ -233,14 +233,6 @@
 #endif
 
 // Compiler Dependent Settings *************************************************
-
-// Stops the compiler from generating code to initialize the vfptr in 
-// the constructor(s) and destructor of the class.  Only use on pure interfaces.
-#ifdef _WIN32
-# define BL_NO_VTABLE __declspec(novtable)
-#else
-# define BL_NO_VTABLE 
-#endif
 
 #ifdef _WIN32
 // Disable windows definition of the min/max macros in favor of std templates.
