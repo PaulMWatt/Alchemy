@@ -36,3 +36,6 @@ test/Src/Generated/TestAlchemyTypesRunner.cpp
 *.user
 *.sdf
 Tests/HgTypeListTestSuite/Src/Generated/HgTypeListTestSuiteRunner.cpp
+*.ncb
+*.ncb
+elements/IDE/VS2008/Alchemy.ncb

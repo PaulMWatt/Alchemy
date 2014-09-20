@@ -95,7 +95,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Performing Post-Build Event...Perform test for TestSuite1Perform test for TestSuite1"
+				Description="Performing Post-Build Event...Run HgPrimaryTestSuite"
 				CommandLine="&quot;$(OutDir)\$(ProjectName).exe&quot;"
 			/>
 		</Configuration>

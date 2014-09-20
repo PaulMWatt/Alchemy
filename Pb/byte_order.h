@@ -174,6 +174,18 @@ int64_t EndianSwap(int64_t input)
                               );
 }
 
+
+#if defined(_WIN32) && defined(_HAS_TR1)
+//  ****************************************************************************
+/// Endian Swap (Specialization, compiler does not recognize int as long) 
+/// 
+template <>
+unsigned int EndianSwap(unsigned int input)
+{
+  return EndianSwap<unsigned long>(input);
+}
+#endif
+
 //  ****************************************************************************
 /// Policy class used to perform byte-order operations.
 /// 
