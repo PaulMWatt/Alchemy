@@ -39,7 +39,6 @@
 #define STORAGE_POLICY_H_INCLUDED
 //  Includes *******************************************************************
 #include <memory>
-#include <cstdint>
 
 namespace Hg
 {

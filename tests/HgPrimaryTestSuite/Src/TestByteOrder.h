@@ -28,7 +28,7 @@
 #define TESTBYTEORDER_H_INCLUDED
 //  Includes *******************************************************************
 #include <cxxtest/TestSuite.h>
-#include <cstdint>
+#include <meta/compiler.h>
 typedef unsigned char       byte_t;
 
 #include <meta/byte_order.h>

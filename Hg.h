@@ -96,6 +96,11 @@ public:
   enum { k_size = SizeOf<format_type>::value };
                                         ///< Indicates the size in bytes of the
                                         ///  data buffer managed by this message.
+  static const
+    bool k_has_dynamic = has_dynamic<format_type>::value;
+                                        ///< Indicates if the format of this 
+                                        ///  message contains fields that are
+                                        ///  potentially dynamically allocated.
 
   //  Construction *************************************************************
   //  **************************************************************************
@@ -176,29 +181,15 @@ public:
   }
 
   //  **************************************************************************
-  /// Reports the number of bytes this message object occupies.
-  /// This instance of size calculates the size for static messages.
-  /// 
-  /// @return       The number of bytes that are used to pack this message.
+  /// Indicates the number of bytes required by this message.
   ///
-  template< bool is_dynamic = has_dynamic<format_type>::value >
+  /// @return       The number of bytes that are used to pack this message.
+  ///               
   size_t size() const
   {
-    size_t fixed_size   = Hg::SizeOf<format_type>::value;
-    size_t dynamic_size = dynamic_size_of<message_type, byte_order_type, storage_type>(*this);
-    return fixed_size + dynamic_size;
+    return calc_size<k_has_dynamic>();
   }
 
-  //  **************************************************************************
-  /// Reports the number of bytes this message object occupies.
-  /// 
-  /// @return       The number of bytes that are used to pack this message.
-  ///
-  template<>
-  size_t size<false>() const
-  {
-    return Hg::SizeOf<format_type>::value;
-  }
 
   //  **************************************************************************
   /// Indicates if the byte-order of the message is host-order.
@@ -303,6 +294,32 @@ private:
                                    size_trait
                                  >(values(), size());
   }
+
+  //  **************************************************************************
+  /// Reports the number of bytes this message object occupies.
+  /// This instance of size calculates the size for dynamically sized messages.
+  /// 
+  /// @return       The number of bytes that are used to pack this message.
+  ///
+  template<bool has_dynamic>
+  size_t calc_size() const
+  {
+    size_t fixed_size   = Hg::SizeOf<format_type>::value;
+    size_t dynamic_size = dynamic_size_of<message_type, byte_order_type, storage_type>(*this);
+    return fixed_size + dynamic_size;
+  }
+
+  //  **************************************************************************
+  /// Reports the number of bytes this message object occupies.
+  /// 
+  /// @return       The number of bytes that are used to pack this message.
+  ///
+  template<>
+  size_t calc_size<false>() const
+  {
+    return Hg::SizeOf<format_type>::value;
+  }
+
 
   // Give friendship to message instantiations of other types for conversion.
   // Conversion between ByteOrderT has been provided.

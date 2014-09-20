@@ -1,4 +1,4 @@
-/// @file meta/detail/tr1_helper.h
+/// @file Pb/detail/tr1_helper.h
 /// Contains standard library definitions that may be missing for TR1 releases.
 ///
 /// The MIT License(MIT)
@@ -12,17 +12,21 @@
 //       compilers that we are trying to support.
 
 #if defined(_WIN32)
-//  I am just as appalled by this as you probably are; but hey! we're learning *
-#if _HAS_TR1
+
+#if defined(_HAS_TR1)
+#include <Meta/detail/conditional.h>
+// TODO: I know this is just as bad as crossing the streams, but we'll fix this really soon.
+
 namespace std
 {
+using Pb::conditional;
 using namespace std::tr1;
 }
 
-typedef char        int8_t; 
-typedef short       int16_t;
-typedef long        int32_t;
-typedef long long   int64_t;
+typedef char                int8_t; 
+typedef short               int16_t;
+typedef long                int32_t;
+typedef long long           int64_t;
 
 typedef unsigned char       uint8_t; 
 typedef unsigned short      uint16_t;

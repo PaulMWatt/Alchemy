@@ -228,12 +228,13 @@ void TestBitFieldArray::TestValueAssignment(void)
 //  ****************************************************************************
 void TestBitFieldArray::TestEmpty_true(void)
 {
-  Hg::BitFieldArray<SUT_bit_field_type,0> sut;
+  // TODO: error C2265: 'abstract declarator' : reference to a zero-sized array is illegal, Add a static assertion to prevent this.
+  //Hg::BitFieldArray<SUT_bit_field_type,0> sut;
 
-  // SUT
-  bool result = sut.empty();
+  //// SUT
+  //bool result = sut.empty();
 
-  TS_ASSERT_EQUALS(true, result);
+  //TS_ASSERT_EQUALS(true, result);
 }
 
 //  ****************************************************************************

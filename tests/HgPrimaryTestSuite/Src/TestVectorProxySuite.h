@@ -94,6 +94,15 @@ protected:
                                 >                       vector_data;
   typedef Hg::Datum<2,Hg::vec_t,k_offset>               field_uint8_t;
 
+  //  Utility Functions ********************************************************
+  template< size_t  N >
+  std::vector<uint8_t> make_vector(const uint8_t (&vals)[N])
+  {
+    std::vector<uint8_t> retVal;
+    std::copy(vals, vals + N, std::back_inserter(retVal));
+    return retVal;
+  }
+
 public:
   //  Test Cases ***************************************************************
   //  Test the basic function set with a u32 ***********************************
@@ -155,7 +164,8 @@ public:
 //  ****************************************************************************
 void TestVectorProxySuite::TestDtor(void)
 {
-  const std::vector<uint8_t> k_control = {1,2,3,4,5,6,7,8};
+  const uint8_t vals[] = {1,2,3,4,5,6,7,8};
+  const std::vector<uint8_t> k_control = make_vector(vals);
 
   vector_data sut;
   sut.set(k_control);
@@ -175,7 +185,8 @@ void TestVectorProxySuite::TestDtor(void)
 void TestVectorProxySuite::TestCopyConstructor(void)
 {
   vector_data    existing;
-  const std::vector<uint8_t> k_control = {0xB,0xA,5,0xE,0xB,0xA,1,1};
+  const uint8_t vals[] = {0xB,0xA,5,0xE,0xB,0xA,1,1};
+  const std::vector<uint8_t> k_control = make_vector(vals);
 
   existing.set(k_control);
 
@@ -189,7 +200,9 @@ void TestVectorProxySuite::TestCopyConstructor(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestValueConstructor(void)
 {
-  const std::vector<uint8_t> k_control = {0xB,0xA,5,0xE,0xB,0xA,1,1};
+  const uint8_t vals[] = {0xB,0xA,5,0xE,0xB,0xA,1,1};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data    existing;
   existing.set(k_control);
 
@@ -203,7 +216,9 @@ void TestVectorProxySuite::TestValueConstructor(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestAssignment(void)
 {
-  const std::vector<uint8_t> k_control = {0xD,0xE,0xA,0xD,0xB,0xA,1,1};
+  const uint8_t vals[] = {0xD,0xE,0xA,0xD,0xB,0xA,1,1};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data    existing;
   existing.set(k_control);
 
@@ -220,7 +235,9 @@ void TestVectorProxySuite::TestAssignment(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestValueAssignment(void)
 {
-  const std::vector<uint8_t> k_control = {0xB,0x1,0x6,0xB,0xE,0xA,0xD,0x5};
+  const uint8_t vals[] = {0xB,0x1,0x6,0xB,0xE,0xA,0xD,0x5};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data    existing;
 
   existing.set(k_control);
@@ -238,7 +255,9 @@ void TestVectorProxySuite::TestValueAssignment(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestOpEquals(void)
 {
-  const std::vector<uint8_t> k_control = {0xB,0x1,0x6,0xB,0xE,0xA,0xD,0x5};
+  const uint8_t vals[] = {0xB,0x1,0x6,0xB,0xE,0xA,0xD,0x5};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut(k_control);
 
   bool result = sut == k_control;
@@ -248,7 +267,9 @@ void TestVectorProxySuite::TestOpEquals(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestOpEquals_false(void)
 {
-  const std::vector<uint8_t> k_control = {0xB,0x1,0x6,0xB,0xE,0xA,0xD,0x5};
+  const uint8_t vals[] = {0xB,0x1,0x6,0xB,0xE,0xA,0xD,0x5};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut(k_control);
   ++(sut[0]);
 
@@ -261,7 +282,9 @@ void TestVectorProxySuite::TestOpEquals_false(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestOpNotEquals(void)
 {
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut(k_control);
   ++(sut[0]);
 
@@ -272,7 +295,9 @@ void TestVectorProxySuite::TestOpNotEquals(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestOpNotEquals_false(void)
 {
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut(k_control);
 
   bool result = sut != k_control;
@@ -282,7 +307,9 @@ void TestVectorProxySuite::TestOpNotEquals_false(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestOpLessThan(void)
 {
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut(k_control);
   --(sut[0]);
 
@@ -293,7 +320,9 @@ void TestVectorProxySuite::TestOpLessThan(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestOpLessThan_false(void)
 {
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut(k_control);
 
   bool result = sut < k_control;
@@ -303,10 +332,11 @@ void TestVectorProxySuite::TestOpLessThan_false(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestClear(void)
 {
-  const std::vector<uint8_t> k_control = {0x6,0x0,0x0,0xD,0xF,0x0,0x0,0xd};
+  const uint8_t vals[] = {0x6,0x0,0x0,0xD,0xF,0x0,0x0,0xd};
+  const std::vector<uint8_t> k_control = make_vector(vals);
 
   // Clear will erase all elements allocaated in the vector.
-  const std::vector<uint8_t> k_cleared = {};
+  const std::vector<uint8_t> k_cleared;
   vector_data sut(k_control);
 
   // SUT: Zeroes the shadow data and the buffer.
@@ -330,7 +360,9 @@ void TestVectorProxySuite::TestReserve(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestCapacity(void)
 {
-  const std::vector<uint8_t> k_control = {0x6,0x0,0x0,0xD,0xF,0x0,0x0,0xd};
+  const uint8_t vals[] = {0x6,0x0,0x0,0xD,0xF,0x0,0x0,0xd};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   const size_t               k_count   = 3;
 
   // SUT
@@ -366,7 +398,9 @@ void TestVectorProxySuite::TestSize(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestGet(void)
 {
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   const vector_data sut(k_control);
 
   std::vector<uint8_t> result = sut.get();
@@ -378,8 +412,11 @@ void TestVectorProxySuite::TestGet(void)
 void TestVectorProxySuite::TestSet(void)
 {
   // Verify Set() writes the value to the buffer and the shadow copy.
-  const std::vector<uint8_t> k_initial = {0xB,0xE,0xE,0xF,0xB,0xE,0xE,0xF};
-  const std::vector<uint8_t> k_control = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xB,0xE,0xE,0xF,0xB,0xE,0xE,0xF};
+  const std::vector<uint8_t> k_initial = make_vector(vals);
+
+  const uint8_t ctrl_vals[] = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(ctrl_vals);
   vector_data sut;
 
   // SUT
@@ -392,7 +429,8 @@ void TestVectorProxySuite::TestSet(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestAt_const(void)
 {
-  const std::vector<uint8_t> k_control = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
   const vector_data sut(k_control);
 
   // SUT
@@ -409,7 +447,9 @@ void TestVectorProxySuite::TestAt_const(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestAt(void)
 {
-  const std::vector<uint8_t> k_control = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+  
   vector_data initial(k_control);
 
   // SUT
@@ -438,7 +478,9 @@ void TestVectorProxySuite::TestAt(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestOpSquare_const(void)
 {
-  const std::vector<uint8_t> k_control = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+  
   const vector_data sut(k_control);
 
   // SUT
@@ -455,7 +497,9 @@ void TestVectorProxySuite::TestOpSquare_const(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestOpSquare(void)
 {
-  const std::vector<uint8_t> k_control = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data initial(k_control);
 
   // SUT
@@ -484,7 +528,9 @@ void TestVectorProxySuite::TestOpSquare(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestFront_const(void)
 {
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   const vector_data sut(k_control);
 
   // SUT
@@ -495,7 +541,9 @@ void TestVectorProxySuite::TestFront_const(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestFront(void)
 {
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut;
   sut.resize(k_control.size());
 
@@ -508,7 +556,9 @@ void TestVectorProxySuite::TestFront(void)
 void TestVectorProxySuite::TestBack_const(void)
 {
   const size_t k_len = 8;   
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   const vector_data sut(k_control);
 
   // SUT
@@ -533,7 +583,9 @@ void TestVectorProxySuite::TestBack(void)
 void TestVectorProxySuite::TestBegin(void)
 {
   // Note: c.front() is equivalent to *c.begin()
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut(k_control);
 
   // SUT
@@ -548,7 +600,9 @@ void TestVectorProxySuite::TestEnd(void)
   // Note: c.end() is equivalent to std::advance(c.begin(), c.size());
   //       Moving the iterator 'size' elements forward reaches the end iterator.
   //       end() cannot be dereferenced because it does not point to a valid item.
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut(k_control);
 
   vector_data::iterator control_end  = sut.begin();  
@@ -564,7 +618,9 @@ void TestVectorProxySuite::TestEnd(void)
 void TestVectorProxySuite::TestRBegin(void)
 {
   // Note: *c.rbegin()is equivalent to c.back() 
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut(k_control);
 
   // SUT
@@ -579,7 +635,9 @@ void TestVectorProxySuite::TestREnd(void)
   // Note: c.rend() is equivalent to std::advance(c.rbegin(), c.size());
   //       Moving the iterator 'size' elements forward(reverse) reaches the end iterator.
   //       end() cannot be dereferenced because it does not point to a valid item.
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_control = make_vector(vals);
+
   vector_data sut(k_control);
 
   vector_data::reverse_iterator control_rend  = sut.rbegin();  
@@ -594,9 +652,12 @@ void TestVectorProxySuite::TestREnd(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestErase(void)
 {
-  const std::vector<uint8_t> k_initial   = {0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8};
-  const std::vector<uint8_t> k_control_1 = {0x2,0x3,0x4,0x5,0x6,0x7,0x8};
-  const std::vector<uint8_t> k_control_2 = {0x2,0x3,0x4,0x5,0x6,0x7};
+  const uint8_t init_vals[] = {0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8};
+  const std::vector<uint8_t> k_initial = make_vector(init_vals);
+  const uint8_t vals1[] = {0x2,0x3,0x4,0x5,0x6,0x7,0x8};
+  const std::vector<uint8_t> k_control_1 = make_vector(vals1);
+  const uint8_t vals2[] = {0x2,0x3,0x4,0x5,0x6,0x7};
+  const std::vector<uint8_t> k_control_2 = make_vector(vals2);
   vector_data   sut(k_initial);
 
   // SUT: Remove the first and the last element.
@@ -618,8 +679,10 @@ void TestVectorProxySuite::TestErase(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestErase_range(void)
 {
-  const std::vector<uint8_t> k_initial = {0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8};
-  const std::vector<uint8_t> k_control = {0x1,0x8};
+  const uint8_t vals[] = {0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8};
+  const std::vector<uint8_t> k_initial = make_vector(vals);
+  const uint8_t ctrl_vals[] = {0x1,0x8};
+  const std::vector<uint8_t> k_control = make_vector(ctrl_vals);
   vector_data   sut(k_initial);
 
   vector_data::iterator first = ++sut.begin();
@@ -637,10 +700,14 @@ void TestVectorProxySuite::TestErase_range(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestPushBack(void)
 {
-  const std::vector<uint8_t> k_initial = {0x1,0x2,0x3,0x4,0x5,0x6};
+  const uint8_t vals[] = {0x1,0x2,0x3,0x4,0x5,0x6};
+  const std::vector<uint8_t> k_initial = make_vector(vals);
+
   const uint8_t              k_first   = 0x7;
   const uint8_t              k_second  = 0x8;
-  const std::vector<uint8_t> k_control = {0x1,0x2,0x3,0x4,0x5,0x6,k_first,k_second};
+  const uint8_t ctrl_vals[] = {0x1,0x2,0x3,0x4,0x5,0x6,k_first,k_second};
+  const std::vector<uint8_t> k_control = make_vector(ctrl_vals);
+
   vector_data   sut(k_initial);
 
   // SUT: Add more elements to the end of the vector.
@@ -655,7 +722,8 @@ void TestVectorProxySuite::TestPushBack_empty(void)
 {
   const uint8_t              k_first   = 0x7;
   const uint8_t              k_second  = 0x8;
-  const std::vector<uint8_t> k_control = {k_first,k_second};
+  const uint8_t vals[] = {k_first,k_second};
+  const std::vector<uint8_t> k_control = make_vector(vals);
 
   vector_data   sut;
 
@@ -669,8 +737,11 @@ void TestVectorProxySuite::TestPushBack_empty(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestPopBack(void)
 {
-  const std::vector<uint8_t> k_initial = {0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8};
-  const std::vector<uint8_t> k_control = {0x1,0x2,0x3,0x4,0x5,0x6};
+  const uint8_t vals[] = {0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8};
+  const std::vector<uint8_t> k_initial = make_vector(vals);
+
+  const uint8_t ctrl_vals[] = {0x1,0x2,0x3,0x4,0x5,0x6};
+  const std::vector<uint8_t> k_control = make_vector(ctrl_vals);
   vector_data   sut(k_initial);
 
   // SUT
@@ -702,8 +773,12 @@ void TestVectorProxySuite::TestPopBack_empty(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestResize_smaller(void)
 {
-  const std::vector<uint8_t>    k_initial = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
-  const std::vector<uint8_t>    k_control = {0xF,0xE,0xE,0xD,0xC,0x0};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_initial = make_vector(vals);
+
+  const uint8_t ctrl_vals[] = {0xF,0xE,0xE,0xD,0xC,0x0};
+  const std::vector<uint8_t> k_control = make_vector(ctrl_vals);
+
   const size_t                  k_new_size = k_control.size();
 
   vector_data   sut(k_initial);
@@ -717,9 +792,13 @@ void TestVectorProxySuite::TestResize_smaller(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestResize_larger(void)
 {
-  const std::vector<uint8_t> k_initial = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE,
-                                          0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_initial = make_vector(vals);
+
+  const uint8_t ctrl_vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE,
+                               0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0};
+  const std::vector<uint8_t> k_control = make_vector(ctrl_vals);
+
   const size_t  k_new_size = k_control.size();
 
   vector_data   sut(k_initial);
@@ -733,8 +812,12 @@ void TestVectorProxySuite::TestResize_larger(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestResize_default_smaller(void)
 {
-  const std::vector<uint8_t>    k_initial = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
-  const std::vector<uint8_t>    k_control = {0xF,0xE,0xE};
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_initial = make_vector(vals);
+
+  const uint8_t ctrl_vals[] = {0xF,0xE,0xE};
+  const std::vector<uint8_t> k_control = make_vector(ctrl_vals);
+
   const size_t                  k_new_size = k_control.size();
   const vector_data::data_type  k_default_value = 100;
   vector_data   sut(k_initial);
@@ -748,9 +831,13 @@ void TestVectorProxySuite::TestResize_default_smaller(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestResize_default_larger(void)
 {
-  const std::vector<uint8_t> k_initial = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
-  const std::vector<uint8_t> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE,
+  const uint8_t vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
+  const std::vector<uint8_t> k_initial = make_vector(vals);
+
+  const uint8_t ctrl_vals[] = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE,
                                           0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0};
+  const std::vector<uint8_t> k_control = make_vector(ctrl_vals);
+
   const size_t  k_new_size = k_control.size();
 
   vector_data   sut(k_initial);
@@ -765,9 +852,11 @@ void TestVectorProxySuite::TestResize_default_larger(void)
 void TestVectorProxySuite::TestSwap(void)
 {
   // Verifies Swap between two VectorProxy instances.
+  const uint8_t l_vals[] = {0x0,0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8,0x9};
+  const std::vector<uint8_t> k_lhs = make_vector(l_vals);
 
-  const std::vector<uint8_t> k_lhs = {0x0,0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8,0x9};
-  const std::vector<uint8_t> k_rhs = {0xF,0xE,0xD,0xC,0xB,0xA};
+  const uint8_t r_vals[] = {0xF,0xE,0xD,0xC,0xB,0xA};
+  const std::vector<uint8_t> k_rhs = make_vector(r_vals);
 
   vector_data   sut_lhs(k_lhs);
   vector_data   sut_rhs(k_rhs);
@@ -783,8 +872,11 @@ void TestVectorProxySuite::TestSwap(void)
 //  ****************************************************************************
 void TestVectorProxySuite::TestSwap_vector(void)
 {
-  const std::vector<uint8_t> k_lhs = {0x0,0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8,0x9};
-  const std::vector<uint8_t> k_rhs = {0xF,0xE,0xD,0xC,0xB,0xA};
+  const uint8_t l_vals[] = {0x0,0x1,0x2,0x3,0x4,0x5,0x6,0x7,0x8,0x9};
+  const std::vector<uint8_t> k_lhs = make_vector(l_vals);
+
+  const uint8_t r_vals[] = {0xF,0xE,0xD,0xC,0xB,0xA};
+  const std::vector<uint8_t> k_rhs = make_vector(r_vals);
 
   vector_data           sut_lhs(k_lhs);
   std::vector<uint8_t>  sut_rhs(k_rhs);

@@ -305,7 +305,6 @@ void TestDynTypePermsSuite::TestSize(void)
 {
   // SUT
   SUT sut;
-  sut.size<true>();
 
   TS_ASSERT_EQUALS(Hg::SizeOf<SUT::format_type>::value, sut.size());
 }

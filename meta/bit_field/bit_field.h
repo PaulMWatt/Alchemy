@@ -29,8 +29,9 @@ template <size_t OffsetT,
           typename T = uint8_t>
 struct BitField
 {
-  static_assert(CountT <= (sizeof(T)* 8),
-                "The number of bits in the BitField cannot exceed the size of the host type T.");
+  // TODO: Add this static assert back once a suitable tr1 replacement is created.
+  //static_assert(CountT <= (sizeof(T)* 8),
+  //              "The number of bits in the BitField cannot exceed the size of the host type T.");
     
   //  Typedefs ******************************************************************
   typedef BitField<OffsetT, CountT, T>&   reference;

@@ -229,7 +229,7 @@
 					>
 				</File>
 				<Filter
-					Name="Meta"
+					Name="Pb"
 					>
 					<File
 						RelativePath="..\..\meta\auto_index.h"
@@ -354,6 +354,10 @@
 					<Filter
 						Name="detail"
 						>
+						<File
+							RelativePath="..\..\meta\detail\conditional.h"
+							>
+						</File>
 						<File
 							RelativePath="..\..\meta\detail\tr1_helper.h"
 							>
