@@ -1,0 +1,3 @@
+[submodule "U232/cxxtest"]
+	path = U232/cxxtest
+	url = https://github.com/CxxTest/cxxtest.git

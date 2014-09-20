@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <!--from datum.h -->
+
+  <!--Simplify the number of level that need to be expanded
+      Since the datum is the only object in the proxy, 
+      this is the value that is displayed -->
+  <Type Name="Hg::Datum&lt;*,*,*&gt;">
+    <DisplayString>{m_shadow_data}</DisplayString>
+  </Type>
+
+  <!--from data_proxy.h -->
+  <Type Name="Hg::detail::DataProxy&lt;Hg::fundamental_trait, *, *, *&gt;">
+    <DisplayString>{m_shadow_data}</DisplayString>
+    <Expand/>
+  </Type>
+
+  <Type Name="Hg::detail::DataProxy&lt;Hg::nested_trait, *, *, *&gt;">
+    <DisplayString>{m_shadow_data}</DisplayString>
+    <Expand>
+      <Item Name="Fields">m_shadow_data</Item>
+    </Expand>
+  </Type>
+
+  <!--from bitlist_field_proxy.h -->
+  <Type Name="Hg::detail::DataProxy&lt;Hg::bitfield_trait, *, *, *&gt;">
+    <DisplayString>{m_shadow_data}</DisplayString>
+    <!--<Expand>
+      <Item Name="Bits">m_shadow_data</Item>
+    </Expand>-->
+  </Type>
+
+  <!--from array_proxy.h -->
+  <Type Name="Hg::detail::DataProxy&lt;Hg::array_trait, *, *, *&gt;">
+    <DisplayString>static: {m_shadow_data}</DisplayString>
+    <Expand>
+      <Item Name="Items">m_shadow_data</Item>
+    </Expand>
+  </Type>
+
+  <!--from vector_proxy.h -->
+  <Type Name="Hg::detail::DataProxy&lt;Hg::vector_trait, *, *, *&gt;">
+    <DisplayString>dynamic: {m_shadow_data}</DisplayString>
+    <Expand>
+      <Item Name="Items">m_shadow_data</Item>
+    </Expand>
+  </Type>
+
+  <!-- from bit_field_list.h -->
+  <Type Name="Hg::BitFieldList&lt;*,*&gt;">
+    <DisplayString>{m_pData}</DisplayString>
+  </Type>
+
+  <Type Name="Hg::BitFieldNode&lt;*,*,*,*&gt;">
+    <DisplayString>{m_field}</DisplayString>
+  </Type>
+
+  <!-- from bit_field.h -->
+  <Type Name="Hg::BitField&lt;*,*,*&gt;">
+    <DisplayString>{(*m_pValue &amp; k_mask) &gt;&gt; k_offset}</DisplayString>
+    <Expand>
+      <Item Name="Mask">k_mask</Item>
+      <Item Name="Offset">k_offset</Item>
+    </Expand>
+  </Type>
+
+  <!--from Hg.h -->
+  <Type Name="Hg::Message&lt;*,Hg::HostByteOrderT&lt;*&gt;,*&gt;">
+    <DisplayString>[Host] {k_size}</DisplayString>
+  </Type>
+
+  <Type Name="Hg::Message&lt;*,Hg::NetByteOrderT&lt;*&gt;,*&gt;">
+    <DisplayString>[Net]  {k_size}</DisplayString>
+  </Type>
+
+  <!-- from   msg_buffer.h -->
+  <Type Name="Hg::MsgBuffer&lt;*&gt;">
+    <DisplayString>offset: {m_offset}, {m_data}</DisplayString>
+    <DisplayString Condition="empty()">empty</DisplayString>
+    <Expand>
+      <ExpandedItem>m_offset</ExpandedItem>
+      <ExpandedItem>m_data, view(simple)na</ExpandedItem>
+    </Expand>
+  </Type>
+
+
+
+</AutoVisualizer>
