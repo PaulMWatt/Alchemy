@@ -1,6 +1,6 @@
 Network Alchemy
 ========================================================
-A message and structured data processing framework. 
+A portable framework to robustly process network messages and structured data. 
 
 Alchemy is portable across different processor types and platforms. 
 There is currently only one tool in the Alchemy framework, Hg (Mercury).
