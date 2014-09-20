@@ -21,7 +21,7 @@ int main( int argc, char *argv[] ) {
     return status;
 }
 bool suite_HgTypeListTestSuite_init = false;
-#include "C:\Development\Alchemy\Tests\HgTypeListTestSuite\Src\hgtypelisttestsuite.h"
+#include "..\hgtypelisttestsuite.h"
 
 static HgTypeListTestSuite suite_HgTypeListTestSuite;
 

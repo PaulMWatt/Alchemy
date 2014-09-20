@@ -8,9 +8,9 @@
 #ifndef MESSAGE_DYNAMIC_DETAIL_H_INCLUDED
 #define MESSAGE_DYNAMIC_DETAIL_H_INCLUDED
 //  Includes *******************************************************************
-#include <meta/dynamic.h>
-#include <meta/meta_foreach.h>
-#include <meta/type_at.h>
+#include <Pb/dynamic.h>
+#include <Pb/meta_foreach.h>
+#include <Pb/type_at.h>
 #include <Hg/deduce_type_trait.h>
 
 namespace Hg

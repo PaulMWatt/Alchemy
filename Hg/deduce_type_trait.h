@@ -12,7 +12,7 @@
 #ifndef DEDUCE_TYPE_TRAIT_H_INCLUDED
 #define DEDUCE_TYPE_TRAIT_H_INCLUDED
 //  Includes ******************************************************************
-#include <meta/meta_util.h>
+#include <Pb/meta_util.h>
 
 namespace Hg
 {

@@ -30,7 +30,7 @@
 #include <cxxtest/TestSuite.h>
 #include <alchemy.h>
 #include <storage_policy.h>
-#include <meta/bit_field/bit_field_array.h>
+#include <Pb/bit_field/bit_field_array.h>
 
 #include <test_helper.h>
 #include <test_def.h>

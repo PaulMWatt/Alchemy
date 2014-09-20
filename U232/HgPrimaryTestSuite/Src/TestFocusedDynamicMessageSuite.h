@@ -30,7 +30,7 @@
 #define TEST_FOCUSED_DYNAMIC_MESSAGE_SUITE_H_INCLUDED
 //  Includes *******************************************************************
 #include <cxxtest/TestSuite.h>
-#include <meta/bit_field/bit_field_vector.h>
+#include <Pb/bit_field/bit_field_vector.h>
 
 #include <msgtest_typelist.h>
 #include <Hg.h>

@@ -28,10 +28,10 @@
 #define TESTBYTEORDER_H_INCLUDED
 //  Includes *******************************************************************
 #include <cxxtest/TestSuite.h>
-#include <meta/compiler.h>
+#include <Pb/compiler.h>
 typedef unsigned char       byte_t;
 
-#include <meta/byte_order.h>
+#include <Pb/byte_order.h>
 #include <string>
 
 // Bring the Hg::convert namespace into this scope for convenience ************

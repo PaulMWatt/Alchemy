@@ -33,7 +33,7 @@
 #include <Hg/msg_buffer.h>
 #include <Hg/pack_message.h>
 #include <Hg/unpack_message.h>
-#include <meta/dynamic.h>
+#include <Pb/dynamic.h>
 
 namespace Hg
 {

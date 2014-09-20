@@ -9,7 +9,7 @@
 #define BITLIST_FIELD_PROXY_H_INCLUDED
 //  Includes *******************************************************************
 #include <Hg/datum/datum.h>
-#include <meta/bit_field_list.h>
+#include <Pb/bit_field_list.h>
 
 namespace Hg
 {

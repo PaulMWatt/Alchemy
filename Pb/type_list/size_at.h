@@ -9,7 +9,7 @@
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
 #ifndef SIZE_AT_H_INCLUDED
-# error "Do not include this file directly. Use <meta/size_at.h> instead"
+# error "Do not include this file directly. Use <Pb/size_at.h> instead"
 #endif
 
 namespace Hg

@@ -20,12 +20,12 @@
 			OutputDirectory=".\Debug\"
 			IntermediateDirectory=".\Debug\"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\..\build\CxxTest.vsprops"
+			InheritedPropertySheets="..\..\elements\CxxTest.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="Performing Pre-Build Event...Generate the test runner...&#x0D;&#x0A;Generate the test runner...&#x0D;&#x0A;"
+				Description="Performing Pre-Build Event...Generate the test runner...&#x0D;&#x0A;"
 				CommandLine="mkdir &quot;./Src/Generated&quot;&#x0D;&#x0A;cd &quot;./Src/Generated&quot;&#x0D;&#x0A;$(GenCxxTestRunner) --runner=ParenPrinter  -o &quot;HgPrimaryTestSuiteRunner.cpp&quot; &quot;../*.h&quot;&#x0D;&#x0A;cd &quot;../..&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
@@ -104,7 +104,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\..\build\CxxTest.vsprops"
+			InheritedPropertySheets="..\..\elements\CxxTest.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -232,102 +232,102 @@
 					Name="Pb"
 					>
 					<File
-						RelativePath="..\..\meta\auto_index.h"
+						RelativePath="..\..\Pb\auto_index.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\bit_field_list.h"
+						RelativePath="..\..\Pb\bit_field_list.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\bit_field_list.old.h"
+						RelativePath="..\..\Pb\bit_field_list.old.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\byte_order.h"
+						RelativePath="..\..\Pb\byte_order.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\compiler.h"
+						RelativePath="..\..\Pb\compiler.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\container_size.h"
+						RelativePath="..\..\Pb\container_size.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\dynamic.h"
+						RelativePath="..\..\Pb\dynamic.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\integer_sequence.h"
+						RelativePath="..\..\Pb\integer_sequence.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\length.h"
+						RelativePath="..\..\Pb\length.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\meta_error.h"
+						RelativePath="..\..\Pb\meta_error.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\meta_foreach.h"
+						RelativePath="..\..\Pb\meta_foreach.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\meta_fwd.h"
+						RelativePath="..\..\Pb\meta_fwd.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\meta_macros.h"
+						RelativePath="..\..\Pb\meta_macros.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\meta_math.h"
+						RelativePath="..\..\Pb\meta_math.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\meta_util.h"
+						RelativePath="..\..\Pb\meta_util.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\offset_of.h"
+						RelativePath="..\..\Pb\offset_of.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\size_at.h"
+						RelativePath="..\..\Pb\size_at.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\size_of.h"
+						RelativePath="..\..\Pb\size_of.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\type_at.h"
+						RelativePath="..\..\Pb\type_at.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\type_list.h"
+						RelativePath="..\..\Pb\type_list.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\meta\type_node.h"
+						RelativePath="..\..\Pb\type_node.h"
 						>
 					</File>
 					<Filter
 						Name="bit_fixed"
 						>
 						<File
-							RelativePath="..\..\meta\bit_field\basic_list.h"
+							RelativePath="..\..\Pb\bit_field\basic_list.h"
 							>
 						</File>
 						<File
-							RelativePath="..\..\meta\bit_field\bit_field.h"
+							RelativePath="..\..\Pb\bit_field\bit_field.h"
 							>
 						</File>
 						<File
-							RelativePath="..\..\meta\bit_field\bit_field_array.h"
+							RelativePath="..\..\Pb\bit_field\bit_field_array.h"
 							>
 						</File>
 					</Filter>
@@ -335,19 +335,19 @@
 						Name="type_list"
 						>
 						<File
-							RelativePath="..\..\meta\type_list\length.h"
+							RelativePath="..\..\Pb\type_list\length.h"
 							>
 						</File>
 						<File
-							RelativePath="..\..\meta\type_list\offset_of.h"
+							RelativePath="..\..\Pb\type_list\offset_of.h"
 							>
 						</File>
 						<File
-							RelativePath="..\..\meta\type_list\size_at.h"
+							RelativePath="..\..\Pb\type_list\size_at.h"
 							>
 						</File>
 						<File
-							RelativePath="..\..\meta\type_list\type_at.h"
+							RelativePath="..\..\Pb\type_list\type_at.h"
 							>
 						</File>
 					</Filter>
@@ -355,11 +355,11 @@
 						Name="detail"
 						>
 						<File
-							RelativePath="..\..\meta\detail\conditional.h"
+							RelativePath="..\..\Pb\detail\conditional.h"
 							>
 						</File>
 						<File
-							RelativePath="..\..\meta\detail\tr1_helper.h"
+							RelativePath="..\..\Pb\detail\tr1_helper.h"
 							>
 						</File>
 					</Filter>

@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <CallPython>c:\python34\python.exe</CallPython>
-    <CxxTestDir>$(SolutionDir)..\..\..\tests\cxxtest\</CxxTestDir>
+    <CxxTestDir>$(SolutionDir)..\..\..\U232\cxxtest\</CxxTestDir>
     <CxxTestScriptsDir>$(CxxTestDir)bin\</CxxTestScriptsDir>
     <GenCxxTestRunner>$(CallPython) "$(CxxTestScriptsDir)cxxtestgen" </GenCxxTestRunner>
   </PropertyGroup>

@@ -13,7 +13,7 @@
 # error Do not include this file directly. Use <detail/unpack_message.h> instead
 #endif
 //  Includes *******************************************************************
-#include <meta/bit_field/bit_field_vector.h>
+#include <Pb/bit_field/bit_field_vector.h>
 
 namespace Hg
 {

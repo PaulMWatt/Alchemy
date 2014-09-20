@@ -7,7 +7,7 @@
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
 #ifndef OFFSET_OF_H_INCLUDED
-# error "Do not include this file directly. Use <meta/offset_of.h> instead"
+# error "Do not include this file directly. Use <Pb/offset_of.h> instead"
 #endif
 
 

@@ -8,7 +8,7 @@
 #ifndef AUTO_INDEX_H_INCLUDED
 #define AUTO_INDEX_H_INCLUDED
 //  Includes *******************************************************************
-#include <meta/meta_util.h>
+#include <Pb/meta_util.h>
 
 namespace Hg
 {

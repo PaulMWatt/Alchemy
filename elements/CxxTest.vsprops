@@ -14,7 +14,7 @@
 	/>
 	<UserMacro
 		Name="CxxTestDir"
-		Value="$(SolutionDir)..\..\..\tests\cxxtest\"
+		Value="$(SolutionDir)..\..\..\U232\cxxtest\"
 	/>
 	<UserMacro
 		Name="CxxTestScriptsDir"
