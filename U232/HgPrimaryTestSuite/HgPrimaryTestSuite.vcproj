@@ -240,10 +240,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\Pb\bit_field_list.old.h"
-						>
-					</File>
-					<File
 						RelativePath="..\..\Pb\byte_order.h"
 						>
 					</File>
@@ -316,7 +312,7 @@
 						>
 					</File>
 					<Filter
-						Name="bit_fixed"
+						Name="bit_field"
 						>
 						<File
 							RelativePath="..\..\Pb\bit_field\basic_list.h"
@@ -328,6 +324,10 @@
 						</File>
 						<File
 							RelativePath="..\..\Pb\bit_field\bit_field_array.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Pb\bit_field\bit_field_vector.h"
 							>
 						</File>
 					</Filter>
@@ -546,6 +546,10 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\makefile"
+			>
+		</File>
 		<File
 			RelativePath=".\readme.txt"
 			>

@@ -39,3 +39,8 @@ Tests/HgTypeListTestSuite/Src/Generated/HgTypeListTestSuiteRunner.cpp
 *.ncb
 *.ncb
 elements/IDE/VS2008/Alchemy.ncb
+elements/IDE/VS2008/Alchemy.suo
+U232/HgPrimaryTestSuite/Debug/BuildLog.htm
+U232/HgPrimaryTestSuite/Debug/mt.dep
+U232/HgPrimaryTestSuite/Debug/HgPrimaryTestSuite.exe.intermediate.manifest
+U232/HgPrimaryTestSuite/Debug/HgPrimaryTestSuite.exp
