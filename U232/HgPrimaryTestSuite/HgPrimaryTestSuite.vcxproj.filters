@@ -53,16 +53,10 @@
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\TestByteOrder.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
     <ClInclude Include="Src\TestBitSetMsgFieldSuite.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
     <ClInclude Include="Src\TestMsgFieldSuite.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\TestMeta.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Pb\bit_field\basic_list.h">

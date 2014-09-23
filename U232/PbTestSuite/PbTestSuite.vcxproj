@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FD22BDFB-073D-471A-81CB-38830B5F74B4}</ProjectGuid>
+    <ProjectGuid>{A5EA0912-8056-4FD1-B5BE-FAFC41CE62F2}</ProjectGuid>
     <RootNamespace>TestAlchemyTypes</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -69,14 +69,14 @@
     <PreBuildEvent>
       <Command>mkdir "./Src/Generated"
 cd "./Src/Generated"
-$(GenCxxTestRunner) --runner=ParenPrinter  -o "TestAlchemyTypesRunner.cpp" "../*.h"
+$(GenCxxTestRunner) --runner=ParenPrinter  -o "PbTestSuiteRunner.cpp" "../*.h"
 cd "../.."</Command>
       <Message>Generate the test runner...
 </Message>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>"$(OutDir)\$(ProjectName).exe"</Command>
-      <Message>Perform test for TestAlchemyTypes</Message>
+      <Message>Perform test for PbTestSuite</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,38 +98,6 @@ cd "../.."</Command>
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Alchemy.h" />
-    <ClInclude Include="..\..\Hg.h" />
-    <ClInclude Include="..\..\Hg\datum\basic_datum.h" />
-    <ClInclude Include="..\..\Hg\datum\datum.h" />
-    <ClInclude Include="..\..\Hg\deduce_type_trait.h" />
-    <ClInclude Include="..\..\Hg\detail\message_byte_order_detail.h" />
-    <ClInclude Include="..\..\Hg\detail\message_dynamic_detail.h" />
-    <ClInclude Include="..\..\Hg\detail\pack_array.h" />
-    <ClInclude Include="..\..\Hg\detail\pack_message_detail.h" />
-    <ClInclude Include="..\..\Hg\detail\pack_nested.h" />
-    <ClInclude Include="..\..\Hg\detail\pack_vector.h" />
-    <ClInclude Include="..\..\Hg\detail\unpack_array.h" />
-    <ClInclude Include="..\..\Hg\detail\unpack_message_detail.h" />
-    <ClInclude Include="..\..\Hg\detail\unpack_nested.h" />
-    <ClInclude Include="..\..\Hg\detail\unpack_vector.h" />
-    <ClInclude Include="..\..\Hg\make_Hg_type_list.h" />
-    <ClInclude Include="..\..\Hg\message_byte_order.h" />
-    <ClInclude Include="..\..\Hg\message_dynamic.h" />
-    <ClInclude Include="..\..\Hg\msg_buffer.h" />
-    <ClInclude Include="..\..\Hg\msg_def.h" />
-    <ClInclude Include="..\..\Hg\msg_fwd.h" />
-    <ClInclude Include="..\..\Hg\pack_message.h" />
-    <ClInclude Include="..\..\Hg\proxy\array_proxy.h" />
-    <ClInclude Include="..\..\Hg\proxy\bitlist_field_proxy.h" />
-    <ClInclude Include="..\..\Hg\proxy\data_proxy.h" />
-    <ClInclude Include="..\..\Hg\proxy\deduce_proxy_type.h" />
-    <ClInclude Include="..\..\Hg\proxy\vector_proxy.h" />
-    <ClInclude Include="..\..\Hg\unpack_message.h" />
-    <ClInclude Include="..\..\Hg\unused\array_data.h" />
-    <ClInclude Include="..\..\Hg\unused\message_iterator.h" />
-    <ClInclude Include="..\..\Hg\unused\multival_data.h" />
-    <ClInclude Include="..\..\Hg\unused\select_proxy_type.h" />
     <ClInclude Include="..\..\Pb\auto_index.h" />
     <ClInclude Include="..\..\Pb\bit_field\basic_list.h" />
     <ClInclude Include="..\..\Pb\bit_field\bit_field.h" />
@@ -158,27 +126,16 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\type_list\size_at.h" />
     <ClInclude Include="..\..\Pb\type_list\type_at.h" />
     <ClInclude Include="..\..\Pb\type_node.h" />
-    <ClInclude Include="..\..\storage_policy.h" />
     <ClInclude Include="geometry_testdata.h" />
     <ClInclude Include="geometry_typelist.h" />
     <ClInclude Include="msgtest_typelist.h" />
-    <ClInclude Include="Src\TestArrayProxySuite.h" />
-    <ClInclude Include="Src\TestBitFieldArray.h" />
-    <ClInclude Include="Src\TestBitSetMsgFieldSuite.h" />
-    <ClInclude Include="Src\TestDynamicMessageSuite.h" />
-    <ClInclude Include="Src\TestDynTypePermsSuite.h" />
-    <ClInclude Include="Src\TestFocusedDynamicMessageSuite.h" />
-    <ClInclude Include="Src\TestMsgFieldSuite.h" />
-    <ClInclude Include="Src\TestMsgBufferSuite.h" />
-    <ClInclude Include="Src\TestMessageSuite.h" />
-    <ClInclude Include="Src\TestVectorProxySuite.h" />
+    <ClInclude Include="Src\TestByteOrder.h" />
+    <ClInclude Include="Src\TestMeta.h" />
     <ClInclude Include="test_def.h" />
     <ClInclude Include="test_helper.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\Generated\TestAlchemyTypesRunner.cpp">
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
-    </ClCompile>
+    <ClCompile Include="Src\Generated\PbTestSuiteRunner.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

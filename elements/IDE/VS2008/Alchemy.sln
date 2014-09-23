@@ -5,6 +5,113 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HgPrimaryTestSuite", "..\..
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HgTypeListTestSuite", "..\..\..\U232\HgTypeListTestSuite\HgTypeListTestSuite.vcproj", "{6D78ECF4-8F5F-415D-87E3-265D22F139E3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Alchemy", "Alchemy", "{AEE56D50-1A68-404D-AC6F-89E9E06C3B68}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Header Files", "Header Files", "{E675FE7F-D136-4E1F-AB64-69AFE21C9019}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\alchemy.h = ..\..\..\alchemy.h
+		..\..\..\Hg.h = ..\..\..\Hg.h
+		..\..\..\storage_policy.h = ..\..\..\storage_policy.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hg", "Hg", "{9C320270-CCCE-4AA4-9D7F-C8E47F425134}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Hg\deduce_type_trait.h = ..\..\..\Hg\deduce_type_trait.h
+		..\..\..\Hg\make_Hg_type_list.h = ..\..\..\Hg\make_Hg_type_list.h
+		..\..\..\Hg\message_byte_order.h = ..\..\..\Hg\message_byte_order.h
+		..\..\..\Hg\message_dynamic.h = ..\..\..\Hg\message_dynamic.h
+		..\..\..\Hg\msg_buffer.h = ..\..\..\Hg\msg_buffer.h
+		..\..\..\Hg\msg_def.h = ..\..\..\Hg\msg_def.h
+		..\..\..\Hg\msg_fwd.h = ..\..\..\Hg\msg_fwd.h
+		..\..\..\Hg\pack_message.h = ..\..\..\Hg\pack_message.h
+		..\..\..\Hg\unpack_message.h = ..\..\..\Hg\unpack_message.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datum", "Datum", "{BCA45A31-C1D4-4591-9123-2A1292740524}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Hg\datum\basic_datum.h = ..\..\..\Hg\datum\basic_datum.h
+		..\..\..\Hg\datum\datum.h = ..\..\..\Hg\datum\datum.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Detail", "Detail", "{BC52849B-B965-4CCE-96C0-F3D9EA1B6715}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Hg\detail\message_byte_order_detail.h = ..\..\..\Hg\detail\message_byte_order_detail.h
+		..\..\..\Hg\detail\message_dynamic_detail.h = ..\..\..\Hg\detail\message_dynamic_detail.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proxy", "Proxy", "{97D47640-EBD7-417A-AB29-6299684E6FB8}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Hg\proxy\array_proxy.h = ..\..\..\Hg\proxy\array_proxy.h
+		..\..\..\Hg\proxy\bitlist_field_proxy.h = ..\..\..\Hg\proxy\bitlist_field_proxy.h
+		..\..\..\Hg\proxy\data_proxy.h = ..\..\..\Hg\proxy\data_proxy.h
+		..\..\..\Hg\proxy\deduce_proxy_type.h = ..\..\..\Hg\proxy\deduce_proxy_type.h
+		..\..\..\Hg\proxy\vector_proxy.h = ..\..\..\Hg\proxy\vector_proxy.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pack", "Pack", "{A713897A-ECEE-4DF4-9A4A-65A896EE92E3}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Hg\detail\pack_array.h = ..\..\..\Hg\detail\pack_array.h
+		..\..\..\Hg\detail\pack_message_detail.h = ..\..\..\Hg\detail\pack_message_detail.h
+		..\..\..\Hg\detail\pack_nested.h = ..\..\..\Hg\detail\pack_nested.h
+		..\..\..\Hg\detail\pack_vector.h = ..\..\..\Hg\detail\pack_vector.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unpack", "Unpack", "{AC50ECD4-FBF2-49FE-A473-A0D023F7532A}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Hg\detail\unpack_array.h = ..\..\..\Hg\detail\unpack_array.h
+		..\..\..\Hg\detail\unpack_message_detail.h = ..\..\..\Hg\detail\unpack_message_detail.h
+		..\..\..\Hg\detail\unpack_nested.h = ..\..\..\Hg\detail\unpack_nested.h
+		..\..\..\Hg\detail\unpack_vector.h = ..\..\..\Hg\detail\unpack_vector.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pb", "Pb", "{5F707CD0-65A3-4809-B77E-B6154710405C}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Pb\auto_index.h = ..\..\..\Pb\auto_index.h
+		..\..\..\Pb\bit_field_list.h = ..\..\..\Pb\bit_field_list.h
+		..\..\..\Pb\byte_order.h = ..\..\..\Pb\byte_order.h
+		..\..\..\Pb\compiler.h = ..\..\..\Pb\compiler.h
+		..\..\..\Pb\container_size.h = ..\..\..\Pb\container_size.h
+		..\..\..\Pb\dynamic.h = ..\..\..\Pb\dynamic.h
+		..\..\..\Pb\integer_sequence.h = ..\..\..\Pb\integer_sequence.h
+		..\..\..\Pb\length.h = ..\..\..\Pb\length.h
+		..\..\..\Pb\meta_error.h = ..\..\..\Pb\meta_error.h
+		..\..\..\Pb\meta_foreach.h = ..\..\..\Pb\meta_foreach.h
+		..\..\..\Pb\meta_fwd.h = ..\..\..\Pb\meta_fwd.h
+		..\..\..\Pb\meta_macros.h = ..\..\..\Pb\meta_macros.h
+		..\..\..\Pb\meta_math.h = ..\..\..\Pb\meta_math.h
+		..\..\..\Pb\meta_util.h = ..\..\..\Pb\meta_util.h
+		..\..\..\Pb\offset_of.h = ..\..\..\Pb\offset_of.h
+		..\..\..\Pb\size_at.h = ..\..\..\Pb\size_at.h
+		..\..\..\Pb\size_of.h = ..\..\..\Pb\size_of.h
+		..\..\..\Pb\type_at.h = ..\..\..\Pb\type_at.h
+		..\..\..\Pb\type_list.h = ..\..\..\Pb\type_list.h
+		..\..\..\Pb\type_node.h = ..\..\..\Pb\type_node.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bit_field", "bit_field", "{3FD77FBB-04B0-4A37-95AA-9D1F49D717F7}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Pb\bit_field\basic_list.h = ..\..\..\Pb\bit_field\basic_list.h
+		..\..\..\Pb\bit_field\bit_field.h = ..\..\..\Pb\bit_field\bit_field.h
+		..\..\..\Pb\bit_field\bit_field_array.h = ..\..\..\Pb\bit_field\bit_field_array.h
+		..\..\..\Pb\bit_field\bit_field_vector.h = ..\..\..\Pb\bit_field\bit_field_vector.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{3943C650-3303-44D9-95F6-4E030792946F}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Pb\detail\conditional.h = ..\..\..\Pb\detail\conditional.h
+		..\..\..\Pb\detail\tr1_helper.h = ..\..\..\Pb\detail\tr1_helper.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "type_list", "type_list", "{9C18ABAC-ED36-4A29-88DB-DE0728CB5A33}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Pb\type_list\length.h = ..\..\..\Pb\type_list\length.h
+		..\..\..\Pb\type_list\offset_of.h = ..\..\..\Pb\type_list\offset_of.h
+		..\..\..\Pb\type_list\size_at.h = ..\..\..\Pb\type_list\size_at.h
+		..\..\..\Pb\type_list\type_at.h = ..\..\..\Pb\type_list\type_at.h
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PbTestSuite", "..\..\..\U232\PbTestSuite\PbTestSuite.vcproj", "{7AB88087-22D4-4309-A90B-15F4C53B762C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,8 +126,25 @@ Global
 		{6D78ECF4-8F5F-415D-87E3-265D22F139E3}.Debug|Win32.Build.0 = Debug|Win32
 		{6D78ECF4-8F5F-415D-87E3-265D22F139E3}.Release|Win32.ActiveCfg = Release|Win32
 		{6D78ECF4-8F5F-415D-87E3-265D22F139E3}.Release|Win32.Build.0 = Release|Win32
+		{7AB88087-22D4-4309-A90B-15F4C53B762C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7AB88087-22D4-4309-A90B-15F4C53B762C}.Debug|Win32.Build.0 = Debug|Win32
+		{7AB88087-22D4-4309-A90B-15F4C53B762C}.Release|Win32.ActiveCfg = Release|Win32
+		{7AB88087-22D4-4309-A90B-15F4C53B762C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E675FE7F-D136-4E1F-AB64-69AFE21C9019} = {AEE56D50-1A68-404D-AC6F-89E9E06C3B68}
+		{9C320270-CCCE-4AA4-9D7F-C8E47F425134} = {E675FE7F-D136-4E1F-AB64-69AFE21C9019}
+		{5F707CD0-65A3-4809-B77E-B6154710405C} = {E675FE7F-D136-4E1F-AB64-69AFE21C9019}
+		{BCA45A31-C1D4-4591-9123-2A1292740524} = {9C320270-CCCE-4AA4-9D7F-C8E47F425134}
+		{BC52849B-B965-4CCE-96C0-F3D9EA1B6715} = {9C320270-CCCE-4AA4-9D7F-C8E47F425134}
+		{97D47640-EBD7-417A-AB29-6299684E6FB8} = {9C320270-CCCE-4AA4-9D7F-C8E47F425134}
+		{A713897A-ECEE-4DF4-9A4A-65A896EE92E3} = {BC52849B-B965-4CCE-96C0-F3D9EA1B6715}
+		{AC50ECD4-FBF2-49FE-A473-A0D023F7532A} = {BC52849B-B965-4CCE-96C0-F3D9EA1B6715}
+		{3FD77FBB-04B0-4A37-95AA-9D1F49D717F7} = {5F707CD0-65A3-4809-B77E-B6154710405C}
+		{3943C650-3303-44D9-95F6-4E030792946F} = {5F707CD0-65A3-4809-B77E-B6154710405C}
+		{9C18ABAC-ED36-4A29-88DB-DE0728CB5A33} = {5F707CD0-65A3-4809-B77E-B6154710405C}
 	EndGlobalSection
 EndGlobal
