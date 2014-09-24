@@ -43,9 +43,12 @@
 namespace Hg
 {
 
-
 //  Forward Declarations *******************************************************
+#if defined(_WIN32) && defined(_HAS_TR1)
 using std::tr1::shared_ptr;
+#else
+using std::shared_ptr;
+#endif
 
 //  ****************************************************************************
 /// Storage Policy implementation for contiguous memory buffers. 
@@ -115,10 +118,10 @@ struct StoragePolicy
   ///               Other policy implementations may need to indicate failure.
   ///               
   static
-  bool read ( const_pointer pBuffer, 
-              void*         pStorage,
-              size_t        size,
-              ptrdiff_t     offset)
+  bool read ( const_pointer   pBuffer, 
+              void*           pStorage,
+              size_t          size,
+              std::ptrdiff_t  offset)
   {
     ::memcpy( pStorage,
               pBuffer + offset, 
@@ -145,7 +148,7 @@ struct StoragePolicy
   bool write( pointer           pBuffer, 
               const void*       pStorage,
               size_t            size,
-              ptrdiff_t         offset)
+              std::ptrdiff_t    offset)
   {
     ::memcpy( pBuffer + offset,
               pStorage,

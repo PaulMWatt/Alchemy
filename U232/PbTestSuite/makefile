@@ -36,7 +36,7 @@ CC= gcc
 CXX= g++
 AR= ar
 CFLAGS= -g
-CXXFLAGS= -g -std=c++0x -I ../cxxtest -I ./ -I ../../ -D linux
+CXXFLAGS= -g -std=c++0x -I ../cxxtest -I ./ -I ../../ -I ../common -D linux
 ARFLAGS= cru
 LDFLAGS= -g
 RESULT=PbTestSuite

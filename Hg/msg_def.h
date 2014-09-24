@@ -92,14 +92,15 @@ struct message_size_trait
   template< size_t   kt_offset >                                               \
   struct F##Format;                                                            \
                                                                                \
+  namespace detail {                                                           \
   template <>                                                                  \
-  struct detail::field_data_t <F>                                              \
+  struct field_data_t <F>                                                      \
   {                                                                            \
   typedef F##Format<0>      value_type;                                        \
   };                                                                           \
                                                                                \
   template< size_t   kt_offset >                                               \
-  struct detail::FieldTypes <F,kt_offset>                                      \
+  struct FieldTypes <F,kt_offset>                                              \
       : F##Format<kt_offset>                                                   \
   {                                                                            \
     typedef F                           index_type;                            \
@@ -110,6 +111,7 @@ struct message_size_trait
     value_type& This()                  {return *this;}                        \
     value_type                         &m_shadow_data;                         \
   };                                                                           \
+  }                                                                            \
                                                                                \
   template< size_t   kt_offset >                                               \
   struct F##Format                                                             \
@@ -221,8 +223,10 @@ struct message_size_trait
   struct ContainerSize<C>                                                      \
     : std::integral_constant<size_t, sizeof(T)>         { };                   \
                                                                                \
+  namespace detail {                                                           \
   template <>                                                                  \
-  struct detail::field_data_t<C>  { typedef T value_type; };                   \
+  struct field_data_t<C>  { typedef T value_type; };                           \
+  }                                                                            \
                                                                                \
   struct C                                                                     \
     : public BasicBitList<T,C>                                                 \

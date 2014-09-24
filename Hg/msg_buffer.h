@@ -14,7 +14,9 @@
 #include <Pb/meta_foreach.h>
 #include <storage_policy.h>
 
+#include <cstddef>
 #include <algorithm>
+
 
 namespace Hg
 {
@@ -235,7 +237,7 @@ public:
   /// 
   /// @return       A number of bytes greater than 0 is returned.
   ///
-  ptrdiff_t offset() const                        
+  std::ptrdiff_t offset() const                        
   { 
     return m_offset; 
   }
@@ -245,7 +247,7 @@ public:
   /// 
   /// @param new_offset       The offset from the beginning of the supplied buffer.
   ///
-  void offset(ptrdiff_t new_offset)         
+  void offset(std::ptrdiff_t new_offset)         
   { 
     m_offset = new_offset; 
   }
@@ -263,7 +265,7 @@ public:
   ///               It is possible for a successful case to return 0.
   /// 
   template <typename T>
-  size_t get_data(T& value, ptrdiff_t pos) const
+  size_t get_data(T& value, std::ptrdiff_t pos) const
   {
     if (empty())
     {
@@ -272,7 +274,7 @@ public:
 
     // Read from the user supplied offset as well as the base offset 
     // configured for this Packet Buffer.
-    ptrdiff_t total_offset = offset() + pos;
+    std::ptrdiff_t total_offset = offset() + pos;
 
     // Verify the requested data can be read from the buffer.
     size_t bytes_read = 0;
@@ -474,7 +476,7 @@ private:
   // Private Member Data *******************************************************
   DataVector        m_data;               ///< The storage medium managed by
                                           ///  this message buffer.
-  ptrdiff_t         m_offset;             ///< The number of bytes from the 
+  std::ptrdiff_t    m_offset;             ///< The number of bytes from the 
                                           ///  beginning of the buffer that 
                                           ///  all data reads should occur from.
 

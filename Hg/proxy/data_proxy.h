@@ -43,7 +43,7 @@ template< typename  datum_trait,
 struct DataProxy
   : public Hg::Datum<kt_idx, format_t, kt_offset>
 {
-  typedef typename 
+  typedef  
     Hg::Datum < kt_idx,
                 format_t,
                 kt_offset

@@ -1,0 +1,1 @@
+g++ -g -std=c++0x -I ../cxxtest -I ./ -I ../../ -I ../common -D linux -c -o Debug/obj/PbTestSuiteRunner.o Src/Generated/PbTestSuiteRunner.cpp

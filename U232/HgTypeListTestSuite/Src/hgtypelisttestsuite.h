@@ -39,7 +39,8 @@
 #include <vector>
 
 using namespace Hg;
-
+namespace Hg
+{
 
 HG_BEGIN_BIT_SET (uint32_t, mixed_bits)
   HG_BIT_FIELD   (0,   first,   5)
@@ -56,6 +57,8 @@ typedef TypeList
   uint32_t,      
   std::array<mixed_bits, 5>
 > Hg_nested;
+
+}
 
 //  ****************************************************************************
 //  A type array used to create the nested message field.

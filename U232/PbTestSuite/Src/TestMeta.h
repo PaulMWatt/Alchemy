@@ -39,9 +39,18 @@
 #define TESTMETA_H_INCLUDED
 
 #include <cxxtest/TestSuite.h>
-#include <alchemy.h>
+#include <Pb/meta_fwd.h>
+#include <Pb/meta_fwd.h>
+#include <Pb/meta_fwd.h>
+#include <Pb/meta_fwd.h>
+#include <Pb/meta_fwd.h>
+#include <Pb/meta_fwd.h>
+#include <Pb/meta_fwd.h>
+#include <Pb/meta_fwd.h>
+#include <Pb/meta_fwd.h>
+#include <Pb/meta_fwd.h>
+#include <Pb/meta_fwd.h>
 #include <test_def.h>
-//#include <detail/multival_data.h>
 
 //  ****************************************************************************
 /// Verifies a variety of utility meta-templateconstructs.
@@ -70,11 +79,11 @@ public:
 
 protected:
   // Test Suite Data ***********************************************************
-  typedef Hg::DeduceBitFieldList<0, Hg::Bitset_format>::type   TypeA;
-  typedef TypeA::value_type                                          value_type_a;
+  typedef Hg::DeduceBitFieldList<0, Hg::Bitset_format>::type          TypeA;
+  typedef TypeA::value_type                                           value_type_a;
 
-  typedef Hg::DeduceBitFieldList<1, Hg::Bitset_format>::type   TypeB;
-  typedef TypeB::value_type                                          value_type_b;
+  typedef Hg::DeduceBitFieldList<1, Hg::Bitset_format>::type          TypeB;
+  typedef TypeB::value_type                                           value_type_b;
 
 public:
   //  Test Cases ***************************************************************
@@ -195,14 +204,17 @@ void TestMeta::Test_type_check(void)
 {
   // This is a static compilation test.
   // If the unit-test program successfully compiles, this test is a success.
+// TODO: Find the best way with other compilers to let this compile without an error. 
+#if defined(_WIN32)
   Hg::type_check<true>;
+#endif
 }
 
 //  ****************************************************************************
 void TestMeta::Test_not_true(void)
 {
   // SUT
-  bool result = Hg::not<std::false_type>::value;
+  bool result = Hg::Not<std::false_type>::value;
   TS_ASSERT_EQUALS(true, result);
 }
 
@@ -210,7 +222,7 @@ void TestMeta::Test_not_true(void)
 void TestMeta::Test_not_false(void)
 {
   // SUT
-  bool result = Hg::not<std::true_type>::value;
+  bool result = Hg::Not<std::true_type>::value;
   TS_ASSERT_EQUALS(false, result);
 }
 
@@ -218,7 +230,7 @@ void TestMeta::Test_not_false(void)
 void TestMeta::Test_and_true(void)
 {
   // SUT
-  bool result = Hg::and<std::true_type,
+  bool result = Hg::And<std::true_type,
                         std::true_type>::value;
   TS_ASSERT_EQUALS(true, result);
 }
@@ -228,17 +240,17 @@ void TestMeta::Test_and_false(void)
 {
   bool result;
   // SUT 1
-  result = Hg::and< std::false_type,
+  result = Hg::And< std::false_type,
                     std::false_type>::value;
   TS_ASSERT_EQUALS(false, result);
 
   // SUT 2
-  result = Hg::and< std::true_type,
+  result = Hg::And< std::true_type,
                     std::false_type>::value;
   TS_ASSERT_EQUALS(false, result);
 
   // SUT 3
-  result = Hg::and< std::false_type,
+  result = Hg::And< std::false_type,
                     std::true_type>::value;
   TS_ASSERT_EQUALS(false, result);
 }
@@ -248,17 +260,17 @@ void TestMeta::Test_or_true(void)
 {
   bool result;
   // SUT 1
-  result = Hg::or < std::true_type,
+  result = Hg::Or < std::true_type,
                     std::true_type>::value;
   TS_ASSERT_EQUALS(true, result);
 
   // SUT 2
-  result = Hg::or < std::true_type,
+  result = Hg::Or < std::true_type,
                     std::false_type>::value;
   TS_ASSERT_EQUALS(true, result);
 
   // SUT 3
-  result = Hg::or < std::false_type,
+  result = Hg::Or < std::false_type,
                     std::true_type>::value;
   TS_ASSERT_EQUALS(true, result);
 }
@@ -267,7 +279,7 @@ void TestMeta::Test_or_true(void)
 void TestMeta::Test_or_false(void)
 {
   // SUT
-  bool result = Hg::or <std::false_type,
+  bool result = Hg::Or <std::false_type,
                         std::false_type>::value;
   TS_ASSERT_EQUALS(false, result);
 }

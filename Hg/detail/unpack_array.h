@@ -237,7 +237,7 @@ template< class    SubT,
                 buffer_type       &buffer,
                 size_t            offset)
   {
-    typedef typename
+    typedef 
       ArrayT<SubT,SubN>                 sub_array_type;
     typedef typename
       sub_array_type::value_type        data_type;

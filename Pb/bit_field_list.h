@@ -49,11 +49,11 @@ struct BitFieldNode
   //  Typedef *******************************************************************
   typedef typename GetTail<SeqT>::type                    tail_type;
 
-  typedef typename BitFieldNode < RootT, 
-                                  IndexT+1, 
-                                  OffsetT+Front<SeqT>::value,
-                                  tail_type
-                                >                         base_type;
+  typedef BitFieldNode< RootT, 
+                        IndexT+1, 
+                        OffsetT+Front<SeqT>::value,
+                        tail_type
+                      >                                   base_type;
     
   typedef typename RootT::value_type                      value_type;
 
@@ -65,7 +65,8 @@ struct BitFieldNode
     : base_type()
     , m_field( RootT::GetFieldAddress(m_field) )
   { 
-    m_field.attach((value_type*)&rhs.m_field);
+    // TODO: This is the default constructor, revisit and determine if there is a location to attach memory from.
+    //m_field.attach((value_type*)&rhs.m_field);
   }
 
   //  ****************************************************************************
@@ -90,7 +91,7 @@ struct BitFieldNode
   ///
   BitFieldNode(value_type &data_field)
     : base_type(data_field)
-    , m_field(GetFieldAddress<IndexT>(m_field))
+    , m_field(RootT::GetFieldAddress(m_field))
   {
     // The assignment in the constructor assigns the reference of
     // data_field to the data member, m_data.
@@ -169,7 +170,7 @@ struct BitFieldList
 {
   //  Typedefs *****************************************************************
   typedef typename RootT::value_type                      value_type;
-  typedef typename BitFieldNode< RootT, 0, 0, SeqT >      base_type;
+  typedef BitFieldNode< RootT, 0, 0, SeqT >               base_type;
 
   //  Constants ****************************************************************
   static 
@@ -243,6 +244,14 @@ struct BitFieldList
 };
 
 
+//template  < typename RootT,
+//            typename SeqT
+//          >
+//bool operator<(const BitFieldList<RootT,SeqT> &lhs, RootT &rhs)
+//{
+//  return static_cast<RootT>(lhs) < rhs;
+//}
+
 //  ****************************************************************************
 /// Type-trait class that contains common definitions used by every bit-list.
 /// This class is also used to conveniently define a bit-list type from a
@@ -310,44 +319,6 @@ struct DeduceBitFieldList
 
   typedef typename
     DeclareBitFieldList<base_t>::type         type;
-
-  //typedef BitFieldList
-  //              < base_t,
-  //                integer_sequence
-  //                < base_t::idx_0::k_size,
-  //                  base_t::idx_1::k_size,
-  //                  base_t::idx_2::k_size,
-  //                  base_t::idx_3::k_size,
-  //                  base_t::idx_4::k_size,
-  //                  base_t::idx_5::k_size,
-  //                  base_t::idx_6::k_size,
-  //                  base_t::idx_7::k_size,
-  //                  base_t::idx_8::k_size,
-  //                  base_t::idx_9::k_size,
-  //                  base_t::idx_10::k_size,
-  //                  base_t::idx_11::k_size,
-  //                  base_t::idx_12::k_size,
-  //                  base_t::idx_13::k_size,
-  //                  base_t::idx_14::k_size,
-  //                  base_t::idx_15::k_size,
-  //                  base_t::idx_16::k_size,
-  //                  base_t::idx_17::k_size,
-  //                  base_t::idx_18::k_size,
-  //                  base_t::idx_19::k_size,
-  //                  base_t::idx_20::k_size,
-  //                  base_t::idx_21::k_size,
-  //                  base_t::idx_22::k_size,
-  //                  base_t::idx_23::k_size,
-  //                  base_t::idx_24::k_size,
-  //                  base_t::idx_25::k_size,
-  //                  base_t::idx_26::k_size,
-  //                  base_t::idx_27::k_size,
-  //                  base_t::idx_28::k_size,
-  //                  base_t::idx_29::k_size,
-  //                  base_t::idx_30::k_size,
-  //                  base_t::idx_31::k_size
-  //                >
-  //              >                             type;
 };
 
 } // namespace Hg

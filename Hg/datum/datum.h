@@ -288,7 +288,7 @@ protected:
   ///
   value_type& RefShadowData()                     
   { 
-    FieldTypes* pThis = static_cast<FieldTypes*>(this);
+    field_type* pThis = static_cast<field_type*>(this);
     return pThis->m_shadow_data; 
   }
 
@@ -297,7 +297,7 @@ protected:
   /// 
   const value_type& GetShadow() const                   
   { 
-    const FieldTypes* pThis = static_cast<const FieldTypes*>(this);
+    const field_type* pThis = static_cast<const field_type*>(this);
     return pThis->m_shadow_data; 
   }
 

@@ -26,11 +26,11 @@ bool suite_HgTypeListTestSuite_init = false;
 static HgTypeListTestSuite suite_HgTypeListTestSuite;
 
 static CxxTest::List Tests_HgTypeListTestSuite = { 0, 0 };
-CxxTest::StaticSuiteDescription suiteDescription_HgTypeListTestSuite( "../hgtypelisttestsuite.h", 84, "HgTypeListTestSuite", suite_HgTypeListTestSuite, Tests_HgTypeListTestSuite );
+CxxTest::StaticSuiteDescription suiteDescription_HgTypeListTestSuite( "../hgtypelisttestsuite.h", 87, "HgTypeListTestSuite", suite_HgTypeListTestSuite, Tests_HgTypeListTestSuite );
 
 static class TestDescription_suite_HgTypeListTestSuite_TestCase1 : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_HgTypeListTestSuite_TestCase1() : CxxTest::RealTestDescription( Tests_HgTypeListTestSuite, suiteDescription_HgTypeListTestSuite, 115, "TestCase1" ) {}
+ TestDescription_suite_HgTypeListTestSuite_TestCase1() : CxxTest::RealTestDescription( Tests_HgTypeListTestSuite, suiteDescription_HgTypeListTestSuite, 118, "TestCase1" ) {}
  void runTest() { suite_HgTypeListTestSuite.TestCase1(); }
 } testDescription_suite_HgTypeListTestSuite_TestCase1;
 
