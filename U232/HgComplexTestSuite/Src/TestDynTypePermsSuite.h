@@ -135,13 +135,13 @@ protected:
   template <typename SUT_t>
   void PopulateBaseValues(SUT_t& msg)
   {
-    bool isValue = Hg::nested_value<triangle_t_HgFormat<0> >::value;
-    bool isType  = Hg::nested_value<triangle_t>::value;
+    bool isValue = Hg::nested_value<Hg::triangle_t_HgFormat<0> >::value;
+    bool isType  = Hg::nested_value<Hg::triangle_t>::value;
 
 // TODO: Work in progress. Fixing Dynamic focused tests first.
 
-    Hg::detail::field_data_t<triangle_t_HgFormat<0> >::value_type m;
-    Hg::detail::field_data_t<triangle_t_HgFormat<0> >::value_type n;
+    Hg::detail::field_data_t<Hg::triangle_t_HgFormat<0> >::value_type m;
+    Hg::detail::field_data_t<Hg::triangle_t_HgFormat<0> >::value_type n;
 
     int x = 0;
 //    to_sut(msg, m_world);

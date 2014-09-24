@@ -507,13 +507,13 @@ void TestMeta::TestSizeOf_DynamicValue(void)
 
   // Dynamically sized values return 0 for their static size.
   // All size calculations are performed at runtime for these field types.
-  size_t size_char = SizeOf<char_vec>::value;
+  size_t size_char = Hg::SizeOf<char_vec>::value;
   TS_ASSERT_EQUALS(0, size_char);
 
-  size_t size_double = SizeOf<char_vec>::value;
+  size_t size_double = Hg::SizeOf<char_vec>::value;
   TS_ASSERT_EQUALS(0, size_double);
 
-  size_t size_array = SizeOf<char_vec>::value;
+  size_t size_array = Hg::SizeOf<char_vec>::value;
   TS_ASSERT_EQUALS(0, size_array);
 }
 

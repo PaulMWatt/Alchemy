@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="HgPrimaryTestSuite"
+	Name="HgBasicTestSuite"
 	ProjectGUID="{A5DD68FC-9EDA-4556-BBFA-111391CAF846}"
-	RootNamespace="HgPrimaryTestSuite"
+	RootNamespace="HgBasicTestSuite"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -26,7 +26,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Performing Pre-Build Event...Generate the test runner...&#x0D;&#x0A;"
-				CommandLine="mkdir &quot;./Src/Generated&quot;&#x0D;&#x0A;cd &quot;./Src/Generated&quot;&#x0D;&#x0A;$(GenCxxTestRunner) --runner=ParenPrinter  -o &quot;HgPrimaryTestSuiteRunner.cpp&quot; &quot;../*.h&quot;&#x0D;&#x0A;cd &quot;../..&quot;&#x0D;&#x0A;"
+				CommandLine="mkdir &quot;./Src/Generated&quot;&#x0D;&#x0A;cd &quot;./Src/Generated&quot;&#x0D;&#x0A;$(GenCxxTestRunner) --runner=ParenPrinter  -o &quot;HgBasicTestSuiteRunner.cpp&quot; &quot;../*.h&quot;&#x0D;&#x0A;cd &quot;../..&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./;Src;../../"
+				AdditionalIncludeDirectories="./;Src;../../;../common/"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -95,7 +95,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Performing Post-Build Event...Run HgPrimaryTestSuite"
+				Description="Performing Post-Build Event...Run HgBasicTestSuite"
 				CommandLine="&quot;$(OutDir)\$(ProjectName).exe&quot;"
 			/>
 		</Configuration>
@@ -184,7 +184,7 @@
 				Name="Generated"
 				>
 				<File
-					RelativePath=".\Src\Generated\HgPrimaryTestSuiteRunner.cpp"
+					RelativePath=".\Src\Generated\HgBasicTestSuiteRunner.cpp"
 					>
 				</File>
 			</Filter>
@@ -194,23 +194,15 @@
 			Filter="h;hpp;hh;inl"
 			>
 			<File
-				RelativePath=".\geometry_testdata.h"
+				RelativePath="..\common\msgtest_typelist.h"
 				>
 			</File>
 			<File
-				RelativePath=".\geometry_typelist.h"
+				RelativePath="..\common\test_def.h"
 				>
 			</File>
 			<File
-				RelativePath=".\msgtest_typelist.h"
-				>
-			</File>
-			<File
-				RelativePath=".\test_def.h"
-				>
-			</File>
-			<File
-				RelativePath=".\test_helper.h"
+				RelativePath="..\common\test_helper.h"
 				>
 			</File>
 			<Filter
@@ -501,23 +493,7 @@
 				Name="Tests"
 				>
 				<File
-					RelativePath=".\Src\TestArrayProxySuite.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Src\TestBitSetMsgFieldSuite.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Src\TestDynamicMessageSuite.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Src\TestDynTypePermsSuite.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Src\TestFocusedDynamicMessageSuite.h"
 					>
 				</File>
 				<File
@@ -530,10 +506,6 @@
 				</File>
 				<File
 					RelativePath=".\Src\TestMsgFieldSuite.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Src\TestVectorProxySuite.h"
 					>
 				</File>
 			</Filter>

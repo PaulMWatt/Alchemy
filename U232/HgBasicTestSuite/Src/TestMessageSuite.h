@@ -43,7 +43,6 @@ HG_BEGIN_FORMAT(base_format_t)
   HG_DATUM (nested_format_t,          nested)
 //  HG_ARRAY (size_t, 3,                sequence)
   HG_ARRAY (uint32_t, 3,                sequence)
-//  HG_DATUM ((std::array<size_t, 3>),  sequence)
 HG_END_FORMAT
 
 typedef base_format_t_HgFormat<0> message_type;
@@ -345,7 +344,7 @@ void TestMessageSuite::Testdata(void)
 //  ****************************************************************************
 void TestMessageSuite::TestSingleFieldMsg_Basic(void)
 {
-  typedef single_t_HgFormat<0> SingleMsg;
+  typedef Hg::single_t_HgFormat<0> SingleMsg;
 
   SingleMsg sut;
   sut.only = 1001;
@@ -356,7 +355,7 @@ void TestMessageSuite::TestSingleFieldMsg_Basic(void)
 //  ****************************************************************************
 void TestMessageSuite::TestSingleFieldMsg_Nested(void)
 {
-  typedef single_nested_t_HgFormat<0> SingleMsg;
+  typedef Hg::single_nested_t_HgFormat<0> SingleMsg;
 
   SingleMsg sut;
   sut.only.zero = 255;
@@ -367,7 +366,7 @@ void TestMessageSuite::TestSingleFieldMsg_Nested(void)
 //  ****************************************************************************
 void TestMessageSuite::TestSingleFieldMsg_Bitlist(void)
 {
-  typedef single_bit_t_HgFormat<0> SingleMsg;
+  typedef Hg::single_bit_t_HgFormat<0> SingleMsg;
 
   SingleMsg sut;
   sut.only.lonely = 3;

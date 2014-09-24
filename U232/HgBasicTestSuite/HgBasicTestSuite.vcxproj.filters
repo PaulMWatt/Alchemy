@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{a632d5c8-95fa-4394-a0b2-1dcb884e2241}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;cc</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{3cca6b9b-e446-4129-a4b1-a12b983afcd8}</UniqueIdentifier>
+      <Extensions>h;hpp;hh;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Tests">
+      <UniqueIdentifier>{de9446fa-0ecb-4e96-aae7-017648fdbed0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Generated">
+      <UniqueIdentifier>{e0e79b87-cc8d-4056-b35d-9e81dbd470e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy">
+      <UniqueIdentifier>{680c577b-60ea-40b6-a1ad-580915c3c4e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Pb">
+      <UniqueIdentifier>{142ba4a2-8c40-4b56-8329-6af39280146e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Pb\bit_field">
+      <UniqueIdentifier>{fe18d786-09e4-4677-9992-ba8b234ba3a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Pb\type_list">
+      <UniqueIdentifier>{10ef4796-b8a8-4596-8c00-5effa52e78ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Hg">
+      <UniqueIdentifier>{b0810e87-e715-4556-bb22-778dcde23c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Hg\Detail">
+      <UniqueIdentifier>{1b1f1ae9-1de0-409d-805e-016a45d09355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Hg\Detail\Pack">
+      <UniqueIdentifier>{ed7d4f09-b783-488e-8361-1423926d35a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Hg\Detail\Unpack">
+      <UniqueIdentifier>{2c8e96d1-a41e-4627-9eba-dfef47115c23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Hg\Detail\Unused">
+      <UniqueIdentifier>{f98db0ac-3634-4b9d-94c1-9bf52d650b84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Hg\Proxy">
+      <UniqueIdentifier>{a65438c6-cf82-4632-a452-f45d24b1594c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Hg\Datum">
+      <UniqueIdentifier>{3c8916ee-2479-4ff0-8db9-bb879e8ad26d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\TestBitSetMsgFieldSuite.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\TestMsgFieldSuite.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\bit_field\basic_list.h">
+      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\bit_field\bit_field.h">
+      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\type_list\length.h">
+      <Filter>Header Files\Alchemy\Pb\type_list</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\type_list\offset_of.h">
+      <Filter>Header Files\Alchemy\Pb\type_list</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\type_list\size_at.h">
+      <Filter>Header Files\Alchemy\Pb\type_list</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\type_list\type_at.h">
+      <Filter>Header Files\Alchemy\Pb\type_list</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Alchemy.h">
+      <Filter>Header Files\Alchemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storage_policy.h">
+      <Filter>Header Files\Alchemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\TestMsgBufferSuite.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\TestMessageSuite.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg.h">
+      <Filter>Header Files\Alchemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\unused\array_data.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\deduce_type_trait.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\message_byte_order.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\message_dynamic.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\msg_buffer.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\msg_def.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\msg_fwd.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\pack_message.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\unpack_message.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\proxy\array_proxy.h">
+      <Filter>Header Files\Alchemy\Hg\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\proxy\bitlist_field_proxy.h">
+      <Filter>Header Files\Alchemy\Hg\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\proxy\data_proxy.h">
+      <Filter>Header Files\Alchemy\Hg\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\proxy\deduce_proxy_type.h">
+      <Filter>Header Files\Alchemy\Hg\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\proxy\vector_proxy.h">
+      <Filter>Header Files\Alchemy\Hg\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\unpack_array.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unpack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\unpack_message_detail.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unpack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\unpack_nested.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unpack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\unpack_vector.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unpack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\pack_array.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\pack_message_detail.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\pack_nested.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\pack_vector.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\message_byte_order_detail.h">
+      <Filter>Header Files\Alchemy\Hg\Detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\message_dynamic_detail.h">
+      <Filter>Header Files\Alchemy\Hg\Detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\unused\multival_data.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\unused\select_proxy_type.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\unused\message_iterator.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\datum\basic_datum.h">
+      <Filter>Header Files\Alchemy\Hg\Datum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\datum\datum.h">
+      <Filter>Header Files\Alchemy\Hg\Datum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\bit_field\bit_field_array.h">
+      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\bit_field\bit_field_vector.h">
+      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\make_Hg_type_list.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\auto_index.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\bit_field_list.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\byte_order.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\compiler.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\container_size.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\dynamic.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_testdata.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_typelist.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\integer_sequence.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\length.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\meta_error.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\meta_foreach.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\meta_fwd.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\meta_macros.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\meta_math.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\meta_util.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="msgtest_typelist.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\offset_of.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\size_at.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\size_of.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="test_def.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="test_helper.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\type_at.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\type_list.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\type_node.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\Generated\TestAlchemyTypesRunner.cpp">
+      <Filter>Source Files\Generated</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -424,13 +424,13 @@ void TestDynamicMessageSuite::TestHasDynamic_true(void)
 //  ****************************************************************************
 void TestDynamicMessageSuite::TestDynamicFields_none(void)
 {
-  bool result_no    = Hg::has_dynamic<no_dyn_type::format_type>::value;
+  bool result_no    = Hg::has_dynamic<Hg::no_dyn_type::format_type>::value;
   TS_ASSERT(!result_no);
 
   typedef 
-    dynamic_fields<no_dyn_type::format_type>::type         reault_type;
+    Hg::dynamic_fields<Hg::no_dyn_type::format_type>::type         reault_type;
 
-  typedef MT   k_control_type;
+  typedef Hg::MT   k_control_type;
   bool is_same_type = std::is_same<k_control_type, reault_type>::value;
   TS_ASSERT(is_same_type);
 }
@@ -438,13 +438,13 @@ void TestDynamicMessageSuite::TestDynamicFields_none(void)
 //  ****************************************************************************
 void TestDynamicMessageSuite::TestDynamicFields_basic(void)
 {
-  bool result_basic = Hg::has_dynamic<dyn_basic_type::format_type>::value;
+  bool result_basic = Hg::has_dynamic<Hg::dyn_basic_type::format_type>::value;
   TS_ASSERT(result_basic);
 
   typedef 
-    dynamic_fields<dyn_basic_type::format_type>::type      result_type;
+    Hg::dynamic_fields<Hg::dyn_basic_type::format_type>::type      result_type;
 
-  typedef integer_sequence<2>::type   k_control_type;
+  typedef Hg::integer_sequence<2>::type   k_control_type;
   bool is_same_type = std::is_same<k_control_type, result_type>::value;
   TS_ASSERT(is_same_type);
 }
@@ -452,13 +452,13 @@ void TestDynamicMessageSuite::TestDynamicFields_basic(void)
 //  ****************************************************************************
 void TestDynamicMessageSuite::TestDynamicFields_message(void)
 {
-  bool result_msg   = Hg::has_dynamic<dyn_message_type::format_type>::value;
+  bool result_msg   = Hg::has_dynamic<Hg::dyn_message_type::format_type>::value;
   TS_ASSERT(result_msg);
 
   typedef 
-    dynamic_fields<dyn_message_type::format_type>::type    result_type;
+    Hg::dynamic_fields<Hg::dyn_message_type::format_type>::type    result_type;
 
-  typedef integer_sequence<5,6,8,9>::type   k_control_type;
+  typedef Hg::integer_sequence<5,6,8,9>::type   k_control_type;
   bool is_same_type = std::is_same<k_control_type, result_type>::value;
 
   TS_ASSERT(is_same_type);

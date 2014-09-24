@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FD22BDFB-073D-471A-81CB-38830B5F74B4}</ProjectGuid>
+    <ProjectGuid>{18C20603-26FD-4803-8ACB-3748B729FA36}</ProjectGuid>
     <RootNamespace>TestAlchemyTypes</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -51,7 +51,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>./;../../;../cxxtest/;Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../../;../common/;../cxxtest/;Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)\vc80.pdb</ProgramDataBaseFileName>
@@ -164,13 +164,9 @@ cd "../.."</Command>
     <ClInclude Include="msgtest_typelist.h" />
     <ClInclude Include="Src\TestArrayProxySuite.h" />
     <ClInclude Include="Src\TestBitFieldArray.h" />
-    <ClInclude Include="Src\TestBitSetMsgFieldSuite.h" />
     <ClInclude Include="Src\TestDynamicMessageSuite.h" />
     <ClInclude Include="Src\TestDynTypePermsSuite.h" />
     <ClInclude Include="Src\TestFocusedDynamicMessageSuite.h" />
-    <ClInclude Include="Src\TestMsgFieldSuite.h" />
-    <ClInclude Include="Src\TestMsgBufferSuite.h" />
-    <ClInclude Include="Src\TestMessageSuite.h" />
     <ClInclude Include="Src\TestVectorProxySuite.h" />
     <ClInclude Include="test_def.h" />
     <ClInclude Include="test_helper.h" />

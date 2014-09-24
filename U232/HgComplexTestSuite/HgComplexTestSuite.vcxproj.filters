@@ -53,12 +53,6 @@
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\TestBitSetMsgFieldSuite.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\TestMsgFieldSuite.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\bit_field\basic_list.h">
       <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
     </ClInclude>
@@ -82,12 +76,6 @@
     </ClInclude>
     <ClInclude Include="..\..\storage_policy.h">
       <Filter>Header Files\Alchemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\TestMsgBufferSuite.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\TestMessageSuite.h">
-      <Filter>Header Files\Tests</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Hg.h">
       <Filter>Header Files\Alchemy</Filter>

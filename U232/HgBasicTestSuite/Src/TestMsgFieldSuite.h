@@ -64,7 +64,7 @@ typedef TypeList
 /// @brief TestDatumSuite Test Suite class.
 ///
 class TestDatumSuite : public CxxTest::TestSuite
-  , HgTestHelper<Hg::fundamental_t, BufferedStoragePolicy >
+  , HgTestHelper<Hg::fundamental_t, Hg::BufferedStoragePolicy >
 {
 public:
   TestDatumSuite() { }
