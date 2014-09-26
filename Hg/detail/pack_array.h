@@ -459,7 +459,7 @@ size_t SerializeArray(ArrayT<T,N> &value,
     serializer_t::data_type_trait       data_type_trait;
 
   serializer_t serializer;
-  return serializer.WriteMany<data_type_trait>(value, buffer, offset);
+  return serializer.template WriteMany<data_type_trait>(value, buffer, offset);
 }
 
 //  ****************************************************************************

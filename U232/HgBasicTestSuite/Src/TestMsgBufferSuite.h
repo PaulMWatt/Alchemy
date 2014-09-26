@@ -91,6 +91,18 @@ HG_END_FORMAT
 
 } // namespace Hg
 
+// Constants used for endian or testing.
+const int8_t    k_signed8_t           = int8_t(0xA7);
+const int16_t   k_signed16_t          = int16_t(0xBAD1);
+const int16_t   k_other_signed16_t    = int16_t(0xD1BA);
+const int32_t   k_signed32_t          = 0xDEADC0DE;
+const int32_t   k_other_signed32_t    = 0xDEC0ADDE;
+
+const uint8_t   k_unsigned8_t         = 0x6E;
+const uint16_t  k_unsigned16_t        = 0x5AFE;
+const uint16_t  k_other_unsigned16_t  = 0xFE5A;
+const uint32_t  k_unsigned32_t        = 0xFA54BA11;
+const uint32_t  k_other_unsigned32_t  = 0x11BA54FA;
 
 //  ****************************************************************************
 /// @brief TestMsgBufferSuite Test Suite class.
@@ -134,19 +146,6 @@ protected:
 
   // Test Suite Data ***********************************************************
   s_pointer   m_spBuffer;
-
-  // Constants used for endian or testing.
-  static const int8_t    k_signed8_t           = int8_t(0xA7);
-  static const int16_t   k_signed16_t          = int16_t(0xBAD1);
-  static const int16_t   k_other_signed16_t    = int16_t(0xD1BA);
-  static const int32_t   k_signed32_t          = 0xDEADC0DE;
-  static const int32_t   k_other_signed32_t    = 0xDEC0ADDE;
-
-  static const uint8_t   k_unsigned8_t         = 0x6E;
-  static const uint16_t  k_unsigned16_t        = 0x5AFE;
-  static const uint16_t  k_other_unsigned16_t  = 0xFE5A;
-  static const uint32_t  k_unsigned32_t        = 0xFA54BA11;
-  static const uint32_t  k_other_unsigned32_t  = 0x11BA54FA;
 
   // Creator Methods ***********************************************************
   template <typename T>
