@@ -48,7 +48,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proxy", "Proxy", "{97D47640
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pack", "Pack", "{A713897A-ECEE-4DF4-9A4A-65A896EE92E3}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\Hg\detail\pack_array.h = ..\..\..\Hg\detail\pack_array.h
 		..\..\..\Hg\detail\pack_message_detail.h = ..\..\..\Hg\detail\pack_message_detail.h
 		..\..\..\Hg\detail\pack_nested.h = ..\..\..\Hg\detail\pack_nested.h
 		..\..\..\Hg\detail\pack_vector.h = ..\..\..\Hg\detail\pack_vector.h
@@ -110,9 +109,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "type_list", "type_list", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PbTestSuite", "..\..\..\U232\PbTestSuite\PbTestSuite.vcproj", "{7AB88087-22D4-4309-A90B-15F4C53B762C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HgPrimaryTestSuite", "..\..\..\U232\HgBasicTestSuite\HgBasicTestSuite.vcproj", "{A5DD68FC-9EDA-4556-BBFA-111391CAF846}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HgBasicTestSuite", "..\..\..\U232\HgBasicTestSuite\HgBasicTestSuite.vcproj", "{A5DD68FC-9EDA-4556-BBFA-111391CAF846}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HgPrimaryTestSuite", "..\..\..\U232\HgComplexTestSuite\HgComplexTestSuite.vcproj", "{86F42E0B-8DCB-46EB-B958-CC29135C55DB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HgComplexTestSuite", "..\..\..\U232\HgComplexTestSuite\HgComplexTestSuite.vcproj", "{86F42E0B-8DCB-46EB-B958-CC29135C55DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
