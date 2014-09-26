@@ -28,12 +28,19 @@ size_t SerializeInBulk( ValueT  &value,
                         size_t  offset);
 
 //  ****************************************************************************
-template< typename ValueT,
-          typename BufferT
+template< class   T,
+          size_t  N,
+          class   BufferT
         >
-size_t SerializeByItem( ValueT  &value, 
-                        BufferT &buffer,
-                        size_t  offset);
+size_t SerializeByItem( std::array<T,N> &value, 
+                        BufferT         &buffer,
+                        size_t          offset);
+//template< typename ValueT,
+//          typename BufferT
+//        >
+//size_t SerializeByItem( ValueT  &value, 
+//                        BufferT &buffer,
+//                        size_t  offset);
 
 
 //  ****************************************************************************
@@ -45,18 +52,6 @@ template< class T,
           template <class, class> class VectorT
         >
 size_t SerializeVector (VectorT<T, A> &value,
-                        BufferT       &buffer,
-                        size_t         offset);
-
-//  ****************************************************************************
-//  Adapter function to simplify serializing a buffer from a vector-field.
-//
-template< class   T,
-          size_t  N,
-          class   BufferT,
-          template <class, size_t> class ArrayT
-        >
-size_t SerializeArray ( ArrayT<T, N>  &value,
                         BufferT       &buffer,
                         size_t         offset);
 
@@ -85,8 +80,8 @@ struct Serializer
   //  **************************************************************************
   template <typename TraitT>
   size_t WriteMany( array_type   &value, 
-                buffer_type  &buffer,
-                size_t        offset)
+                    buffer_type  &buffer,
+                    size_t        offset)
   {
     // Calculate the size of data to write in bytes.
     size_t size = value.size() * sizeof(value_type);
@@ -136,8 +131,8 @@ struct Serializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
   //  **************************************************************************
   template <typename TraitT>
   size_t WriteMany( array_type   &value, 
-                buffer_type  &buffer,
-                size_t        offset)
+                    buffer_type  &buffer,
+                    size_t        offset)
   {
     // Calculate the size of data to write in bytes.
     size_t size = value.size() * sizeof(value_type);
@@ -190,8 +185,8 @@ struct Serializer <std::array<T,N>, BufferT, nested_trait>
   //  **************************************************************************
   template <typename TraitT>
   size_t WriteMany( array_type     &value, 
-                buffer_type    &buffer,
-                size_t          offset)
+                    buffer_type    &buffer,
+                    size_t          offset)
   {
     // An important typedef for selecting the proper
     // version of the unpack function for the sub-elements.
@@ -248,8 +243,8 @@ struct Serializer <std::array<T,N>, BufferT, array_trait>
   //  **************************************************************************
   template <typename TraitT>
   size_t WriteMany( array_type     &value, 
-                buffer_type    &buffer,
-                size_t          offset)
+                    buffer_type    &buffer,
+                    size_t          offset)
   {
     return SerializeInBulk(value, buffer, offset);
   }  
@@ -512,7 +507,6 @@ struct PackDatum< IdxT,
                    size_t&   dynamic_offset)
   {
     value_type value = msg.template FieldAt<IdxT>().get();
-//    value_type value = const_cast<MessageT&>(msg).template FieldAt<IdxT>().get();
     
     // Exit if there are no entries in this dynamic value.
     if (value.empty())
