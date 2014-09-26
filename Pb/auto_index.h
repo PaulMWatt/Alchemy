@@ -13,6 +13,40 @@
 namespace Hg
 {
 
+#define HAS_COUNTER
+#if defined(HAS_COUNTER)
+  
+//  ****************************************************************************
+//  This version is not portable because it depends upon the __COUNTER__ macro.
+//  However, until a more portable implementation for the version above can
+//  be implemented, this version is simple, and works for many compilers.
+//
+
+//  ****************************************************************************
+#define BEGIN_COUNTER         static const size_t k_enum_base = __COUNTER__ + 1;
+
+//  ****************************************************************************
+#define INC_COUNTER        
+
+//  ****************************************************************************
+#define COUNTER_VALUE         (__COUNTER__ - k_enum_base)
+
+//  ****************************************************************************
+#define END_ENUM
+
+#elif defined(_WIN32)
+
+  //  **************************************************************************
+  //  It turns out that the way this implementation is integrated with the
+  //  Hg objects is not portable because the standard does not allow template
+  //  specialization to occur within a class scope.
+  //
+  //  This version will still be used for WIN32 builds.
+  //  The __COUNTER__ MACRO will be used for other compilers that support it.
+  //  When a compiler is encountered that does not support either possibility, 
+  //  this issue will be revisited.
+  //
+
   //  Forward Declarations *****************************************************
 #define FORWARD_DECLARE_AUTO_INDEX                                             \
   template <int L>                                                             \
@@ -119,6 +153,13 @@ namespace Hg
 
 //  ****************************************************************************
 #define END_ENUM
+
+#else
+
+#error "An auto-incrementing index is not available for this compiler. Manual index items will be required."
+
+#endif
+
 
 } // namespace Hg
 

@@ -20,20 +20,43 @@ namespace Hg
 
 namespace detail
 {
-
 //  Forward Declarations *******************************************************
+//  ****************************************************************************
 template< typename T,
           size_t   N,
           typename BufferT
         >
 size_t DeserializeInBulk( std::array<T,N>&, BufferT&, size_t);
 
+//  ****************************************************************************
 template< typename T,
           size_t   N,
           typename BufferT
         >
 size_t DeserializeByItem( std::array<T,N>&, BufferT&, size_t);
 
+//  ****************************************************************************
+//  Adapter function to simplify deserializing a buffer from a vector-field.
+//
+template< class T,
+          class A,
+          class BufferT,
+          template <typename, typename> class VectorT
+        >
+size_t DeserializeVector (VectorT<T, A>  &value,
+                          size_t          count,
+                          BufferT        &buffer,
+                          size_t          offset);
+
+//  ****************************************************************************
+template< class     T,
+          size_t    N,
+          class     BufferT,
+          template <typename, size_t> class ArrayT
+        >
+size_t DeserializeArray ( ArrayT<T, N> &value,
+                          BufferT  &buffer,
+                          size_t    offset);
 
 namespace Array
 {
@@ -183,7 +206,7 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
     // An important typedef for selecting the proper
     // version of the unpack function for the sub-elements.
     typedef typename
-      message_size_trait<value_type::format_type>::type     size_trait;
+      message_size_trait<typename value_type::format_type>::type      size_trait;
 
     return  unpack_message< value_type,
                             buffer_type,
@@ -497,7 +520,7 @@ struct UnpackDatum< IdxT,
   {
 
     value_type value  = value_type();
-    size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
+    size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
                       + dynamic_offset;
     
     // Query the message object for the number of elements in the buffer;

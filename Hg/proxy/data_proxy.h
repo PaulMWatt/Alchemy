@@ -69,7 +69,7 @@ struct DataProxy
   /// 
   DataProxy(const DataProxy& proxy)
   {
-    set(proxy.get());
+    this->set(proxy.get());
   }
 
   //  **************************************************************************

@@ -42,39 +42,29 @@ template< class T,
 struct SizeOfVector
 {
   //  **************************************************************************
-  template< class T,
-            class A,
+  template< class TypeT,
+            class AllocT,
             template <class, class> class VectorT
           >
-  size_t operator()(const VectorT<T,A>& field)
+  size_t operator()(const VectorT<TypeT,AllocT>& field)
   {
-    return field.size() * sizeof(T);
+    return field.size() * sizeof(TypeT);
   }
 };
 
-//  ****************************************************************************
-/// Determines the number of bytes required to serialize a vector.
-/// This version handles a vector with sub-messages.
-///    
-template< class T,
-          class A
-        >
-struct SizeOfVector<T,A,nested_trait>
+namespace nested
 {
-  //  **************************************************************************
-  size_t operator()(const std::vector<T,A>& field)
-  {
-    typedef typename 
-      T::format_type          format_type;
-    return GetSize<has_dynamic<format_type>::value>(field);
-  }
 
-private:
-  //  **************************************************************************
-  //  Returns the size of a message format that has nested vectors.
-  //
-  template< bool IsDynamicSizeT>
-  size_t GetSize(const std::vector<T,A>& field)
+//  ****************************************************************************
+//  Returns the size of a vector that contains a dynamically-sized nested type.
+//
+template< class T,
+          class A,
+          bool  HasDynamicT
+        >
+struct HelperSizeOfVector
+{
+  static size_t size(const std::vector<T,A>& field)
   {
     size_t total_size = 0;
 
@@ -93,18 +83,43 @@ private:
                   + DynamicSizeWorker<T, true>().size(field[index]);
     }
 
-    return total_size;
+    return total_size;  
   }
+};
 
-  //  **************************************************************************
-  //  Returns the size of a message format that has a fixed-size.
-  //
-  template<>
-  size_t GetSize<false>(const std::vector<T,A>& field)
+//  ****************************************************************************
+//  Returns the size of a vector that contains a fixed-size nested type.
+//
+template< class T,
+          class A
+        >
+struct HelperSizeOfVector <T, A, false>
+{
+  static size_t size(const std::vector<T,A>& field)
   {
-    return  field.size() * Hg::SizeOf<typename T::format_type>::value;
+    return  field.size() * Hg::SizeOf<typename T::format_type>::value;  
   }
+};
 
+} // namespace nested
+
+//  ****************************************************************************
+/// Determines the number of bytes required to serialize a vector.
+/// This version handles a vector with sub-messages.
+///    
+template< class T,
+          class A
+        >
+struct SizeOfVector<T,A,nested_trait>
+{
+  //  **************************************************************************
+  size_t operator()(const std::vector<T,A>& field)
+  {
+    typedef typename 
+      T::format_type          format_type;
+
+    return nested::HelperSizeOfVector<T, A, has_dynamic<format_type>::value>::size(field);
+  }
 };
 
 //  ****************************************************************************
@@ -123,7 +138,7 @@ struct SizeOfVector<T,A,vector_trait>
 
     SizeOfVector< typename T::value_type, 
                   typename T::allocator_type, 
-                  typename DeduceTypeTrait<T::value_type>::type
+                  typename DeduceTypeTrait<typename T::value_type>::type
                 > Size;
 
     for (size_t index = 0; index < field.size(); ++index)
@@ -154,7 +169,7 @@ template< class T,
         >
 size_t dynamic_size(const std::vector<T,A>& field)
 {
-  SizeOfVector<T,A, DeduceTypeTrait<T>::type> Size;
+  SizeOfVector<T,A, typename DeduceTypeTrait<T>::type> Size;
   return Size(field);
 }
 

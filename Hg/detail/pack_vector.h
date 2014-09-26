@@ -42,7 +42,7 @@ namespace Vector
 //
 template< typename VectorT,
           typename BufferT,
-          typename TraitT
+          typename SerializerTraitT
         >
 struct Serializer;
 //  ****************************************************************************
@@ -168,7 +168,7 @@ struct Serializer <std::vector<ValueT, AllocatorT>, BufferT, nested_trait>
     // An important typedef for selecting the proper
     // version of the unpack function for the sub-elements.
     typedef typename
-      message_size_trait<value_type::format_type>::type     size_trait;
+      message_size_trait<typename value_type::format_type>::type     size_trait;
 
     size_t bytes_written = 0;
 
@@ -312,7 +312,7 @@ size_t SerializeInBulk( const std::vector<T,A>  &value,
   size_t bytes_written = 0;
 // TODO: Return and add this optimization for bulk writes for types that are possible.
   // Process each item individually.
-  for (size_t index = 0; index < count; ++index)
+  for (size_t index = 0; index < value.size(); ++index)
   {
     // The offset for each item progressively increases
     // by the number of bytes read from the input buffer.
@@ -476,7 +476,7 @@ struct PackDatum< IdxT,
     }
 
     // Calculate the total starting offset.
-    size_t offset = Hg::OffsetOf<IdxT, message_type::format_type>::value
+    size_t offset = Hg::OffsetOf<IdxT, typename message_type::format_type>::value
                   + dynamic_offset;
 
     size_t bytes_written = 

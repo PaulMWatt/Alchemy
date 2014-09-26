@@ -70,7 +70,7 @@ struct DataProxy<bitfield_trait, kt_idx, format_t, kt_offset>
     : datum_type(proxy)
     , host_type(datum_type::RefShadowData())
   { 
-    set(proxy.get());
+    this->set(proxy.get());
   }
 
   //  **************************************************************************

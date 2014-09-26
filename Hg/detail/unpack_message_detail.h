@@ -60,7 +60,7 @@ struct UnpackDatum
       proxy_type::value_type                                            value_type;
 
     value_type value  = value_type();
-    size_t     offset = Hg::OffsetOf<IdxT, MessageT::format_type>::value
+    size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
                       + dynamic_offset;
 
     buffer.get_data(value, offset);
@@ -90,7 +90,7 @@ void ReadDatum(       MessageT& message,
   UnpackDatum < IdxT,
                 MessageT,
                 const BufferT, 
-                DeduceTypeTrait<value_type>::type
+                typename DeduceTypeTrait<value_type>::type
               > unpack;
   unpack(message, buffer, dynamic_offset);
 }
@@ -215,7 +215,8 @@ size_t unpack_message (       MessageT  &msg_values,
                                size_t    offset,
                         const static_size_trait&   )
 {
-  typedef std::remove_const<BufferT>::type        MutableBuffer;
+  typedef typename
+    std::remove_const<BufferT>::type              MutableBuffer;
 
   // Calculate the number of bytes that is expected to be read for this message.
   size_t length = Hg::SizeOf<typename MessageT::format_type>::value;
@@ -290,7 +291,8 @@ size_t unpack_message (       MessageT  &msg_values,
                                size_t    offset,
                         const dynamic_size_trait&   )
 {
-  typedef std::remove_const<BufferT>::type        MutableBuffer;
+  typedef typename
+    std::remove_const<BufferT>::type              MutableBuffer;
 
   // Calculate the number of bytes that is expected to be read for this message.
   size_t length = Hg::SizeOf<typename MessageT::format_type>::value;

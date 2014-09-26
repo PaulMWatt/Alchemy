@@ -195,7 +195,7 @@ protected:
   {
     T  result;
     ::memcpy( &result,
-              &(*spBuffer)[offset],
+              &(spBuffer.get()[offset]),
               sizeof(T));
     return result;
   }
@@ -204,7 +204,7 @@ protected:
   template <typename T>
   void WriteToOffset(s_pointer& spBuffer, size_t offset, const T& value)
   {
-    ::memcpy( &(*spBuffer)[offset],
+    ::memcpy( &(spBuffer.get()[offset]),
               &value,
               sizeof(T));
   }

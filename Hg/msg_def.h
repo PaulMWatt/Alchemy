@@ -156,7 +156,7 @@ struct message_size_trait
 // *****************************************************************************
 #define DECLARE_DATUM_FORMAT(T, P)                                             \
   INC_COUNTER                                                                  \
-  DECLARE_DATUM_FORMAT_IDX(COUNTER_VALUE, T, P)
+  DECLARE_DATUM_FORMAT_IDX((COUNTER_VALUE), T, P)
 
 
 // *****************************************************************************
@@ -167,7 +167,7 @@ struct message_size_trait
 // *****************************************************************************
 #define DECLARE_ARRAY_FORMAT(T, N, P)                                          \
   INC_COUNTER                                                                  \
-  DECLARE_ARRAY_FORMAT_IDX(COUNTER_VALUE, T, N, P)
+  DECLARE_ARRAY_FORMAT_IDX((COUNTER_VALUE), T, N, P)
 
 
 // *****************************************************************************
@@ -180,7 +180,7 @@ struct message_size_trait
 // *****************************************************************************
 #define DECLARE_DYNAMIC_FORMAT(T, N, P)                                        \
   INC_COUNTER                                                                  \
-  DECLARE_DYNAMIC_FORMAT_IDX(COUNTER_VALUE, T, N, P)
+  DECLARE_DYNAMIC_FORMAT_IDX((COUNTER_VALUE), T, N, P)
 
 
 // *****************************************************************************
@@ -193,7 +193,7 @@ struct message_size_trait
 // *****************************************************************************
 #define DECLARE_ALLOCATOR_FORMAT(T, A, N, P)                                   \
   INC_COUNTER                                                                  \
-  DECLARE_ALLOCATOR_FORMAT_IDX(COUNTER_VALUE, T, A, N, P)
+  DECLARE_ALLOCATOR_FORMAT_IDX((COUNTER_VALUE), T, A, N, P)
 
 
 // *****************************************************************************
