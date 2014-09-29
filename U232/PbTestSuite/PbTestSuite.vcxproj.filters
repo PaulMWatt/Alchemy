@@ -27,6 +27,9 @@
     <Filter Include="Header Files\Alchemy\Pb\type_list">
       <UniqueIdentifier>{10ef4796-b8a8-4596-8c00-5effa52e78ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Alchemy\Pb\detail">
+      <UniqueIdentifier>{22bf15e3-2bc9-4ab8-8ed6-eb99a6e683d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -136,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Pb\type_node.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\conditional.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\tr1_helper.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

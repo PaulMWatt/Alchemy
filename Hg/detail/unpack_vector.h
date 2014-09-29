@@ -186,7 +186,7 @@ struct Deserializer <std::vector<T, A>, BufferT, nested_trait>
     // An important typedef for selecting the proper
     // version of the unpack function for the sub-elements.
     typedef typename
-      message_size_trait<value_type::format_type>::type     size_trait;
+      message_size_trait<typename value_type::format_type>::type     size_trait;
 
     return  unpack_message< value_type,
                             buffer_type,

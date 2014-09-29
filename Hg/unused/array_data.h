@@ -91,14 +91,6 @@ public:
                                         ///< The type extracted at the current
                                         ///  index defined in the parent TypeList.
   
-  // TODO: Remove this block.  
-  ////  static const index_type test = 3;
-  //typedef typename
-  //  std::remove_all_extents 
-  //    <index_type>::type                data_type;
-  //                                      ///< The type of a single element in
-  //                                      ///  this collection of data.
-
   //  Constants ****************************************************************
   static const
     size_t k_offset = OffsetOf<Idx, format_t>::value

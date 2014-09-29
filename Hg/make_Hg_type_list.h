@@ -49,13 +49,13 @@ namespace detail
 //
 //  Array         Fundamental     none
 //  Array         BitField        BitFieldArray
-//  Array         Nested          yes    / make_Hg_type_list<S>::type
+//  Array         Nested          make_Hg_type_list<S>::type
 //  Array         Array           yes    / Sub-type also processed
 //  Array         Vector          vector / Sub-type also processed
 //
 //  Vector        Fundamental     none
 //  Vector        BitField        BitFieldVector
-//  Vector        Nested          yes  / make_Hg_type_list<S>::type
+//  Vector        Nested          make_Hg_type_list<S>::type
 //  Vector        Array           yes  / Sub-type also processed
 //  Vector        Vector          yes  / Sub-type also processed
 //
@@ -113,7 +113,7 @@ template< class   T,
         >
 struct DeclareTypeSequence < ArrayT<T,N>, bitfield_trait >
 {
-  typedef typename 
+  typedef 
     Hg::BitFieldArray<T, N>             type;
 };
 
@@ -130,20 +130,12 @@ template< class   T,
         >
 struct DeclareTypeSequence < ArrayT<T,N>, nested_trait >
 {
-  //// Define a corrected type T.
-  //typedef typename
-  //make_Hg_type_list<T>::type            sub_type;
-
-  //// Define the Hg type sequence.
-  //typedef typename 
-  //  std::array< sub_type, N>            type;
-
   // Define a typedef that represents the actual data-type
   // that reprsents the type-list T passed into this array.
   typedef typename
     FieldTypes <T, 0>::value_type       value_type;
 
-  typedef typename 
+  typedef  
     std::array< value_type, N>          type;
 };
 
@@ -160,7 +152,7 @@ template< class T,
         >
 struct DeclareTypeSequence < VectorT<T,A>, bitfield_trait >
 {
-  typedef typename 
+  typedef  
     Hg::BitFieldVector<T, A>            type;
 };
 
@@ -182,7 +174,7 @@ struct DeclareTypeSequence < VectorT<T,A>, nested_trait  >
   typedef typename
     FieldTypes <T, 0>::value_type       value_type;
 
-  typedef typename 
+  typedef 
     std::vector< value_type, A>         type;
 };
 
@@ -195,7 +187,7 @@ template< class T,
           class TraitT>
 struct ReplaceType
 {
-  typedef typename T                    type;
+  typedef T                             type;
 };
 
 //  ****************************************************************************

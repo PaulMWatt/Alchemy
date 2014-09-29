@@ -54,7 +54,8 @@ template< typename MessageT,
 Hg::Message<MessageT, ToT>
   convert_byte_order(const Hg::Message<MessageT, FromT>& from)
 {
-  typedef typename MessageT::format_type        format_type;
+  typedef typename 
+    MessageT::format_type                         format_type;
   // Initialize a functor to convert data to network byte order,
   // then call this operation for each element in the defined message.
   detail::ByteOrderConversionFunctor< Hg::Message< MessageT, FromT>,
@@ -129,13 +130,15 @@ struct ConvertEndianess<T, array_trait>
                         ArrayValueT &output)
   {
     // Get the trait for the value_type managed by the array.
-    typedef ArrayValueT::value_type               value_type;
+    typedef typename
+      ArrayValueT::value_type                     value_type;
+
     typedef typename
       DeduceTypeTrait<value_type>::type           type_trait;
 
     // Convert with the byte-order conversion functors to detect and handle
     // any nested array items, or arrays of arrays etc...
-    ConvertEndianess< value_type,
+    ConvertEndianess< value_type, 
                       type_trait
                     > swap_order;
     // Perform a conversion on every item in the array.
@@ -159,7 +162,9 @@ struct ConvertEndianess<T, vector_trait>
                         VectorValueT &output)
   {
     // Get the trait for the value_type managed by the array.
-    typedef VectorValueT::value_type              value_type;
+    typedef typename
+      VectorValueT::value_type                    value_type;
+
     typedef typename
       DeduceTypeTrait<value_type>::type           type_trait;
 
@@ -259,7 +264,7 @@ struct ByteOrderConversionFunctor
     // Create an instance of a selection template that will choose between
     // nested processing, and value conversion.
     ConvertEndianess< value_type,
-                      DeduceTypeTrait<value_type>::type
+                      typename DeduceTypeTrait<value_type>::type
                     > swap_order;
     swap_order(from_value, to_value);
     output.template FieldAt<Idx>().set(to_value);

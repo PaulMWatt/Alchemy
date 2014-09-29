@@ -102,21 +102,21 @@ struct one_or_zero<false>
   : std::integral_constant<int, 0>
 { };
 
-//  ***************************************************************************
-/// Definition to simplify the extraction of the value_type for a data entry.
-///
-template <typename T, bool is_container = bitfield_value<T>::value >
-struct value_type_of
-  : instance_of<T>
-{ };
-
-//  ***************************************************************************
-/// Definition to simplify the extraction of the value_type for a data entry.
-///
-template <typename T>
-struct value_type_of<T, true>
-  : instance_of<typename T::value_type>
-{ };
+////  ***************************************************************************
+///// Definition to simplify the extraction of the value_type for a data entry.
+/////
+//template <typename T, bool is_container = bitfield_value<T>::value >
+//struct value_type_of
+//  : instance_of<T>
+//{ };
+//
+////  ***************************************************************************
+///// Definition to simplify the extraction of the value_type for a data entry.
+/////
+//template <typename T>
+//struct value_type_of<T, true>
+//  : instance_of<typename T::value_type>
+//{ };
 
 //  ***************************************************************************
 /// Static Assertion Base Template to verify type constraints for an object. 
@@ -156,7 +156,7 @@ struct empty_type
 /// The type passed in must have a static boolean value named "value".
 ///
 template <typename T>
-struct not
+struct Not
   : std::integral_constant<bool, !T::value>
 {  };
 
@@ -166,7 +166,7 @@ struct not
 ///
 template <typename T,
           typename U>
-struct and
+struct And
   : std::integral_constant<bool, T::value && U::value>
 {  };
 
@@ -176,7 +176,7 @@ struct and
 ///
 template <typename T,
           typename U>
-struct or
+struct Or
   : std::integral_constant<bool, T::value || U::value>
 {  };
 
@@ -303,10 +303,10 @@ struct is_std_vector<std::vector<T,A> >
 //  ***************************************************************************
 template <typename T>
 struct vector_value
-  : and < or < std::is_base_of<vector_trait, T>,
+  : And < Or < std::is_base_of<vector_trait, T>,
                is_std_vector<T>
              >,
-          not < std::is_base_of<array_trait, T> > >
+          Not < std::is_base_of<array_trait, T> > >
 { };
 
 //  ***************************************************************************
@@ -338,10 +338,10 @@ struct is_std_array<std::array<T,N> >
 //  Detect native array types.
 template< typename T>
 struct array_value
-  : and < or < std::is_base_of<array_trait, T>,
+  : And < Or < std::is_base_of<array_trait, T>,
                is_std_array<T>
              >,
-          not < std::is_base_of<vector_trait, T> > 
+          Not < std::is_base_of<vector_trait, T> > 
         >
 { };
 
@@ -349,8 +349,8 @@ struct array_value
 template <typename T>
 struct sequence_value
   : std::integral_constant< bool,
-                            or< typename std::is_base_of<sequence_trait, T>,
-                                or< vector_value<T>,
+                            Or< typename std::is_base_of<sequence_trait, T>,
+                                Or< vector_value<T>,
                                     array_value<T>
                                   >
                               >::value 

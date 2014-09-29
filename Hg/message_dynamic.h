@@ -41,7 +41,7 @@ template< typename MessageT,
 size_t dynamic_size_of(const Message<MessageT, ByteOrderT, StorageT>& msg)
 {
   return detail::DynamicSizeWorker< MessageT, 
-                                    has_dynamic<MessageT::format_type>::value
+                                    has_dynamic<typename MessageT::format_type>::value
                                   >().size(msg);
 }
 

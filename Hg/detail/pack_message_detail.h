@@ -89,7 +89,7 @@ void WriteDatum(MessageT& message,
   PackDatum < IdxT,
               MessageT,
               BufferT, 
-              DeduceTypeTrait<value_type>::type
+              typename DeduceTypeTrait<value_type>::type
             > pack;
   pack(message, buffer, dynamic_offset);
 }

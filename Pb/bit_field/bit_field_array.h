@@ -69,10 +69,10 @@ public:
 
   typedef std::array<value_type, N>     array_type;
 
-  typedef typename                      ///  Reference to an element in the array.
+  typedef                               ///  Reference to an element in the array.
     bit_field_type                      reference;
                                                                                 
-  typedef typename                      ///  Const Reference to an element in the array.
+  typedef                               ///  Const Reference to an element in the array.
     const bit_field_type                const_reference;
 
 

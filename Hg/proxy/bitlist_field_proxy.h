@@ -32,7 +32,7 @@ struct DataProxy<bitfield_trait, kt_idx, format_t, kt_offset>
   : public Datum<kt_idx, format_t, kt_offset>
   , public DeduceBitFieldList<kt_idx, format_t>::type
 {
-  typedef typename 
+  typedef 
     Datum < kt_idx,
             format_t,
             kt_offset
@@ -70,7 +70,7 @@ struct DataProxy<bitfield_trait, kt_idx, format_t, kt_offset>
     : datum_type(proxy)
     , host_type(datum_type::RefShadowData())
   { 
-    set(proxy.get());
+    this->set(proxy.get());
   }
 
   //  **************************************************************************

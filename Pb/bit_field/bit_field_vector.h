@@ -72,10 +72,10 @@ public:
 
   typedef std::vector<value_type, A>    vector_type;
 
-  typedef typename                      ///  Reference to an element in the vector.
+  typedef                               ///  Reference to an element in the vector.
     bit_field_type                      reference;
                                                                                 
-  typedef typename                      ///  Const Reference to an element in the vector.
+  typedef                               ///  Const Reference to an element in the vector.
     const bit_field_type                const_reference;
 
 

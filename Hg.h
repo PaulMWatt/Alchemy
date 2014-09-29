@@ -38,9 +38,20 @@
 namespace Hg
 {
 
-//  ****************************************************************************
+//  Forward Declarations *******************************************************
 template< typename T >
 size_t dynamic_size_of(const T& msg);
+
+template< typename MessageT,
+          typename ByteOrderT,
+          typename StorageT
+        >
+class Message;
+
+template< class HgMessageT,
+          bool  has_dynamic
+        >
+struct Msg_size;
 
 //  ****************************************************************************
 /// An object that defines and manages access to a formatted message buffer.
@@ -187,7 +198,12 @@ public:
   ///               
   size_t size() const
   {
-    return calc_size<k_has_dynamic>();
+    //return Msg_size<message_type, 
+    //                byte_order_type, 
+    //                storage_type, 
+    //                k_has_dynamic>::calculate(*this); 
+    return Msg_size<this_type, 
+                    k_has_dynamic>::calculate(*this); 
   }
 
 
@@ -295,30 +311,30 @@ private:
                                  >(values(), size());
   }
 
-  //  **************************************************************************
-  /// Reports the number of bytes this message object occupies.
-  /// This instance of size calculates the size for dynamically sized messages.
-  /// 
-  /// @return       The number of bytes that are used to pack this message.
-  ///
-  template<bool has_dynamic>
-  size_t calc_size() const
-  {
-    size_t fixed_size   = Hg::SizeOf<format_type>::value;
-    size_t dynamic_size = dynamic_size_of<message_type, byte_order_type, storage_type>(*this);
-    return fixed_size + dynamic_size;
-  }
+  ////  **************************************************************************
+  ///// Reports the number of bytes this message object occupies.
+  ///// This instance of size calculates the size for dynamically sized messages.
+  ///// 
+  ///// @return       The number of bytes that are used to pack this message.
+  /////
+  //template<bool has_dynamic>
+  //size_t calc_size() const
+  //{
+  //  size_t fixed_size   = Hg::SizeOf<format_type>::value;
+  //  size_t dynamic_size = dynamic_size_of<message_type, byte_order_type, storage_type>(*this);
+  //  return fixed_size + dynamic_size;
+  //}
 
-  //  **************************************************************************
-  /// Reports the number of bytes this message object occupies.
-  /// 
-  /// @return       The number of bytes that are used to pack this message.
-  ///
-  template<>
-  size_t calc_size<false>() const
-  {
-    return Hg::SizeOf<format_type>::value;
-  }
+  ////  **************************************************************************
+  ///// Reports the number of bytes this message object occupies.
+  ///// 
+  ///// @return       The number of bytes that are used to pack this message.
+  /////
+  //template<>
+  //size_t calc_size<false>() const
+  //{
+  //  return Hg::SizeOf<format_type>::value;
+  //}
 
 
   // Give friendship to message instantiations of other types for conversion.
@@ -329,6 +345,63 @@ private:
             >
   friend 
   class Message;
+};
+
+
+
+//  ****************************************************************************
+/// Reports the number of bytes this message object occupies.
+/// This instance of size calculates the size for dynamically sized messages.
+/// 
+/// @return       The number of bytes that are used to pack this message.
+///
+//template< class MessageT,
+//          class ByteOrderT,
+//          class StorageT,
+//          bool  has_dynamic
+//        >
+template< class HgMessageT,
+          bool  has_dynamic
+        >
+struct Msg_size
+{
+//  typedef Message<MessageT, ByteOrderT, StorageT>       message_t;
+  typedef HgMessageT message_t;
+
+  static size_t calculate(const message_t &msg)
+  {
+    typedef typename
+      message_t::message_type     message_type;
+    typedef typename
+      message_t::byte_order_type  byte_order_type;
+    typedef typename
+      message_t::storage_type     storage_type;
+
+    size_t fixed_size   = Hg::SizeOf<typename HgMessageT::format_type>::value;
+    size_t dynamic_size = dynamic_size_of<message_type, byte_order_type, storage_type>(msg);
+    return fixed_size + dynamic_size; 
+  }
+};
+
+//  ****************************************************************************
+/// Specialization returns the size of a fixed size message.
+/// 
+/// @return       The number of bytes that are used to pack this message.
+///
+//template< class MessageT,
+//          class ByteOrderT,
+//          class StorageT
+//        >
+template< class HgMessageT >
+struct Msg_size<HgMessageT, false>
+{
+  typedef HgMessageT message_t;
+//  typedef Message<MessageT, ByteOrderT, StorageT>       message_t;
+
+  static size_t calculate(const message_t &msg)
+  {
+    return Hg::SizeOf<typename HgMessageT::format_type>::value;
+  }
 };
 
 

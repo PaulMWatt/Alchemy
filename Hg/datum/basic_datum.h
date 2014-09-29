@@ -281,7 +281,7 @@ struct DefineFieldType
                                         ///< The type extracted at the current
                                         ///  index defined in the parent TypeList.
 
-  typedef typename 
+  typedef  
     detail::FieldTypes  < index_type,
                           OffsetOf<Idx, format_t>::value + kt_offset
                         >               type;

@@ -44,7 +44,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   //  Typedefs *****************************************************************
   typedef FormatT                       format_type;
 
-    typedef typename 
+    typedef  
       Hg::Datum < IdxT,
                   format_type,
                   OffsetT
@@ -167,28 +167,28 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   //  **************************************************************************
   /// Releases all allocated memory dedicated for storing entry data.
   /// 
-  void clear()                                    { return get().clear(); }
+  void clear()                                    { return this->get().clear(); }
 
   //  **************************************************************************
   /// Indicates if the vector does not have any space allocated for data.
   /// 
-  bool empty()                                    { return get().empty(); }
+  bool empty()                                    { return this->get().empty(); }
 
   //  **************************************************************************
   /// Insures that space is reserved to hold at least new_cap elements.
   /// 
-  void reserve(size_t new_cap)                    { get().reserve(new_cap); }
+  void reserve(size_t new_cap)                    { this->get().reserve(new_cap); }
 
   //  **************************************************************************
   /// Returns the number of elements that this vector can hold based on the 
   /// current allocated space.
   /// 
-  size_t capacity() const                         { return get().capacity(); }
+  size_t capacity() const                         { return this->get().capacity(); }
 
   //  **************************************************************************
   /// Returns the number of valid objects managed by this vector structure.
   /// 
-  size_t size() const                             { return get().size(); }
+  size_t size() const                             { return this->get().size(); }
 
   //  **************************************************************************
   /// Changes the number of elements stored.
@@ -205,7 +205,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   ///               causes new elements to be added to the container.
   /// 
   void resize(size_t    count, 
-              data_type value)                    { get().resize(count, value); }
+              data_type value)                    { this->get().resize(count, value); }
 
   //  **************************************************************************
   /// Updates the value of this VectorProxy with a std::vector type. 
@@ -236,19 +236,19 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
 
     std::copy( &value[0], 
               (&value[0]) + ExtentT, 
-                std::back_inserter(get()));
+                std::back_inserter(this->get()));
   }
 
   //  **************************************************************************
   /// Replaces the contents of the container.
   /// 
-  void assign(size_t count, const data_type& value)   { return get().assign(count, value); }
+  void assign(size_t count, const data_type& value)   { return this->get().assign(count, value); }
 
   //  **************************************************************************
   /// Replaces the contents of the container.
   /// 
   template< typename InputIt >
-  void assign(InputIt first, InputIt last)        { return get().assign(first, last); }
+  void assign(InputIt first, InputIt last)        { return this->get().assign(first, last); }
 
   //  **************************************************************************
   /// Conversion operator to a base Datum Type.
@@ -275,72 +275,72 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   //  **************************************************************************
   /// Accesses the value at the specified index in the vector data..
   /// 
-  const_reference at(size_t idx) const            { return get().at(idx); }
+  const_reference at(size_t idx) const            { return this->get().at(idx); }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the vector data..
   /// 
-  reference at(size_t idx)                        { return get().at(idx); }
+  reference at(size_t idx)                        { return this->get().at(idx); }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the vector data..
   /// 
-  const_reference operator[](size_t idx) const    { return get()[idx]; }
+  const_reference operator[](size_t idx) const    { return this->get()[idx]; }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the vector data..
   /// 
-  reference operator[](size_t idx)                { return get()[idx]; }
+  reference operator[](size_t idx)                { return this->get()[idx]; }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the vector data..
   /// 
-  const_reference front() const                   { return get().front(); }
+  const_reference front() const                   { return this->get().front(); }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the vector data..
   /// 
-  reference front()                               { return get().front(); }
+  reference front()                               { return this->get().front(); }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the vector data..
   /// 
-  const_reference back() const                    { return get().back(); }
+  const_reference back() const                    { return this->get().back(); }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the vector data..
   /// 
-  reference back()                                { return get().back(); }
+  reference back()                                { return this->get().back(); }
 
   //  Iterator Functions *******************************************************
   //  **************************************************************************
   /// Returns an iterator to the first item in the vector.
   /// 
-  iterator begin()                                { return get().begin();  }
-  const_iterator begin()  const                   { return get().begin();  }
-  const_iterator cbegin() const                   { return get().cbegin(); }
+  iterator begin()                                { return this->get().begin();  }
+  const_iterator begin()  const                   { return this->get().begin();  }
+  const_iterator cbegin() const                   { return this->get().cbegin(); }
 
   //  **************************************************************************
   /// Returns an iterator to the item one passed the end of the vector.
   /// 
-  iterator end()                                  { return get().end();    }
-  const_iterator end()  const                     { return get().end();    }
-  const_iterator cend() const                     { return get().cend();   }
+  iterator end()                                  { return this->get().end();    }
+  const_iterator end()  const                     { return this->get().end();    }
+  const_iterator cend() const                     { return this->get().cend();   }
 
   //  **************************************************************************
   /// Returns an iterator to the last item of the vector moving in reverse.
   /// 
-  reverse_iterator rbegin()                       { return get().rbegin(); }
-  const_reverse_iterator rbegin()  const          { return get().rbegin(); }
-  const_reverse_iterator crbegin() const          { return get().crbegin();}
+  reverse_iterator rbegin()                       { return this->get().rbegin(); }
+  const_reverse_iterator rbegin()  const          { return this->get().rbegin(); }
+  const_reverse_iterator crbegin() const          { return this->get().crbegin();}
 
   //  **************************************************************************
   /// Returns an iterator to the item one passed the beginning of the vector,
   /// moving in reverse.
   /// 
-  reverse_iterator rend()                         { return get().rend();   }
-  const_reverse_iterator rend()  const            { return get().rend();   }
-  const_reverse_iterator crend() const            { return get().crend();  } 
+  reverse_iterator rend()                         { return this->get().rend();   }
+  const_reverse_iterator rend()  const            { return this->get().rend();   }
+  const_reverse_iterator crend() const            { return this->get().crend();  } 
 
   //  Modifiers ****************************************************************
   //  **************************************************************************
@@ -353,7 +353,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   /// @note         All iterators at or after this point of erasure will be
   ///               invalidated.
   ///
-  iterator erase(iterator pos)                    { return get().erase(pos);   }
+  iterator erase(iterator pos)                    { return this->get().erase(pos);   }
 
   //  **************************************************************************
   /// Removes the range of specified elements from this container.
@@ -366,7 +366,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   /// @note         All iterators at or after this point of erasure will be
   ///               invalidated.
   ///
-  iterator erase(iterator first, iterator last)   { return get().erase(first, last);}
+  iterator erase(iterator first, iterator last)   { return this->get().erase(first, last);}
 
   //  **************************************************************************
   /// Removes the specified element from this container.
@@ -378,7 +378,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   /// @note         All iterators at or after this point of erasure will be
   ///               invalidated.
   ///
-  void push_back(const_reference value)           { get().push_back(value);   }
+  void push_back(const_reference value)           { this->get().push_back(value);   }
 
   //  **************************************************************************
   /// Removes the last element in the container.
@@ -386,8 +386,8 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   /// @note: Iterators that point to the last element and end will be 
   ///        invalidated after this call.
   ///
-  void pop_back()                                 { if (!get().empty()) {
-                                                      get().pop_back(); 
+  void pop_back()                                 { if (!this->get().empty()) {
+                                                      this->get().pop_back(); 
                                                     }
                                                   }
 
@@ -401,7 +401,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   ///
   /// @param other    The other vector to swap elements.
   ///
-  void swap(DataProxy& other)                     { get().swap(other.get()); }
+  void swap(DataProxy& other)                     { this->get().swap(other.get()); }
 
   //  **************************************************************************
   /// Exchanges the contents of the container with those of other.
@@ -413,7 +413,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
   ///
   /// @param other    The other vector to swap elements.
   ///
-  void swap(value_type& other)                    { get().swap(other);   }
+  void swap(value_type& other)                    { this->get().swap(other);   }
 
 };
 

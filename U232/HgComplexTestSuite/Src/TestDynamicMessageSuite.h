@@ -117,6 +117,31 @@ typedef dyn_test_format_t_HgFormat<0> dyn_message_type;
 
 } // namespace Hg
 
+
+const uint32_t  k_word_0               = 0xDEADC0DE;
+const uint32_t  k_other_word_0         = 0xDEC0ADDE;
+const uint32_t  k_word_1               = 0x12345678;
+const uint32_t  k_other_word_1         = 0x78563412;
+const uint32_t  k_word_2               = 0xABCDEF00;
+const uint32_t  k_other_word_2         = 0x00EFCDAB;
+
+
+
+const uint32_t  k_word_3               = 0x600DEA45;
+const uint32_t  k_other_word_3         = 0x45EA0D60;
+const uint32_t  k_word_4               = 0x0B13553D;
+const uint32_t  k_other_word_4         = 0x3D55130B;
+const uint32_t  k_word_5               = 0x0C1A5500;
+const uint32_t  k_other_word_5         = 0x00551A0C;
+const uint32_t  k_word_6               = 0x0DEFEA40;
+const uint32_t  k_other_word_6         = 0x40EAEF0D;
+
+const size_t k_count_seq_8  = 11;
+const size_t k_count_seq_16 = 6;
+const size_t k_count_seq_32 = 3;
+const size_t k_count_seq_64 = 3;
+
+
 //  ****************************************************************************
 /// @brief TestDynamicMessageSuite Test Suite class.
 ///
@@ -163,29 +188,6 @@ public:
 
 protected:
   //  Constants ******************************************************************
-  static const uint32_t  k_word_0               = 0xDEADC0DE;
-  static const uint32_t  k_other_word_0         = 0xDEC0ADDE;
-  static const uint32_t  k_word_1               = 0x12345678;
-  static const uint32_t  k_other_word_1         = 0x78563412;
-  static const uint32_t  k_word_2               = 0xABCDEF00;
-  static const uint32_t  k_other_word_2         = 0x00EFCDAB;
-
-
-
-  static const uint32_t  k_word_3               = 0x600DEA45;
-  static const uint32_t  k_other_word_3         = 0x45EA0D60;
-  static const uint32_t  k_word_4               = 0x0B13553D;
-  static const uint32_t  k_other_word_4         = 0x3D55130B;
-  static const uint32_t  k_word_5               = 0x0C1A5500;
-  static const uint32_t  k_other_word_5         = 0x00551A0C;
-  static const uint32_t  k_word_6               = 0x0DEFEA40;
-  static const uint32_t  k_other_word_6         = 0x40EAEF0D;
-
-  static const size_t k_count_seq_8  = 11;
-  static const size_t k_count_seq_16 = 6;
-  static const size_t k_count_seq_32 = 3;
-  static const size_t k_count_seq_64 = 3;
-
   uint8_t   seq_8[k_count_seq_8];
   uint16_t  seq_16[k_count_seq_16];
   uint32_t  seq_32[k_count_seq_32];

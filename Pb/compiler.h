@@ -41,11 +41,11 @@
 #ifdef _DEBUG
 // This message will be printed to the debug window.
 //		NOTICE: This is a notice!
-#define NOTICE(str) DO_PRAGMA(message(__FILE__"("STR1_(__LINE__)"): NOTICE: " str))
+#define NOTICE(str) DO_PRAGMA(message(__FILE__ "(" STR1_(__LINE__) "): NOTICE: " str))
 
 // This message will be printed to the debug window.
 //		TODO: This is a notice!
-#define TODO(str) DO_PRAGMA(message(__FILE__"("STR1_(__LINE__)"): TODO: " str))
+#define TODO(str) DO_PRAGMA(message(__FILE__ "(" STR1_(__LINE__) "): TODO: " str))
 
 #else
 #define NOTICE(str)

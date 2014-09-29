@@ -271,7 +271,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\Generated\TestAlchemyTypesRunner.cpp">
+    <ClCompile Include="Src\Generated\HgComplexTestSuiteRunner.cpp">
       <Filter>Source Files\Generated</Filter>
     </ClCompile>
   </ItemGroup>

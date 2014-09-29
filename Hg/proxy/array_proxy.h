@@ -63,7 +63,7 @@ struct DataProxy <array_trait, IdxT, FormatT, OffsetT>
   //  Typedefs *****************************************************************
   typedef FormatT                       format_type;
 
-  typedef typename 
+  typedef  
     Hg::Datum < IdxT,
                 format_type,
                 OffsetT
@@ -99,7 +99,6 @@ struct DataProxy <array_trait, IdxT, FormatT, OffsetT>
                     index_type,                  
                     typename field_type::value_type                  
                   >::type
-//std::array<data_type, k_extent>
                                         value_type;
 
                                         ///< The data type managed by this Array.
@@ -189,12 +188,12 @@ struct DataProxy <array_trait, IdxT, FormatT, OffsetT>
   //  **************************************************************************
   /// Returns the number of valid objects managed by this array structure.
   /// 
-  size_t size() const                             { return get().size(); }
+  size_t size() const                             { return this->get().size(); }
 
   //  **************************************************************************
   /// Returns the number of bytes that are required to hold this array in a buffer.
   /// 
-  size_t size_of() const                          { return sizeof(get()); }
+  size_t size_of() const                          { return sizeof(this->get()); }
 
 
   //  **************************************************************************
@@ -252,72 +251,72 @@ struct DataProxy <array_trait, IdxT, FormatT, OffsetT>
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
   /// 
-  const_reference at(size_t idx) const            { return get().at(idx); }
+  const_reference at(size_t idx) const            { return this->get().at(idx); }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
   /// 
-  reference at(size_t idx)                        { return get().at(idx); }
+  reference at(size_t idx)                        { return this->get().at(idx); }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
   /// 
-  const_reference operator[](size_t idx) const    { return get()[idx]; }
+  const_reference operator[](size_t idx) const    { return this->get()[idx]; }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
   /// 
-  reference operator[](size_t idx)                { return get()[idx]; }
+  reference operator[](size_t idx)                { return this->get()[idx]; }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
   /// 
-  const_reference front() const                   { return get().front(); }
+  const_reference front() const                   { return this->get().front(); }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
   /// 
-  reference front()                               { return get().front(); }
+  reference front()                               { return this->get().front(); }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
   /// 
-  const_reference back() const                    { return get().back(); }
+  const_reference back() const                    { return this->get().back(); }
 
   //  **************************************************************************
   /// Accesses the value at the specified index in the array data..
   /// 
-  reference back()                                { return get().back(); }
+  reference back()                                { return this->get().back(); }
 
   //  Iterator Functions *******************************************************
   //  **************************************************************************
   /// Returns an iterator to the first item in the array.
   /// 
-  iterator begin()                                { return get().begin();  }
-  const_iterator begin()  const                   { return get().begin();  }
-  const_iterator cbegin() const                   { return get().cbegin(); }
+  iterator begin()                                { return this->get().begin();  }
+  const_iterator begin()  const                   { return this->get().begin();  }
+  const_iterator cbegin() const                   { return this->get().cbegin(); }
 
   //  **************************************************************************
   /// Returns an iterator to the item one passed the end of the array.
   /// 
-  iterator end()                                  { return get().end();    }
-  const_iterator end()  const                     { return get().end();    }
-  const_iterator cend() const                     { return get().cend();   }
+  iterator end()                                  { return this->get().end();    }
+  const_iterator end()  const                     { return this->get().end();    }
+  const_iterator cend() const                     { return this->get().cend();   }
 
   //  **************************************************************************
   /// Returns an iterator to the last item of the array moving in reverse.
   /// 
-  reverse_iterator rbegin()                       { return get().rbegin(); }
-  const_reverse_iterator rbegin()  const          { return get().rbegin(); }
-  const_reverse_iterator crbegin() const          { return get().crbegin();}
+  reverse_iterator rbegin()                       { return this->get().rbegin(); }
+  const_reverse_iterator rbegin()  const          { return this->get().rbegin(); }
+  const_reverse_iterator crbegin() const          { return this->get().crbegin();}
 
   //  **************************************************************************
   /// Returns an iterator to the item one passed the beginning of the array,
   /// moving in reverse.
   /// 
-  reverse_iterator rend()                         { return get().rend();   }
-  const_reverse_iterator rend()  const            { return get().rend();   }
-  const_reverse_iterator crend() const            { return get().crend();  } 
+  reverse_iterator rend()                         { return this->get().rend();   }
+  const_reverse_iterator rend()  const            { return this->get().rend();   }
+  const_reverse_iterator crend() const            { return this->get().crend();  } 
 };
 
 
