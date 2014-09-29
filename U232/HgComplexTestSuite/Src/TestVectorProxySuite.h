@@ -106,7 +106,6 @@ protected:
 public:
   //  Test Cases ***************************************************************
   //  Test the basic function set with a u32 ***********************************
-  void TestDtor(void);
   void TestCopyConstructor(void);
   void TestValueConstructor(void);
   void TestAssignment(void);
@@ -160,26 +159,6 @@ public:
   void TestSwap_vector(void);
 
 };
-
-//  ****************************************************************************
-void TestVectorProxySuite::TestDtor(void)
-{
-  const uint8_t vals[] = {1,2,3,4,5,6,7,8};
-  const std::vector<uint8_t> k_control = make_vector(vals);
-
-  vector_data sut;
-  sut.set(k_control);
-
-  // The buffers should be equal.
-  TS_ASSERT_EQUALS(k_control, sut.get());
-
-  // SUT
-  // Call the destructor explicitly.
-  sut.~DataProxy();
-
-  // The internal vectors fields are cleared, the sut should be empty.
-  TS_ASSERT(sut.empty());
-}
 
 //  ****************************************************************************
 void TestVectorProxySuite::TestCopyConstructor(void)

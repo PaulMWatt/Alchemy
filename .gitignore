@@ -59,3 +59,6 @@ U232/HgBasicTestSuite/Debug/HgBasicTestSuite.exp
 U232/HgComplexTestSuite/Debug/HgComplexTestSuite.exp
 U232/HgBasicTestSuite/Src/Generated/HgBasicTestSuiteRunner.cpp
 U232/HgBasicTestSuite/Src/Generated/HgBasicTestSuiteRunner.cpp
+U232/HgBasicTestSuite/Debug/bin/core
+U232/HgBasicTestSuite/Src/Generated/HgBasicTestSuiteRunner.cpp
+U232/HgComplexTestSuite/Debug/bin/HgComplexTestSuite

@@ -3,13 +3,11 @@
 //  @file HgTypeListTestSuite.hpp
 //  
 //  Verifies the type modification processor to convert user-defined typelists to Hg compatible typelists.
+//  Each test verifies some substitution type that should or should not occur to create
+//  the final Hg compatible typelist.
 //  
-//  @author Paul
-//  @date   2014.9.4: Paul    -- Initial release.
-//  
-//  TODO: Update with an appropriate license copyright 2014
-//  
-//   Verify data with these TEST ASSERTIONS:
+//  The MIT License(MIT)
+//  @copyright 2014 Paul M Watt
 //  
 //   TS_FAIL(message):                        Fail unconditionally
 //   TS_ASSERT(expr):                         Verify (expr) is true
@@ -52,11 +50,27 @@ HG_BEGIN_BIT_SET (uint32_t, mixed_bits)
   HG_BIT_FIELD   (6,   seventh, 1)
 HG_END_BIT_SET
 
+
+//  ****************************************************************************
+typedef TypeList
+<
+  uint32_t,      
+  std::array<uint16_t, 5>
+> Hg_nested_basic;
+
+//  ****************************************************************************
 typedef TypeList
 <
   uint32_t,      
   std::array<mixed_bits, 5>
-> Hg_nested;
+> Hg_nested_sub;
+
+//  ****************************************************************************
+typedef TypeList
+<
+  uint32_t,      
+  Hg::BitFieldArray<mixed_bits, 5>
+> Hg_nested_adjusted;
 
 }
 
@@ -67,19 +81,40 @@ typedef TypeList
 <
   uint32_t,      
   mixed_bits,        // Extra bytes are required after this field to test offsets.
-  Hg_nested,
+  Hg_nested_basic,
+  Hg_nested_sub,
   std::array<uint32_t,    25>,
   std::array<mixed_bits,  20>,
-  std::array<Hg_nested,   15>,
+  std::array<Hg_nested_sub,   15>,
   std::array<std::array <uint32_t, 5>, 10>,
   std::array<std::vector<uint32_t>, 5>,
   std::vector<uint32_t>,
   std::vector<mixed_bits>,
-  std::vector<Hg_nested>,
+  std::vector<Hg_nested_sub>,
   std::vector<std::array <uint32_t, 5>>,
   std::vector<std::vector<mixed_bits>>
 > hg_list_t;
 
+//  ****************************************************************************
+//  The expected hg typelist after conversion of hg_list_t.
+//
+typedef TypeList
+<
+  uint32_t,      
+  mixed_bits,        // Extra bytes are required after this field to test offsets.
+  Hg_nested_basic,
+  Hg_nested_sub,
+  std::array<uint32_t,    25>,
+  std::array<mixed_bits,  20>,
+  std::array<Hg_nested_sub,   15>,
+  std::array<std::array <uint32_t, 5>, 10>,
+  std::array<std::vector<uint32_t>, 5>,
+  std::vector<uint32_t>,
+  std::vector<mixed_bits>,
+  std::vector<Hg_nested_sub>,
+  std::vector<std::array <uint32_t, 5>>,
+  std::vector<std::vector<mixed_bits>>
+> expected_hg_list_t;
 
 
 //  ****************************************************************************
@@ -89,43 +124,207 @@ class HgTypeListTestSuite : public CxxTest::TestSuite
 public:
 
   HgTypeListTestSuite()
-  {
-    // TODO: Construct Test Suite Object
-  }
+  { }
 
   // Fixture Management ******************************************************
   // setUp will be called before each test case in order to setup common fixtures.
   virtual void setUp()
-  {
-    // TODO: Add common fixture setup code if any exists.
-  }
+  { }
  
   // tearDown will be called after each test case to clean up common resources.
   virtual void tearDown()
-  {
-    // TODO: Add common fixture teardown code if any exists.
-  }
+  { }
 
 protected:
   // Test Suite Data *********************************************************
 
-  // Creator Methods *********************************************************
-  // TODO: Use creator methods to reduce redundant setup code in test cases.
-
 public:
   // Test Cases **************************************************************
-  // TODO: Add a new function for each unique test to be performed in this suite. 
-  void TestCase1(void);
+  void TestNoSubstitution(void);
+  void TestArrayFundamental(void);
+  void TestArrayNoSub(void);
+  void TestArraySubBitFields(void);
+  void TestArraySubNested(void);
+  void TestArrayArrayNoSub(void);
+  void TestArrayArrayBitSet(void);
+  void TestVectorNoSub(void);
+  void TestVectorSubBitFields(void);
+  void TestVectorSubNested(void);
+  void TestVectorArrayNoSub(void);
+  void TestVectorArrayBitSet(void);
 
 };
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestCase1(void)
+void HgTypeListTestSuite::TestNoSubstitution(void)
 {
-  typedef make_Hg_type_list<hg_list_t>::type     hg_type;
+  // Verify a Typelist that does not perform any substitution for
+  // any of the types used in the Typelist.
+  typedef TypeList
+  <
+    char,
+    short,
+    long,
+    unsigned long,
+    mixed_bits,
+    Hg_nested_basic
+  > SUT;
 
-  //hg_list_t   org;
-  //hg_type     var;
+  typedef make_Hg_type_list<SUT>::type     result_type;
+
+  TS_ASSERT((std::is_same<SUT, result_type>::value));
+}
+
+//  ****************************************************************************
+void HgTypeListTestSuite::TestArrayNoSub(void)
+{
+  typedef TypeList
+  <
+    std::array<char,  10>,
+    std::array<short, 10>,
+    std::array<long,  5>,
+    std::array<unsigned long, 4>,
+    std::array<Hg_nested_basic, 3>
+  > SUT;
+
+  typedef make_Hg_type_list<SUT>::type     result_type;
+
+  TS_ASSERT((std::is_same<SUT, result_type>::value));
+}
+
+//  ****************************************************************************
+void HgTypeListTestSuite::TestArraySubBitFields(void)
+{
+  typedef TypeList
+  <
+    std::array<mixed_bits, 5>
+  > SUT;
+
+  typedef make_Hg_type_list<SUT>::type     result_type;
+
+  TS_ASSERT(!(std::is_same<SUT, result_type>::value));
+}
+
+//  ****************************************************************************
+void HgTypeListTestSuite::TestArraySubNested(void)
+{
+  typedef Hg::Hg_nested_sub                 SUT;
+  typedef make_Hg_type_list<SUT>::type      result_type;
+
+  TS_ASSERT(!(std::is_same<SUT, result_type>::value));
+  TS_ASSERT((std::is_same<Hg::Hg_nested_adjusted, result_type>::value));
+}
+
+//  ****************************************************************************
+void HgTypeListTestSuite::TestArrayArrayNoSub(void)
+{
+  typedef TypeList
+  <
+    std::array< std::array<Hg::Hg_nested_basic, 10>, 5>
+  > SUT;
+
+  typedef make_Hg_type_list<SUT>::type     result_type;
+
+  TS_ASSERT((std::is_same<SUT, result_type>::value));
+}
+
+//  ****************************************************************************
+void HgTypeListTestSuite::TestArrayArrayBitSet(void)
+{
+  typedef TypeList
+  <
+    std::array< std::array<mixed_bits, 10>, 2 >
+  > SUT;
+
+  typedef TypeList
+  <
+    std::array< BitFieldArray<mixed_bits, 10>, 2 >
+  > expected_type;
+
+  typedef make_Hg_type_list<SUT>::type     result_type;
+
+  TS_ASSERT(!(std::is_same<expected_type, result_type>::value));
+}
+
+//  ****************************************************************************
+void HgTypeListTestSuite::TestVectorNoSub(void)
+{
+  typedef TypeList
+  <
+    size_t,
+    std::vector<char>,
+    std::vector<short>,
+    std::vector<long>,
+    std::vector<unsigned long>,
+    std::vector<Hg_nested_basic>
+  > SUT;
+
+  typedef make_Hg_type_list<SUT>::type     result_type;
+
+  TS_ASSERT((std::is_same<SUT, result_type>::value));
+}
+
+//  ****************************************************************************
+void HgTypeListTestSuite::TestVectorSubBitFields(void)
+{
+  typedef TypeList
+  <
+    size_t,
+    std::vector<mixed_bits>
+  > SUT;
+
+  typedef make_Hg_type_list<SUT>::type     result_type;
+
+  TS_ASSERT(!(std::is_same<SUT, result_type>::value));
+}
+
+//  ****************************************************************************
+void HgTypeListTestSuite::TestVectorSubNested(void)
+{
+  typedef TypeList
+  <
+    std::vector<Hg::Hg_nested_sub>
+  > SUT;
+
+  typedef TypeList
+  <
+    std::vector<Hg::Hg_nested_adjusted>
+  > expected_type;
+
+  typedef make_Hg_type_list<SUT>::type     result_type;
+
+  TS_ASSERT(!(std::is_same<expected_type, result_type>::value));
+}
+
+//  ****************************************************************************
+void HgTypeListTestSuite::TestVectorArrayNoSub(void)
+{
+  typedef TypeList
+  <
+    std::vector< std::array<uint32_t, 10> >
+  > SUT;
+
+  typedef make_Hg_type_list<SUT>::type     result_type;
+
+  TS_ASSERT((std::is_same<SUT, result_type>::value));
+}
+
+//  ****************************************************************************
+void HgTypeListTestSuite::TestVectorArrayBitSet(void)
+{
+  typedef TypeList
+  <
+    std::vector< std::array<mixed_bits, 10> >
+  > SUT;
+
+  typedef TypeList
+  <
+    std::vector< BitFieldArray<mixed_bits, 10> >
+  > expected_type;
+
+  typedef make_Hg_type_list<SUT>::type     result_type;
+
+  TS_ASSERT(!(std::is_same<expected_type, result_type>::value));
 
 }
 

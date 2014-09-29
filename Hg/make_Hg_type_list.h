@@ -49,13 +49,13 @@ namespace detail
 //
 //  Array         Fundamental     none
 //  Array         BitField        BitFieldArray
-//  Array         Nested          yes    / make_Hg_type_list<S>::type
+//  Array         Nested          make_Hg_type_list<S>::type
 //  Array         Array           yes    / Sub-type also processed
 //  Array         Vector          vector / Sub-type also processed
 //
 //  Vector        Fundamental     none
 //  Vector        BitField        BitFieldVector
-//  Vector        Nested          yes  / make_Hg_type_list<S>::type
+//  Vector        Nested          make_Hg_type_list<S>::type
 //  Vector        Array           yes  / Sub-type also processed
 //  Vector        Vector          yes  / Sub-type also processed
 //

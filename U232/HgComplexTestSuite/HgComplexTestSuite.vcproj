@@ -505,10 +505,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Src\TestBitSetMsgFieldSuite.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Src\TestDynamicMessageSuite.h"
 					>
 				</File>
@@ -518,18 +514,6 @@
 				</File>
 				<File
 					RelativePath=".\Src\TestFocusedDynamicMessageSuite.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Src\TestMessageSuite.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Src\TestMsgBufferSuite.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Src\TestMsgFieldSuite.h"
 					>
 				</File>
 				<File

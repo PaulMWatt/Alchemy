@@ -41,8 +41,7 @@ HG_BEGIN_FORMAT(base_format_t)
   HG_DATUM (uint32_t,                 word_2)
   HG_DATUM (uint8_t,                  val)
   HG_DATUM (nested_format_t,          nested)
-//  HG_ARRAY (size_t, 3,                sequence)
-  HG_ARRAY (uint32_t, 3,                sequence)
+  HG_ARRAY (uint32_t, 3,              sequence)
 HG_END_FORMAT
 
 typedef base_format_t_HgFormat<0> message_type;
