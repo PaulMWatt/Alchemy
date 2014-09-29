@@ -54,5 +54,13 @@ U232/PbTestSuite/Debug/BuildLog.htm
 U232/PbTestSuite/Debug/mt.dep
 U232/PbTestSuite/Debug/BuildLog.htm
 *.manifest
+<<<<<<< HEAD
+U232/HgBasicTestSuite/Debug/bin/HgBasicTestSuite
+U232/HgBasicTestSuite/Debug/HgBasicTestSuite.exp
+U232/HgComplexTestSuite/Debug/HgComplexTestSuite.exp
+U232/HgBasicTestSuite/Src/Generated/HgBasicTestSuiteRunner.cpp
+U232/HgBasicTestSuite/Src/Generated/HgBasicTestSuiteRunner.cpp
+=======
 *.exp
 U232/HgBasicTestSuite/Debug/bin/HgBasicTestSuite
+>>>>>>> origin/master
