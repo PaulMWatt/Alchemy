@@ -269,4 +269,7 @@
       <Filter>Source Files\Generated</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.gitignore" />
+  </ItemGroup>
 </Project>

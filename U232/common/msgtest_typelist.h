@@ -58,7 +58,7 @@ typedef TypeList
   uint32_t,
   uint8_t,
   nested_format_t,
-  std::array<size_t, 3>
+  std::array<uint32_t, 3>
 > base_format_t;
 
 

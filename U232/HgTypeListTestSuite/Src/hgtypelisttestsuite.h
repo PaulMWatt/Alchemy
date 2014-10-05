@@ -141,7 +141,6 @@ protected:
 public:
   // Test Cases **************************************************************
   void TestNoSubstitution(void);
-  void TestArrayFundamental(void);
   void TestArrayNoSub(void);
   void TestArraySubBitFields(void);
   void TestArraySubNested(void);
