@@ -251,7 +251,9 @@ cd "../.."</Command>
     <ClInclude Include="test_helper.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\Generated\HgBasicTestSuiteRunner.cpp" />
+    <ClCompile Include="Src\Generated\HgBasicTestSuiteRunner.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.gitignore" />

@@ -203,7 +203,7 @@
 /// data format definition. A compiler error will be emitted if the number 
 /// of declared HG_MSG_FIELD entries does not match the number expected.
 /// 
-#define HG_END_FORMAT                   DECLARE_FORMAT_FOOTER
+#define HG_END_FORMAT(TYPE_LIST)       DECLARE_FORMAT_FOOTER(TYPE_LIST)
 
 
 //  ****************************************************************************

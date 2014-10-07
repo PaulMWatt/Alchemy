@@ -334,125 +334,125 @@ public:
 static TestMsgBufferSuite suite_TestMsgBufferSuite;
 
 static CxxTest::List Tests_TestMsgBufferSuite = { 0, 0 };
-CxxTest::StaticSuiteDescription suiteDescription_TestMsgBufferSuite( "../TestMsgBufferSuite.h", 110, "TestMsgBufferSuite", suite_TestMsgBufferSuite, Tests_TestMsgBufferSuite );
+CxxTest::StaticSuiteDescription suiteDescription_TestMsgBufferSuite( "../TestMsgBufferSuite.h", 165, "TestMsgBufferSuite", suite_TestMsgBufferSuite, Tests_TestMsgBufferSuite );
 
 static class TestDescription_suite_TestMsgBufferSuite_TestDefaultCtor : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestDefaultCtor() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 297, "TestDefaultCtor" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestDefaultCtor() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 352, "TestDefaultCtor" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestDefaultCtor(); }
 } testDescription_suite_TestMsgBufferSuite_TestDefaultCtor;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestCopyCtor : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestCopyCtor() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 298, "TestCopyCtor" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestCopyCtor() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 353, "TestCopyCtor" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestCopyCtor(); }
 } testDescription_suite_TestMsgBufferSuite_TestCopyCtor;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestDtor : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestDtor() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 299, "TestDtor" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestDtor() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 354, "TestDtor" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestDtor(); }
 } testDescription_suite_TestMsgBufferSuite_TestDtor;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestOpAssignment : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestOpAssignment() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 300, "TestOpAssignment" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestOpAssignment() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 355, "TestOpAssignment" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestOpAssignment(); }
 } testDescription_suite_TestMsgBufferSuite_TestOpAssignment;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestOpAssignment_ToSelf : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestOpAssignment_ToSelf() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 301, "TestOpAssignment_ToSelf" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestOpAssignment_ToSelf() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 356, "TestOpAssignment_ToSelf" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestOpAssignment_ToSelf(); }
 } testDescription_suite_TestMsgBufferSuite_TestOpAssignment_ToSelf;
 
 static class TestDescription_suite_TestMsgBufferSuite_Testempty : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_Testempty() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 302, "Testempty" ) {}
+ TestDescription_suite_TestMsgBufferSuite_Testempty() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 357, "Testempty" ) {}
  void runTest() { suite_TestMsgBufferSuite.Testempty(); }
 } testDescription_suite_TestMsgBufferSuite_Testempty;
 
 static class TestDescription_suite_TestMsgBufferSuite_Testempty_NotEmpty : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_Testempty_NotEmpty() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 303, "Testempty_NotEmpty" ) {}
+ TestDescription_suite_TestMsgBufferSuite_Testempty_NotEmpty() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 358, "Testempty_NotEmpty" ) {}
  void runTest() { suite_TestMsgBufferSuite.Testempty_NotEmpty(); }
 } testDescription_suite_TestMsgBufferSuite_Testempty_NotEmpty;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestSize : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestSize() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 304, "TestSize" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestSize() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 359, "TestSize" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestSize(); }
 } testDescription_suite_TestMsgBufferSuite_TestSize;
 
 static class TestDescription_suite_TestMsgBufferSuite_Testbuffer_read : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_Testbuffer_read() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 305, "Testbuffer_read" ) {}
+ TestDescription_suite_TestMsgBufferSuite_Testbuffer_read() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 360, "Testbuffer_read" ) {}
  void runTest() { suite_TestMsgBufferSuite.Testbuffer_read(); }
 } testDescription_suite_TestMsgBufferSuite_Testbuffer_read;
 
 static class TestDescription_suite_TestMsgBufferSuite_Testbuffer_write : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_Testbuffer_write() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 306, "Testbuffer_write" ) {}
+ TestDescription_suite_TestMsgBufferSuite_Testbuffer_write() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 361, "Testbuffer_write" ) {}
  void runTest() { suite_TestMsgBufferSuite.Testbuffer_write(); }
 } testDescription_suite_TestMsgBufferSuite_Testbuffer_write;
 
 static class TestDescription_suite_TestMsgBufferSuite_Testget_data : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_Testget_data() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 307, "Testget_data" ) {}
+ TestDescription_suite_TestMsgBufferSuite_Testget_data() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 362, "Testget_data" ) {}
  void runTest() { suite_TestMsgBufferSuite.Testget_data(); }
 } testDescription_suite_TestMsgBufferSuite_Testget_data;
 
 static class TestDescription_suite_TestMsgBufferSuite_Testget_data_OOB_OffsetLTZero : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_Testget_data_OOB_OffsetLTZero() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 308, "Testget_data_OOB_OffsetLTZero" ) {}
+ TestDescription_suite_TestMsgBufferSuite_Testget_data_OOB_OffsetLTZero() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 363, "Testget_data_OOB_OffsetLTZero" ) {}
  void runTest() { suite_TestMsgBufferSuite.Testget_data_OOB_OffsetLTZero(); }
 } testDescription_suite_TestMsgBufferSuite_Testget_data_OOB_OffsetLTZero;
 
 static class TestDescription_suite_TestMsgBufferSuite_Testget_data_OOB_ExceedsSize : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_Testget_data_OOB_ExceedsSize() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 309, "Testget_data_OOB_ExceedsSize" ) {}
+ TestDescription_suite_TestMsgBufferSuite_Testget_data_OOB_ExceedsSize() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 364, "Testget_data_OOB_ExceedsSize" ) {}
  void runTest() { suite_TestMsgBufferSuite.Testget_data_OOB_ExceedsSize(); }
 } testDescription_suite_TestMsgBufferSuite_Testget_data_OOB_ExceedsSize;
 
 static class TestDescription_suite_TestMsgBufferSuite_Testget_data_NotValid : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_Testget_data_NotValid() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 310, "Testget_data_NotValid" ) {}
+ TestDescription_suite_TestMsgBufferSuite_Testget_data_NotValid() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 365, "Testget_data_NotValid" ) {}
  void runTest() { suite_TestMsgBufferSuite.Testget_data_NotValid(); }
 } testDescription_suite_TestMsgBufferSuite_Testget_data_NotValid;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestSetData : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestSetData() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 311, "TestSetData" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestSetData() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 366, "TestSetData" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestSetData(); }
 } testDescription_suite_TestMsgBufferSuite_TestSetData;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestSetData_OOB_ExceedsSize : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestSetData_OOB_ExceedsSize() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 312, "TestSetData_OOB_ExceedsSize" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestSetData_OOB_ExceedsSize() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 367, "TestSetData_OOB_ExceedsSize" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestSetData_OOB_ExceedsSize(); }
 } testDescription_suite_TestMsgBufferSuite_TestSetData_OOB_ExceedsSize;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestSetData_NotValid : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestSetData_NotValid() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 313, "TestSetData_NotValid" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestSetData_NotValid() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 368, "TestSetData_NotValid" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestSetData_NotValid(); }
 } testDescription_suite_TestMsgBufferSuite_TestSetData_NotValid;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestClone : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestClone() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 314, "TestClone" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestClone() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 369, "TestClone" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestClone(); }
 } testDescription_suite_TestMsgBufferSuite_TestClone;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestClone_NotValid : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestClone_NotValid() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 315, "TestClone_NotValid" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestClone_NotValid() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 370, "TestClone_NotValid" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestClone_NotValid(); }
 } testDescription_suite_TestMsgBufferSuite_TestClone_NotValid;
 
 static class TestDescription_suite_TestMsgBufferSuite_TestClone_BufferAllocFailed : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMsgBufferSuite_TestClone_BufferAllocFailed() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 316, "TestClone_BufferAllocFailed" ) {}
+ TestDescription_suite_TestMsgBufferSuite_TestClone_BufferAllocFailed() : CxxTest::RealTestDescription( Tests_TestMsgBufferSuite, suiteDescription_TestMsgBufferSuite, 371, "TestClone_BufferAllocFailed" ) {}
  void runTest() { suite_TestMsgBufferSuite.TestClone_BufferAllocFailed(); }
 } testDescription_suite_TestMsgBufferSuite_TestClone_BufferAllocFailed;
 

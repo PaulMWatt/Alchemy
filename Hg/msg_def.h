@@ -89,38 +89,13 @@ struct message_size_trait
 //  Primary Message Declaration MACROS *****************************************
 // *****************************************************************************
 #define DEFINE_HG_FORMAT_HEADER(F)                                             \
-  template< size_t   kt_offset >                                               \
-  struct F##Format;                                                            \
-                                                                               \
-  namespace detail {                                                           \
-  template <>                                                                  \
-  struct field_data_t <F>                                                      \
-  {                                                                            \
-  typedef F##Format<0>      value_type;                                        \
-  };                                                                           \
-                                                                               \
-  template< size_t   kt_offset >                                               \
-  struct FieldTypes <F,kt_offset>                                              \
-      : F##Format<kt_offset>                                                   \
-  {                                                                            \
-    typedef F                           index_type;                            \
-    typedef F##Format < kt_offset >     value_type;                            \
-    FieldTypes()                                                               \
-        : m_shadow_data(This())         { }                                    \
-                                                                               \
-    value_type& This()                  {return *this;}                        \
-    value_type                         &m_shadow_data;                         \
-  };                                                                           \
-  }                                                                            \
-                                                                               \
-  template< size_t   kt_offset >                                               \
   struct F##Format                                                             \
     : nested_trait                                                             \
   {                                                                            \
     typedef F                           format_type;                           \
     enum { k_size = SizeOf<format_type>::value };                              \
     enum { k_length                   = length<format_type>::value };          \
-    enum { k_base_offset              = kt_offset };                           \
+    enum { k_base_offset              = 0 };                                   \
                                                                                \
     template< size_t IDX>                                                      \
     Datum<IDX, format_type, k_base_offset>&                                    \
@@ -140,11 +115,11 @@ struct message_size_trait
 
 // *****************************************************************************
 #define DECLARE_DATUM_FORMAT_IDX(IDX,T,P)                                      \
-  typedef typename                                                             \
+  typedef                                                              \
     Hg::detail::DeduceProxyType < IDX,                                         \
                                   format_type,                                 \
                                   k_base_offset>::type      Proxy##P;          \
-  typedef typename Proxy##P::datum_type                     datum_##P;         \
+  typedef Proxy##P::datum_type                     datum_##P;         \
   Proxy##P   P;                                                                \
                                                                                \
   datum_##P& FieldAtIndex(const datum_##P&)                                    \
@@ -197,7 +172,7 @@ struct message_size_trait
 
 
 // *****************************************************************************
-#define DECLARE_FORMAT_FOOTER                                                  \
+#define DECLARE_FORMAT_FOOTER(F)                                               \
   private:                                                                     \
     template <typename T, typename U>                                          \
     size_t DatumSize(T value, U&)                                              \
@@ -211,7 +186,29 @@ struct message_size_trait
       if (buffer.empty()) { return 0; }                                        \
       return ftor(buffer.data(), buffer.size());                               \
     }                                                                          \
-  };
+  };                                                                           \
+  namespace detail {                                                           \
+  template <>                                                                  \
+  struct field_data_t <F>                                                      \
+  {                                                                            \
+  typedef F##_HgFormat                  value_type;                            \
+  };                                                                           \
+                                                                               \
+  template< >                                                                  \
+  struct FieldTypes <F>                                                        \
+    : field_data_t<F>::value_type                                              \
+  {                                                                            \
+    typedef F                           index_type;                            \
+    typedef                                                                    \
+      field_data_t<F>::value_type       value_type;                            \
+    FieldTypes()                                                               \
+        : m_shadow_data(This())         { }                                    \
+                                                                               \
+    value_type& This()                  {return *this;}                        \
+    value_type                         &m_shadow_data;                         \
+  };                                                                           \
+  }                                                                            \
+                                                                               \
 
 
 // ****************************************************************************

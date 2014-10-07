@@ -75,8 +75,7 @@ public:
   //  Typedefs *****************************************************************
   typedef typename
     detail::DefineFieldType < Idx, 
-                              format_t, 
-                              kt_offset
+                              format_t
                             >::type     field_type;
                                         ///< Type mapping for the message format
                                         ///  type to the actual value_type.

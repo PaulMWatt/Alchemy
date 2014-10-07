@@ -40,7 +40,7 @@ template <size_t   Idx,
           size_t   kt_offset = 0
          >
 class Datum
-  : public detail::DefineFieldType< Idx, format_t, kt_offset>::type
+  : public detail::DefineFieldType< Idx, format_t>::type
 {
   // Concept check to verify a type container has been supplied.
   // TODO: Convert to a static_assertion
@@ -56,8 +56,7 @@ public:
   //  Typedefs *****************************************************************
   typedef typename
     detail::DefineFieldType < Idx, 
-                              format_t, 
-                              kt_offset
+                              format_t
                             >::type     field_type;
                                         ///< Type mapping for the message format
                                         ///  type to the actual value_type.

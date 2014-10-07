@@ -230,12 +230,8 @@ void copy_value_type(       std::vector<SubTypeT, AllocT>& to,
 /// @paramt field_t           This parameterized type declares the
 ///                           type at the associated location in the parent 
 ///                           type container.
-/// @paramt kt_offset         [size_t] This is the offset of the current 
-///                           data field found in its parent type container.
 /// 
-template< typename FieldT,
-          size_t   kt_offset = 0
-        >
+template< typename FieldT >
 struct FieldTypes
 {
   typedef 
@@ -270,8 +266,7 @@ struct FieldTypes
 ///                           T must be an indexable type container.
 ///
 template< size_t   Idx,
-          typename format_t, 
-          size_t   kt_offset
+          typename format_t
         >
 struct DefineFieldType
 {
@@ -282,9 +277,7 @@ struct DefineFieldType
                                         ///  index defined in the parent TypeList.
 
   typedef  
-    detail::FieldTypes  < index_type,
-                          OffsetOf<Idx, format_t>::value + kt_offset
-                        >               type;
+    detail::FieldTypes  < index_type>   type;
                                         ///< The field type definition that maps
                                         ///  a field type with it's value_type.
 };

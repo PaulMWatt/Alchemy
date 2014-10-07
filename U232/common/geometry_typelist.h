@@ -35,7 +35,7 @@ typedef TypeList
 
 HG_BEGIN_FORMAT(color_map_t)
   HG_ARRAY (color4, 16, table)
-HG_END_FORMAT
+HG_END_FORMAT(color_map_t)
 
 //  ****************************************************************************
 //  Type definition that represents a 3-dimensional point.
@@ -52,7 +52,7 @@ HG_BEGIN_FORMAT(pt3d_t)
   HG_DATUM (int32_t, X)
   HG_DATUM (int32_t, Y)
   HG_DATUM (int32_t, Z)
-HG_END_FORMAT
+HG_END_FORMAT(pt3d_t)
 
 //  ****************************************************************************
 //  Type definition to represent a mathematical vector.
@@ -68,7 +68,7 @@ typedef TypeList
 HG_BEGIN_FORMAT(ray_t)
   HG_DATUM (pt3d_t, start)
   HG_DATUM (pt3d_t, magnitude)
-HG_END_FORMAT
+HG_END_FORMAT(ray_t)
 
 //  ****************************************************************************
 //  A single point with with a specified color.
@@ -83,7 +83,7 @@ typedef TypeList
 HG_BEGIN_FORMAT(vertex_t)
   HG_DATUM (pt3d_t, pt)
   HG_DATUM (color4, color)
-HG_END_FORMAT
+HG_END_FORMAT(vertex_t)
 
 //  ****************************************************************************
 //  A triangle represents a simple polygon surface with a front-facing normal.
@@ -99,7 +99,7 @@ typedef TypeList
 HG_BEGIN_FORMAT(triangle_t)
   HG_ARRAY (uint16_t, 3,  pts)
   HG_DATUM (ray_t,        normal)
-HG_END_FORMAT
+HG_END_FORMAT(triangle_t)
 
 //  ****************************************************************************
 //  Sub-type definition used to represent a camera.
@@ -117,7 +117,7 @@ HG_BEGIN_FORMAT(camera_t)
   HG_DATUM      (pt3d_t, eye)
   HG_DATUM      (pt3d_t, at)
   HG_DATUM      (pt3d_t, up)
-HG_END_FORMAT
+HG_END_FORMAT(camera_t)
 
 //  ****************************************************************************
 //  A polygon is a collection of triangle references to create a single body.
@@ -133,7 +133,7 @@ typedef TypeList
 HG_BEGIN_FORMAT(object_t)
   HG_DATUM    (uint32_t,          count)
   HG_DYNAMIC  (triangle_t, count, surfaces)
-HG_END_FORMAT
+HG_END_FORMAT(object_t)
 
 //  ****************************************************************************
 //  
@@ -155,7 +155,7 @@ HG_BEGIN_FORMAT(instance_t)
   HG_DATUM      (uint8_t,   object_index)
   HG_DATUM      (pt3d_t,    location)
   HG_DATUM      (matrix_t,  transform)
-HG_END_FORMAT
+HG_END_FORMAT(instance_t)
 
 
 //  ****************************************************************************
@@ -189,7 +189,7 @@ HG_BEGIN_FORMAT(world_t)
   HG_DYNAMIC  (object_t, object_count,    objects)
   HG_DATUM    (uint8_t,                   instance_count)
   HG_DYNAMIC  (instance_t, instance_count, instances)
-HG_END_FORMAT
+HG_END_FORMAT(world_t)
 
 } // namespace Hg
 

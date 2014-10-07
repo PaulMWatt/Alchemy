@@ -43,7 +43,7 @@ namespace Hg
 
 // TODO: Working to resolve an issue where nested types in arrays and vectors need to be redefined with their internal format that contains data rather than the typelist definition.
 //typedef world_tFormat<0> world_message_type;
-typedef object_t_HgFormat<0> world_message_type;
+typedef object_t_HgFormat world_message_type;
 
 } // namespace Hg
 
@@ -135,13 +135,13 @@ protected:
   template <typename SUT_t>
   void PopulateBaseValues(SUT_t& msg)
   {
-    bool isValue = Hg::nested_value<Hg::triangle_t_HgFormat<0> >::value;
+    bool isValue = Hg::nested_value<Hg::triangle_t_HgFormat>::value;
     bool isType  = Hg::nested_value<Hg::triangle_t>::value;
 
 // TODO: Work in progress. Fixing Dynamic focused tests first.
 
-    Hg::detail::field_data_t<Hg::triangle_t_HgFormat<0> >::value_type m;
-    Hg::detail::field_data_t<Hg::triangle_t_HgFormat<0> >::value_type n;
+    Hg::detail::field_data_t<Hg::triangle_t_HgFormat>::value_type m;
+    Hg::detail::field_data_t<Hg::triangle_t_HgFormat>::value_type n;
 
     int x = 0;
 //    to_sut(msg, m_world);

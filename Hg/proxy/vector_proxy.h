@@ -52,8 +52,7 @@ struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
 
   typedef typename
     detail::DefineFieldType < IdxT, 
-                              format_type, 
-                              OffsetT
+                              format_type
                             >::type     field_type;
                                         ///< Type mapping for the message format
                                         ///  type to the actual value_type.

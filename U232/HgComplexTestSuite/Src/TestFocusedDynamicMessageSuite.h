@@ -124,7 +124,7 @@ namespace fixed_array
 {
 namespace bit_list
 {
-typedef Hg::Message<Hg::color_map_t_HgFormat<0> > MsgColorMap;
+typedef Hg::Message<Hg::color_map_t_HgFormat >    MsgColorMap;
 typedef MsgColorMap                               SUT;
 
 //  ************************************
@@ -255,7 +255,7 @@ typedef TypeList
 
 HG_BEGIN_FORMAT(points_t)
   HG_ARRAY (pt3d_t, 3, pts)
-HG_END_FORMAT
+HG_END_FORMAT(points_t)
 
 
 } // namespace Hg
@@ -268,7 +268,7 @@ namespace nested
 {
 namespace fixed
 {
-typedef Hg::Message<Hg::points_t_HgFormat<0> >    MsgPoints;
+typedef Hg::Message<Hg::points_t_HgFormat >       MsgPoints;
 typedef MsgPoints                                 SUT;
 
 //  ************************************
@@ -380,7 +380,7 @@ typedef TypeList
 HG_BEGIN_FORMAT(vstr_t)
   HG_DATUM   (uint8_t,  len)
   HG_DYNAMIC (char,     len, str)
-HG_END_FORMAT
+HG_END_FORMAT(vstr_t)
 
 } // namespace Hg
 
@@ -391,7 +391,7 @@ namespace dynamic
 {
 namespace fundamental
 {
-typedef Hg::Message<Hg::vstr_t_HgFormat<0> >   MsgStr;
+typedef Hg::Message<Hg::vstr_t_HgFormat>       MsgStr;
 typedef MsgStr                                 SUT;
 
 const char   k_test_str[] = "- Happy Fun Ball -";
@@ -489,7 +489,7 @@ typedef TypeList
 HG_BEGIN_FORMAT(vpoints_t)
   HG_DATUM   (uint16_t, count)
   HG_DYNAMIC (pt3d_t,   count, pts)
-HG_END_FORMAT
+HG_END_FORMAT(vpoints_t)
 
 
 } // namespace Hg
@@ -503,7 +503,7 @@ namespace nested
 {
 namespace fixed
 {
-typedef Hg::Message<Hg::vpoints_t_HgFormat<0> >   MsgPoints;
+typedef Hg::Message<Hg::vpoints_t_HgFormat>       MsgPoints;
 typedef MsgPoints                                 SUT;
 
 // 2 for count field, 3 * 4 for data = 14
@@ -618,7 +618,7 @@ typedef TypeList
 HG_BEGIN_FORMAT(vinst_t)
   HG_DATUM   (uint16_t, count)
   HG_DYNAMIC (instance_t, count, inst)
-HG_END_FORMAT
+HG_END_FORMAT(vinst_t)
 
 
 } // namespace Hg
@@ -632,7 +632,7 @@ namespace nested
 {
 namespace dynamic
 {
-typedef Hg::Message<Hg::vinst_t_HgFormat<0> >     MsgInstance;
+typedef Hg::Message<Hg::vinst_t_HgFormat>         MsgInstance;
 typedef MsgInstance                               SUT;
 
 const size_t k_count        = 2;
@@ -820,7 +820,7 @@ typedef TypeList
 HG_BEGIN_FORMAT(color_table_t)
   HG_DATUM   (size_t, count)
   HG_DYNAMIC (color4, count, table)
-HG_END_FORMAT
+HG_END_FORMAT(color_table_t)
 
 } // namespace Hg
 
@@ -830,7 +830,7 @@ namespace dynamic
 {
 namespace bit_list
 {
-typedef Hg::Message<Hg::color_table_t_HgFormat<0> >  MsgColorTable;
+typedef Hg::Message<Hg::color_table_t_HgFormat>      MsgColorTable;
 typedef MsgColorTable                                SUT;
 
 //  ************************************
@@ -968,7 +968,7 @@ typedef TypeList
 HG_BEGIN_FORMAT(vec_array_t)
   HG_DATUM   (uint16_t,    count)
   HG_DYNAMIC (u32_array_t, count, items)
-HG_END_FORMAT
+HG_END_FORMAT(vec_array_t)
 
 
 } // namespace Hg
@@ -980,7 +980,7 @@ namespace vector
 {
 namespace fixed_array
 {
-typedef Hg::Message<Hg::vec_array_t_HgFormat<0> >    MsgVecArray;
+typedef Hg::Message<Hg::vec_array_t_HgFormat>        MsgVecArray;
 typedef MsgVecArray                                  SUT;
 
 
@@ -1169,7 +1169,7 @@ typedef TypeList
 
 HG_BEGIN_FORMAT(string_vec_t)
   HG_DYNAMIC (char_str, &StringCount, items)
-HG_END_FORMAT
+HG_END_FORMAT(string_vec_t)
 
 } // namespace Hg
 
@@ -1180,7 +1180,7 @@ namespace vec
 {
 namespace vec
 {
-typedef Hg::Message<Hg::string_vec_t_HgFormat<0> >   MsgStrVec;
+typedef Hg::Message<Hg::string_vec_t_HgFormat>      MsgStrVec;
 typedef MsgStrVec                                   SUT;
 
 //  Constants **************************

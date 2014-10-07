@@ -63,7 +63,7 @@ HG_BEGIN_FORMAT(aligned_int_t)
   HG_DATUM   (uint16_t, us16)
   HG_DATUM   (int8_t, c8)
   HG_DATUM   (uint8_t, uc8)
-HG_END_FORMAT
+HG_END_FORMAT(aligned_int_t)
 
 //  ****************************************************************************
 /// @brief          A type array that is purposely maligned from a 32-bit word.
@@ -87,7 +87,62 @@ HG_BEGIN_FORMAT(maligned_int_t)
   HG_DATUM   (uint16_t, us16)
   HG_DATUM   (uint32_t, ul32)
   HG_DATUM   (uint8_t, uc8)
-HG_END_FORMAT
+HG_END_FORMAT(maligned_int_t)
+//typedef Hg::make_Hg_type_list<maligned_int_t>::type maligned_int_t_Hg; 
+//
+//struct maligned_int_t_HgFormat 
+//  : nested_trait 
+//{ typedef maligned_int_t_Hg format_type; enum { k_size = SizeOf<format_type>::value }; 
+//  enum { k_length = length<format_type>::value }; 
+//  enum { k_base_offset = 0 }; 
+//  template< size_t IDX> 
+//  Datum<IDX, format_type, k_base_offset>& FieldAt() 
+//  { 
+//    typedef Datum < IDX, format_type, k_base_offset> datum_type_t; 
+//    return FieldAtIndex(datum_type_t()); 
+//  } 
+//  
+//  static const size_t k_enum_base = 32 + 1;
+//   typedef typename 
+//     Hg::detail::DeduceProxyType < ((33 - k_enum_base)), format_type, k_base_offset>::type Proxyc8; 
+//   typedef typename Proxyc8::datum_type datum_c8; 
+//   Proxyc8 c8; 
+//   datum_c8& FieldAtIndex(const datum_c8&) 
+//   { 
+//     return *static_cast<datum_c8*>(&c8); 
+//   } 
+//   
+//   const char* FieldName(const Proxyc8&) { return "c8"; }
+//   
+//   
+//   typedef typename Hg::detail::DeduceProxyType < ((34 - k_enum_base)), format_type, k_base_offset>::type Proxys16; typedef typename Proxys16::datum_type datum_s16; Proxys16 s16; datum_s16& FieldAtIndex(const datum_s16&) { return *static_cast<datum_s16*>(&s16); } const char* FieldName(const Proxys16&) { return "s16"; }
+//   typedef typename Hg::detail::DeduceProxyType < ((35 - k_enum_base)), format_type, k_base_offset>::type Proxyl32; typedef typename Proxyl32::datum_type datum_l32; Proxyl32 l32; datum_l32& FieldAtIndex(const datum_l32&) { return *static_cast<datum_l32*>(&l32); } const char* FieldName(const Proxyl32&) { return "l32"; }
+//   typedef typename Hg::detail::DeduceProxyType < ((36 - k_enum_base)), format_type, k_base_offset>::type Proxyus16; typedef typename Proxyus16::datum_type datum_us16; Proxyus16 us16; datum_us16& FieldAtIndex(const datum_us16&) { return *static_cast<datum_us16*>(&us16); } const char* FieldName(const Proxyus16&) { return "us16"; }
+//   typedef typename Hg::detail::DeduceProxyType < ((37 - k_enum_base)), format_type, k_base_offset>::type Proxyul32; typedef typename Proxyul32::datum_type datum_ul32; Proxyul32 ul32; datum_ul32& FieldAtIndex(const datum_ul32&) { return *static_cast<datum_ul32*>(&ul32); } const char* FieldName(const Proxyul32&) { return "ul32"; }
+//   typedef typename Hg::detail::DeduceProxyType < ((38 - k_enum_base)), format_type, k_base_offset>::type Proxyuc8; typedef typename Proxyuc8::datum_type datum_uc8; Proxyuc8 uc8; datum_uc8& FieldAtIndex(const datum_uc8&) { return *static_cast<datum_uc8*>(&uc8); } const char* FieldName(const Proxyuc8&) { return "uc8"; }
+//private: template <typename T, typename U> size_t DatumSize(T value, U&) { return value; } template <typename U> size_t DatumSize(pfnGetDatumSize ftor, U& buffer) { if (buffer.empty()) { return 0; } return ftor(buffer.data(), buffer.size()); } };
+//
+//}; 
+//
+//namespace detail { 
+//
+//template <> 
+//struct field_data_t <maligned_int_t_Hg> 
+//{ 
+//	typedef maligned_int_t_HgFormat value_type; 
+//}; 
+//
+//template< > struct FieldTypes <maligned_int_t_Hg> 
+//	: field_data_t<maligned_int_t_Hg>::value_type 
+//{ 
+//	typedef maligned_int_t_Hg index_type; 
+//  typedef field_data_t<maligned_int_t_Hg>::value_type value_type; 
+//  FieldTypes() : m_shadow_data(This()) { } value_type& 
+//    This() {return *this;} 
+//  value_type &m_shadow_data; 
+//  }; 
+//} 
+//
 
 } // namespace Hg
 

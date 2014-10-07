@@ -133,7 +133,7 @@ struct DeclareTypeSequence < ArrayT<T,N>, nested_trait >
   // Define a typedef that represents the actual data-type
   // that reprsents the type-list T passed into this array.
   typedef typename
-    FieldTypes <T, 0>::value_type       value_type;
+    FieldTypes <T>::value_type          value_type;
 
   typedef  
     std::array< value_type, N>          type;
@@ -172,7 +172,7 @@ struct DeclareTypeSequence < VectorT<T,A>, nested_trait  >
   // Define a typedef that represents the actual data-type
   // that reprsents the type-list T passed into this array.
   typedef typename
-    FieldTypes <T, 0>::value_type       value_type;
+    FieldTypes <T>::value_type          value_type;
 
   typedef 
     std::vector< value_type, A>         type;
