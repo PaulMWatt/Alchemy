@@ -95,15 +95,12 @@ struct message_size_trait
     typedef F                           format_type;                           \
     enum { k_size = SizeOf<format_type>::value };                              \
     enum { k_length                   = length<format_type>::value };          \
-    enum { k_base_offset              = 0 };                                   \
                                                                                \
     template< size_t IDX>                                                      \
-    Datum<IDX, format_type, k_base_offset>&                                    \
-      FieldAt()                                                                \
+    Datum<IDX, format_type>& FieldAt()                                         \
     {                                                                          \
       typedef Datum   < IDX,                                                   \
-                        format_type,                                           \
-                        k_base_offset>  datum_type_t;                          \
+                        format_type>    datum_type_t;                          \
       return FieldAtIndex(datum_type_t());                                     \
     }                                                                          \
     BEGIN_COUNTER
@@ -115,11 +112,10 @@ struct message_size_trait
 
 // *****************************************************************************
 #define DECLARE_DATUM_FORMAT_IDX(IDX,T,P)                                      \
-  typedef                                                              \
+  typedef                                                                      \
     Hg::detail::DeduceProxyType < IDX,                                         \
-                                  format_type,                                 \
-                                  k_base_offset>::type      Proxy##P;          \
-  typedef Proxy##P::datum_type                     datum_##P;         \
+                                  format_type>::type        Proxy##P;          \
+  typedef Proxy##P::datum_type                              datum_##P;         \
   Proxy##P   P;                                                                \
                                                                                \
   datum_##P& FieldAtIndex(const datum_##P&)                                    \

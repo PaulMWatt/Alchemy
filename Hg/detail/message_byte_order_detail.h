@@ -205,8 +205,6 @@ struct ByteOrderConversionFunctor
   typedef typename
     message_type::format_type           format_type;
 
-  static const size_t k_base_offset =   message_type::k_base_offset;
-
   //  Data Members *************************************************************
   from_message_type input;
   to_message_type   output;
@@ -250,14 +248,11 @@ struct ByteOrderConversionFunctor
   {
     typedef typename
       Hg::detail::DeduceProxyType < Idx,
-                                    format_type,
-                                    k_base_offset>::type      proxy_type;
+                                    format_type
+                                  >::type                     proxy_type;
     typedef typename
       proxy_type::value_type                                  value_type;
                                       
-// TODO: Review this file and remove dead and commented out code.
-    //value_type from_value  = input.template FieldAt<Idx>().get();
-    //value_type to_value;
     value_type from_value  = input.template FieldAt<Idx>().get();
     value_type to_value    = from_value;
 

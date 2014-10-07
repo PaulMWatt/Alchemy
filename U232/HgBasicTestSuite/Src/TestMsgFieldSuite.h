@@ -83,20 +83,17 @@ public:
   }
 
 protected:
-  //  Constants ****************************************************************
-  static const int k_offset = 0;
-
   //  Typedefs *****************************************************************
   //  These typedefs allow the creation of the different data field types
   //  with a simplified syntax for readability in the unit-tests.
-  typedef Hg::Datum<0,Hg::fundamental_t,k_offset>           field_int8_t;
-  typedef Hg::Datum<1,Hg::fundamental_t,k_offset>           field_uint8_t;
-  typedef Hg::Datum<2,Hg::fundamental_t,k_offset>           field_int16_t;
-  typedef Hg::Datum<3,Hg::fundamental_t,k_offset>           field_uint16_t;
-  typedef Hg::Datum<4,Hg::fundamental_t,k_offset>           field_int32_t;
-  typedef Hg::Datum<5,Hg::fundamental_t,k_offset>           field_uint32_t;
-  typedef Hg::Datum<6,Hg::fundamental_t,k_offset>           field_float_t;
-  typedef Hg::Datum<7,Hg::fundamental_t,k_offset>           field_double_t;
+  typedef Hg::Datum<0,Hg::fundamental_t>           field_int8_t;
+  typedef Hg::Datum<1,Hg::fundamental_t>           field_uint8_t;
+  typedef Hg::Datum<2,Hg::fundamental_t>           field_int16_t;
+  typedef Hg::Datum<3,Hg::fundamental_t>           field_uint16_t;
+  typedef Hg::Datum<4,Hg::fundamental_t>           field_int32_t;
+  typedef Hg::Datum<5,Hg::fundamental_t>           field_uint32_t;
+  typedef Hg::Datum<6,Hg::fundamental_t>           field_float_t;
+  typedef Hg::Datum<7,Hg::fundamental_t>           field_double_t;
 
 public:
   //  Test Cases ***************************************************************

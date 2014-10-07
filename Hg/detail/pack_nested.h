@@ -48,8 +48,8 @@ struct PackDatum<IdxT, MessageT, BufferT, nested_trait>
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
-                                    typename MessageT::format_type,
-                                    MessageT::k_base_offset>::type      proxy_type;
+                                    typename MessageT::format_type
+                                  >::type                               proxy_type;
     typedef typename
       proxy_type::value_type                                            value_type;
 

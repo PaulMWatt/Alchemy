@@ -31,11 +31,9 @@ namespace detail
 /// 
 /// @paramt IdxT
 /// @paramt FormatT
-/// @paramt OffsetT
 /// 
 template< size_t    IdxT,
-          typename  FormatT,
-          size_t    OffsetT = 0
+          typename  FormatT
         >
 struct DeduceProxyType
 {
@@ -52,8 +50,7 @@ struct DeduceProxyType
   //  The selected DataProxy type for the specified input type.
   typedef DataProxy < selected_type,
                       IdxT,
-                      FormatT,
-                      OffsetT
+                      FormatT
                     >                   type;
 };
 

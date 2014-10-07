@@ -36,8 +36,7 @@ namespace Hg
 ///                 A type container.
 ///              
 template <size_t   Idx, 
-          typename format_t, 
-          size_t   kt_offset = 0
+          typename format_t
          >
 class Datum
   : public detail::DefineFieldType< Idx, format_t>::type
@@ -49,8 +48,8 @@ class Datum
 public:
   //  Constants ****************************************************************
   static const
-    size_t k_offset = OffsetOf<Idx, format_t>::value
-                    + kt_offset;        ///< The offset in the buffer where this 
+    size_t k_offset = OffsetOf<Idx, format_t>::value;
+                                        ///< The offset in the buffer where this 
                                         ///  msg field is located.
 
   //  Typedefs *****************************************************************

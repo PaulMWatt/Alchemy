@@ -194,8 +194,6 @@ struct DynamicSizeFunctor
   typedef typename
     dynamic_fields<format_type>::type   dynamic_field_indices;
 
-  static const size_t k_base_offset =   message_type::k_base_offset;
-
   //  Data Members *************************************************************
   const message_type &message;
   size_t              m_dynamic_size;
@@ -229,8 +227,7 @@ struct DynamicSizeFunctor
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
-                                    format_type,
-                                    k_base_offset>::type      proxy_type;
+                                    format_type>::type        proxy_type;
     typedef typename
       proxy_type::value_type                                  value_type;
                                       

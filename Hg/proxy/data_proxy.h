@@ -37,16 +37,14 @@ namespace detail
 /// 
 template< typename  datum_trait, 
           size_t    kt_idx,
-          typename  format_t,
-          size_t    kt_offset
+          typename  format_t
         >
 struct DataProxy
-  : public Hg::Datum<kt_idx, format_t, kt_offset>
+  : public Hg::Datum<kt_idx, format_t>
 {
   typedef  
     Hg::Datum < kt_idx,
-                format_t,
-                kt_offset
+                format_t
               >                                   datum_type;
 
   typedef typename 

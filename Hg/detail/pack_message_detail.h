@@ -52,8 +52,7 @@ struct PackDatum
     typedef typename
       Hg::detail::DeduceProxyType 
         < IdxT,
-          typename MessageT::format_type,
-          MessageT::k_base_offset
+          typename MessageT::format_type
         >::type                                   proxy_type;
 
     typedef typename
@@ -81,8 +80,8 @@ void WriteDatum(MessageT& message,
 {
   typedef typename
     Hg::detail::DeduceProxyType < IdxT,
-                                  typename MessageT::format_type,
-                                  MessageT::k_base_offset>::type      proxy_type;
+                                  typename MessageT::format_type
+                                >::type                               proxy_type;
   typedef typename
     proxy_type::value_type                                            value_type;
 

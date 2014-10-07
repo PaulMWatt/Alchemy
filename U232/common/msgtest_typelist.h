@@ -36,71 +36,13 @@ typedef TypeList
   int16_t
 > nested_format_t;
 
-//HG_BEGIN_FORMAT(nested_format_t)
-//  HG_DATUM (uint8_t, zero)
-//  HG_DATUM (uint16_t, one)
-//  HG_DATUM (mixed_bits, two)
-//  HG_DATUM (uint32_t, three)
-//  HG_DATUM (int16_t, four)
-//HG_END_FORMAT(nested_format_t)
-typedef Hg::make_Hg_type_list<nested_format_t>::type nested_format_t_Hg; 
-struct nested_format_t_HgFormat 
-: nested_trait 
-{ 
-typedef nested_format_t_Hg format_type; 
-enum { k_size = SizeOf<format_type>::value }; 
-enum { k_length = length<format_type>::value }; 
-enum { k_base_offset = 0 }; 
-
-template< size_t IDX> Datum<IDX, format_type, k_base_offset>& FieldAt() 
-{ 
-  typedef Datum < IDX, format_type, k_base_offset> datum_type_t; 
-  return FieldAtIndex(datum_type_t()); 
-} 
-
-static const size_t k_enum_base = 0 + 1;
-
-   typedef  Hg::detail::DeduceProxyType < ((1 - k_enum_base)), format_type, k_base_offset>::type Proxyzero; 
-   typedef  Proxyzero::datum_type datum_zero; 
-   Proxyzero zero; datum_zero& FieldAtIndex(const datum_zero&) 
-   { return *static_cast<datum_zero*>(&zero); } 
-   
-   const char* FieldName(const Proxyzero&) { return "zero"; }
-
-   typedef  Hg::detail::DeduceProxyType < ((2 - k_enum_base)), format_type, k_base_offset>::type Proxyone; typedef Proxyone::datum_type datum_one; Proxyone one; datum_one& FieldAtIndex(const datum_one&) { return *static_cast<datum_one*>(&one); } const char* FieldName(const Proxyone&) { return "one"; }
-   typedef  Hg::detail::DeduceProxyType < ((3 - k_enum_base)), format_type, k_base_offset>::type Proxytwo; typedef Proxytwo::datum_type datum_two; Proxytwo two; datum_two& FieldAtIndex(const datum_two&) { return *static_cast<datum_two*>(&two); } const char* FieldName(const Proxytwo&) { return "two"; }
-   typedef  Hg::detail::DeduceProxyType < ((4 - k_enum_base)), format_type, k_base_offset>::type Proxythree; typedef Proxythree::datum_type datum_three; Proxythree three; datum_three& FieldAtIndex(const datum_three&) { return *static_cast<datum_three*>(&three); } const char* FieldName(const Proxythree&) { return "three"; }
-   typedef  Hg::detail::DeduceProxyType < ((5 - k_enum_base)), format_type, k_base_offset>::type Proxyfour; typedef Proxyfour::datum_type datum_four; Proxyfour four; datum_four& FieldAtIndex(const datum_four&) { return *static_cast<datum_four*>(&four); } const char* FieldName(const Proxyfour&) { return "four"; }
-
-private: 
-template <typename T, typename U> size_t DatumSize(T value, U&) { return value; } 
-template <typename U> size_t DatumSize(pfnGetDatumSize ftor, U& buffer) { if (buffer.empty()) { return 0; } return ftor(buffer.data(), buffer.size()); } 
-
-}; 
-//typedef Hg::make_Hg_type_list<F>::type                    F##_Hg;
-//nested_format_tFormat
-
-namespace detail { 
-template <> 
-struct field_data_t <nested_format_t> 
-{ 
-  typedef nested_format_t_HgFormat value_type; 
-//  typedef nested_format_t_HgFormat 
-}; 
-
-template< > 
-struct FieldTypes <nested_format_t> 
-: field_data_t<nested_format_t>::value_type 
-{ typedef nested_format_t index_type; 
-typedef field_data_t<nested_format_t>::value_type value_type; 
-
-FieldTypes() 
-: m_shadow_data(This()) { } 
-value_type& This() {return *this;} 
-value_type &m_shadow_data; 
-}; 
-
-}
+HG_BEGIN_FORMAT(nested_format_t)
+  HG_DATUM (uint8_t, zero)
+  HG_DATUM (uint16_t, one)
+  HG_DATUM (mixed_bits, two)
+  HG_DATUM (uint32_t, three)
+  HG_DATUM (int16_t, four)
+HG_END_FORMAT(nested_format_t)
 
 //  ****************************************************************************
 //  A type array used to create the base message field.

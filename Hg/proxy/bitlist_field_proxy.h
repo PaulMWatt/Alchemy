@@ -22,20 +22,17 @@ namespace detail
 /// 
 /// @param kt_idx
 /// @param format_type
-/// @param kt_offset
 /// 
 template <size_t    kt_idx,
-          typename  format_t,
-          size_t    kt_offset
+          typename  format_t
         >
-struct DataProxy<bitfield_trait, kt_idx, format_t, kt_offset>
-  : public Datum<kt_idx, format_t, kt_offset>
+struct DataProxy<bitfield_trait, kt_idx, format_t>
+  : public Datum<kt_idx, format_t>
   , public DeduceBitFieldList<kt_idx, format_t>::type
 {
   typedef 
     Datum < kt_idx,
-            format_t,
-            kt_offset
+            format_t
           >                                       datum_type;
 
   typedef typename 

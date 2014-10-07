@@ -86,13 +86,12 @@ protected:
   //  with a simplified syntax for readability in the unit-tests.
   typedef uint8_t                                       vector_value_type[8];
 
-  typedef Hg::Datum<0,Hg::vec_t,k_offset>               field_uint32_t;
+  typedef Hg::Datum<0,Hg::vec_t>                        field_uint32_t;
   typedef Hg::detail::DataProxy < Hg::vector_trait, 
                                   1,
-                                  Hg::vec_t,
-                                  k_offset
+                                  Hg::vec_t
                                 >                       vector_data;
-  typedef Hg::Datum<2,Hg::vec_t,k_offset>               field_uint8_t;
+  typedef Hg::Datum<2,Hg::vec_t>                        field_uint8_t;
 
   //  Utility Functions ********************************************************
   template< size_t  N >

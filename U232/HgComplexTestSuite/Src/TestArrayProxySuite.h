@@ -80,21 +80,17 @@ public:
   }
 
 protected:
-  //  Constants ****************************************************************
-  static const int    k_offset = 0;
-
   //  Typedefs *****************************************************************
   //  These typedefs allow the creation of the different data field types
   //  with a simplified syntax for readability in the unit-tests.
   typedef uint8_t                                       array_8_type[8];
 
-  typedef Hg::Datum<0,Hg::array_t,k_offset>             field_uint32_t;
+  typedef Hg::Datum<0,Hg::array_t>                      field_uint32_t;
   typedef Hg::detail::DataProxy < Hg::array_trait, 
                                   1,
-                                  Hg::array_t,
-                                  k_offset
+                                  Hg::array_t
                                 >                       array_data_8;
-  typedef Hg::Datum<2,Hg::array_t,k_offset>             field_uint8_t;
+  typedef Hg::Datum<2,Hg::array_t>                      field_uint8_t;
 
 public:
   //  Test Cases ***************************************************************

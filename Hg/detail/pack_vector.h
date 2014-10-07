@@ -447,8 +447,7 @@ struct PackDatum< IdxT,
   typedef typename
     Hg::detail::DeduceProxyType 
       < IdxT,
-        typename MessageT::format_type,
-        MessageT::k_base_offset
+        typename MessageT::format_type
       >::type                                     proxy_type;
 
   typedef typename

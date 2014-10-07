@@ -32,22 +32,19 @@ namespace detail
 /// 
 /// @paramt IdxT
 /// @paramt FormatType
-/// @paramt OffsetT
 /// 
 template< size_t    IdxT,
-          typename  FormatT,
-          size_t    OffsetT
+          typename  FormatT
         >
-struct DataProxy <vector_trait, IdxT, FormatT, OffsetT>
-  : public Hg::Datum<IdxT, FormatT, OffsetT>
+struct DataProxy <vector_trait, IdxT, FormatT>
+  : public Hg::Datum<IdxT, FormatT>
 {
   //  Typedefs *****************************************************************
   typedef FormatT                       format_type;
 
     typedef  
       Hg::Datum < IdxT,
-                  format_type,
-                  OffsetT
+                  format_type
                 >                       datum_type;
 
   typedef typename

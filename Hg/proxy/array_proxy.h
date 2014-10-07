@@ -49,24 +49,21 @@ struct array_size< Hg::BitFieldArray<T, N> >
 //  ****************************************************************************
 /// A template to provide access to sequences of data fields.
 /// 
-/// @paramt IdxT
-/// @paramt FormatType
-/// @paramt OffsetT
+/// @paramt IdxT        The index of the array field represented by this proxy.
+/// @paramt FormatType  The type list format that contains the array field.
 /// 
 template< size_t    IdxT,
-          typename  FormatT,
-          size_t    OffsetT
+          typename  FormatT
         >
-struct DataProxy <array_trait, IdxT, FormatT, OffsetT>
-  : public Hg::Datum<IdxT, FormatT, OffsetT>
+struct DataProxy <array_trait, IdxT, FormatT>
+  : public Hg::Datum<IdxT, FormatT>
 {
   //  Typedefs *****************************************************************
   typedef FormatT                       format_type;
 
   typedef  
     Hg::Datum < IdxT,
-                format_type,
-                OffsetT
+                format_type
               >                         datum_type;
 
   typedef typename
