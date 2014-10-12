@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="CxxUnitTest"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		AdditionalIncludeDirectories="$(CxxTestDir)"
+	/>
+	<UserMacro
+		Name="CallPython"
+		Value="&quot;c:\python34\python.exe&quot;"
+	/>
+	<UserMacro
+		Name="CxxTestDir"
+		Value="$(SolutionDir)..\..\..\U232\cxxtest\"
+	/>
+	<UserMacro
+		Name="CxxTestScriptsDir"
+		Value="$(CxxTestDir)bin\"
+	/>
+	<UserMacro
+		Name="GenCxxTestRunner"
+		Value="$(CallPython) &quot;$(CxxTestScriptsDir)cxxtestgen&quot; "
+	/>
+</VisualStudioPropertySheet>
