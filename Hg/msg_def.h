@@ -203,8 +203,7 @@ struct message_size_trait
     value_type& This()                  {return *this;}                        \
     value_type                         &m_shadow_data;                         \
   };                                                                           \
-  }                                                                            \
-                                                                               \
+  }
 
 
 // ****************************************************************************
