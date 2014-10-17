@@ -15,8 +15,7 @@ However, the goal is to allow the library to continue to function
 in the absence of these newer compilers and features, with the
 potential loss of convenience or performance. 
 
-
-Mercury, Messenger of the Gods
+Mercury (Hg), Messenger of the Gods
 ==============================
 
 Hg is a message and structured data processing framework that
@@ -64,6 +63,15 @@ Hg currently is written to allow up to 32 bit-fields in a single parameter.
   -   HG_BIT_FIELD(INDEX, NAME, COUNT)
   - HG_END_BIT_SET
 
+
+-------------
+
+Hg provides the convenient interface for users to convert data values into a data buffer. 
+Alchemy does not yet provide any transport mechanism. This is not currently a priority for this library because there are plenty of libraries that already exist to manage data transfer between two nodes.
+
+The focus for the near future will be for additional utilities that simplify the manipulation and formatting of data from the template definitions. Two examples are 1) the conversion of one message format to another, 2) automatically generate a Wireshark disector to print the output for a Hg message.
+
+-------------
 
 Commenting is done using doxygen.
 
