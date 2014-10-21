@@ -37,6 +37,7 @@
 #include <Pb/compiler.h>
 #include <type_traits>
 #include <array>
+#include <vector>
 
 namespace Hg
 {

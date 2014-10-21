@@ -97,6 +97,7 @@ T EndianSwap(T input)
 /// Swaps the current byte order between endian formats for a 16-bit value.  
 ///
 template <>
+inline
 uint16_t EndianSwap(uint16_t input)
 {
   return  (input >> convert::k_8bits)
@@ -109,6 +110,7 @@ uint16_t EndianSwap(uint16_t input)
 /// Swaps the current byte order between endian formats for a 16-bit value.  
 ///
 template <>
+inline
 int16_t EndianSwap(int16_t input)
 {
   return static_cast<int32_t> (
@@ -122,6 +124,7 @@ int16_t EndianSwap(int16_t input)
 /// Swaps the current byte order between endian formats for a 32-bit value.
 /// 
 template <>
+inline
 uint32_t EndianSwap(uint32_t input)
 {
   return  (input >> convert::k_24bits)
@@ -136,6 +139,7 @@ uint32_t EndianSwap(uint32_t input)
 /// Swaps the current byte order between endian formats for a 32-bit value.  
 ///
 template <>
+inline
 int32_t EndianSwap(int32_t input)
 {
   return static_cast<int32_t> (
@@ -149,6 +153,7 @@ int32_t EndianSwap(int32_t input)
 /// Swaps the current byte order between endian formats for a 64-bit value.
 ///
 template <>
+inline
 uint64_t EndianSwap(uint64_t input)
 {
   return  (input >> (convert::k_56bits))
@@ -167,6 +172,7 @@ uint64_t EndianSwap(uint64_t input)
 /// Swaps the current byte order between endian formats for a 64-bit value.  
 ///
 template <>
+inline
 int64_t EndianSwap(int64_t input)
 {
   return static_cast<int64_t> (
@@ -180,6 +186,7 @@ int64_t EndianSwap(int64_t input)
 /// Endian Swap (Specialization, compiler does not recognize int as long) 
 /// 
 template <>
+inline
 unsigned int EndianSwap(unsigned int input)
 {
   return EndianSwap<unsigned long>(input);
