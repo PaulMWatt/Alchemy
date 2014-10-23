@@ -118,7 +118,6 @@ public:
   /// Default Constructor
   ///
   Message()
-    : m_spMsgBuffer(new MsgBuffer<storage_type>)
   { }
 
   //  **************************************************************************
@@ -140,7 +139,6 @@ public:
   /// @param n                The size of the buffer in sp.
   ///
   Message(const_pointer p, size_t n)
-    : m_spMsgBuffer(new MsgBuffer<storage_type>)
   {
     assign(p,n);
   }
@@ -155,7 +153,7 @@ public:
   {
     if (this != &rhs)
     {
-      m_spMsgBuffer = rhs.m_spMsgBuffer;
+      m_msgBuffer = rhs.m_msgBuffer;
       *static_cast<message_type*>(this) = rhs;
     }
 
@@ -171,7 +169,8 @@ public:
   {
     if (this != &rhs)
     {
-      m_spMsgBuffer.reset();
+      // TODO: This no longer makes sense if the message buffer is not a function pointer.
+      //m_spMsgBuffer.reset();
       *static_cast<message_type*>(this) = rhs;
     }
 
@@ -187,8 +186,7 @@ public:
   ///               
   bool empty() const
   {
-    return !m_spMsgBuffer
-        || m_spMsgBuffer->empty();
+    return m_msgBuffer.empty();
   }
 
   //  **************************************************************************
@@ -198,10 +196,6 @@ public:
   ///               
   size_t size() const
   {
-    //return Msg_size<message_type, 
-    //                byte_order_type, 
-    //                storage_type, 
-    //                k_has_dynamic>::calculate(*this); 
     return Msg_size<this_type, 
                     k_has_dynamic>::calculate(*this); 
   }
@@ -234,7 +228,7 @@ public:
     if ( pBuffer
       && n > 0)
     {
-      m_spMsgBuffer->assign(pBuffer, n);
+      m_msgBuffer.assign(pBuffer, n);
 
       // Casting this object to the base object MessageT.
       // This pointer will accept the data read in from the buffer.
@@ -242,7 +236,7 @@ public:
       refThis = unpack_message< message_type, 
                                 buffer_type,
                                 size_trait
-                              >(*this, *m_spMsgBuffer.get());
+                              >(*this, m_msgBuffer);
     }
   }
 
@@ -252,7 +246,7 @@ public:
   ///
   void clear()
   {
-    m_spMsgBuffer->clear();
+    m_msgBuffer.clear();
   }
 
   //  **************************************************************************
@@ -291,51 +285,47 @@ public:
     Message *pThis = const_cast<Message*>(this);
     pThis->pack_data();
 
-    return m_spMsgBuffer->data();
+    return m_msgBuffer.data();
+  }
+
+
+  //  **************************************************************************
+  /// Copies the data from this object 
+  ///
+  void data(pointer pBuffer, size_t n)
+  {
+    pack_data(pBuffer, n);
   }
 
 
 private:
   //  Private Data Members *****************************************************
-  buffer_sptr       m_spMsgBuffer;
+  buffer_type       m_msgBuffer;
 
   //  **************************************************************************
-  /// Returns a pointer to the memory buffer that contains the packed message.
-  ///
   void pack_data()
   {
 // TODO: Add code to determine of the data has changed from the Datum obects, and only allocate adn write if teh buffer is dirty.
-    m_spMsgBuffer = pack_message < message_type, 
+
+    m_msgBuffer =  *pack_message < message_type, 
                                    buffer_type,
                                    size_trait
-                                 >(values(), size());
+                                 >(values(), size()).get();
   }
 
-  ////  **************************************************************************
-  ///// Reports the number of bytes this message object occupies.
-  ///// This instance of size calculates the size for dynamically sized messages.
-  ///// 
-  ///// @return       The number of bytes that are used to pack this message.
-  /////
-  //template<bool has_dynamic>
-  //size_t calc_size() const
-  //{
-  //  size_t fixed_size   = Hg::SizeOf<format_type>::value;
-  //  size_t dynamic_size = dynamic_size_of<message_type, byte_order_type, storage_type>(*this);
-  //  return fixed_size + dynamic_size;
-  //}
 
-  ////  **************************************************************************
-  ///// Reports the number of bytes this message object occupies.
-  ///// 
-  ///// @return       The number of bytes that are used to pack this message.
-  /////
-  //template<>
-  //size_t calc_size<false>() const
-  //{
-  //  return Hg::SizeOf<format_type>::value;
-  //}
+  //  **************************************************************************
+  void pack_data(pointer pBuffer, size_t n)
+  {
+// TODO: Add code to determine of the data has changed from the Datum obects, and only allocate adn write if teh buffer is dirty.
+    buffer_type msg_buffer;
+    msg_buffer.assign(pBuffer, n);
 
+    pack_message< message_type, 
+                  buffer_type,
+                  size_trait
+                >(values(), msg_buffer);
+  }
 
   // Give friendship to message instantiations of other types for conversion.
   // Conversion between ByteOrderT has been provided.
@@ -355,11 +345,6 @@ private:
 /// 
 /// @return       The number of bytes that are used to pack this message.
 ///
-//template< class MessageT,
-//          class ByteOrderT,
-//          class StorageT,
-//          bool  has_dynamic
-//        >
 template< class HgMessageT,
           bool  has_dynamic
         >
@@ -396,16 +381,12 @@ template< class HgMessageT >
 struct Msg_size<HgMessageT, false>
 {
   typedef HgMessageT message_t;
-//  typedef Message<MessageT, ByteOrderT, StorageT>       message_t;
 
   static size_t calculate(const message_t &msg)
   {
     return Hg::SizeOf<typename HgMessageT::format_type>::value;
   }
 };
-
-
-
 
 } // namespace Hg
 

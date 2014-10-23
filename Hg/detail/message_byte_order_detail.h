@@ -49,17 +49,18 @@ class Message;
 ///
 template< typename MessageT,
           typename FromT,
+          typename StorageT,
           typename ToT
         >
-Hg::Message<MessageT, ToT>
-  convert_byte_order(const Hg::Message<MessageT, FromT>& from)
+Hg::Message<MessageT, ToT, StorageT>
+  convert_byte_order(const Hg::Message<MessageT, FromT, StorageT>& from)
 {
   typedef typename 
     MessageT::format_type                         format_type;
   // Initialize a functor to convert data to network byte order,
   // then call this operation for each element in the defined message.
-  detail::ByteOrderConversionFunctor< Hg::Message< MessageT, FromT>,
-                                      Hg::Message< MessageT, ToT>  >  ftor(from);  
+  detail::ByteOrderConversionFunctor< Hg::Message< MessageT, FromT, StorageT>,
+                                      Hg::Message< MessageT, ToT, StorageT>  >  ftor(from);  
   Hg::ForEachType < 0,
                     Hg::length<format_type>::value - 1,
                     format_type
@@ -78,6 +79,7 @@ Hg::Message<MessageT, ToT>
 ///                           the most appropriate construct to convert byte-order.
 /// 
 template< typename T, 
+          typename StorageT,
           typename TraitT
         >
 struct ConvertEndianess
@@ -95,8 +97,10 @@ struct ConvertEndianess
 /// @tparam T       [typename] The value_type for this specialization
 ///                 is actually a format_type for the nested structure.
 /// 
-template <typename T>
-struct ConvertEndianess<T, nested_trait>
+template< typename T,
+          typename StorageT
+        >
+struct ConvertEndianess<T, StorageT, nested_trait>
 {
   template <typename NestedValueT>
   void operator()(const NestedValueT &input,
@@ -109,11 +113,11 @@ struct ConvertEndianess<T, nested_trait>
     typedef Hg::HostByteOrder   to_order;
 
     // Construct a shallow message wrapper around the nested data.
-    Hg::Message<T, from_order>  from;
+    Hg::Message<T, from_order, StorageT>  from;
     from = input;
 
     // Pass this message to be byte-order swapped.
-    output = convert_byte_order<T, from_order, to_order>(from).values();
+    output = convert_byte_order<T, from_order, StorageT, to_order>(from).values();
   }
 };
 
@@ -122,8 +126,10 @@ struct ConvertEndianess<T, nested_trait>
 ///
 /// @tparam T       [typename] The value_type for this specialization.
 /// 
-template <typename T>
-struct ConvertEndianess<T, array_trait>
+template< typename T,
+          typename StorageT
+        >
+struct ConvertEndianess<T, StorageT, array_trait>
 {
   template <typename ArrayValueT>
   void operator()(const ArrayValueT &input,
@@ -139,6 +145,7 @@ struct ConvertEndianess<T, array_trait>
     // Convert with the byte-order conversion functors to detect and handle
     // any nested array items, or arrays of arrays etc...
     ConvertEndianess< value_type, 
+                      StorageT,
                       type_trait
                     > swap_order;
     // Perform a conversion on every item in the array.
@@ -154,8 +161,10 @@ struct ConvertEndianess<T, array_trait>
 ///
 /// @tparam T       [typename] The value_type for this specialization.
 /// 
-template <typename T>
-struct ConvertEndianess<T, vector_trait>
+template< typename T,
+          typename StorageT
+        >
+struct ConvertEndianess<T, StorageT, vector_trait>
 {
   template <typename VectorValueT>
   void operator()(const VectorValueT &input,
@@ -171,6 +180,7 @@ struct ConvertEndianess<T, vector_trait>
     // Convert with the byte-order conversion functors to detect and handle
     // any nested array items, or arrays of arrays etc...
     ConvertEndianess< value_type,
+                      StorageT,
                       type_trait
                     > swap_order;
     // Allocate space for the output vector.
@@ -204,6 +214,8 @@ struct ByteOrderConversionFunctor
     from_message_type::message_type     message_type;
   typedef typename
     message_type::format_type           format_type;
+  typedef typename
+    from_message_type::storage_type     storage_type;
 
   //  Data Members *************************************************************
   from_message_type input;
@@ -217,17 +229,6 @@ struct ByteOrderConversionFunctor
   explicit
     ByteOrderConversionFunctor(const from_message_type& rhs)
     : input(rhs)
-  { }
-
-  //  **************************************************************************
-  /// Constructor initializes the functor with both input and output data.
-  ///
-  /// @param rhs      The MsgBuffer that contains the input data.
-  /// 
-  ByteOrderConversionFunctor( const from_message_type&  from,
-                                    to_message_type     to)
-    : input(from)
-    , output(to)
   { }
 
   //  **************************************************************************
@@ -259,6 +260,7 @@ struct ByteOrderConversionFunctor
     // Create an instance of a selection template that will choose between
     // nested processing, and value conversion.
     ConvertEndianess< value_type,
+                      storage_type,
                       typename DeduceTypeTrait<value_type>::type
                     > swap_order;
     swap_order(from_value, to_value);
@@ -294,18 +296,6 @@ struct ByteOrderConversionFunctor <MessageT, MessageT>
   explicit
     ByteOrderConversionFunctor(const from_message_type& from)
     : input(from)
-  { }
-
-  //  **************************************************************************
-  /// Constructor initializes the functor with both input and output data.
-  ///
-  /// @param from      The message format that contains the input data.
-  /// @param to        The message format that represents the initial output data.
-  /// 
-  ByteOrderConversionFunctor( const from_message_type&  from,
-                                    to_message_type)
-    : input(from)
-    , output(from)
   { }
 
   //  **************************************************************************

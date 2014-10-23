@@ -125,13 +125,14 @@ int main(int argc, char* argv[])
   TimeValues hgTime;
   RunTest<UsingHg>(data, hgTime);
   cout << "Test completed\n" << endl;
-  DisplayResults("Hg:     ", hgTime);
 
   cout << "Running memcpy benchmark:" << endl;
 
   TimeValues memcpyTime;
   RunTest<UsingMemcpy>(data, memcpyTime);
   cout << "Test completed\n" << endl;
+
+  DisplayResults("Hg:     ", hgTime);
 
   // Display the tabulated results.
   DisplayResults("memcpy: ", memcpyTime);

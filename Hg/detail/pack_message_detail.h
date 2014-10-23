@@ -157,6 +157,39 @@ struct PackMessageWorker< Idx,
   { }
 };
 
+//  ****************************************************************************
+//  Writes the values of a message structure into a packed memory buffer.
+// 
+//  @param msg_values         The message structure that contains the values
+//                            to be written.
+//  @param fixed_buffer       A Fixed-size MessageBuffer that will accept the
+//                            output text from the packed message.
+// 
+//  @return                   True on success, false otherwise.
+// 
+template< typename MessageT,
+          typename BufferT
+        >
+bool
+  pack_fixed_size_message(MessageT& msg_values,
+                          BufferT & fixed_buffer,
+                          const static_size_trait&)
+{
+  if (fixed_buffer.size() < Hg::SizeOf<typename MessageT::format_type>::value)
+  {
+    return false;
+  }
+
+  detail::PackMessageWorker < 0, 
+                              Hg::length<typename MessageT::format_type>::value,
+                              MessageT,
+                              BufferT
+                            > pack;
+  pack(msg_values, fixed_buffer);
+
+  return true;
+}
+
 
 //  ****************************************************************************
 //  Writes the values of a message structure into a packed memory buffer.

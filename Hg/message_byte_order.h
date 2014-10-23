@@ -19,6 +19,9 @@ namespace Hg
 /// @param T        [typename] The Hg::Message format definition of the 
 ///                 message to be converted.
 /// @param from     The message object to convert from.
+///                 Ownership of the memory that belongs to the input type will 
+///                 be transferred to the returned instance, and the conversion 
+///                 will occur in-place.
 ///                           
 /// @return         A Hg::Message object using the same format and data type as the 
 ///                 input buffer will be returned. The data in the buffer will 
@@ -29,11 +32,13 @@ namespace Hg
 ///
 template< typename T >
 Message<typename T::message_type,
-        NetByteOrder>
-  to_network(const T& from)
+        NetByteOrder,
+        typename T::storage_type>
+  to_network(T& from)
 {
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
+                                      typename T::storage_type,
                                       NetByteOrder
                                     >(from);
 }
@@ -44,6 +49,9 @@ Message<typename T::message_type,
 /// @param T        [typename] The Hg::Message format definition of the 
 ///                 message to be converted.
 /// @param from     The message object to convert from.
+///                 Ownership of the memory that belongs to the input type will 
+///                 be transferred to the returned instance, and the conversion 
+///                 will occur in-place.
 ///                           
 /// @return         A Hg::Message object using the same format and data type as the 
 ///                 input buffer will be returned. The data in the buffer will 
@@ -54,11 +62,13 @@ Message<typename T::message_type,
 ///
 template< typename T >
 Message<typename T::message_type,
-        HostByteOrder>
-  to_host(const T& from)
+        HostByteOrder,
+        typename T::storage_type>
+  to_host(T& from)
 {
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
+                                      typename T::storage_type,
                                       HostByteOrder
                                     >(from);
 }
@@ -69,6 +79,9 @@ Message<typename T::message_type,
 /// @param T        [typename] The Hg::Message format definition of the 
 ///                 message to be converted.
 /// @param from     The message object to convert from.
+///                 Ownership of the memory that belongs to the input type will 
+///                 be transferred to the returned instance, and the conversion 
+///                 will occur in-place.
 ///                           
 /// @return         A Hg::Message object using the same format and data type as the 
 ///                 input buffer will be returned. The data in the buffer will 
@@ -79,11 +92,13 @@ Message<typename T::message_type,
 ///
 template< typename T >
 Message<typename T::message_type,
-        BigEndian>
-  to_big_endian(const T& from)
+        BigEndian,
+        typename T::storage_type>
+  to_big_endian(T& from)
 {
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
+                                      typename T::storage_type,
                                       BigEndian
                                     >(from);
 }
@@ -94,6 +109,9 @@ Message<typename T::message_type,
 /// @param T        [typename] The Hg::Message format definition of the 
 ///                 message to be converted.
 /// @param from     The message object to convert from.
+///                 Ownership of the memory that belongs to the input type will 
+///                 be transferred to the returned instance, and the conversion 
+///                 will occur in-place.
 ///                           
 /// @return         A Hg::Message object using the same format and data type as the 
 ///                 input buffer will be returned. The data in the buffer will 
@@ -104,11 +122,14 @@ Message<typename T::message_type,
 ///
 template< typename T >
 Message<typename T::message_type,
-        LittleEndian>
-  to_little_endian(const T& from)
+        LittleEndian,
+        typename T::storage_type>
+  to_little_endian(T& from)
 {
+  // convert the values of the message parameters.
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
+                                      typename T::storage_type,
                                       LittleEndian
                                     >(from);
 }

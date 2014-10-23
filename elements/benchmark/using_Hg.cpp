@@ -8,14 +8,15 @@
 //  Includes *******************************************************************
 #include <using_Hg.h>
 #include <Hg.h>
+#include <Hg/static_msg_buffer.h>
 
 namespace alchemy
 {
 namespace benchmark
 {
 
-typedef Hg::Message<Hg::Basic_HgFormat>                    HgBasicHost;
-typedef Hg::Message<Hg::Basic_HgFormat, Hg::NetByteOrder>  HgBasicNet;
+typedef Hg::Message<Hg::Basic_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgBasicHost;
+typedef Hg::Message<Hg::Basic_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgBasicNet;
 
 
 void UsingHg::test_basic(DataBuffer &data,
@@ -28,9 +29,10 @@ void UsingHg::test_basic(DataBuffer &data,
   {
     HgBasicHost host((HgBasicHost::data_type*)data.GetBytes(len), len);  
 
-    HgBasicNet  net = Hg::to_network(host);
+    //HgBasicNet  net = Hg::to_network(host);
+    HgBasicNet  net;//((HgBasicHost::data_type*)data.GetBytes(len), len);
 
-//    ::memcpy(out.GetBytes(len), net.data(), len);
+    net.data((unsigned char*)out.GetBytes(len), len);
   }
 }
 

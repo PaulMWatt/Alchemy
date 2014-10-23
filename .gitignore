@@ -64,3 +64,4 @@ U232/HgBasicTestSuite/Src/Generated/HgBasicTestSuiteRunner.cpp
 *.exp
 U232/HgBasicTestSuite/Debug/bin/HgBasicTestSuite
 >>>>>>> origin/master
+*.ipch

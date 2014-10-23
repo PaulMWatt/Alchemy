@@ -1,44 +1,34 @@
-/// @file msg_buffer.h
+/// @file static_msg_buffer.h
 /// 
-/// A packet buffer structure suitable for processing network
-/// and interprocess communication messages.
-///           
+/// A fixed-size messagge buffer that uses memory allocated by the user.
+/// This message buffer is compatible with the Hg message.
+///
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
-#ifndef MSG_BUFFER_H_INCLUDED
-#define MSG_BUFFER_H_INCLUDED
+#ifndef STATIC_MSG_BUFFER_H_INCLUDED
+#define STATIC_MSG_BUFFER_H_INCLUDED
 //  Includes *******************************************************************
-#include <Pb/meta_fwd.h>
-#include <Pb/byte_order.h>
-#include <Pb/meta_foreach.h>
-#include <storage_policy.h>
-
-#include <cstddef>
-#include <algorithm>
-
+#include <Hg/msg_buffer.h>
+#include <Hg/static_storage_policy.h>
 
 namespace Hg
 {
 
 //  ****************************************************************************
-/// MsgBuffer Template Definition. 
-/// This abstracts the behavior of the buffer with respect to the Byte-Order of the message.
-/// 
-/// @tparam StorageT          [typename] The storage_t that manages the
-///                           type of object used in the underlying buffer for 
-///                           the packet data. This policy also provides 
-///                           the capabilities to read/write to the buffer.
+/// (Static) MsgBuffer Template Definition. 
+/// This class is a specialization of the template MsgBuffer, and uses
+/// a static_storage_policy.
 ///
-template< typename StorageT>
-class MsgBuffer
+template<>
+class MsgBuffer <BufferedStaticStoragePolicy>
 {
 public:
   //  Typedefs *****************************************************************
-  typedef StorageT                                          storage_type;
-  typedef typename storage_type::data_type                  data_type;
-  typedef typename storage_type::s_pointer                  s_pointer;
-  typedef typename storage_type::w_pointer                  w_pointer;
+  typedef BufferedStaticStoragePolicy                       storage_type;
+  typedef storage_type::data_type                           data_type;
+  typedef storage_type::s_pointer                           s_pointer;
+  typedef storage_type::w_pointer                           w_pointer;
 
   typedef data_type*                                        pointer;
   typedef const data_type*                                  const_pointer;
@@ -48,67 +38,11 @@ public:
   /// Default Constructor
   ///
   MsgBuffer()
-    : m_offset(0)
+    : m_pData(0)
+    , m_size(0)
+    , m_offset(0)
   {
     // No current operations
-  }
-
-  //  **************************************************************************
-  /// Fill Constructor
-  ///
-  /// @param n      The number of bytes to allocate for the buffer.
-  /// @param val    The value to fill each item in the allocated buffer if supplied.
-  ///      
-  explicit 
-    MsgBuffer(size_t n)
-      : m_data(n)
-      , m_offset(0)
-  {
-    // No current operations
-  }
-
-  MsgBuffer(size_t n, byte_t val)
-    : m_offset(0)
-  {
-    m_data.resize(n, val);
-  }
-
-
-  //  **************************************************************************
-  /// Copy Constructor
-  ///
-  /// @param rhs    The input object to be copied.
-  /// @note         This object's copy constructor only performs a shallow 
-  ///               copy of the message buffer. Use the clone operation
-  ///               to make a separate copy of the buffer.
-  ///               
-  MsgBuffer(const MsgBuffer& rhs)
-    : m_offset(rhs.offset())
-  {
-    assign(rhs.data(), rhs.size());
-  }
-
-  //  **************************************************************************
-  /// Destructor
-  ///
-  ~MsgBuffer()
-  {
-    m_data.clear();
-  }
-
-  //  Operators ****************************************************************
-  //  **************************************************************************
-  /// Assignment Operator
-  ///
-  /// @param rhs    (right-hand side) The input object to be copied.
-  /// @note         This object's copy constructor only performs a shallow 
-  ///               copy of the message buffer. Use the clone operation
-  ///               to make a separate copy of the buffer.
-  ///               
-  MsgBuffer& operator=(const MsgBuffer& rhs)
-  {
-    assign(rhs.data(), rhs.size());
-    return *this;
   }
 
   //  Status *******************************************************************
@@ -120,7 +54,8 @@ public:
   ///
   bool empty() const
   {
-    return m_data.empty();
+    return !m_pData
+        || !size();
   }
 
   //  **************************************************************************
@@ -131,7 +66,7 @@ public:
   ///
   size_t capacity() const
   {
-    return  m_data.capacity();
+    return  size();
   }
 
   //  **************************************************************************
@@ -142,7 +77,7 @@ public:
   ///
   size_t size() const
   {
-    return  m_data.size();
+    return  m_size;
   }
 
   //  Methods ******************************************************************
@@ -151,26 +86,9 @@ public:
   ///
   void clear()
   {
-    m_data.clear();
+    m_pData  = 0;
+    m_size   = 0;
     m_offset = 0;
-  }
-
-  // TODO: When offsets are considered, how should this affect items like resize.
-  //  **************************************************************************
-  /// Resizes the buffer to contain n elements.
-  ///
-  /// @param n        The number of elements to allocate for the buffer.
-  /// @param val      Optional value to be copied into each element allocated.
-  ///
-  void resize(size_t n)
-  {
-    m_data.resize(n);
-  }
-
-  //  **************************************************************************
-  void resize(size_t n, byte_t val)
-  {
-    m_data.resize(n, val);
   }
 
   //  **************************************************************************
@@ -182,12 +100,7 @@ public:
   ///
   const_pointer data() const
   {
-    if (m_data.empty())
-    {
-      return 0;
-    }
-
-    return const_cast<const_pointer>(&m_data[0]);
+    return m_pData;
   }
 
   //  **************************************************************************
@@ -195,7 +108,7 @@ public:
   /// 
   void zero()
   {
-    std::fill(m_data.begin(), m_data.end(), 0);
+    std::fill(m_pData, m_pData + size(), 0);
   }
 
   //  **************************************************************************
@@ -208,19 +121,8 @@ public:
   ///
   void assign(const_pointer pBuffer, size_t n)
   {
-    // Verify inputs.
-    if ( !pBuffer
-      || 0 == n)
-    {
-      m_data.clear();
-      return;
-    }
-
-    // Assign the input values to the internal buffer.
-    const_pointer pFirst = pBuffer;
-    const_pointer pLast  = &pBuffer[n];
-
-    m_data.assign(pFirst, pLast);
+    m_pData = const_cast<pointer>(pBuffer);
+    m_size  = n;
   }
   
   //  **************************************************************************
@@ -438,40 +340,38 @@ public:
     return bytes_written;
   }
 
-  //  **************************************************************************
-  /// Creates a full copy of the message buffer.
-  /// 
-  /// @return       A deep copy of this objects packet buffer. 
-  /// 
-  /// @note         clone performs a buffer allocation according to the 
-  ///               storage policy provided to the MsgBuffer. Therefore a
-  ///               new memory buffer is created for the cloned copy to exist 
-  ///               within.
-  ///
-  MsgBuffer clone() const
-  {
-    MsgBuffer retBuffer;
-    if (empty())
-    {
-      return retBuffer;
-    }
+  // TODO: This could be useful, but not with the current organization of memory buffers.
+  ////  **************************************************************************
+  ///// Creates a full copy of the message buffer.
+  ///// 
+  ///// @return       A deep copy of this objects packet buffer. 
+  ///// 
+  ///// @note         clone performs a buffer allocation according to the 
+  /////               storage policy provided to the MsgBuffer. Therefore a
+  /////               new memory buffer is created for the cloned copy to exist 
+  /////               within.
+  /////
+  //MsgBuffer clone() const
+  //{
+  //  MsgBuffer retBuffer;
+  //  if (empty())
+  //  {
+  //    return retBuffer;
+  //  }
 
-    // Create a new buffer to accept a clone of the data.
-    // Allocate a buffer that matches this buffers capacity.
-    retBuffer.assign(data(), size());
-    retBuffer.m_offset    = m_offset;
+  //  // Create a new buffer to accept a clone of the data.
+  //  // Allocate a buffer that matches this buffers capacity.
+  //  retBuffer.assign(data(), size());
+  //  retBuffer.m_offset    = m_offset;
 
-    return retBuffer;
-  }
+  //  return retBuffer;
+  //}
 
 private:
-  //  Typedefs *****************************************************************
-  typedef std::vector<data_type>          DataVector;
-
-
   // Private Member Data *******************************************************
-  DataVector        m_data;               ///< The storage medium managed by
-                                          ///  this message buffer.
+  pointer           m_pData;              ///< A pointer to the static memory 
+                                          ///  buffer supplied by the user. 
+  size_t            m_size;               ///< The size if the buffer.
   std::ptrdiff_t    m_offset;             ///< The number of bytes from the 
                                           ///  beginning of the buffer that 
                                           ///  all data reads should occur from.
@@ -479,31 +379,19 @@ private:
   //  **************************************************************************
   /// Provides access to the packed memory buffer.
   /// 
-  /// @return       Returns a constant pointer to the buffer that contains the 
-  ///               packed memory.
+  /// @return       A pointer to the buffer that contains the packed memory.
   ///               0 is returned if there is no memory associated with the buffer.
   ///
   pointer raw_data()
   {
-    return &m_data[0];
+    return m_pData;
   }
-
-
 
   // Let all message buffer objects be friends for data transfer.
   template< typename T>
   friend
   class MsgBuffer;
 };
-
-
-//  ****************************************************************************
-template <typename pkt_buffer_t>
-pkt_buffer_t& make_nil_buffer()
-{
-  static pkt_buffer_t nilBuffer;
-  return nilBuffer;
-}
 
 } // namespace Hg
 

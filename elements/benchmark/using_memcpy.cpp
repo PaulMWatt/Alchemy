@@ -79,7 +79,7 @@ void UsingMemcpy::test_basic( DataBuffer &data,
     Basic net;
     BasicToNetwork(host, net);
 
-//    WriteBasic(out, net);
+    WriteBasic(out, net);
   }
 }
 

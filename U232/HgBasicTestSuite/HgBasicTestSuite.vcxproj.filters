@@ -263,6 +263,12 @@
     <ClInclude Include="..\..\Pb\type_node.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Hg\static_msg_buffer.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\static_storage_policy.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgBasicTestSuiteRunner.cpp">

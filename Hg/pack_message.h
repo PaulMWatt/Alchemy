@@ -72,6 +72,28 @@ size_t pack_message(MessageT &msg_values,
 }
 
 
+//  ****************************************************************************
+/// Writes the values of a message into a packed memory buffer.
+///
+/// @param msg_values         The message structure that contains the values
+///                           to be written.
+/// @param size               The calculated size required for this message.
+///
+/// @return                   The buffer that has been allocated to store the 
+///                           message.
+///
+template< class MessageT,
+          class BufferT,
+          class SizeTraitT
+        >
+bool
+  pack_message( MessageT& msg_values,
+                BufferT & fixed_buffer)
+{
+    return   detail::pack_fixed_size_message( msg_values,
+                                              fixed_buffer,
+                                              SizeTraitT());
+}
 
 
 } // namespace Hg
