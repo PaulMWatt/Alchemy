@@ -56,15 +56,12 @@ void RunTest(DataBuffer &data, TimeValues &times)
   T::test_basic(data, output);
   times.push_back(get_time());
 
-  //int v = output.Value();
-  //X.push_back(v);
-
   // Run and record the end of the PackedBits test.
   data.Reset();
   output.Restart();
 
   times.push_back(get_time());
-  T::test_packed_bits(data);
+  T::test_packed_bits(data, output);
   times.push_back(get_time());
 
   // Run and record the end of the Unaligned test.
@@ -72,7 +69,7 @@ void RunTest(DataBuffer &data, TimeValues &times)
   output.Restart();
 
   times.push_back(get_time());
-  T::test_unaligned(data);
+  T::test_unaligned(data, output);
   times.push_back(get_time());
 
   // Run and record the end of the Complex test.
@@ -80,10 +77,8 @@ void RunTest(DataBuffer &data, TimeValues &times)
   output.Restart();
 
   times.push_back(get_time());
-  T::test_complex(data);
+  T::test_complex(data, output);
   times.push_back(get_time());
-
-//  std::cout << "X" << X[0] << std::endl;
 }
 
 

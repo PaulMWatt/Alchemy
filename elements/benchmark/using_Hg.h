@@ -23,13 +23,16 @@ struct UsingHg
                     DataBuffer &out);
 
   static 
-    void test_packed_bits(DataBuffer &data);
+    void test_packed_bits(DataBuffer &data,
+                          DataBuffer &out);
 
   static 
-    void test_unaligned(DataBuffer &data);
+    void test_unaligned(DataBuffer &data,
+                        DataBuffer &out);
 
   static 
-    void test_complex(DataBuffer &data);
+    void test_complex(DataBuffer &data,
+                      DataBuffer &out);
 
 };
 

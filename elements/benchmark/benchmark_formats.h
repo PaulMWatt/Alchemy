@@ -16,6 +16,9 @@ namespace alchemy
 namespace benchmark
 {
 
+#pragma pack(push)
+#pragma pack(1)
+
 //  ****************************************************************************
 struct Basic
 {
@@ -58,7 +61,7 @@ struct Complex
   PackedBits      bits;
   Unaligned       unaligned;
 };
-
+#pragma pack(push)
 
 } // benchmark
 } // alchemy
