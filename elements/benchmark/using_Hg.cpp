@@ -30,7 +30,7 @@ void UsingHg::test_basic(DataBuffer &data,
   size_t len   = Hg::SizeOf<Hg::Basic>::value;
   size_t count = data.Size() / len;
 
-  cout << "basic count: "     << count << endl;
+  cout << "basic size:      " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     HgBasicHost host((HgBasicHost::data_type*)data.GetBytes(len), len);  
@@ -48,10 +48,10 @@ typedef Hg::Message<Hg::PackedBits_HgFormat, Hg::NetByteOrder, Hg::BufferedStati
 void UsingHg::test_packed_bits( DataBuffer &data,
                                 DataBuffer &out)
 {
-  size_t len   = Hg::SizeOf<Hg::Basic>::value;
+  size_t len   = Hg::SizeOf<Hg::PackedBits>::value;
   size_t count = data.Size() / len;
 
-  cout << "packed count: "    << count << endl;
+  cout << "packed size:     " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     HgPackedHost host((HgPackedHost::data_type*)data.GetBytes(len), len);  
@@ -73,7 +73,7 @@ void UsingHg::test_unaligned( DataBuffer &data,
   size_t len   = Hg::SizeOf<Hg::Unaligned>::value;
   size_t count = data.Size() / len;
 
-  cout << "unaligned count: " << count << endl;
+  cout << "unaligned size:  " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     HgUnalignedHost host((HgUnalignedHost::data_type*)data.GetBytes(len), len);  
@@ -92,10 +92,15 @@ typedef Hg::Message<Hg::Complex_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticSt
 void UsingHg::test_complex(DataBuffer &data,
                            DataBuffer &out)
 {
-  size_t len   = Hg::SizeOf<Hg::Complex>::value;
+  // This format does not work because the typelist has no size
+  // and the std::array definition creates a basic array.
+  //size_t len   = Hg::SizeOf<Hg::Complex>::value;
+
+  // The post processed version creates a substitution and takes this into account.
+  size_t len   = HgComplexHost::k_size;
   size_t count = data.Size() / len;
 
-  cout << "complex count: "   << count << endl;
+  cout << "complex size:    " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     HgComplexHost host((HgComplexHost::data_type*)data.GetBytes(len), len);  

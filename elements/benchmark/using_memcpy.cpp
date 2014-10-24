@@ -53,6 +53,36 @@ void BasicToNetwork(const alchemy::benchmark::Basic &host,
 }
 
 //  ****************************************************************************
+void ReadPacked(alchemy::benchmark::DataBuffer &data,
+                alchemy::benchmark::PackedBits &msg)
+{
+  // Read the basic field data in.
+  ::memcpy(&msg.set_a, data.GetBytes(sizeof(int32_t)),  sizeof(int32_t));
+  ::memcpy(&msg.set_b, data.GetBytes(sizeof(uint16_t)), sizeof(uint16_t));
+  ::memcpy(&msg.set_c,  data.GetBytes(sizeof(uint8_t)),  sizeof(uint8_t));
+}
+
+//  ****************************************************************************
+void WritePacked( alchemy::benchmark::DataBuffer &data,
+                  alchemy::benchmark::PackedBits &msg)
+{
+  // Read the basic field data in.
+  ::memcpy(data.GetBytes(sizeof(uint32_t)),&msg.set_a, sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint16_t)),&msg.set_b, sizeof(uint16_t));
+  ::memcpy(data.GetBytes(sizeof(uint8_t)), &msg.set_c, sizeof(uint8_t));
+}
+
+//  ****************************************************************************
+void PackedToNetwork(const alchemy::benchmark::PackedBits &host,
+                           alchemy::benchmark::PackedBits &net)
+{
+  // Convert the necessary terms to network byte order.
+  net.set_a = htonl(host.set_a);
+  net.set_b = htons(host.set_b);
+  net.set_c = host.set_c;
+}
+
+//  ****************************************************************************
 void ReadUnaligned( alchemy::benchmark::DataBuffer &data,
                     alchemy::benchmark::Unaligned  &msg)
 {
@@ -158,7 +188,7 @@ void UsingMemcpy::test_basic( DataBuffer &data,
   size_t len   = Hg::SizeOf<alchemy::benchmark::Basic>::value;
   size_t count = data.Size() / len;
 
-  cout << "basic count: "     << count << endl;
+  cout << "basic size:      " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     Basic host;
@@ -175,6 +205,23 @@ void UsingMemcpy::test_basic( DataBuffer &data,
 void UsingMemcpy::test_packed_bits(DataBuffer &data,
                                    DataBuffer &out)
 {
+  using alchemy::benchmark::DataBuffer;
+  using alchemy::benchmark::PackedBits;
+
+  size_t len   = Hg::SizeOf<alchemy::benchmark::PackedBits>::value;
+  size_t count = data.Size() / len;
+
+  cout << "packed size:     " << len   << ", count; " << count << endl;
+  for (size_t index = 0; index < count; ++index)
+  {
+    PackedBits host;
+    ReadPacked(data, host);
+
+    PackedBits net;
+    PackedToNetwork(host, net);
+
+    WritePacked(out, net);
+  }
 
 }
 
@@ -188,7 +235,7 @@ void UsingMemcpy::test_unaligned( DataBuffer &data,
   size_t len   = Hg::SizeOf<alchemy::benchmark::Unaligned>::value;
   size_t count = data.Size() / len;
 
-  cout << "unaligned count: " << count << endl;
+  cout << "unaligned size:  " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     Unaligned host;
@@ -210,7 +257,7 @@ void UsingMemcpy::test_complex(DataBuffer &data,
 
   size_t len   = Hg::SizeOf<alchemy::benchmark::Complex>::value;
   size_t count = data.Size() / len;
-  cout << "complex count:   " << count << endl;
+  cout << "complex size:    " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     Complex host;
