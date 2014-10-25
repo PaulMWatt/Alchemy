@@ -224,10 +224,6 @@
 					RelativePath="..\..\Hg.h"
 					>
 				</File>
-				<File
-					RelativePath="..\..\storage_policy.h"
-					>
-				</File>
 				<Filter
 					Name="Pb"
 					>
@@ -397,6 +393,18 @@
 					</File>
 					<File
 						RelativePath="..\..\Hg\pack_message.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\Hg\static_msg_buffer.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\Hg\static_storage_policy.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\storage_policy.h"
 						>
 					</File>
 					<File

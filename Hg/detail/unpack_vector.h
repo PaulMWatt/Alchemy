@@ -317,7 +317,7 @@ size_t DeserializeInBulk( std::vector<T,A> &value,
   deserializer_t  deserializer;
   size_t          bytes_written = 0;
   
-  // TODO: Return and add this optimization for bulk reads if possible.
+  // TODO: (Optimazation) Return and add this optimization for bulk reads if possible.
   // Process each item individually.
   for (size_t index = 0; index < count; ++index)
   {
@@ -495,7 +495,7 @@ struct UnpackDatum< IdxT,
     size_t bytes_read = 
       DeserializeVector(value, count, buffer, offset);
 
-    // TODO: Look into reading directly into the vector without the copy.
+    // TODO: (Optimization) Look into reading directly into the vector without the copy.
     msg.template FieldAt<IdxT>().set(value);
 
     dynamic_offset += bytes_read;

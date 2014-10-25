@@ -1,4 +1,4 @@
-/// @file detail/pack_message_detail.h
+/// @file Hg/detail/pack_message_detail.h
 /// 
 /// The primary implementation templates for packing Hg Message buffers.
 /// Specializations for more complex types such as nested messages and vectors

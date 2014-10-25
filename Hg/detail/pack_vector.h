@@ -69,9 +69,6 @@ struct Serializer <VectorT, BufferT, fundamental_trait>
 
   typedef fundamental_trait             data_type_trait;
 
-  // TODO: These types should appear in this version:
-  //       - fundamental_trait
-
   //  **************************************************************************
   size_t Write( vector_type   &value, 
                 buffer_type   &buffer,
@@ -317,7 +314,7 @@ size_t SerializeInBulk( const std::vector<T,A>  &value,
                       data_type_trait>  serializer;
 
   size_t bytes_written = 0;
-// TODO: Return and add this optimization for bulk writes for types that are possible.
+// TODO: (Optimization) Return and add this optimization for bulk writes for types that are possible.
   // Process each item individually.
   for (size_t index = 0; index < value.size(); ++index)
   {

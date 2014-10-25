@@ -364,7 +364,7 @@ size_t DeserializeInBulk( std::array<T,N> &value,
   deserializer_t    deserializer;
   size_t bytes_written = 0;
 
-  // TODO: Return and add this optimization for bulk reads if possible.
+  // TODO: (Optimiztion) Return and add this optimization for bulk reads if possible.
   // Process each item individually.
   for (size_t index = 0; index < k_count; ++index)
   {
@@ -534,7 +534,7 @@ struct UnpackDatum< IdxT,
     size_t bytes_read = 
       DeserializeArray(value, buffer, offset);
 
-    // TODO: Look into reading directly into the array without the copy.
+    // TODO: (Optimization) Look into reading directly into the array without the copy.
     msg.template FieldAt<IdxT>().set(value);
 
     dynamic_offset += bytes_read;

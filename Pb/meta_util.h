@@ -103,22 +103,6 @@ struct one_or_zero<false>
   : std::integral_constant<int, 0>
 { };
 
-////  ***************************************************************************
-///// Definition to simplify the extraction of the value_type for a data entry.
-/////
-//template <typename T, bool is_container = bitfield_value<T>::value >
-//struct value_type_of
-//  : instance_of<T>
-//{ };
-//
-////  ***************************************************************************
-///// Definition to simplify the extraction of the value_type for a data entry.
-/////
-//template <typename T>
-//struct value_type_of<T, true>
-//  : instance_of<typename T::value_type>
-//{ };
-
 //  ***************************************************************************
 /// Static Assertion Base Template to verify type constraints for an object. 
 ///               

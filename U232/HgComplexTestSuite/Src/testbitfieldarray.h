@@ -29,7 +29,7 @@
 //  Includes *******************************************************************
 #include <cxxtest/TestSuite.h>
 #include <alchemy.h>
-#include <storage_policy.h>
+#include <Hg/storage_policy.h>
 #include <Pb/bit_field/bit_field_array.h>
 
 #include <test_helper.h>

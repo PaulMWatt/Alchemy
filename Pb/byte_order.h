@@ -1,4 +1,4 @@
-/// @file meta/byte_order.h
+/// @file Pb/byte_order.h
 /// 
 /// Defines constructs that help manage byte-order conversion.
 /// 
@@ -53,12 +53,12 @@ namespace Hg
 /// 
 enum Endianess
 {
-  k_big_endian    = BL_BIG_ENDIAN,      ///< Indicates Big-Endian byte-order
-  k_little_endian = BL_LITTLE_ENDIAN    ///< Indicates Little-Endian byte-order
+  k_big_endian    = ALCHEMY_BIG_ENDIAN,      ///< Indicates Big-Endian byte-order
+  k_little_endian = ALCHEMY_LITTLE_ENDIAN    ///< Indicates Little-Endian byte-order
 };
 
 ///< Constant indicates machine endianess.
-const Endianess k_endianess = Endianess(BL_ENDIANESS); 
+const Endianess k_endianess = Endianess(ALCHEMY_ENDIANESS); 
 
 namespace convert
 {

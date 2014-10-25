@@ -10,6 +10,17 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\benchmark\benchmark.cpp" />
+    <ClCompile Include="..\..\benchmark\using_Hg.cpp" />
+    <ClCompile Include="..\..\benchmark\using_memcpy.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\benchmark\benchmark_formats.h" />
+    <ClInclude Include="..\..\benchmark\benchmark_util.h" />
+    <ClInclude Include="..\..\benchmark\using_Hg.h" />
+    <ClInclude Include="..\..\benchmark\using_memcpy.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{28141038-3B75-4A64-88AD-218FC21A2E11}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -52,7 +63,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;../../</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../benchmark/;../../../</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -69,7 +80,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./;../../</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../benchmark/;../../../</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <ExceptionHandling>false</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -79,18 +94,6 @@
       <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="benchmark.cpp" />
-    <ClCompile Include="using_Hg.cpp" />
-    <ClCompile Include="using_memcpy.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="benchmark_formats.h" />
-    <ClInclude Include="benchmark_util.h" />
-    <ClInclude Include="using_Hg.h" />
-    <ClInclude Include="using_memcpy.h" />
-    <ClInclude Include="using_typecasts.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

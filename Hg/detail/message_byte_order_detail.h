@@ -1,4 +1,4 @@
-/// @file message_byte_order_detail.h
+/// @file Hg/detail/message_byte_order_detail.h
 /// 
 /// Internal details for the implementation of byte-order conversion of messages.
 /// 

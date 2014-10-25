@@ -1,4 +1,4 @@
-/// @file message_byte_order.h
+/// @file Hg/message_byte_order.h
 /// 
 /// An extraction of the Network to Host conversion functions.
 /// 

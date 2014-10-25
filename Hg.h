@@ -147,30 +147,12 @@ public:
   //  **************************************************************************
   /// Assignment Operator
   /// 
-  /// @param rhs              The object from which data is assigned to this.
-  ///
-  Message& operator=(const Message& rhs)
-  {
-    if (this != &rhs)
-    {
-      m_msgBuffer = rhs.m_msgBuffer;
-      *static_cast<message_type*>(this) = rhs;
-    }
-
-    return *this;
-  }
-
-  //  **************************************************************************
-  /// Assignment Operator
-  /// 
   /// @param rhs              Basic message values to initialize this instance.
   ///
   Message& operator=(const message_type& rhs)
   {
     if (this != &rhs)
     {
-      // TODO: This no longer makes sense if the message buffer is not a function pointer.
-      //m_spMsgBuffer.reset();
       *static_cast<message_type*>(this) = rhs;
     }
 
@@ -305,8 +287,6 @@ private:
   //  **************************************************************************
   void pack_data()
   {
-// TODO: Add code to determine of the data has changed from the Datum obects, and only allocate adn write if teh buffer is dirty.
-
     m_msgBuffer =  *pack_message < message_type, 
                                    buffer_type,
                                    size_trait
@@ -317,7 +297,6 @@ private:
   //  **************************************************************************
   void pack_data(pointer pBuffer, size_t n)
   {
-// TODO: Add code to determine of the data has changed from the Datum obects, and only allocate adn write if teh buffer is dirty.
     buffer_type msg_buffer;
     msg_buffer.assign(pBuffer, n);
 

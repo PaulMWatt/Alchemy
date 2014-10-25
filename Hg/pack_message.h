@@ -1,4 +1,4 @@
-/// @file detail/pack_message.h
+/// @file Hg/pack_message.h
 /// 
 /// The implementation to pack a Hg Message into a packed byte-buffer.
 /// 

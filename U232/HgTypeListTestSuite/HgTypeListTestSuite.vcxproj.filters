@@ -36,6 +36,9 @@
     <Filter Include="Header Files\Alchemy\Hg\Detail">
       <UniqueIdentifier>{21d62bae-5e3b-4b7a-827e-eccf959729e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Alchemy\Pb\detail">
+      <UniqueIdentifier>{5cd40cb2-2794-4269-8ec3-71697cb5a924}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -171,6 +174,12 @@
     </ClInclude>
     <ClInclude Include="Src\hgtypelisttestsuite.h">
       <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\tr1_helper.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\conditional.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

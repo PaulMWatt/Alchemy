@@ -40,11 +40,9 @@ template <size_t   Idx,
          >
 class Datum
   : public detail::DefineFieldType< Idx, format_t>::type
+    // Concept check to verify a type container has been supplied as the format.
+  , private type_check< type_container<format_t>::value >
 {
-  // Concept check to verify a type container has been supplied.
-  // TODO: Convert to a static_assertion
-  // type_check< type_container<format_t>::value >;
-
 public:
   //  Constants ****************************************************************
   static const

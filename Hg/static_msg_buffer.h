@@ -1,4 +1,4 @@
-/// @file static_msg_buffer.h
+/// @file Hg/static_msg_buffer.h
 /// 
 /// A fixed-size messagge buffer that uses memory allocated by the user.
 /// This message buffer is compatible with the Hg message.
@@ -339,33 +339,6 @@ public:
 
     return bytes_written;
   }
-
-  // TODO: This could be useful, but not with the current organization of memory buffers.
-  ////  **************************************************************************
-  ///// Creates a full copy of the message buffer.
-  ///// 
-  ///// @return       A deep copy of this objects packet buffer. 
-  ///// 
-  ///// @note         clone performs a buffer allocation according to the 
-  /////               storage policy provided to the MsgBuffer. Therefore a
-  /////               new memory buffer is created for the cloned copy to exist 
-  /////               within.
-  /////
-  //MsgBuffer clone() const
-  //{
-  //  MsgBuffer retBuffer;
-  //  if (empty())
-  //  {
-  //    return retBuffer;
-  //  }
-
-  //  // Create a new buffer to accept a clone of the data.
-  //  // Allocate a buffer that matches this buffers capacity.
-  //  retBuffer.assign(data(), size());
-  //  retBuffer.m_offset    = m_offset;
-
-  //  return retBuffer;
-  //}
 
 private:
   // Private Member Data *******************************************************

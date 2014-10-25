@@ -166,10 +166,7 @@ public:
   // Accessors
   void TestGet_Const(void);
   void TestGet(void);
-  void TestGet_NonZeroOffset(void);
-
   void TestSet(void);
-  void TestSet_NonZeroOffset(void);
 
   //  Bitset Specific Tests ****************************************************
   //  Access the bit-fields
@@ -502,33 +499,6 @@ void TestBitSetFieldSuite::TestGet(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestGet_NonZeroOffset(void)
-{
-  // TODO: Deprecated, delete test.
-  //// Verify that a message field with a non-zero offset,
-  //// reads values from the proper location in a buffer.
-
-  //// The type offset from a normal field_mixed by 3 bytes.
-  //const size_t k_test_offset = 3;
-  //typedef Hg::detail::DataProxy < Hg::bitfield_trait,
-  //                                2,
-  //                                Hg::bitset_format_t,
-  //                                k_test_offset>                offset_mixed_t;
-  //
-  //// Verify Get() reads the value from the buffer and updates the shadow copy.
-  //const uint32_t k_control = 0x7E57C0DE;
-  //offset_mixed_t sut;
-  //sut = k_control;
-
-  //// SUT
-  //uint32_t result = sut.get();
-
-  //TS_ASSERT_EQUALS(k_control, result);
-  //TS_ASSERT_EQUALS(offset_mixed_t::k_offset, field_mixed::k_offset
-  //                                         + k_test_offset);
-}
-
-//  ****************************************************************************
 void TestBitSetFieldSuite::TestSet(void)
 {
   // Verify Set() writes the value to the buffer and the shadow copy.
@@ -541,35 +511,6 @@ void TestBitSetFieldSuite::TestSet(void)
 
   value_mixed shadow = sut.get();
   TS_ASSERT_EQUALS(k_control, shadow);
-}
-
-//  ****************************************************************************
-void TestBitSetFieldSuite::TestSet_NonZeroOffset(void)
-{
-  // TODO: Deprecated, delete test
-  //// Verify that a message field with a non-zero offset,
-  //// writes values to the proper location in a buffer.
-
-  //// The type offset from a normal field_mixed by 3 bytes.
-  //const size_t k_test_offset = 3;
-  //typedef Hg::detail::DataProxy
-  //                          < Hg::bitfield_trait,
-  //                            2,
-  //                            Hg::bitset_format_t,
-  //                            k_test_offset>                offset_mixed_t;
-  //
-  //const value_mixed k_initial = 0xBEEFBEEF;
-  //const value_mixed k_control = 0x7E57C0DE;
-  //offset_mixed_t sut;
-  //TS_ASSERT_EQUALS(0, sut.get());
-
-  //// SUT
-  //sut.set(k_control);
-
-  //uint32_t shadow = sut.get();
-  //TS_ASSERT_EQUALS(k_control, shadow);
-  //TS_ASSERT_EQUALS(offset_mixed_t::k_offset, field_mixed::k_offset 
-  //                                         + k_test_offset);
 }
 
 //  ****************************************************************************

@@ -18,7 +18,7 @@
 #include <Pb/type_list.h>
 #include <Pb/type_at.h>
 #include <Hg/datum/datum.h>
-#include <storage_policy.h>
+#include <Hg/storage_policy.h>
 
 namespace Hg
 {

@@ -13,7 +13,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HgBasicTestSuite", "..\..\.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HgComplexTestSuite", "..\..\..\U232\HgComplexTestSuite\HgComplexTestSuite.vcxproj", "{18C20603-26FD-4803-8ACB-3748B729FA36}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "benchmark", "..\..\benchmark\benchmark.vcxproj", "{28141038-3B75-4A64-88AD-218FC21A2E11}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "benchmark", "benchmark.vcxproj", "{28141038-3B75-4A64-88AD-218FC21A2E11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

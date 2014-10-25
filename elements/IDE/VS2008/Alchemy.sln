@@ -9,7 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Header Files", "Header File
 	ProjectSection(SolutionItems) = preProject
 		..\..\..\alchemy.h = ..\..\..\alchemy.h
 		..\..\..\Hg.h = ..\..\..\Hg.h
-		..\..\..\storage_policy.h = ..\..\..\storage_policy.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hg", "Hg", "{9C320270-CCCE-4AA4-9D7F-C8E47F425134}"
@@ -22,6 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hg", "Hg", "{9C320270-CCCE-
 		..\..\..\Hg\msg_def.h = ..\..\..\Hg\msg_def.h
 		..\..\..\Hg\msg_fwd.h = ..\..\..\Hg\msg_fwd.h
 		..\..\..\Hg\pack_message.h = ..\..\..\Hg\pack_message.h
+		..\..\..\Hg\static_msg_buffer.h = ..\..\..\Hg\static_msg_buffer.h
+		..\..\..\Hg\static_storage_policy.h = ..\..\..\Hg\static_storage_policy.h
+		..\..\..\storage_policy.h = ..\..\..\storage_policy.h
 		..\..\..\Hg\unpack_message.h = ..\..\..\Hg\unpack_message.h
 	EndProjectSection
 EndProject
@@ -29,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datum", "Datum", "{BCA45A31
 	ProjectSection(SolutionItems) = preProject
 		..\..\..\Hg\datum\basic_datum.h = ..\..\..\Hg\datum\basic_datum.h
 		..\..\..\Hg\datum\datum.h = ..\..\..\Hg\datum\datum.h
+		..\..\..\storage_policy.h = ..\..\..\storage_policy.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Detail", "Detail", "{BC52849B-B965-4CCE-96C0-F3D9EA1B6715}"
@@ -113,6 +116,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HgBasicTestSuite", "..\..\.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HgComplexTestSuite", "..\..\..\U232\HgComplexTestSuite\HgComplexTestSuite.vcproj", "{86F42E0B-8DCB-46EB-B958-CC29135C55DB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "benchmark", "benchmark.vcproj", "{F686EE72-F96B-4061-8260-2384D3C9F793}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -135,6 +140,10 @@ Global
 		{86F42E0B-8DCB-46EB-B958-CC29135C55DB}.Debug|Win32.Build.0 = Debug|Win32
 		{86F42E0B-8DCB-46EB-B958-CC29135C55DB}.Release|Win32.ActiveCfg = Release|Win32
 		{86F42E0B-8DCB-46EB-B958-CC29135C55DB}.Release|Win32.Build.0 = Release|Win32
+		{F686EE72-F96B-4061-8260-2384D3C9F793}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F686EE72-F96B-4061-8260-2384D3C9F793}.Debug|Win32.Build.0 = Debug|Win32
+		{F686EE72-F96B-4061-8260-2384D3C9F793}.Release|Win32.ActiveCfg = Release|Win32
+		{F686EE72-F96B-4061-8260-2384D3C9F793}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

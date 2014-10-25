@@ -32,7 +32,7 @@
 //  Includes *******************************************************************
 #include <cxxtest/TestSuite.h>
 #include <alchemy.h>
-#include <storage_policy.h>
+#include <Hg/storage_policy.h>
 #include <Hg/proxy/vector_proxy.h>
 
 #include <test_helper.h>

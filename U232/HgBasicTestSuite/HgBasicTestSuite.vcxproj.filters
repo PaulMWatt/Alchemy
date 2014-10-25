@@ -48,6 +48,9 @@
     <Filter Include="Header Files\Alchemy\Hg\Datum">
       <UniqueIdentifier>{3c8916ee-2479-4ff0-8db9-bb879e8ad26d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Alchemy\Pb\detail">
+      <UniqueIdentifier>{782e6b56-b16d-4708-9888-42e718ba9175}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -78,9 +81,6 @@
       <Filter>Header Files\Alchemy\Pb\type_list</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Alchemy.h">
-      <Filter>Header Files\Alchemy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\storage_policy.h">
       <Filter>Header Files\Alchemy</Filter>
     </ClInclude>
     <ClInclude Include="Src\TestMsgBufferSuite.h">
@@ -267,6 +267,15 @@
       <Filter>Header Files\Alchemy\Hg</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Hg\static_storage_policy.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\conditional.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\tr1_helper.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\storage_policy.h">
       <Filter>Header Files\Alchemy\Hg</Filter>
     </ClInclude>
   </ItemGroup>

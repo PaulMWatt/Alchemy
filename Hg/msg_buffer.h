@@ -1,4 +1,4 @@
-/// @file msg_buffer.h
+/// @file Hg/msg_buffer.h
 /// 
 /// A packet buffer structure suitable for processing network
 /// and interprocess communication messages.
@@ -12,7 +12,7 @@
 #include <Pb/meta_fwd.h>
 #include <Pb/byte_order.h>
 #include <Pb/meta_foreach.h>
-#include <storage_policy.h>
+#include <Hg/storage_policy.h>
 
 #include <cstddef>
 #include <algorithm>

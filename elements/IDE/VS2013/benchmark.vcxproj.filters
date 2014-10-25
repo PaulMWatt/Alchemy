@@ -15,30 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="benchmark.cpp">
+    <ClCompile Include="..\..\benchmark\benchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="using_memcpy.cpp">
+    <ClCompile Include="..\..\benchmark\using_Hg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="using_Hg.cpp">
+    <ClCompile Include="..\..\benchmark\using_memcpy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="benchmark_util.h">
+    <ClInclude Include="..\..\benchmark\benchmark_formats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="benchmark_formats.h">
+    <ClInclude Include="..\..\benchmark\benchmark_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="using_typecasts.h">
+    <ClInclude Include="..\..\benchmark\using_Hg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="using_memcpy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="using_Hg.h">
+    <ClInclude Include="..\..\benchmark\using_memcpy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

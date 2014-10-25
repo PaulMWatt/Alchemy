@@ -53,27 +53,27 @@
 #endif
 
 // Determine Processor *********************************************************
-#define BL_CPU_ARM        1
-#define BL_CPU_X86        2
+#define ALCHEMY_CPU_ARM        1
+#define ALCHEMY_CPU_X86        2
 // Definition to make comparisons simpler.  
 // This value can increase as more l-endian CPUs are added.
-#define BL_CPU_BIG_ENDIAN 3   
+#define ALCHEMY_CPU_BIG_ENDIAN 3   
 
 // Determine the processor type based on compiler flags.  This code has been 
 // adapted from the POSH portable framework from: http://www.poshlib.org
 // New definitions will be required for CPUs that are not defined here.
 #if defined ARM || defined __arm__ || defined _ARM
-#  define BL_CPU        BL_CPU_ARM
-#  define BL_CPU_STRING "ARM"
+#  define ALCHEMY_CPU        ALCHEMY_CPU_ARM
+#  define ALCHEMY_CPU_STRING "ARM"
 #endif
 
 #if defined __X86__ || defined __i386__ || defined i386 || defined _M_IX86 || defined __386__ || defined __x86_64__ || defined _M_X64
-#  define BL_CPU        BL_CPU_X86
-#  define BL_CPU_STRING "Intel 386+"
+#  define ALCHEMY_CPU        ALCHEMY_CPU_X86
+#  define ALCHEMY_CPU_STRING "Intel 386+"
 #endif
 
-#ifndef BL_CPU
-#  error BL_CPU not defined.  Please add definition
+#ifndef ALCHEMY_CPU
+#  error ALCHEMY_CPU not defined.  Please add definition
 #endif
 
 // Determine Support for 64-bit ************************************************
@@ -81,31 +81,20 @@
 
 
 // Determine Endianess *********************************************************
-#define BL_BIG_ENDIAN     1
-#define BL_LITTLE_ENDIAN  2
+#define ALCHEMY_BIG_ENDIAN     1
+#define ALCHEMY_LITTLE_ENDIAN  2
 // Attempt to infer endianess by comparing the processor type and/or OS.
 // Some processors are bi-endian, such as MIPS, this may cause trouble in the future.
-#if (BL_CPU < BL_CPU_BIG_ENDIAN) || defined(_WIN32)
-#  define BL_ENDIANESS BL_LITTLE_ENDIAN
+#if (ALCHEMY_CPU < ALCHEMY_CPU_BIG_ENDIAN) || defined(_WIN32)
+#  define ALCHEMY_ENDIANESS ALCHEMY_LITTLE_ENDIAN
 #  define ORDER_DCBA
 #else
-#  define BL_ENDIANESS BL_BIG_ENDIAN
+#  define ALCHEMY_ENDIANESS ALCHEMY_BIG_ENDIAN
 #endif
 
 // Compiler Dependant Type Definitions *****************************************
 
 #ifdef __cplusplus
-
-// Declare this macro at the top of the class definition to prevent
-// the automatic creation of the default constructor.
-#define NO_DEFAULT_CONSTRUCTOR(TypeName) \
-  TypeName()        
-
-// Declare this macro at the top of the class definition to prevent
-// the automatic creation of the copy constructor and operator=.
-#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
-  TypeName(const TypeName&);               \
-  void operator=(const TypeName&)
 
 #endif // __cplusplus
 

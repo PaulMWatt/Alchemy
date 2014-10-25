@@ -1,4 +1,4 @@
-/// @file storage_policy.h
+/// @file Hg/static_storage_policy.h
 /// 
 /// Manages allocation and access behaviors to fixed-size memory buffers.
 /// 
@@ -10,7 +10,7 @@
 #ifndef STATIC_STORAGE_POLICY_H_INCLUDED
 #define STATIC_STORAGE_POLICY_H_INCLUDED
 //  Includes *******************************************************************
-#include <storage_policy.h>
+#include <Hg/storage_policy.h>
 
 namespace Hg
 {
