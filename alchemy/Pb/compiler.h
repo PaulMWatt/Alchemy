@@ -158,7 +158,7 @@
 # endif
 
 #else
-# error Must add definition to indicate platform.
+// error  Must add definition to indicate platform.
 #endif
 
 

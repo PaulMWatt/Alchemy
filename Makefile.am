@@ -1,1 +1,1 @@
-SUBDIRS = alchemy
+SUBDIRS= alchemy
