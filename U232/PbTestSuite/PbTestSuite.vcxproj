@@ -189,6 +189,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\compiler.h" />
     <ClInclude Include="..\..\Pb\container_size.h" />
     <ClInclude Include="..\..\Pb\detail\conditional.h" />
+    <ClInclude Include="..\..\Pb\detail\rvalue_ref.h" />
     <ClInclude Include="..\..\Pb\detail\tr1_helper.h" />
     <ClInclude Include="..\..\Pb\dynamic.h" />
     <ClInclude Include="..\..\Pb\integer_sequence.h" />

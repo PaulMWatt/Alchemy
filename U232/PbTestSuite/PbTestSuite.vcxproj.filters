@@ -146,6 +146,9 @@
     <ClInclude Include="..\..\Pb\detail\tr1_helper.h">
       <Filter>Header Files\Alchemy\Pb\detail</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\rvalue_ref.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\PbTestSuiteRunner.cpp">
