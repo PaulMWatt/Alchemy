@@ -75,9 +75,7 @@ public:
   /// Default Constructor
   ///
   Datum()
-  { 
-    set(value_type());
-  }
+  { }
 
   //  **************************************************************************
   /// Copy Constructor
