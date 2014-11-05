@@ -20,19 +20,16 @@
 
 # define    ALCHEMY_RVALUE_REF_SUPPORTED    1 
 
-#elif
- // Test for GCC > 4.3.0
-# if __GNUC__ > 4 || \
-      (__GNUC__ == 4 && (__GNUC_MINOR__ > 3 || \
+// Test for GCC > 4.3.0
+#elif  __GNUC__ >  4 || \
+      (__GNUC__ == 4 && (__GNUC_MINOR__ >  3 || \
                         (__GNUC_MINOR__ == 3 && \
-                         __GNUC_PATCHLEVEL__ > 0))
+                         __GNUC_PATCHLEVEL__ > 0)))
 #   define  ALCHEMY_RVALUE_REF_SUPPORTED    1    
-
-# endif
 
 #else 
   // Compiler does not support rvalue references
-# define    ALCHEMY_RVALUE_REF_SUPPORTED    0
+//# define    ALCHEMY_RVALUE_REF_SUPPORTED    0
 #endif
 
 

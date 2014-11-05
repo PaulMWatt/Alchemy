@@ -9,6 +9,7 @@
 #define COMPILER_H_INCLUDED
 //  Includes *******************************************************************
 #include <Pb/detail/tr1_helper.h>
+#include <Pb/detail/rvalue_ref.h>
 
 // CxxUnit Testing *************************************************************
 // Change the mock namespace from T to cxx to reduce confusion with template semantics. 
