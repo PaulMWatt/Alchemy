@@ -335,6 +335,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\..\Pb\detail\rvalue_ref.h"
+							>
+						</File>
+						<File
 							RelativePath="..\..\Pb\detail\tr1_helper.h"
 							>
 						</File>

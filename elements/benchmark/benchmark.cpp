@@ -17,6 +17,7 @@
 
 //  ****************************************************************************
 typedef std::vector<double>     TimeValues;
+using std::cin;
 using std::cout;
 using std::endl;
 
@@ -114,6 +115,9 @@ int main(int argc, char* argv[])
   DataBuffer data;
   data.Init(0x1000000);
 
+  cout << "Hit enter when ready...:";
+  cin.ignore();
+
   // Run the test scenario for each type of implementation.
   cout << "Running Hg benchmark:" << endl;
 
@@ -131,6 +135,9 @@ int main(int argc, char* argv[])
 
   // Display the tabulated results.
   DisplayResults("memcpy: ", memcpyTime);
+
+  cout << "Hit enter to exit.";
+  cin.ignore();
 
 	return 0;
 }

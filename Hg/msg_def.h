@@ -101,7 +101,7 @@ struct message_size_trait
     {                                                                          \
       typedef Datum   < IDX,                                                   \
                         format_type>    datum_type_t;                          \
-      return FieldAtIndex(datum_type_t());                                     \
+      return FieldAtIndex((datum_type_t*)0);                                   \
     }                                                                          \
     BEGIN_COUNTER
 
@@ -118,7 +118,7 @@ struct message_size_trait
   typedef Proxy##P::datum_type                              datum_##P;         \
   Proxy##P   P;                                                                \
                                                                                \
-  datum_##P& FieldAtIndex(const datum_##P&)                                    \
+  datum_##P& FieldAtIndex(const datum_##P*)                                    \
   { return *static_cast<datum_##P*>(&P); }                                     \
                                                                                \
   const char* FieldName(const Proxy##P&)                    { return #P; }
@@ -145,7 +145,7 @@ struct message_size_trait
 #define DECLARE_DYNAMIC_FORMAT_IDX(IDX,T,N,P)                                  \
   DECLARE_DATUM_FORMAT_IDX(IDX,(std::vector<T>),P)                             \
   template <typename U>                                                        \
-  size_t Size(U& buffer, datum_##P&)  { return DatumSize(N, buffer); }
+  size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, buffer); }
 
 
 // *****************************************************************************
@@ -158,7 +158,7 @@ struct message_size_trait
 #define DECLARE_ALLOCATOR_FORMAT_IDX(IDX,T,N,P)                                \
   DECLARE_DATUM_FORMAT_IDX(IDX,(std::vector<T,A>),P)                           \
   template <typename U>                                                        \
-  size_t Size(U& buffer, datum_##P&)  { return DatumSize(N, buffer); }
+  size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, buffer); }
 
 
 // *****************************************************************************

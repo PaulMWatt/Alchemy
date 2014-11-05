@@ -481,7 +481,7 @@ struct UnpackDatum< IdxT,
                       + dynamic_offset;
     
     // Query the message object for the number of elements in the buffer;
-    size_t      count = msg.Size(buffer, msg.template FieldAt<IdxT>());
+    size_t      count = msg.Size(buffer, &msg.template FieldAt<IdxT>());
 
     // For zero-size move on.
     if (0 == count)
