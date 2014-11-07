@@ -104,38 +104,6 @@ typedef TypeList
 > Basic;
 
 
-//  ****************************************************************************
-typedef TypeList
-<
-  uint32_t,
-  uint16_t,
-  uint8_t
-> PackedBits;
-
-
-
-//  ****************************************************************************
-typedef TypeList
-<
-  char,
-  uint32_t,
-  uint32_t,
-  uint32_t,
-  int16_t,
-  int16_t,
-  int16_t
-> Unaligned;
-
-
-//  ****************************************************************************
-typedef TypeList
-<
-  uint32_t,
-  std::array<Basic,3>,
-  PackedBits,
-  Unaligned
-> Complex;
-
 HG_BEGIN_BIT_SET (uint32_t, SetA)
   HG_BIT_FIELD   (0,   fifteen, 15)
   HG_BIT_FIELD   (1,   two,     2)
@@ -162,6 +130,38 @@ HG_BEGIN_BIT_SET (uint8_t, SetC)
   HG_BIT_FIELD   (7,   h, 1)
 HG_END_BIT_SET
 
+
+//  ****************************************************************************
+typedef TypeList
+<
+  SetA,
+  SetB,
+  SetC
+> PackedBits;
+
+
+
+//  ****************************************************************************
+typedef TypeList
+<
+  char,
+  uint32_t,
+  uint32_t,
+  uint32_t,
+  int16_t,
+  int16_t,
+  int16_t
+> Unaligned;
+
+
+//  ****************************************************************************
+typedef TypeList
+<
+  uint32_t,
+  std::array<Basic,3>,
+  PackedBits,
+  Unaligned
+> Complex;
 
 //  ****************************************************************************
 HG_BEGIN_FORMAT(Basic)
