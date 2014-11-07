@@ -105,29 +105,29 @@ typedef TypeList
 
 
 HG_BEGIN_BIT_SET (uint32_t, SetA)
-  HG_BIT_FIELD   (SetA, 0,   fifteen, 15)
-  HG_BIT_FIELD   (SetA, 1,   two,     2)
-  HG_BIT_FIELD   (SetA, 2,   five,    5)
-  HG_BIT_FIELD   (SetA, 3,   eight,   8)
-  HG_BIT_FIELD   (SetA, 4,   one,     1)
+  HG_BIT_FIELD   (0,   fifteen, 15)
+  HG_BIT_FIELD   (1,   two,     2)
+  HG_BIT_FIELD   (2,   five,    5)
+  HG_BIT_FIELD   (3,   eight,   8)
+  HG_BIT_FIELD   (4,   one,     1)
 HG_END_BIT_SET
 
 HG_BEGIN_BIT_SET (uint16_t, SetB)
-  HG_BIT_FIELD   (SetB, 0,   first,   4)
-  HG_BIT_FIELD   (SetB, 1,   second,  4)
-  HG_BIT_FIELD   (SetB, 2,   third,   4)
-  HG_BIT_FIELD   (SetB, 3,   fourth,  4)
+  HG_BIT_FIELD   (0,   first,   4)
+  HG_BIT_FIELD   (1,   second,  4)
+  HG_BIT_FIELD   (2,   third,   4)
+  HG_BIT_FIELD   (3,   fourth,  4)
 HG_END_BIT_SET
 
 HG_BEGIN_BIT_SET (uint8_t, SetC)
-  HG_BIT_FIELD   (SetC, 0,   a, 1)
-  HG_BIT_FIELD   (SetC, 1,   b, 1)
-  HG_BIT_FIELD   (SetC, 2,   c, 1)
-  HG_BIT_FIELD   (SetC, 3,   d, 1)
-  HG_BIT_FIELD   (SetC, 4,   e, 1)
-  HG_BIT_FIELD   (SetC, 5,   f, 1)
-  HG_BIT_FIELD   (SetC, 6,   g, 1)
-  HG_BIT_FIELD   (SetC, 7,   h, 1)
+  HG_BIT_FIELD   (0,   a, 1)
+  HG_BIT_FIELD   (1,   b, 1)
+  HG_BIT_FIELD   (2,   c, 1)
+  HG_BIT_FIELD   (3,   d, 1)
+  HG_BIT_FIELD   (4,   e, 1)
+  HG_BIT_FIELD   (5,   f, 1)
+  HG_BIT_FIELD   (6,   g, 1)
+  HG_BIT_FIELD   (7,   h, 1)
 HG_END_BIT_SET
 
 

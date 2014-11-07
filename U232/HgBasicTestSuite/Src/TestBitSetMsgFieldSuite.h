@@ -39,150 +39,35 @@ namespace Hg
 {
 
 HG_BEGIN_BIT_SET (uint8_t, byte_1x8)
-  HG_BIT_FIELD   (byte_1x8, 0,   first, 8)
+  HG_BIT_FIELD   (0,   first, 8)
 HG_END_BIT_SET
 
 HG_BEGIN_BIT_SET (uint8_t, byte_4x2)
-  HG_BIT_FIELD   (byte_4x2, 0,   first,   2)
-  HG_BIT_FIELD   (byte_4x2, 1,   second,  2)
-  HG_BIT_FIELD   (byte_4x2, 2,   third,   2)
-  HG_BIT_FIELD   (byte_4x2, 3,   fourth,  2)
+  HG_BIT_FIELD   (0,   first,   2)
+  HG_BIT_FIELD   (1,   second,  2)
+  HG_BIT_FIELD   (2,   third,   2)
+  HG_BIT_FIELD   (3,   fourth,  2)
 HG_END_BIT_SET
 
-//struct byte_4x2; template <> struct ContainerSize<byte_4x2> : 
-//std::integral_constant<size_t, sizeof(uint8_t)> { }; 
-//
-//namespace detail 
-//{ 
-//template <> 
-//struct field_data_t<byte_4x2> 
-//{ 
-//  typedef uint8_t value_type; 
-//}; 
-//} 
-//
-//struct byte_4x2 
-//  : public BasicBitList<uint8_t,byte_4x2> 
-//{ 
-//  typedef byte_4x2 this_type; 
-//  typedef uint8_t value_type; 
-//  typedef BasicBitList<uint8_t,byte_4x2> base_type; 
-//  
-//  byte_4x2() 
-//    : base_type() 
-//  { } 
-//  
-//  byte_4x2(const value_type &data_field) 
-//    : base_type() 
-//  { 
-//    value(data_field); 
-//  } 
-//  
-//  byte_4x2(value_type &data_field) 
-//    : base_type(data_field) 
-//  { } 
-//  
-//  byte_4x2& operator=(const byte_4x2 &rhs) 
-//  { 
-//    value(rhs.value()); 
-//    return *this; 
-//  } 
-//  
-//  byte_4x2& operator=(const value_type &data_field) 
-//  { 
-//    value(data_field); 
-//    return *this; 
-//  } 
-//  
-//  enum 
-//  { 
-//    k_offset_0 = 0 
-//  }; 
-//  
-//  template <typename IndexT, typename BitT> 
-//  BitT& GetField(const BitT &) 
-//  { 
-//    return GetFieldAddress(BitT()); 
-//  }
-//
-//
-//  // First field
-//  typedef FieldIndex< 0, this_type,2> idx_0; 
-//  struct first_tag 
-//  { 
-//    static ptrdiff_t offset() 
-//    { 
-//      return (size_t)&reinterpret_cast<const volatile char&>((((byte_4x2 *)0)->first)); 
-//    } 
-//  }; 
-//  
-//  typedef BitField < byte_4x2, first_tag, k_offset_0, 2, value_type > first_t; 
-//  enum 
-//  { 
-//    k_offset_1 = k_offset_0 + 2 
-//  }; 
-//  
-//  first_t first; 
-//  
-//  first_t& GetFieldAddress(const first_t&) 
-//  { 
-//    return first; 
-//  }
-//
-//  // Second Field
-//  typedef FieldIndex< 1, this_type,2> idx_1; struct second_tag { static ptrdiff_t offset() { return (size_t)&reinterpret_cast<const volatile char&>((((byte_4x2 *)0)->second)); } }; typedef BitField < byte_4x2, second_tag, k_offset_1, 2, value_type > second_t; enum { k_offset_2 = k_offset_1 + 2 }; second_t second; second_t& GetFieldAddress(const second_t&) { return second; }
-//  typedef FieldIndex< 2, this_type,2> idx_2; struct third_tag { static ptrdiff_t offset() { return (size_t)&reinterpret_cast<const volatile char&>((((byte_4x2 *)0)->third)); } }; typedef BitField < byte_4x2, third_tag, k_offset_2, 2, value_type > third_t; enum { k_offset_3 = k_offset_2 + 2 }; third_t third; third_t& GetFieldAddress(const third_t&) { return third; }
-//  typedef FieldIndex< 3, this_type,2> idx_3; struct fourth_tag { static ptrdiff_t offset() { return (size_t)&reinterpret_cast<const volatile char&>((((byte_4x2 *)0)->fourth)); } }; typedef BitField < byte_4x2, fourth_tag, k_offset_3, 2, value_type > fourth_t; enum { k_offset_4 = k_offset_3 + 2 }; fourth_t fourth; fourth_t& GetFieldAddress(const fourth_t&) { return fourth; }
-//};
-
-
-
-
 HG_BEGIN_BIT_SET (uint8_t, byte_8x1)
-  HG_BIT_FIELD   (byte_8x1, 0,   first,   1)
-  HG_BIT_FIELD   (byte_8x1, 1,   second,  1)
-  HG_BIT_FIELD   (byte_8x1, 2,   third,   1)
-  HG_BIT_FIELD   (byte_8x1, 3,   fourth,  1)
-  HG_BIT_FIELD   (byte_8x1, 4,   fifth,   1)
-  HG_BIT_FIELD   (byte_8x1, 5,   sixth,   1)
-  HG_BIT_FIELD   (byte_8x1, 6,   seventh, 1)
-  HG_BIT_FIELD   (byte_8x1, 7,   eighth,  1)
+  HG_BIT_FIELD   (0,   first,   1)
+  HG_BIT_FIELD   (1,   second,  1)
+  HG_BIT_FIELD   (2,   third,   1)
+  HG_BIT_FIELD   (3,   fourth,  1)
+  HG_BIT_FIELD   (4,   fifth,   1)
+  HG_BIT_FIELD   (5,   sixth,   1)
+  HG_BIT_FIELD   (6,   seventh, 1)
+  HG_BIT_FIELD   (7,   eighth,  1)
 HG_END_BIT_SET
 
 HG_BEGIN_BIT_SET (uint32_t, mixed_set)
-//  HG_BIT_FIELD   (mixed_set, 0,   first,   5)
-  // First field
-  typedef FieldIndex< 0, this_type,5> idx_0; 
-  struct first_tag 
-  { 
-    static ptrdiff_t offset() 
-    { 
-      return (size_t)&reinterpret_cast<const volatile char&>((((mixed_set *)0)->first)); 
-    } 
-  }; 
-  
-  typedef BitField < mixed_set, first_tag, k_offset_0, 1, value_type > first_t; 
-  enum 
-  { 
-    k_offset_1 = k_offset_0 + 5 
-  }; 
-  
-  first_t first; 
-  
-  first_t& GetFieldAddress(const first_t&) 
-  { 
-    return first; 
-  }
-
-
-
-
-  HG_BIT_FIELD   (mixed_set, 1,   second,  4)
-  HG_BIT_FIELD   (mixed_set, 2,   third,   3)
-  HG_BIT_FIELD   (mixed_set, 3,   fourth,  2)
-  HG_BIT_FIELD   (mixed_set, 4,   fifth,   1)
-  HG_BIT_FIELD   (mixed_set, 5,   sixth,   16)
-  HG_BIT_FIELD   (mixed_set, 6,   seventh, 1)
+  HG_BIT_FIELD   (0,   first,   5)
+  HG_BIT_FIELD   (1,   second,  4)
+  HG_BIT_FIELD   (2,   third,   3)
+  HG_BIT_FIELD   (3,   fourth,  2)
+  HG_BIT_FIELD   (4,   fifth,   1)
+  HG_BIT_FIELD   (5,   sixth,   16)
+  HG_BIT_FIELD   (6,   seventh, 1)
 HG_END_BIT_SET
 
 //  ****************************************************************************

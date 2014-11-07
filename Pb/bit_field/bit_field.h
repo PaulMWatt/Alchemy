@@ -20,6 +20,8 @@ namespace Hg
 ///           
 /// In order for BitFields to be packed into a single byte, the BitFields 
 /// must be grouped in a BitSet definition.
+/// This type must be contained within another class that supports a function
+/// called value() that returns a value that is convertable to type T.
 /// 
 /// @note           The total number of requested bits must fit within the
 ///                 specified data-field type. The default is a 8-bit byte.
@@ -98,23 +100,6 @@ private:
                                     - TagT::offset());
   }
 };
-
-
-// ****************************************************************************
-/// A specialization to allow MT bit_fields to convert to the nil type.
-///           
-template <size_t OffsetT,
-          typename T>
-struct BitField <Hg::MT, Hg::MT, OffsetT, 0, T>
-{
-  typedef BitField<Hg::MT, Hg::MT, 0, 0, T>            nil_bits_t;
-  BitField(){}
-  operator nil_bits_t()
-  {
-    return nil_bits_t();
-  }
-};
-
 
 } // namespace Hg
 

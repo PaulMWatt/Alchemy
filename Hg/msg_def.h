@@ -260,14 +260,14 @@ struct message_size_trait
 
  
 // *****************************************************************************
-#define DECLARE_BIT_FIELD(C,IDX,P,N)                                           \
+#define DECLARE_BIT_FIELD(IDX,P,N)                                             \
   typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \
   struct P##_tag                                                               \
   { static ptrdiff_t offset()                                                  \
-    { return offsetof(C, P); }                                                 \
+    { return offsetof(this_type, P); }                                         \
   };                                                                           \
                                                                                \
-  typedef BitField  < C, P##_tag, k_offset_##IDX, N, value_type > P##_t;       \
+  typedef BitField  < this_type, P##_tag, k_offset_##IDX, N, value_type > P##_t; \
   enum { TMP_PASTE(k_offset_, TMP_INC(IDX)) = k_offset_##IDX + N };            \
                                                                                \
   P##_t P;                                                                     \
