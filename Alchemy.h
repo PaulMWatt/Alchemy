@@ -262,8 +262,8 @@
 ///                 NAME will be the name used to access this bit-field directly.
 /// @param COUNT    The number of bits this Bit-Field occupies.
 ///             
-#define HG_BIT_FIELD(INDEX,NAME,COUNT)\
-                                        DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
+#define HG_BIT_FIELD(BITSET,INDEX,NAME,COUNT)\
+                                        DECLARE_BIT_FIELD(BITSET, INDEX, NAME, COUNT)
 
 
 //  ****************************************************************************

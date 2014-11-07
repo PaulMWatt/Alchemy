@@ -43,6 +43,8 @@
 #include <Hg/make_Hg_type_list.h>
 #include <Hg/proxy/deduce_proxy_type.h>
 
+#include <cstddef>
+
 //  ****************************************************************************
 //  Utility Constructs For Use With Hg Message Types ***************************
 //  ****************************************************************************
@@ -225,7 +227,6 @@ struct message_size_trait
   {                                                                            \
     typedef C                                     this_type;                   \
     typedef T                                     value_type;                  \
-    typedef BitField<0,0,value_type>              nil_bits_t;                  \
     typedef BasicBitList<T,C>                     base_type;                   \
                                                                                \
     C()                                                                        \
@@ -256,26 +257,24 @@ struct message_size_trait
     BitT& GetField(const BitT &)                                               \
     { return GetFieldAddress(BitT()); }                                        \
                                                                                \
-    nil_bits_t& GetFieldAddress(const nil_bits_t&)                             \
-    {                                                                          \
-      static nil_bits_t nil_bits;                                              \
-      return nil_bits;                                                         \
-    }
 
  
 // *****************************************************************************
-#define DECLARE_BIT_FIELD(IDX,P,N)                                             \
+#define DECLARE_BIT_FIELD(C,IDX,P,N)                                           \
   typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \
-  typedef BitField  < k_offset_##IDX, N, value_type > P##_t;                   \
+  struct P##_tag                                                               \
+  { static ptrdiff_t offset()                                                  \
+    { return offsetof(C, P); }                                                 \
+  };                                                                           \
+                                                                               \
+  typedef BitField  < C, P##_tag, k_offset_##IDX, N, value_type > P##_t;       \
   enum { TMP_PASTE(k_offset_, TMP_INC(IDX)) = k_offset_##IDX + N };            \
                                                                                \
   P##_t P;                                                                     \
   P##_t& GetFieldAddress(const P##_t&)               { return P; }
 
-
 // *****************************************************************************
 #define DECLARE_BIT_SET_FOOTER          };
-
 
 #endif
 

@@ -257,6 +257,7 @@ cd "../.."</Command>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgBasicTestSuiteRunner.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

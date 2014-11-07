@@ -101,7 +101,7 @@ struct BitFieldNode
 
 private:
   //  Data Members ***************************************************************
-  BitField< OffsetT, Front<SeqT>::value, value_type>            &m_field;
+  BitField<Hg::MT, Hg::MT,  OffsetT, Front<SeqT>::value, value_type>            &m_field;
 };
 
 //  ****************************************************************************
@@ -166,11 +166,13 @@ template  < typename RootT,
             typename SeqT
           >
 struct BitFieldList
-  : public BitFieldNode< RootT, 0, 0, SeqT >
+//  : public BitFieldNode< RootT, 0, 0, SeqT >
+  : public RootT
 {
   //  Typedefs *****************************************************************
   typedef typename RootT::value_type                      value_type;
-  typedef BitFieldNode< RootT, 0, 0, SeqT >               base_type;
+  //typedef BitFieldNode< RootT, 0, 0, SeqT >               base_type;
+  typedef RootT                                           base_type;
 
   //  Constants ****************************************************************
   static 
@@ -242,15 +244,6 @@ struct BitFieldList
     return k_size;
   }
 };
-
-
-//template  < typename RootT,
-//            typename SeqT
-//          >
-//bool operator<(const BitFieldList<RootT,SeqT> &lhs, RootT &rhs)
-//{
-//  return static_cast<RootT>(lhs) < rhs;
-//}
 
 //  ****************************************************************************
 /// Type-trait class that contains common definitions used by every bit-list.

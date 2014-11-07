@@ -95,10 +95,10 @@ struct BasicBitList
   typedef idx_empty_t   idx_30;
   typedef idx_empty_t   idx_31;
 
-  typedef BasicBitList<T, FieldsT>      this_type;
-  typedef T                             value_type;
-  typedef FieldsT                       field_type;
-  typedef BitField<0, 0, value_type>    nil_bits_t;
+  typedef BasicBitList<T, FieldsT>                    this_type;
+  typedef T                                           value_type;
+  typedef FieldsT                                     field_type;
+  typedef BitField<Hg::MT, Hg::MT, 0, 0, value_type>  nil_bits_t;
 
   enum { k_offset_0 = 0 };
 
