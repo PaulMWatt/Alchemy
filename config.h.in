@@ -3,6 +3,9 @@
 /* Define to 1 if you have the <cstdlib> header file. */
 #undef HAVE_CSTDLIB
 
+/* define if the compiler supports basic C++11 syntax */
+#undef HAVE_CXX11
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
@@ -38,6 +41,9 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the <vector> header file. */
+#undef HAVE_VECTOR
 
 /* Name of package */
 #undef PACKAGE

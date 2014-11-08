@@ -12,7 +12,7 @@
 /// a value, such as a boolean true.
 ///
 /// For meta-programming constructs, the compile-time equivalent to a 
-/// runtime variable is a type. Therefore, many constructs that provide
+/// druntime variable is a type. Therefore, many constructs that provide
 /// calculations and behave like function calls are implemented as 
 /// new types, typically structs.
 ///
@@ -27,7 +27,7 @@
 ///           Tagging is an important technique in meta-template programming because
 ///           it simplifies the instantiation of more complex constructs and 
 ///           encourages reuse.
-///
+///u
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
@@ -37,6 +37,7 @@
 #include <Pb/compiler.h>
 #include <type_traits>
 #include <array>
+#include <vector>
 
 namespace Hg
 {
