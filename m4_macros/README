@@ -1,0 +1,7 @@
+Macros in this directory are needed by this configure.ac
+
+To install macros: copy the .m4 file into the aclocal directory. 
+	example for Mint Linux 17 default install directory = /usr/share/aclocal 
+Macro list:
+m4_ax_cxx_compile_stdcxx_11.m4 [AX_CXX_COMPILE_STDCXX_11([ext,noext],[mandatory, optional] - This macro is used to determine if the compiler is C++11 option is valid. 
+

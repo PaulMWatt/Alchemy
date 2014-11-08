@@ -9,9 +9,7 @@ AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CXX
-_DEBUG_START_
 AC_CHECK_PROG([bash_var], [bash], [yes],[no],, [/usr/sbin/bash])
-_DEBUG_END_
 
 AC_PROG_INSTALL
 
@@ -22,7 +20,8 @@ AC_SEARCH_LIBS([pthread_create], [pthread])
 AC_LANG_PUSH([C])
     AC_CHECK_HEADERS([stdio.h stdlib.h unistd.h pthread.h])
 AC_LANG_PUSH([C++])
-    AC_CHECK_HEADERS([iostream cstdlib])
+    AC_CHECK_HEADERS([iostream cstdlib vector])
+    AX_CXX_COMPILE_STDCXX_11([noext], [optional])
 AC_LANG_POP([C++])
 
 # Checks for typedefs, structures, and compiler characteristics.
