@@ -14,7 +14,7 @@
 namespace Hg
 {
 
-HG_BEGIN_BIT_SET (uint32_t, mixed_bits)
+HG_BEGIN_PACKED (uint32_t, mixed_bits)
   HG_BIT_FIELD   (0,   first,   5)
   HG_BIT_FIELD   (1,   second,  4)
   HG_BIT_FIELD   (2,   third,   3)
@@ -22,7 +22,7 @@ HG_BEGIN_BIT_SET (uint32_t, mixed_bits)
   HG_BIT_FIELD   (4,   fifth,   1)
   HG_BIT_FIELD   (5,   sixth,   1)
   HG_BIT_FIELD   (6,   seventh, 1)
-HG_END_BIT_SET
+HG_END_PACKED
 
 //  ****************************************************************************
 //  A type array used to create the nested message field.
@@ -89,9 +89,9 @@ HG_END_FORMAT(single_nested_t)
 //  ****************************************************************************
 //  Bitlist with a single entry 
 // the Hg namespace.
-HG_BEGIN_BIT_SET (uint8_t, single_bit)
+HG_BEGIN_PACKED (uint8_t, single_bit)
   HG_BIT_FIELD   (0, lonely, 1)
-HG_END_BIT_SET
+HG_END_PACKED
 
 typedef TypeList
 <

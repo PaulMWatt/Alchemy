@@ -38,18 +38,18 @@
 namespace Hg
 {
 
-HG_BEGIN_BIT_SET (uint8_t, byte_1x8)
+HG_BEGIN_PACKED (uint8_t, byte_1x8)
   HG_BIT_FIELD   (0,   first, 8)
-HG_END_BIT_SET
+HG_END_PACKED
 
-HG_BEGIN_BIT_SET (uint8_t, byte_4x2)
+HG_BEGIN_PACKED (uint8_t, byte_4x2)
   HG_BIT_FIELD   (0,   first,   2)
   HG_BIT_FIELD   (1,   second,  2)
   HG_BIT_FIELD   (2,   third,   2)
   HG_BIT_FIELD   (3,   fourth,  2)
-HG_END_BIT_SET
+HG_END_PACKED
 
-HG_BEGIN_BIT_SET (uint8_t, byte_8x1)
+HG_BEGIN_PACKED (uint8_t, byte_8x1)
   HG_BIT_FIELD   (0,   first,   1)
   HG_BIT_FIELD   (1,   second,  1)
   HG_BIT_FIELD   (2,   third,   1)
@@ -58,9 +58,9 @@ HG_BEGIN_BIT_SET (uint8_t, byte_8x1)
   HG_BIT_FIELD   (5,   sixth,   1)
   HG_BIT_FIELD   (6,   seventh, 1)
   HG_BIT_FIELD   (7,   eighth,  1)
-HG_END_BIT_SET
+HG_END_PACKED
 
-HG_BEGIN_BIT_SET (uint32_t, mixed_set)
+HG_BEGIN_PACKED (uint32_t, mixed_set)
   HG_BIT_FIELD   (0,   first,   5)
   HG_BIT_FIELD   (1,   second,  4)
   HG_BIT_FIELD   (2,   third,   3)
@@ -68,7 +68,7 @@ HG_BEGIN_BIT_SET (uint32_t, mixed_set)
   HG_BIT_FIELD   (4,   fifth,   1)
   HG_BIT_FIELD   (5,   sixth,   16)
   HG_BIT_FIELD   (6,   seventh, 1)
-HG_END_BIT_SET
+HG_END_PACKED
 
 //  ****************************************************************************
 //  A type array that contains an entry for each of the fundamental types.
@@ -120,19 +120,19 @@ protected:
   //  Typedefs *****************************************************************
   //  These typedefs allow the creation of the different data field types
   //  with a simplified syntax for readability in the unit-tests.
-  typedef Hg::detail::DataProxy < Hg::bitfield_trait, 
+  typedef Hg::detail::DataProxy < Hg::packed_trait, 
                                   0,
                                   Hg::bitset_format_t
                                 >                           field_4x2;
   typedef field_4x2::value_type                             value_4x2;
 
-  typedef Hg::detail::DataProxy < Hg::bitfield_trait,
+  typedef Hg::detail::DataProxy < Hg::packed_trait,
                                   1,
                                   Hg::bitset_format_t
                                 >                           field_8x1;
   typedef field_8x1::value_type                             value_8x1;
 
-  typedef Hg::detail::DataProxy < Hg::bitfield_trait,
+  typedef Hg::detail::DataProxy < Hg::packed_trait,
                                   2,
                                   Hg::bitset_format_t
                                 >                           field_mixed;

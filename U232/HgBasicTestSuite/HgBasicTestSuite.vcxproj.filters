@@ -62,9 +62,6 @@
     <ClInclude Include="Src\TestMsgFieldSuite.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Pb\bit_field\basic_list.h">
-      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\bit_field\bit_field.h">
       <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
     </ClInclude>
@@ -277,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="..\..\storage_policy.h">
       <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\bit_field\packed_bits.h">
+      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

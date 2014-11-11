@@ -127,7 +127,7 @@ public:
   /// Operator to value_type
   /// 
   /// Allows this Datum object to be converted to the value_type 
-  /// managed by this object. The value returned comes from the shadow buffer.
+  /// managed by this object. The value returned comes from the data buffer.
   /// 
   /// @return         The current value of this object is returned.
   /// 
@@ -217,8 +217,8 @@ public:
   /// Returns the current value of this Datum.
   /// 
   /// If a buffer is attached to this message field, the value will be read 
-  /// from the buffer. Otherwise the shadow copy will be returned.
-  /// This const version will not update the shadow copy from the buffer.
+  /// from the buffer. Otherwise the data will be returned.
+  /// This const version will not update the data from the buffer.
   /// 
   /// @return       The value of this Datum is returned.
   ///               If a valid buffer is associated with this field, the data
@@ -227,7 +227,7 @@ public:
   /// 
   const value_type& get( ) const
   { 
-    return GetShadow();
+    return get_data();
   }
 
   //  **************************************************************************
@@ -235,7 +235,7 @@ public:
   ///
   value_type& get( )
   { 
-    return RefShadowData();
+    return get_reference();
   }
 
 
@@ -249,8 +249,7 @@ public:
   /// 
   void set(const value_type& value)
   {
-    // Update the shadow copy.
-    SetShadow(value);
+    set_data(value);
   }
 
   //  **************************************************************************
@@ -277,32 +276,34 @@ public:
 
 protected:
   //  **************************************************************************
-  /// Returns a reference to the internal shadow data storage.
+  /// Returns a reference to the internal data storage.
   /// 
-  /// Returns a reference to the internal shadow data storage managed by this
+  /// Returns a reference to the internal data storage managed by this
   /// Datum. The reference to the data can be useful, and necessary for
   ///
-  value_type& RefShadowData()                     
+  value_type& get_reference()
   { 
     field_type* pThis = static_cast<field_type*>(this);
-    return pThis->m_shadow_data; 
+    //return pThis->m_data;
+    return pThis->reference();
   }
 
   //  **************************************************************************
-  /// Returns the value of the shadow buffer.
+  /// Returns the value of the data buffer.
   /// 
-  const value_type& GetShadow() const                   
+  const value_type& get_data() const
   { 
     const field_type* pThis = static_cast<const field_type*>(this);
-    return pThis->m_shadow_data; 
+    return pThis->data();
+    //return pThis->m_data; 
   }
 
   //  **************************************************************************
-  /// Returns the value of the shadow buffer.
+  /// Returns the value of the data buffer.
   /// 
-  void SetShadow(const value_type &value)                
+  void set_data(const value_type &value)                
   { 
-    Hg::detail::copy_value_type(RefShadowData(), value);
+    Hg::detail::copy_value_type(get_reference(), value);
   }
 };
 

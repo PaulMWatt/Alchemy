@@ -53,7 +53,7 @@ struct Basic
 //            1-bit       g
 //            1-bit       h
 //
-struct PackedBits
+struct Packed
 {
   uint32_t        set_a;
   uint16_t        set_b;
@@ -79,7 +79,7 @@ struct Complex
 {
   uint32_t        seq;
   Basic           basic[3];
-  PackedBits      bits;
+  Packed          bits;
   Unaligned       unaligned;
 };
 #pragma pack(push)
@@ -104,22 +104,22 @@ typedef TypeList
 > Basic;
 
 
-HG_BEGIN_BIT_SET (uint32_t, SetA)
+HG_BEGIN_PACKED (uint32_t, SetA)
   HG_BIT_FIELD   (0,   fifteen, 15)
   HG_BIT_FIELD   (1,   two,     2)
   HG_BIT_FIELD   (2,   five,    5)
   HG_BIT_FIELD   (3,   eight,   8)
   HG_BIT_FIELD   (4,   one,     1)
-HG_END_BIT_SET
+HG_END_PACKED
 
-HG_BEGIN_BIT_SET (uint16_t, SetB)
+HG_BEGIN_PACKED (uint16_t, SetB)
   HG_BIT_FIELD   (0,   first,   4)
   HG_BIT_FIELD   (1,   second,  4)
   HG_BIT_FIELD   (2,   third,   4)
   HG_BIT_FIELD   (3,   fourth,  4)
-HG_END_BIT_SET
+HG_END_PACKED
 
-HG_BEGIN_BIT_SET (uint8_t, SetC)
+HG_BEGIN_PACKED (uint8_t, SetC)
   HG_BIT_FIELD   (0,   a, 1)
   HG_BIT_FIELD   (1,   b, 1)
   HG_BIT_FIELD   (2,   c, 1)
@@ -128,7 +128,7 @@ HG_BEGIN_BIT_SET (uint8_t, SetC)
   HG_BIT_FIELD   (5,   f, 1)
   HG_BIT_FIELD   (6,   g, 1)
   HG_BIT_FIELD   (7,   h, 1)
-HG_END_BIT_SET
+HG_END_PACKED
 
 
 //  ****************************************************************************
@@ -137,7 +137,7 @@ typedef TypeList
   SetA,
   SetB,
   SetC
-> PackedBits;
+> Packed;
 
 
 
@@ -159,7 +159,7 @@ typedef TypeList
 <
   uint32_t,
   std::array<Basic,3>,
-  PackedBits,
+  Packed,
   Unaligned
 > Complex;
 
@@ -174,11 +174,11 @@ HG_BEGIN_FORMAT(Basic)
 HG_END_FORMAT(Basic);
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(PackedBits)
+HG_BEGIN_FORMAT(Packed)
   HG_DATUM(SetA,            set_a)
   HG_DATUM(SetB,            set_b)
   HG_DATUM(SetC,            set_c)
-HG_END_FORMAT(PackedBits);
+HG_END_FORMAT(Packed);
 
 //  ****************************************************************************
 HG_BEGIN_FORMAT(Unaligned)

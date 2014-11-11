@@ -191,7 +191,9 @@ struct message_size_trait
   {                                                                            \
   typedef F##_HgFormat                  value_type;                            \
   };                                                                           \
-                                                                               \
+  } // namespace detail
+
+/*                                                                               
   template< >                                                                  \
   struct FieldTypes <F>                                                        \
     : field_data_t<F>::value_type                                              \
@@ -204,30 +206,32 @@ struct message_size_trait
                                                                                \
     value_type& This()                  {return *this;}                        \
     value_type                         &m_shadow_data;                         \
+    value_type& reference()                                                    \
+    { return *static_cast<value_type*>(this); }                                \
+    const value_type& data() const                                             \
+    { return *static_cast<const value_type*>(this); }                          \
+    void data(const value_type &value)                                         \
+    { Hg::detail::copy_value_type(reference(), value); }                       \
   };                                                                           \
   }
+*/
 
 
 // ****************************************************************************
 //  Bit Fields ****************************************************************
 // ****************************************************************************
-#define DECLARE_BIT_SET_HEADER(T,C)                                            \
+#define DECLARE_PACKED_HEADER(T,C)                                             \
   struct C;                                                                    \
   template <>                                                                  \
   struct ContainerSize<C>                                                      \
     : std::integral_constant<size_t, sizeof(T)>         { };                   \
                                                                                \
-  namespace detail {                                                           \
-  template <>                                                                  \
-  struct field_data_t<C>  { typedef T value_type; };                           \
-  }                                                                            \
-                                                                               \
   struct C                                                                     \
-    : public BasicBitList<T,C>                                                 \
+    : public PackedBits<T>                                                     \
   {                                                                            \
     typedef C                                     this_type;                   \
     typedef T                                     value_type;                  \
-    typedef BasicBitList<T,C>                     base_type;                   \
+    typedef PackedBits<T>                         base_type;                   \
                                                                                \
     C()                                                                        \
       : base_type()                                                            \
@@ -251,14 +255,7 @@ struct message_size_trait
     }                                                                          \
                                                                                \
     enum { k_offset_0 = 0 };                                                   \
-                                                                               \
-    template <typename IndexT,                                                 \
-              typename BitT>                                                   \
-    BitT& GetField(const BitT &)                                               \
-    { return GetFieldAddress(BitT()); }                                        \
-                                                                               \
 
- 
 // *****************************************************************************
 #define DECLARE_BIT_FIELD(IDX,P,N)                                             \
   typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \
@@ -270,11 +267,11 @@ struct message_size_trait
   typedef BitField  < this_type, P##_tag, k_offset_##IDX, N, value_type > P##_t; \
   enum { TMP_PASTE(k_offset_, TMP_INC(IDX)) = k_offset_##IDX + N };            \
                                                                                \
-  P##_t P;                                                                     \
-  P##_t& GetFieldAddress(const P##_t&)               { return P; }
+  P##_t P;
 
 // *****************************************************************************
-#define DECLARE_BIT_SET_FOOTER          };
+#define DECLARE_PACKED_FOOTER                                                  \
+  };
 
 #endif
 

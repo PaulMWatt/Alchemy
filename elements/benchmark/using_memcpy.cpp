@@ -54,7 +54,7 @@ void BasicToNetwork(const alchemy::benchmark::Basic &host,
 
 //  ****************************************************************************
 void ReadPacked(alchemy::benchmark::DataBuffer &data,
-                alchemy::benchmark::PackedBits &msg)
+                alchemy::benchmark::Packed     &msg)
 {
   // Read the basic field data in.
   ::memcpy(&msg.set_a, data.GetBytes(sizeof(int32_t)),  sizeof(int32_t));
@@ -64,7 +64,7 @@ void ReadPacked(alchemy::benchmark::DataBuffer &data,
 
 //  ****************************************************************************
 void WritePacked( alchemy::benchmark::DataBuffer &data,
-                  alchemy::benchmark::PackedBits &msg)
+                  alchemy::benchmark::Packed     &msg)
 {
   // Read the basic field data in.
   ::memcpy(data.GetBytes(sizeof(uint32_t)),&msg.set_a, sizeof(uint32_t));
@@ -73,8 +73,8 @@ void WritePacked( alchemy::benchmark::DataBuffer &data,
 }
 
 //  ****************************************************************************
-void PackedToNetwork(const alchemy::benchmark::PackedBits &host,
-                           alchemy::benchmark::PackedBits &net)
+void PackedToNetwork(const alchemy::benchmark::Packed &host,
+                           alchemy::benchmark::Packed &net)
 {
   // Convert the necessary terms to network byte order.
   net.set_a = htonl(host.set_a);
@@ -206,18 +206,18 @@ void UsingMemcpy::test_packed_bits(DataBuffer &data,
                                    DataBuffer &out)
 {
   using alchemy::benchmark::DataBuffer;
-  using alchemy::benchmark::PackedBits;
+  using alchemy::benchmark::Packed;
 
-  size_t len   = Hg::SizeOf<alchemy::benchmark::PackedBits>::value;
+  size_t len   = Hg::SizeOf<alchemy::benchmark::Packed>::value;
   size_t count = data.Size() / len;
 
   cout << "packed size:     " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
-    PackedBits host;
+    Packed host;
     ReadPacked(data, host);
 
-    PackedBits net;
+    Packed net;
     PackedToNetwork(host, net);
 
     WritePacked(out, net);
