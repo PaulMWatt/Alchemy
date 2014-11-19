@@ -169,20 +169,6 @@ protected:
   //  Member Data **************************************************************
 
   value_type            m_data;                 // Stores the values for the proxy.
-
-  //  TODO: Test if this is used, if it should be, if not remove it.
-  //  **************************************************************************
-  //  Endian swap provides a specialization to handle the unique structure 
-  //  created to provide bit-field support.
-  //  The function is declared and implemented as a friend function to simplify
-  //  the declaration and namespace lookup for proper endian order conversions.
-  // 
-  //friend inline
-  //  field_type EndianSwap(field_type &input)
-  //{ 
-  //  return field_type(EndianSwap<value_type>(value()));
-  //}
-
 };
 
 
@@ -198,8 +184,6 @@ struct DeduceBitFieldList
                       format_type
                     >::type                   base_t;
 
-  //typedef typename
-  //  DeclareBitFieldList<base_t>::type         type;
   typedef base_t                              type;
 };
 

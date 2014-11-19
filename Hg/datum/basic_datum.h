@@ -11,8 +11,8 @@
 #include <Pb/meta_fwd.h>
 #include <Hg/msg_buffer.h>
 #include <Hg/deduce_type_trait.h>
-//#include <Pb/bit_field/bit_field_array.h>
-//#include <Pb/bit_field/bit_field_vector.h>
+#include <Pb/bit_field/bit_field_array.h>
+#include <Pb/bit_field/bit_field_vector.h>
 
 namespace Hg
 {
@@ -61,17 +61,17 @@ void copy_value_type(T& to, const T& from)
 ///                           in the parent type container.
 /// @param N                  [size_t] The number of elements in the array.
 ///
-//template< typename SubTypeT,
-//          size_t   N
-//        >
-//struct field_data_t < Hg::BitFieldArray<SubTypeT, N> >
-//{
-//  typedef 
-//    SubTypeT                            sub_type;
-//
-//  typedef 
-//    Hg::BitFieldArray<SubTypeT, N>      value_type;
-//};
+template< typename SubTypeT,
+          size_t   N
+        >
+struct field_data_t < Hg::BitFieldArray<SubTypeT, N> >
+{
+  typedef 
+    SubTypeT                            sub_type;
+
+  typedef 
+    Hg::BitFieldArray<SubTypeT, N>      value_type;
+};
 
 
 //  ****************************************************************************
@@ -82,14 +82,14 @@ void copy_value_type(T& to, const T& from)
 ///                           in the parent type container.
 /// @paramt N                 [size_t] The number of elements in the array.
 ///
-//template< typename SubTypeT,
-//          size_t   N
-//        >
-//void copy_value_type(       BitFieldArray<SubTypeT, N>& to, 
-//                      const BitFieldArray<SubTypeT, N>& from)
-//{
-//  std::copy(from.begin(), from.end(), to.begin());
-//}
+template< typename SubTypeT,
+          size_t   N
+        >
+void copy_value_type(       BitFieldArray<SubTypeT, N>& to, 
+                      const BitFieldArray<SubTypeT, N>& from)
+{
+  std::copy(from.begin(), from.end(), to.begin());
+}
 
 //  ****************************************************************************
 /// (Dynamic-Array Specialization) Type definitions for bit-field in type-container.
@@ -99,17 +99,17 @@ void copy_value_type(T& to, const T& from)
 ///                           in the parent type container.
 /// @param AllocT             [typename] The defined allocator of the vector.
 ///
-//template< typename SubTypeT,
-//          typename AllocT
-//        >
-//struct field_data_t < Hg::BitFieldVector<SubTypeT, AllocT> >
-//{
-//  typedef 
-//    SubTypeT                                      sub_type;
-//
-//  typedef 
-//    Hg::BitFieldVector<SubTypeT, AllocT>          value_type;
-//};
+template< typename SubTypeT,
+          typename AllocT
+        >
+struct field_data_t < Hg::BitFieldVector<SubTypeT, AllocT> >
+{
+  typedef 
+    SubTypeT                                      sub_type;
+
+  typedef 
+    Hg::BitFieldVector<SubTypeT, AllocT>          value_type;
+};
 
 
 //  ****************************************************************************
@@ -120,23 +120,23 @@ void copy_value_type(T& to, const T& from)
 ///                           in the parent type container.
 /// @param AllocT             [typename] The defined allocator of the vector.
 ///
-//template< class SubTypeT,
-//          class A
-//        >
-//void copy_value_type(       BitFieldVector<SubTypeT, A>& to, 
-//                      const BitFieldVector<SubTypeT, A>& from)
-//{
-//  to.clear();
-//  if (from.empty())
-//  {
-//    return;
-//  }
-//
-//  to.resize(from.size());
-//  std::copy( from.begin(), 
-//             from.end(), 
-//             to.begin());    
-//}
+template< class SubTypeT,
+          class A
+        >
+void copy_value_type(       BitFieldVector<SubTypeT, A>& to, 
+                      const BitFieldVector<SubTypeT, A>& from)
+{
+  to.clear();
+  if (from.empty())
+  {
+    return;
+  }
+
+  to.resize(from.size());
+  std::copy( from.begin(), 
+             from.end(), 
+             to.begin());    
+}
 
 
 //  ****************************************************************************
@@ -398,7 +398,7 @@ struct DefineFieldType
 
   typedef  
     detail::FieldTypes  
-      < index_type > type;
+      < index_type >                    type;
       //  Hg::detail::DeduceTypeTrait<index_type>::type
       //>                                 type;
                                         ///< The field type definition that maps

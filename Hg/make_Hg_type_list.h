@@ -11,8 +11,8 @@
 #include <Pb/type_list.h>
 #include <Pb/type_at.h>
 #include <Hg/proxy/deduce_proxy_type.h>
-//#include <Pb/bit_field/bit_field_array.h>
-//#include <Pb/bit_field/bit_field_vector.h>
+#include <Pb/bit_field/bit_field_array.h>
+#include <Pb/bit_field/bit_field_vector.h>
 #include <Pb/dynamic.h>
 
 namespace Hg
@@ -107,15 +107,15 @@ struct DeclareTypeSequence < T, nested_trait >
 //  @paramt T             The value type in the container.
 //  @param  N             The number of elements in the container.
 //
-//template< class   T,
-//          size_t  N,
-//          template <class, size_t> class ArrayT
-//        >
-//struct DeclareTypeSequence < ArrayT<T,N>, packed_trait >
-//{
-//  typedef 
-//    Hg::BitFieldArray<T, N>             type;
-//};
+template< class   T,
+          size_t  N,
+          template <class, size_t> class ArrayT
+        >
+struct DeclareTypeSequence < ArrayT<T,N>, packed_trait >
+{
+  typedef 
+    Hg::BitFieldArray<T, N>             type;
+};
 
 //  ****************************************************************************
 //  Redeclares the array of nested types, as an array of nested Hg types.
@@ -146,15 +146,15 @@ struct DeclareTypeSequence < ArrayT<T,N>, nested_trait >
 //  @paramt T             The value type in the container.
 //  @param  A             The allocator used for memory management.
 //
-//template< class T,
-//          class A,
-//          template <class, class> class VectorT
-//        >
-//struct DeclareTypeSequence < VectorT<T,A>, packed_trait >
-//{
-//  typedef  
-//    Hg::BitFieldVector<T, A>            type;
-//};
+template< class T,
+          class A,
+          template <class, class> class VectorT
+        >
+struct DeclareTypeSequence < VectorT<T,A>, packed_trait >
+{
+  typedef  
+    Hg::BitFieldVector<T, A>            type;
+};
 
 //  ****************************************************************************
 //  Processes a nested field recursively to correct any vector definitions.

@@ -13,7 +13,7 @@
 # error Do not include this file directly. Use <detail/unpack_message.h> instead
 #endif
 //  Includes *******************************************************************
-//#include <Pb/bit_field/bit_field_vector.h>
+#include <Pb/bit_field/bit_field_vector.h>
 
 namespace Hg
 {
@@ -97,45 +97,45 @@ struct Deserializer <VectorT, BufferT, fundamental_trait>
 //  ****************************************************************************
 //  Imports a vector of bit-list fields.
 //
-//template< typename T,
-//          typename A,
-//          typename BufferT
-//        >
-//struct Deserializer <Hg::BitFieldVector<T,A>, BufferT, packed_trait>
-//{
-//  typedef Hg::BitFieldVector<T,A>       vector_type;
-//  typedef typename
-//    vector_type::value_type             value_type;
-//  typedef BufferT                       buffer_type;
-//  typedef packed_trait                data_type_trait;
-//
-//  //  **************************************************************************
-//  size_t Read ( vector_type  &value, 
-//                size_t        count, 
-//                buffer_type  &buffer,
-//                size_t        offset)
-//  {
-//    if (0 == count)
-//    {
-//      return 0;
-//    }
-//
-//    // Calculate the size of data to write in bytes.
-//    size_t size = count * sizeof(value_type);
-//
-//    value_type *pFirst = &(value[0].value());
-//
-//    return buffer.get_range(pFirst, size, offset);
-//  }
-//
-//  //  **************************************************************************
-//  size_t Read ( value_type   &value, 
-//                buffer_type  &buffer,
-//                size_t        offset)
-//  {
-//    return buffer.get_data( value, offset);
-//  }
-//};
+template< typename T,
+          typename A,
+          typename BufferT
+        >
+struct Deserializer <Hg::BitFieldVector<T,A>, BufferT, packed_trait>
+{
+  typedef Hg::BitFieldVector<T,A>       vector_type;
+  typedef typename
+    vector_type::value_type             value_type;
+  typedef BufferT                       buffer_type;
+  typedef packed_trait                  data_type_trait;
+
+  //  **************************************************************************
+  size_t Read ( vector_type  &value, 
+                size_t        count, 
+                buffer_type  &buffer,
+                size_t        offset)
+  {
+    if (0 == count)
+    {
+      return 0;
+    }
+
+    // Calculate the size of data to write in bytes.
+    size_t size = count * sizeof(value_type);
+
+    value_type *pFirst = &(value[0].value());
+
+    return buffer.get_range(pFirst, size, offset);
+  }
+
+  //  **************************************************************************
+  size_t Read ( value_type   &value, 
+                buffer_type  &buffer,
+                size_t        offset)
+  {
+    return buffer.get_data( value, offset);
+  }
+};
 
 
 //  ****************************************************************************

@@ -126,7 +126,7 @@ struct Serializer <Hg::BitFieldArray<T,N>, BufferT, packed_trait>
 
   typedef BufferT                       buffer_type;
 
-  typedef packed_trait                data_type_trait;
+  typedef packed_trait                  data_type_trait;
 
   //  **************************************************************************
   template <typename TraitT>

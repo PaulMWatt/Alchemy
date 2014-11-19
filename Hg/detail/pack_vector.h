@@ -115,7 +115,7 @@ struct Serializer <Hg::BitFieldVector<T,A>, BufferT, packed_trait>
 
   typedef BufferT                       buffer_type;
 
-  typedef packed_trait                data_type_trait;
+  typedef packed_trait                  data_type_trait;
 
   //  **************************************************************************
   size_t Write( vector_type   &value, 

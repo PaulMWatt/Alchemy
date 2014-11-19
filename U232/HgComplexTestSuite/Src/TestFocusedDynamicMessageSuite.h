@@ -906,6 +906,8 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_of_bitsets(void)
   byte_vector buffer;
   make_buffer(buffer);
 
+Hg::color4 col;
+int i = sizeof(Hg::color4);
   // Populate the SUT with the test values.
   SUT sut;
   populate_msg(sut);

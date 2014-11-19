@@ -19,7 +19,12 @@
 //  Includes ******************************************************************
 #include <Pb/compiler.h>
 #include <Pb/meta_util.h>
-//#include <Pb/bit_field_list.h>
+
+#include <Pb/meta_fwd.h>
+#include <Pb/bit_field/packed_bits.h>
+#include <Pb/bit_field/bit_field.h>
+#include <Pb/integer_sequence.h>
+
 #include <array>
 
 
@@ -54,9 +59,12 @@ public:
                                         ///  defined by the user to access 
                                         ///  individual value entries in the array.
 
-  typedef typename
-    DeclareBitFieldList
-      < user_bit_field_type>::type      bit_field_type;
+  // TODO: Remove this if the alternate implementation checks out.
+  //typedef typename
+  //  DeclareBitFieldList
+  //    < user_bit_field_type>::type      
+
+  typedef user_bit_field_type           bit_field_type;
                                         ///< The Hg type required to properly 
                                         ///  initialized nested structures to
                                         ///  provide the natural bit-field syntax.

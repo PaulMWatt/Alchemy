@@ -193,29 +193,6 @@ struct message_size_trait
   };                                                                           \
   } // namespace detail
 
-/*                                                                               
-  template< >                                                                  \
-  struct FieldTypes <F>                                                        \
-    : field_data_t<F>::value_type                                              \
-  {                                                                            \
-    typedef F                           index_type;                            \
-    typedef                                                                    \
-      field_data_t<F>::value_type       value_type;                            \
-    FieldTypes()                                                               \
-        : m_shadow_data(This())         { }                                    \
-                                                                               \
-    value_type& This()                  {return *this;}                        \
-    value_type                         &m_shadow_data;                         \
-    value_type& reference()                                                    \
-    { return *static_cast<value_type*>(this); }                                \
-    const value_type& data() const                                             \
-    { return *static_cast<const value_type*>(this); }                          \
-    void data(const value_type &value)                                         \
-    { Hg::detail::copy_value_type(reference(), value); }                       \
-  };                                                                           \
-  }
-*/
-
 
 // ****************************************************************************
 //  Bit Fields ****************************************************************
