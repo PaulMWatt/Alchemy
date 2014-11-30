@@ -117,7 +117,7 @@ template< typename T,
           size_t   N,
           typename BufferT
         >
-struct Serializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
+struct Serializer <Hg::BitFieldArray<T,N>, BufferT, packed_trait>
 {
   typedef Hg::BitFieldArray<T,N>        array_type;
 
@@ -126,7 +126,7 @@ struct Serializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
 
   typedef BufferT                       buffer_type;
 
-  typedef bitfield_trait                data_type_trait;
+  typedef packed_trait                  data_type_trait;
 
   //  **************************************************************************
   template <typename TraitT>

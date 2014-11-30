@@ -111,7 +111,7 @@ template< class   T,
           size_t  N,
           template <class, size_t> class ArrayT
         >
-struct DeclareTypeSequence < ArrayT<T,N>, bitfield_trait >
+struct DeclareTypeSequence < ArrayT<T,N>, packed_trait >
 {
   typedef 
     Hg::BitFieldArray<T, N>             type;
@@ -150,7 +150,7 @@ template< class T,
           class A,
           template <class, class> class VectorT
         >
-struct DeclareTypeSequence < VectorT<T,A>, bitfield_trait >
+struct DeclareTypeSequence < VectorT<T,A>, packed_trait >
 {
   typedef  
     Hg::BitFieldVector<T, A>            type;

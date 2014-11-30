@@ -40,7 +40,7 @@ using namespace Hg;
 namespace Hg
 {
 
-HG_BEGIN_BIT_SET (uint32_t, mixed_bits)
+HG_BEGIN_PACKED (uint32_t, mixed_bits)
   HG_BIT_FIELD   (0,   first,   5)
   HG_BIT_FIELD   (1,   second,  4)
   HG_BIT_FIELD   (2,   third,   3)
@@ -48,7 +48,7 @@ HG_BEGIN_BIT_SET (uint32_t, mixed_bits)
   HG_BIT_FIELD   (4,   fifth,   1)
   HG_BIT_FIELD   (5,   sixth,   1)
   HG_BIT_FIELD   (6,   seventh, 1)
-HG_END_BIT_SET
+HG_END_PACKED
 
 
 //  ****************************************************************************
@@ -202,6 +202,7 @@ void HgTypeListTestSuite::TestArraySubBitFields(void)
   typedef make_Hg_type_list<SUT>::type     result_type;
 
   TS_ASSERT(!(std::is_same<SUT, result_type>::value));
+  //TS_ASSERT((std::is_same<SUT, result_type>::value));
 }
 
 //  ****************************************************************************
@@ -210,6 +211,7 @@ void HgTypeListTestSuite::TestArraySubNested(void)
   typedef Hg::Hg_nested_sub                 SUT;
   typedef make_Hg_type_list<SUT>::type      result_type;
 
+  //TS_ASSERT((std::is_same<SUT, result_type>::value));
   TS_ASSERT(!(std::is_same<SUT, result_type>::value));
   TS_ASSERT((std::is_same<Hg::Hg_nested_adjusted, result_type>::value));
 }
@@ -274,6 +276,7 @@ void HgTypeListTestSuite::TestVectorSubBitFields(void)
 
   typedef make_Hg_type_list<SUT>::type     result_type;
 
+//  TS_ASSERT((std::is_same<SUT, result_type>::value));
   TS_ASSERT(!(std::is_same<SUT, result_type>::value));
 }
 

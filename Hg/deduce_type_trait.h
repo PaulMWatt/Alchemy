@@ -49,8 +49,8 @@ private:
   ///   4: fixed array proxy     Fixed sized nested homogenous types 
   ///
   typedef typename 
-    std::conditional< bitfield_value<value_type>::value,
-                      bitfield_trait,
+    std::conditional< packed_value<value_type>::value,
+                      packed_trait,
                       fundamental_trait
                     >::type                     basic_type;
 

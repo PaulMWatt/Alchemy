@@ -370,7 +370,7 @@ void TestMessageSuite::TestSingleFieldMsg_Bitlist(void)
   SingleMsg sut;
   sut.only.lonely = 3;
 
-  TS_ASSERT_EQUALS(1, sut.only.lonely);
+  TS_ASSERT_EQUALS(1, (int)sut.only.lonely);
 }
 
 //  ****************************************************************************

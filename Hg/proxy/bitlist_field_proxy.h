@@ -9,7 +9,7 @@
 #define BITLIST_FIELD_PROXY_H_INCLUDED
 //  Includes *******************************************************************
 #include <Hg/datum/datum.h>
-#include <Pb/bit_field_list.h>
+#include <Pb/bit_field/packed_bits.h>
 
 namespace Hg
 {
@@ -26,9 +26,8 @@ namespace detail
 template <size_t    kt_idx,
           typename  format_t
         >
-struct DataProxy<bitfield_trait, kt_idx, format_t>
+struct DataProxy<packed_trait, kt_idx, format_t>
   : public Datum<kt_idx, format_t>
-  , public DeduceBitFieldList<kt_idx, format_t>::type
 {
   typedef 
     Datum < kt_idx,
@@ -36,12 +35,7 @@ struct DataProxy<bitfield_trait, kt_idx, format_t>
           >                                       datum_type;
 
   typedef typename 
-    DeduceBitFieldList< kt_idx,
-                        format_t
-                      >::type                     host_type;
-
-  typedef typename 
-    host_type::value_type                         value_type;
+    datum_type::value_type                        value_type;
 
   typedef datum_type                              reference;
 
@@ -52,7 +46,6 @@ struct DataProxy<bitfield_trait, kt_idx, format_t>
   /// call into with no actions performed.
   ///
   DataProxy()
-    : host_type(datum_type::RefShadowData())
   { }
 
   //  **************************************************************************
@@ -65,7 +58,6 @@ struct DataProxy<bitfield_trait, kt_idx, format_t>
   /// 
   DataProxy(DataProxy& proxy)
     : datum_type(proxy)
-    , host_type(datum_type::RefShadowData())
   { 
     this->set(proxy.get());
   }
@@ -103,7 +95,7 @@ struct DataProxy<bitfield_trait, kt_idx, format_t>
     return static_cast<datum_type*>(this)->operator value_type();
   }
 
- //  **************************************************************************
+  //  **************************************************************************
   /// Assignment Operator (value_type)
   /// 
   /// Allows assignment to this Datum type from it's parameter type, *value_type*.
@@ -114,10 +106,11 @@ struct DataProxy<bitfield_trait, kt_idx, format_t>
   ///                         be used to directly modify the value of the object.
   /// 
   DataProxy& 
-    operator=(value_type rhs)                     { datum_type::operator=(rhs);
-                                                    return *this;
-                                                  }
-
+    operator=(value_type rhs)                     
+  { 
+    datum_type::operator=(rhs);
+    return *this;
+  }
 };
 
 } // namespace detail

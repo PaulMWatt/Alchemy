@@ -16,12 +16,12 @@ namespace Hg
 //  ****************************************************************************
 //  Bitset definition to represent 4-channel color value.  
 // 
-HG_BEGIN_BIT_SET (uint32_t, color4)
+HG_BEGIN_PACKED (uint32_t, color4)
   HG_BIT_FIELD   (0,   R, 8)
   HG_BIT_FIELD   (1,   G, 8)
   HG_BIT_FIELD   (2,   B, 8)
   HG_BIT_FIELD   (3,   A, 8)
-HG_END_BIT_SET
+HG_END_PACKED
 
 
 //  ****************************************************************************
