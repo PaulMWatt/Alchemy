@@ -47,7 +47,7 @@ usage:
   -   HG_ARRAY(TYPE,COUNT,NAME)
   -   HG_DYNAMIC(TYPE,COUNT,NAME)
   -   HG_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
-  - HG_END_FORMAT
+  - HG_END_FORMAT(TYPE_LIST)
 
 Hg provides a portable bit-field interface that works by generating the
 appropriate shift and mask operations for each field. This provides the 
@@ -59,9 +59,9 @@ into a user-specified integral type.
 
 Hg currently is written to allow up to 32 bit-fields in a single parameter.
 
-  - HG_BEGIN_BIT_SET(TYPE,BITSET)
+  - HG_BEGIN_PACKED(TYPE,BITSET)
   -   HG_BIT_FIELD(INDEX, NAME, COUNT)
-  - HG_END_BIT_SET
+  - HG_END_PACKED
 
 
 -------------
