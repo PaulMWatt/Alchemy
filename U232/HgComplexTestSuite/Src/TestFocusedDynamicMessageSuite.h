@@ -189,58 +189,58 @@ void populate_msg(SUT &msg)
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_array_of_bitsets(void)
 {
-  using namespace test::fixed_array::bit_list;
+  //using namespace test::fixed_array::bit_list;
 
-  // Place them in a buffer.
-  byte_vector buffer;
-  make_buffer(buffer);
+  //// Place them in a buffer.
+  //byte_vector buffer;
+  //make_buffer(buffer);
 
-  // Populate the SUT with the test values.
-  SUT sut;
-  populate_msg(sut);
+  //// Populate the SUT with the test values.
+  //SUT sut;
+  //populate_msg(sut);
 
-  // SUT: Serialize into a buffer.
-  uint8_t const* pData = sut.data();
+  //// SUT: Serialize into a buffer.
+  //uint8_t const* pData = sut.data();
 
-  TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+  //TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  //TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
 }
 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_read_array_of_bitsets(void)
 {
-  using namespace test::fixed_array::bit_list;
-  using namespace test::data;
+  //using namespace test::fixed_array::bit_list;
+  //using namespace test::data;
 
-  // Place three points in a buffer.
-  byte_vector buffer;
-  make_buffer(buffer);
+  //// Place three points in a buffer.
+  //byte_vector buffer;
+  //make_buffer(buffer);
 
-  // Populate the expected structure for comparison.
-  MsgColorMap expected;
-  populate_msg(expected);
+  //// Populate the expected structure for comparison.
+  //MsgColorMap expected;
+  //populate_msg(expected);
 
-  // SUT
-  SUT sut;
-  sut.assign(&buffer[0], buffer.size());
+  //// SUT
+  //SUT sut;
+  //sut.assign(&buffer[0], buffer.size());
 
-  // Verify the results for all of the fields.
-  TS_ASSERT_EQUALS(k_White  , sut.table[0] );
-  TS_ASSERT_EQUALS(k_Fuchsia, sut.table[1] );
-  TS_ASSERT_EQUALS(k_Aqua   , sut.table[2] );
-  TS_ASSERT_EQUALS(k_Yellow , sut.table[3] );
-  TS_ASSERT_EQUALS(k_Purple , sut.table[4] );
-  TS_ASSERT_EQUALS(k_Teal   , sut.table[5] );
-  TS_ASSERT_EQUALS(k_Olive  , sut.table[6] );
-  TS_ASSERT_EQUALS(k_Silver , sut.table[7] );
-  TS_ASSERT_EQUALS(k_Blue   , sut.table[8] );
-  TS_ASSERT_EQUALS(k_Lime   , sut.table[9] );
-  TS_ASSERT_EQUALS(k_Red    , sut.table[10]);
-  TS_ASSERT_EQUALS(k_Gray   , sut.table[11]);
-  TS_ASSERT_EQUALS(k_Navy   , sut.table[12]);
-  TS_ASSERT_EQUALS(k_Green  , sut.table[13]);
-  TS_ASSERT_EQUALS(k_Maroon , sut.table[14]);
-  TS_ASSERT_EQUALS(k_Black  , sut.table[15]);
+  //// Verify the results for all of the fields.
+  //TS_ASSERT_EQUALS(k_White  , sut.table[0] );
+  //TS_ASSERT_EQUALS(k_Fuchsia, sut.table[1] );
+  //TS_ASSERT_EQUALS(k_Aqua   , sut.table[2] );
+  //TS_ASSERT_EQUALS(k_Yellow , sut.table[3] );
+  //TS_ASSERT_EQUALS(k_Purple , sut.table[4] );
+  //TS_ASSERT_EQUALS(k_Teal   , sut.table[5] );
+  //TS_ASSERT_EQUALS(k_Olive  , sut.table[6] );
+  //TS_ASSERT_EQUALS(k_Silver , sut.table[7] );
+  //TS_ASSERT_EQUALS(k_Blue   , sut.table[8] );
+  //TS_ASSERT_EQUALS(k_Lime   , sut.table[9] );
+  //TS_ASSERT_EQUALS(k_Red    , sut.table[10]);
+  //TS_ASSERT_EQUALS(k_Gray   , sut.table[11]);
+  //TS_ASSERT_EQUALS(k_Navy   , sut.table[12]);
+  //TS_ASSERT_EQUALS(k_Green  , sut.table[13]);
+  //TS_ASSERT_EQUALS(k_Maroon , sut.table[14]);
+  //TS_ASSERT_EQUALS(k_Black  , sut.table[15]);
 }
 
 
@@ -899,59 +899,61 @@ void populate_msg(SUT &msg)
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_write_vector_of_bitsets(void)
 {
-  // Reuse the data defined for the bit_list array tests
-  using namespace test::dynamic::bit_list;
-
-  // Place them in a buffer.
-  byte_vector buffer;
-  make_buffer(buffer);
-
-  // Populate the SUT with the test values.
-  SUT sut;
-  populate_msg(sut);
-
-  // SUT: Serialize into a buffer.
-  uint8_t const* pData = sut.data();
-
-  TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+//  // Reuse the data defined for the bit_list array tests
+//  using namespace test::dynamic::bit_list;
+//
+//  // Place them in a buffer.
+//  byte_vector buffer;
+//  make_buffer(buffer);
+//
+//Hg::color4 col;
+//int i = sizeof(Hg::color4);
+//  // Populate the SUT with the test values.
+//  SUT sut;
+//  populate_msg(sut);
+//
+//  // SUT: Serialize into a buffer.
+//  uint8_t const* pData = sut.data();
+//
+//  TS_ASSERT_EQUALS(buffer.size(), sut.size());
+//  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
 }
 
 //  ****************************************************************************
 void TestFocusedDynamicMessageSuite::Test_read_vector_of_bitsets(void)
 {
-  using namespace test::dynamic::bit_list;
-  using namespace test::data;
+  //using namespace test::dynamic::bit_list;
+  //using namespace test::data;
 
-  // Place three points in a buffer.
-  byte_vector buffer;
-  make_buffer(buffer);
+  //// Place three points in a buffer.
+  //byte_vector buffer;
+  //make_buffer(buffer);
 
-  // Populate the expected structure for comparison.
-  MsgColorTable expected;
-  populate_msg(expected);
+  //// Populate the expected structure for comparison.
+  //MsgColorTable expected;
+  //populate_msg(expected);
 
-  // SUT
-  SUT sut;
-  sut.assign(&buffer[0], buffer.size());
+  //// SUT
+  //SUT sut;
+  //sut.assign(&buffer[0], buffer.size());
 
-  // Verify the results for all of the fields.
-  TS_ASSERT_EQUALS(k_White  , sut.table[0] );
-  TS_ASSERT_EQUALS(k_Fuchsia, sut.table[1] );
-  TS_ASSERT_EQUALS(k_Aqua   , sut.table[2] );
-  TS_ASSERT_EQUALS(k_Yellow , sut.table[3] );
-  TS_ASSERT_EQUALS(k_Purple , sut.table[4] );
-  TS_ASSERT_EQUALS(k_Teal   , sut.table[5] );
-  TS_ASSERT_EQUALS(k_Olive  , sut.table[6] );
-  TS_ASSERT_EQUALS(k_Silver , sut.table[7] );
-  TS_ASSERT_EQUALS(k_Blue   , sut.table[8] );
-  TS_ASSERT_EQUALS(k_Lime   , sut.table[9] );
-  TS_ASSERT_EQUALS(k_Red    , sut.table[10]);
-  TS_ASSERT_EQUALS(k_Gray   , sut.table[11]);
-  TS_ASSERT_EQUALS(k_Navy   , sut.table[12]);
-  TS_ASSERT_EQUALS(k_Green  , sut.table[13]);
-  TS_ASSERT_EQUALS(k_Maroon , sut.table[14]);
-  TS_ASSERT_EQUALS(k_Black  , sut.table[15]);
+  //// Verify the results for all of the fields.
+  //TS_ASSERT_EQUALS(k_White  , sut.table[0] );
+  //TS_ASSERT_EQUALS(k_Fuchsia, sut.table[1] );
+  //TS_ASSERT_EQUALS(k_Aqua   , sut.table[2] );
+  //TS_ASSERT_EQUALS(k_Yellow , sut.table[3] );
+  //TS_ASSERT_EQUALS(k_Purple , sut.table[4] );
+  //TS_ASSERT_EQUALS(k_Teal   , sut.table[5] );
+  //TS_ASSERT_EQUALS(k_Olive  , sut.table[6] );
+  //TS_ASSERT_EQUALS(k_Silver , sut.table[7] );
+  //TS_ASSERT_EQUALS(k_Blue   , sut.table[8] );
+  //TS_ASSERT_EQUALS(k_Lime   , sut.table[9] );
+  //TS_ASSERT_EQUALS(k_Red    , sut.table[10]);
+  //TS_ASSERT_EQUALS(k_Gray   , sut.table[11]);
+  //TS_ASSERT_EQUALS(k_Navy   , sut.table[12]);
+  //TS_ASSERT_EQUALS(k_Green  , sut.table[13]);
+  //TS_ASSERT_EQUALS(k_Maroon , sut.table[14]);
+  //TS_ASSERT_EQUALS(k_Black  , sut.table[15]);
 }
 
 //  ****************************************************************************

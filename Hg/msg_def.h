@@ -43,6 +43,8 @@
 #include <Hg/make_Hg_type_list.h>
 #include <Hg/proxy/deduce_proxy_type.h>
 
+#include <cstddef>
+
 //  ****************************************************************************
 //  Utility Constructs For Use With Hg Message Types ***************************
 //  ****************************************************************************
@@ -189,44 +191,24 @@ struct message_size_trait
   {                                                                            \
   typedef F##_HgFormat                  value_type;                            \
   };                                                                           \
-                                                                               \
-  template< >                                                                  \
-  struct FieldTypes <F>                                                        \
-    : field_data_t<F>::value_type                                              \
-  {                                                                            \
-    typedef F                           index_type;                            \
-    typedef                                                                    \
-      field_data_t<F>::value_type       value_type;                            \
-    FieldTypes()                                                               \
-        : m_shadow_data(This())         { }                                    \
-                                                                               \
-    value_type& This()                  {return *this;}                        \
-    value_type                         &m_shadow_data;                         \
-  };                                                                           \
-  }
+  } // namespace detail
 
 
 // ****************************************************************************
 //  Bit Fields ****************************************************************
 // ****************************************************************************
-#define DECLARE_BIT_SET_HEADER(T,C)                                            \
+#define DECLARE_PACKED_HEADER(T,C)                                             \
   struct C;                                                                    \
   template <>                                                                  \
   struct ContainerSize<C>                                                      \
     : std::integral_constant<size_t, sizeof(T)>         { };                   \
                                                                                \
-  namespace detail {                                                           \
-  template <>                                                                  \
-  struct field_data_t<C>  { typedef T value_type; };                           \
-  }                                                                            \
-                                                                               \
   struct C                                                                     \
-    : public BasicBitList<T,C>                                                 \
+    : public PackedBits<T>                                                     \
   {                                                                            \
     typedef C                                     this_type;                   \
     typedef T                                     value_type;                  \
-    typedef BitField<0,0,value_type>              nil_bits_t;                  \
-    typedef BasicBitList<T,C>                     base_type;                   \
+    typedef PackedBits<T>                         base_type;                   \
                                                                                \
     C()                                                                        \
       : base_type()                                                            \
@@ -250,32 +232,23 @@ struct message_size_trait
     }                                                                          \
                                                                                \
     enum { k_offset_0 = 0 };                                                   \
-                                                                               \
-    template <typename IndexT,                                                 \
-              typename BitT>                                                   \
-    BitT& GetField(const BitT &)                                               \
-    { return GetFieldAddress(BitT()); }                                        \
-                                                                               \
-    nil_bits_t& GetFieldAddress(const nil_bits_t&)                             \
-    {                                                                          \
-      static nil_bits_t nil_bits;                                              \
-      return nil_bits;                                                         \
-    }
 
- 
 // *****************************************************************************
 #define DECLARE_BIT_FIELD(IDX,P,N)                                             \
   typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \
-  typedef BitField  < k_offset_##IDX, N, value_type > P##_t;                   \
+  struct P##_tag                                                               \
+  { static ptrdiff_t offset()                                                  \
+    { return offsetof(this_type, P); }                                         \
+  };                                                                           \
+                                                                               \
+  typedef BitField  < this_type, P##_tag, k_offset_##IDX, N, value_type > P##_t; \
   enum { TMP_PASTE(k_offset_, TMP_INC(IDX)) = k_offset_##IDX + N };            \
                                                                                \
-  P##_t P;                                                                     \
-  P##_t& GetFieldAddress(const P##_t&)               { return P; }
-
+  P##_t P;
 
 // *****************************************************************************
-#define DECLARE_BIT_SET_FOOTER          };
-
+#define DECLARE_PACKED_FOOTER                                                  \
+  };
 
 #endif
 

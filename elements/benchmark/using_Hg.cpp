@@ -42,13 +42,13 @@ void UsingHg::test_basic(DataBuffer &data,
 }
 
 //  ****************************************************************************
-typedef Hg::Message<Hg::PackedBits_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgPackedHost;
-typedef Hg::Message<Hg::PackedBits_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgPackedNet;
+typedef Hg::Message<Hg::Packed_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgPackedHost;
+typedef Hg::Message<Hg::Packed_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgPackedNet;
 
 void UsingHg::test_packed_bits( DataBuffer &data,
                                 DataBuffer &out)
 {
-  size_t len   = Hg::SizeOf<Hg::PackedBits>::value;
+  size_t len   = Hg::SizeOf<Hg::Packed>::value;
   size_t count = data.Size() / len;
 
   cout << "packed size:     " << len   << ", count; " << count << endl;

@@ -184,10 +184,10 @@ struct fundamental_trait
 { };
 
 //  ***************************************************************************
-/// Bitfield_trait identifies fundamental integral types, that automatically
+/// packed_trait identifies fundamental integral types, that automatically
 /// perform bit-shift and mask operations to simulate bit-fields.
 ///
-struct bitfield_trait 
+struct packed_trait 
   : static_size_trait
 { };
 
@@ -228,11 +228,11 @@ struct array_trait
 { };
 
 //  BitField Message Field Discriminators *************************************
-//  Objects derived from the bitfield_trait are considered bitlist containers.
+//  Objects derived from the packed_trait are considered bitlist containers.
 template <typename T>
-struct bitfield_value
+struct packed_value
   : std::integral_constant< bool,
-                            std::is_base_of<bitfield_trait, T>::value>
+                            std::is_base_of<packed_trait, T>::value>
 {  };
 
 
@@ -255,7 +255,7 @@ struct type_container<MT>
 template <typename T>
 struct nested_value
   : std::integral_constant < bool,
-                             type_container<T>::value && !bitfield_value<T>::value>
+                             type_container<T>::value && !packed_value<T>::value>
 {  };
 
 //  A specialization of the emtpy type because it acts as a teminator. ********

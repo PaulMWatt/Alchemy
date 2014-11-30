@@ -101,13 +101,13 @@ template< typename T,
           typename A,
           typename BufferT
         >
-struct Deserializer <Hg::BitFieldVector<T,A>, BufferT, bitfield_trait>
+struct Deserializer <Hg::BitFieldVector<T,A>, BufferT, packed_trait>
 {
   typedef Hg::BitFieldVector<T,A>       vector_type;
   typedef typename
     vector_type::value_type             value_type;
   typedef BufferT                       buffer_type;
-  typedef bitfield_trait                data_type_trait;
+  typedef packed_trait                  data_type_trait;
 
   //  **************************************************************************
   size_t Read ( vector_type  &value, 

@@ -31,8 +31,8 @@
 /// to define a set of bit-fields that are packed into a user-specified integral type.
 /// Hg currently is written to allow up to 32 bit-fields in a single parameter.
 ///
-///   - HG_BEGIN_BIT_SET(TYPE,BITSET)
-///   - HG_END_BIT_SET
+///   - HG_BEGIN_PACKED(TYPE,BITSET)
+///   - HG_END_PACKED
 ///   - HG_BIT_FIELD(INDEX,COUNT,NAME)
 /// 
 /// The MIT License(MIT)
@@ -207,15 +207,15 @@
 
 
 //  ****************************************************************************
-/// Starts the definition for a message field that represents a set of bit-fields. 
+/// Starts the definition for a message field that represents a set of packed bits. 
 ///             
-/// This definition builds a BitSet definition in place, and allows the user
+/// This definition builds a packed bit definition in place, and allows the user
 /// to specify the size and names of each bit-field. This provides a very
 /// convenient and natural way to interact with the named bit-fields in an expressive
 /// manner.
 ///        
 /// @param TYPE     The integer type to use for this field.
-/// @param BITSET   The name to assign to this bitset definition.
+/// @param NAME     The name to assign to this bitset definition.
 ///        
 /// @note           A current limitation requires that bit-sets, defined with this 
 ///                 MACRO definition, are performed in the *Hg* namespace.
@@ -226,28 +226,27 @@
 ///   namespace Hg
 ///   {
 ///   
-///   HG_BEGIN_BIT_SET (uint8_t, flags)
+///   HG_BEGIN_PACKED (uint8_t, flags)
 ///     HG_BIT_FIELD   (0, is_visible, 1)
 ///     HG_BIT_FIELD   (1, is_light  , 1)
 ///     HG_BIT_FIELD   (2, ambient   , 3)
 ///     HG_BIT_FIELD   (3, diffuse   , 3)
-///   HG_END_BIT_SET
+///   HG_END_PACKED   (flags)
 ///     
 ///   } // namespace Hg
 /// ~~~     
 ///         
-/// @remarks        There are four constructs that are created by the definition
+/// @remarks        There are three constructs that are created by the definition
 ///                 of this MACRO:
-///                 1) type_container<> specialization for the BIT_SET
-///                 2) ContainerSize<> specialization to properly return the
+///                 1) ContainerSize<> specialization to properly return the
 ///                    size of the data buffer required for the bitset.
 ///                    Otherwise the size of the BIT_SET object would be returned.
-///                 3) NestedFieldData<> specialization that defines the 
+///                 2) field_data_t<> specialization that defines the 
 ///                    value_type and a data cache for the message field.
-///                 4) The definition of the BIT_SET struct, which contains
+///                 3) The definition of the BIT_SET struct, which contains
 ///                    all of the named bit-field properties managed by the BIT_SET.
 ///         
-#define HG_BEGIN_BIT_SET(TYPE,BITSET)   DECLARE_BIT_SET_HEADER(TYPE,BITSET)
+#define HG_BEGIN_PACKED(TYPE,NAME)     DECLARE_PACKED_HEADER(TYPE,NAME)
 
 
 //  ****************************************************************************
@@ -267,12 +266,12 @@
 
 
 //  ****************************************************************************
-/// Ends the definition for a message field that represents a set of bit-fields.
+/// Ends the definition for a message field that represents a set of packed bits.
 ///             
 /// A type container specialization is declared for this class to facilitate
 /// the proper calculation of the internal buffer size for the container.
 /// 
-#define HG_END_BIT_SET                  DECLARE_BIT_SET_FOOTER
+#define HG_END_PACKED                   DECLARE_PACKED_FOOTER
 
 
 

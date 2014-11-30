@@ -58,6 +58,9 @@ size_t DeserializeArray ( ArrayT<T, N> &value,
                           BufferT  &buffer,
                           size_t    offset);
 
+
+//  ****************************************************************************
+//  Array Implementation *******************************************************
 namespace Array
 {
 
@@ -119,14 +122,14 @@ template< typename T,
           size_t   N,
           typename BufferT
         >
-struct Deserializer <Hg::BitFieldArray<T,N>, BufferT, bitfield_trait>
+struct Deserializer <Hg::BitFieldArray<T,N>, BufferT, packed_trait>
   : public std::integral_constant<size_t, N>
 {
   typedef Hg::BitFieldArray<T,N>        array_type;
   typedef typename
     array_type::value_type              value_type;
   typedef BufferT                       buffer_type;
-  typedef bitfield_trait                data_type_trait;
+  typedef packed_trait                  data_type_trait;
 
   //  **************************************************************************
   size_t Read ( array_type   &value, 

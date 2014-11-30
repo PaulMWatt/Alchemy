@@ -106,7 +106,7 @@ template< typename T,
           typename A,
           typename BufferT
         >
-struct Serializer <Hg::BitFieldVector<T,A>, BufferT, bitfield_trait>
+struct Serializer <Hg::BitFieldVector<T,A>, BufferT, packed_trait>
 {
   typedef Hg::BitFieldVector<T,A>       vector_type;
 
@@ -115,7 +115,7 @@ struct Serializer <Hg::BitFieldVector<T,A>, BufferT, bitfield_trait>
 
   typedef BufferT                       buffer_type;
 
-  typedef bitfield_trait                data_type_trait;
+  typedef packed_trait                  data_type_trait;
 
   //  **************************************************************************
   size_t Write( vector_type   &value, 

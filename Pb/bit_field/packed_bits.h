@@ -50,11 +50,11 @@ typedef FieldIndex<0,MT,0>     idx_empty_t;
 //  The base container definition for a list of bit-fields.
 //  This object contains type definitions 
 // 
-template <typename T,
-          typename FieldsT>
-struct BasicBitList
+template <typename T>
+struct PackedBits
   : public container_trait
-  , public bitfield_trait
+  , public packed_trait
+  
 { 
   // Define each of these types for the base.
   // This will ensure the types exist if less than 
@@ -95,98 +95,97 @@ struct BasicBitList
   typedef idx_empty_t   idx_30;
   typedef idx_empty_t   idx_31;
 
-  typedef BasicBitList<T, FieldsT>      this_type;
-  typedef T                             value_type;
-  typedef FieldsT                       field_type;
-  typedef BitField<0, 0, value_type>    nil_bits_t;
+  typedef PackedBits<T>                               this_type;
+  typedef T                                           value_type;
 
   enum { k_offset_0 = 0 };
 
   //  **************************************************************************
-  //  Returns the value of the entire storage buffer.
+  //  Default Constructor
   // 
-  const value_type& value() const
+  PackedBits()
+    : m_data(0)
+  { }
+
+  //  **************************************************************************
+  //  Value Constructor.
+  // 
+  PackedBits(value_type &data_field)
+    : m_data(data_field)
+  { }
+
+  //  **************************************************************************
+  //  Value conversion operator.
+  // 
+  operator value_type() const
   { 
-    return *m_pData; 
+    return m_data; 
   }
 
   //  **************************************************************************
-  //  Returns the value of the entire storage buffer.
+  /// (Value) Assignment operator
+  ///
+  PackedBits& operator=(const value_type &rhs)
+  {
+    m_data = rhs;
+    return *this;
+  }
+
+  //  **************************************************************************
+  //  Returns the value of the packed bits.
+  // 
+  const value_type value() const
+  { 
+    return m_data; 
+  }
+
+  //  **************************************************************************
+  //  Returns a reference to the storage buffer.
   // 
   value_type& value()
   { 
-    return *m_pData; 
+    return m_data; 
   }
 
   //  **************************************************************************
-  //  Sets the value of the entire storage buffer.
+  //  Sets the value of the packed bits.
   // 
   void value(value_type value)
   { 
-    *m_pData = value; 
+    m_data = value; 
   }
 
-  //  **************************************************************************
-  //  Attaches an externally referenced data buffer for storage.
-  //
-  void set_buffer(value_type &buffer)
-  { 
-    m_pData = &buffer; 
+  //  Methods *******************************************************************
+  //  ***************************************************************************
+  /// Returns the size of the base integer type used in the bit list.
+  ///
+  static
+  size_t size()
+  {
+    return sizeof(value_type);
   }
 
 protected:
   //  Member Data **************************************************************
 
-  value_type            *m_pData;       // Points to the local buffer that 
-                                        // stores the values for the proxy.
-                                        // This type must be a pointer as opposed
-                                        // to a reference because of containers
-                                        // such as the array that allocate in bulk,
-                                        // they can only use the default constructor.
-
-                                        //   TODO: Would like to explore options 
-                                        //   for removing this data fields
-                                        //   without adding buffer validity tests.
-
-  value_type            temp_data;      // The MT data value field 
-                                        // provides a location to reference
-                                        // for the default constructor.
-
-  //  **************************************************************************
-  //  Default Constructor
-  //  Prevent direct creation of this class; must use a derived class.
-  // 
-  BasicBitList()
-    : m_pData(&temp_data)
-    , temp_data(0)
-  { }
-
-  //  **************************************************************************
-  //  Value constructor that associates the address of the storage with this list.
-  //  Prevent direct creation of this class; must use a derived class.
-  // 
-  BasicBitList(value_type &data_field)
-    : temp_data(0)
-
-  { 
-    m_pData = &data_field;
-  }
-
-
-  //  **************************************************************************
-  //  Endian swap provides a specialization to handle the unique structure 
-  //  created to provide bit-field support.
-  //  The function is declared and implemented as a friend function to simplify
-  //  the declaration and namespace lookup for proper endian order conversions.
-  // 
-  friend inline
-    field_type EndianSwap(field_type &input)
-  { 
-    return field_type(EndianSwap<value_type>(value()));
-  }
-
+  value_type            m_data;                 // Stores the values for the proxy.
 };
 
+
+
+// TODO: Keep temporarily until the tests are altered to match the new adjustments.
+template< size_t    Idx,
+          typename  format_type
+        >
+struct DeduceBitFieldList
+{
+  typedef 
+    typename TypeAt < Idx,
+                      format_type
+                    >::type                   base_t;
+
+  typedef base_t                              type;
+};
 
 
 } // namespace Hg
