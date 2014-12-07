@@ -125,10 +125,10 @@ I have started creating benchmarks to measure Hg's performance. The benchmarks c
 
 These are the basic benchmark tests that have been written:
 
-1) A single struct with fundamental type fields.
-2) A single struct with Packed bit fields.
-3) A single struct with fundamental fields that are intentionally placed at unaligned memory positions.
-4) A Nested struct that contains an instance of all of the previous structs. One of the nested structs is created in an array.
+1. A single struct with fundamental type fields.  
+2. A single struct with Packed bit fields.  
+3. A single struct with fundamental fields that are intentionally placed at unaligned memory positions.  
+4. A Nested struct that contains an instance of all of the previous structs. One of the nested structs is created in an   array.
 
 I intend to create a more thorough set of tests. For now these 4 types have helped me identify plenty of hot-spots to improve the performance. Originally I only had a memory model that was dynamically allocated. When I ran the first benchmarks, Hg was 100x slower. After that I added a static memory model that can be used as well. This improved the performance dramatically. I will continue to comb through the Hg implementation and structure to improve its speed. The current performance report is listed below.
 
