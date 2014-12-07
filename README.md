@@ -69,42 +69,42 @@ Hg currently is written to allow up to 32 bit-fields in a single parameter.
 
 Here is a short example of a Hg message definition and how it can be used:
 
-`// Typelist defines the format'  
-'typedef Typelist'  
-'<'  
-  uint32_t,  
-  uint32_t,  
-  std::array<char, 128>  
->AppError;  
+`// Typelist defines the format`  
+`typedef Typelist`  
+`<`  
+  `uint32_t,`  
+  `uint32_t,`  
+  `std::array<char, 128>`  
+`> AppError;`  
   
-// Message definition specifies the TypeList format, and associates a name with each field.  
-HG_BEGIN_FORMAT(AppError)  
-  HG_DATUM(uint32_t,id)  
-  HG_DATUM(uint32_t,code)  
-  HG_ARRAY(char,128,desc)  
-HG_END_FORMAT(AppError)  
+`// Message definition specifies the TypeList format, and associates a name with each field.`  
+`HG_BEGIN_FORMAT(AppError)`  
+  `HG_DATUM(uint32_t,id)`  
+  `HG_DATUM(uint32_t,code)`  
+  `HG_ARRAY(char,128,desc)`  
+`HG_END_FORMAT(AppError)`  
   
-// Typedefs such as these are recommended to simplify the usage.   
-// These typedefs create message objects that associate  
-// a Hg format, with a platform byte-order.  
-// The message object also provides memory management options.  
-typedef Hg::Message<AppError_HgFormat, Hg::HostByteOrder>     AppErrorMsg;  
-typedef Hg::Message<AppError_HgFormat, Hg::NetByteOrder>      AppErrorMsgNet;  
+`// Typedefs such as these are recommended to simplify the usage.`  
+`// These typedefs create message objects that associate`  
+`// a Hg format, with a platform byte-order.`  
+`// The message object also provides memory management options.`  
+`typedef Hg::Message<AppError_HgFormat, Hg::HostByteOrder>     AppErrorMsg;`  
+`typedef Hg::Message<AppError_HgFormat, Hg::NetByteOrder>      AppErrorMsgNet;`  
   
-// Now messages can be created, populated, copied, and converted between byte-order.  
-AppErrorMsg msg;  
-msg.id   = 1;  
-msg.code = GetError();  
-strncpy(msg.desc, GetErrorDesc(), sizeof(msg.desc));  
+`// Now messages can be created, populated, copied, and converted between byte-order.`  
+`AppErrorMsg msg;`  
+`msg.id   = 1;`  
+`msg.code = GetError();`  
+`strncpy(msg.desc, GetErrorDesc(), sizeof(msg.desc));`  
   
-// Convert to network byte-order  
-AppErrorMsgNet msgNet = Hg::to_network(msg);  
+`// Convert to network byte-order`  
+`AppErrorMsgNet msgNet = Hg::to_network(msg);`  
   
-// The fields id and code will have been converted if this is   
-// a little endian system, otherwise no change will have occured.  
-// Assuming there is a socket open and ready to be written to,  
-// the network instance of the message will provide the data.  
-send(sock, msgNet.data(), msgNet.size(), 0);
+`// The fields id and code will have been converted if this is`   
+`// a little endian system, otherwise no change will have occured.`  
+`// Assuming there is a socket open and ready to be written to,`  
+`// the network instance of the message will provide the data.`  
+`send(sock, msgNet.data(), msgNet.size(), 0);`
 
 -------------
 
