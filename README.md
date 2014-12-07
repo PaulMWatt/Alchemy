@@ -69,8 +69,7 @@ Hg currently is written to allow up to 32 bit-fields in a single parameter.
 
 Here is a short example of a Hg message definition and how it can be used:
 
-~~monospace~~
-// Typelist defines the format  
+`// Typelist defines the format  
 typedef Typelist  
 <  
   uint32_t,  
@@ -105,8 +104,7 @@ AppErrorMsgNet msgNet = Hg::to_network(msg);
 // a little endian system, otherwise no change will have occured.  
 // Assuming there is a socket open and ready to be written to,  
 // the network instance of the message will provide the data.  
-send(sock, msgNet.data(), msgNet.size(), 0);  
-`monospace`  
+send(sock, msgNet.data(), msgNet.size(), 0);`
 
 -------------
 
