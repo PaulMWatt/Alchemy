@@ -69,13 +69,13 @@ Hg currently is written to allow up to 32 bit-fields in a single parameter.
 
 Here is a short example of a Hg message definition and how it can be used:
 
-`// Typelist defines the format  
-typedef Typelist  
-<  
+`// Typelist defines the format'  
+'typedef Typelist'  
+'<'  
   uint32_t,  
   uint32_t,  
   std::array<char, 128>  
-> AppError;  
+>AppError;  
   
 // Message definition specifies the TypeList format, and associates a name with each field.  
 HG_BEGIN_FORMAT(AppError)  
@@ -104,7 +104,7 @@ AppErrorMsgNet msgNet = Hg::to_network(msg);
 // a little endian system, otherwise no change will have occured.  
 // Assuming there is a socket open and ready to be written to,  
 // the network instance of the message will provide the data.  
-send(sock, msgNet.data(), msgNet.size(), 0);`
+send(sock, msgNet.data(), msgNet.size(), 0);
 
 -------------
 
