@@ -15,6 +15,8 @@ However, the goal is to allow the library to continue to function
 in the absence of these newer compilers and features, with the
 potential loss of convenience or performance. 
 
+All commenting is done using doxygen.
+
 Mercury (Hg), Messenger of the Gods
 ==============================
 
@@ -63,24 +65,90 @@ Hg currently is written to allow up to 32 bit-fields in a single parameter.
   -   HG_BIT_FIELD(INDEX, NAME, COUNT)
   - HG_END_PACKED
 
+-------------
+
+Here is a short example of a Hg message definition and how it can be used:
+
+// Typelist defines the format
+typedef Typelist
+<
+  uint32_t,
+  uint32_t,
+  std::array<char, 128>
+> AppError;
+  
+// Message definition specifies the TypeList format, and associates a name with each field.
+HG_BEGIN_FORMAT(AppError)
+  HG_DATUM(uint32_t,id)
+  HG_DATUM(uint32_t,code)
+  HG_ARRAY(char,128,desc)
+HG_END_FORMAT(AppError)
+
+// Typedefs such as these are recommended to simplify the usage. 
+// These typedefs create message objects that associate
+// a Hg format, with a platform byte-order.
+// The message object also provides memory management options.
+typedef Hg::Message<AppError_HgFormat, Hg::HostByteOrder>     AppErrorMsg;
+typedef Hg::Message<AppError_HgFormat, Hg::NetByteOrder>      AppErrorMsgNet;
+
+// Now messages can be created, populated, copied, and converted between byte-order.
+AppErrorMsg msg;
+msg.id   = 1;
+msg.code = GetError();
+strncpy(msg.desc, GetErrorDesc(), sizeof(msg.desc));
+
+// Convert to network byte-order
+AppErrorMsgNet msgNet = Hg::to_network(msg);
+
+// The fields id and code will have been converted if this is 
+// a little endian system, otherwise no change will have occured.
+// Assuming there is a socket open and ready to be written to,
+// the network instance of the message will provide the data.
+send(sock, msgNet.data(), msgNet.size(), 0);
+
 
 -------------
 
 Hg provides the convenient interface for users to convert data values into a data buffer. 
-Alchemy does not yet provide any transport mechanism. This is not currently a priority for this library because there are plenty of libraries that already exist to manage data transfer between two nodes.
 
-The focus for the near future will be for additional utilities that simplify the manipulation and formatting of data from the template definitions. Two examples are 1) the conversion of one message format to another, 2) automatically generate a Wireshark disector to print the output for a Hg message.
+Hg is a C++ template library, it does not produce any module on its own. 
+
+Alchemy does not provide any transport mechanism. This currently is not a priority for this library because there are plenty of libraries that already exist to manage data transfer between two nodes. I intend to create adapters that are compatible with common serialization and transport interfaces like Boost::Serialize and Boost::Asio. 
+
+I envision users of the library to be able to use message objects defined for host-byte order, and the transport adapters will decide if the message byte-order needs to be adjusted. For example, if the transport adapter is a socket, the adapter will convert to network-byte order. However, if the transport is a named-pipe on the same system, it will not perform any byte-order adjustments.
+
+If you know of other transport libraries and would like to see an Hg adapter to that library, please create a new issue request.
+
+-------------
+Benchmark performance:
+
+I have started creating benchmarks to measure Hg's performance. The benchmarks compare the Hg implementation to a hand-written struct, using memcpy and the network byte-order conversion functions. 
+
+These are the basic benchmark tests that have been written:
+
+1) A single struct with fundamental type fields.
+2) A single struct with Packed bit fields.
+3) A single struct with fundamental fields that are intentionally placed at unaligned memory positions.
+4) A Nested struct that contains an instance of all of the previous structs. One of the nested structs is created in an array.
+
+I intend to create a more thorough set of tests. For now these 4 types have helped me identify plenty of hot-spots to improve the performance. Originally I only had a memory model that was dynamically allocated. When I ran the first benchmarks, Hg was 100x slower. After that I added a static memory model that can be used as well. This improved the performance dramatically. I will continue to comb through the Hg implementation and structure to improve its speed. The current performance report is listed below.
+
+- Currently Hg incurs ~30% overhead (slower) compared to the hand-written version.
+- However, in some cases Hg produces faster code, ~10%. This was the fundamental field test.
+- Some overhead is incurred because all of the fields are zero initialized when an object is created.
+-- I am considering adding an option to not initialize the objects for people who are performance concsious. However, I hesitate to do that because it could cause more problems than the performance penalty that it incurs. 
+- Nested structures and Packed bit fields cause the largest increase in cost.
+-- I have tracked down many of the causes to be unnecessary copies of the objects.  
 
 -------------
 
-Commenting is done using doxygen.
+Active and Planned Improvements:
 
-Additional utilities will be added to Network Alchemy once Hg's robustness
-has been improved to develop reliable applications.
-
+Currently in progress:
+ * Cross-compiler support and cross-platform integration with auto-tools. Currently the projects are Visual Studio Solutions.
 
 Soon to follow:
- * Cross-compiler support and cross-platform integration
  * Sample applications to demonstrate it's usage.
- * Performance Benchmarks
+ * Message converters, to simplify the task of receiving a message and translating it to another format before forwarding it on to the stage of processing.
+ * Generate a Wireshark dissector from the Hg definition.
  
