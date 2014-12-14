@@ -93,13 +93,13 @@ private:
 
 #ifdef _WIN32
     ftor.operator() < IndexT, 
-                      typename TypeAt<IndexT, FormatT>::type
-                    >(type_t());
+                      type_t
+                    >((type_t*)0);
 #else
     // GCC requires a hint to know this is a template call
     ftor. template operator() < IndexT, 
-                                typename TypeAt<IndexT, FormatT>::type
-                              >(type_t());
+                                type_t
+                              >((type_t*)0);
 #endif 
 
     // Perform a runtime check to terminate the recursive processing of

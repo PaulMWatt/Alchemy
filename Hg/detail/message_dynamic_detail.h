@@ -223,7 +223,7 @@ struct DynamicSizeFunctor
   template< size_t   IdxT,
             typename value_t
           >
-  void operator()(const value_t&)
+  void operator()(const value_t*)
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,

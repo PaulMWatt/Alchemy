@@ -105,6 +105,11 @@ struct message_size_trait
                         format_type>    datum_type_t;                          \
       return FieldAtIndex((datum_type_t*)0);                                   \
     }                                                                          \
+    template< size_t IDX>                                                      \
+    const Datum<IDX, format_type>& const_FieldAt() const                       \
+    {                                                                          \
+      return const_cast<F##Format*>(this)->FieldAt();                          \
+    }                                                                          \
     BEGIN_COUNTER
 
 // *****************************************************************************

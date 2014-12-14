@@ -245,7 +245,7 @@ struct ByteOrderConversionFunctor
   /// 
   template <size_t   Idx,
             typename value_t>
-  void operator()(const value_t&)
+  void operator()(const value_t*)
   {
     typedef typename
       Hg::detail::DeduceProxyType < Idx,
@@ -312,7 +312,7 @@ struct ByteOrderConversionFunctor <MessageT, MessageT>
   /// 
   template <size_t   Idx,
             typename value_t>
-  void operator()(const value_t&)
+  void operator()(const value_t*)
   { 
     // Simply copy the input value to the output value.
     output.template FieldAt<Idx>().set( 

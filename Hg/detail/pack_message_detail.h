@@ -193,6 +193,7 @@ bool
 
 //  ****************************************************************************
 //  Writes the values of a message structure into a packed memory buffer.
+//  This is the top-level function with an offset of 0.
 // 
 //  @param msg_values         The message structure that contains the values
 //                            to be written.
@@ -226,6 +227,7 @@ std::shared_ptr<BufferT>
 
 //  ****************************************************************************
 //  Writes the values of a message structure into a packed memory buffer.
+//  This function may be called to serialize sub-messages at an offset.
 // 
 //  @param msg_values         The message structure that contains the values
 //                            to be written.
@@ -271,6 +273,7 @@ size_t pack_message(MessageT  &msg_values,
 //  Writes the values of a variable-sized message into a packed memory buffer.
 //  A separate instance exists to eliminate dynamic size tests from messages
 //  that are completely fixed in size.
+//  This is the top-level call with a 0 offset.
 // 
 //  @param msg_values         The message structure that contains the values
 //                            to be written.
@@ -307,6 +310,7 @@ std::shared_ptr<BufferT>
 //  Writes the values of a variable-sized message into a packed memory buffer.
 //  A separate instance exists to eliminate dynamic size tests from messages
 //  that are completely fixed in size.
+//  This is a nested call that provides an offset adjustemnt.
 // 
 //  @param msg_values         The message structure that contains the values
 //                            to be written.
@@ -339,11 +343,12 @@ size_t pack_message(MessageT  &msg_values,
                               MessageT,
                               BufferT
                             > pack;
-  pack(msg_values, buffer);
+  size_t dynamic_offset = 0;
+  pack(msg_values, buffer, dynamic_offset);
   // Restore the orignal offset of this buffer.
   buffer.offset(org_offset);
 
-  return length;
+  return length + dynamic_offset;
 }
 
 } // namespace detail
