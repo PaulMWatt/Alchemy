@@ -51,14 +51,14 @@
     <Filter Include="Header Files\Alchemy\Pb\detail">
       <UniqueIdentifier>{725b04cc-4943-43ec-8d7d-e46b9cb3f961}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tests\common">
+      <UniqueIdentifier>{4cc47ade-825f-4362-b0bd-a9147df2398c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Pb\bit_field\basic_list.h">
-      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\bit_field\bit_field.h">
       <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
     </ClInclude>
@@ -197,9 +197,6 @@
     <ClInclude Include="..\..\Pb\auto_index.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Pb\bit_field_list.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\byte_order.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
@@ -277,6 +274,24 @@
     </ClInclude>
     <ClInclude Include="..\..\storage_policy.h">
       <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\bit_field\packed_bits.h">
+      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\geometry_testdata.h">
+      <Filter>Header Files\Tests\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\geometry_typelist.h">
+      <Filter>Header Files\Tests\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\test_def.h">
+      <Filter>Header Files\Tests\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\test_helper.h">
+      <Filter>Header Files\Tests\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\pack_packed_bits.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

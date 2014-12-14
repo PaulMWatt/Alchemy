@@ -12,6 +12,7 @@
 #include <Hg/detail/pack_message_detail.h>
 #include <Hg/detail/pack_array.h>
 #include <Hg/detail/pack_nested.h>
+#include <Hg/detail/pack_packed_bits.h>
 #include <Hg/detail/pack_vector.h>
 
 namespace Hg

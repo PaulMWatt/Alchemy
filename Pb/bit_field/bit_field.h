@@ -81,6 +81,10 @@ struct BitField
     return *this;
   }
 
+  value_type mask_value()
+  {
+    return (value() & k_mask) >> k_offset;
+  }
 private:
   //  Member Functions **********************************************************
   //  ***************************************************************************
@@ -89,10 +93,6 @@ private:
     return owner()->value();
   }
 
-  value_type mask_value()
-  {
-    return (value() & k_mask) >> k_offset;
-  }
 
   OwnerT* owner()
   {

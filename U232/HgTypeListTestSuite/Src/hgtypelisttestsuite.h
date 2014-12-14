@@ -202,7 +202,6 @@ void HgTypeListTestSuite::TestArraySubBitFields(void)
   typedef make_Hg_type_list<SUT>::type     result_type;
 
   TS_ASSERT(!(std::is_same<SUT, result_type>::value));
-  //TS_ASSERT((std::is_same<SUT, result_type>::value));
 }
 
 //  ****************************************************************************
@@ -211,7 +210,6 @@ void HgTypeListTestSuite::TestArraySubNested(void)
   typedef Hg::Hg_nested_sub                 SUT;
   typedef make_Hg_type_list<SUT>::type      result_type;
 
-  //TS_ASSERT((std::is_same<SUT, result_type>::value));
   TS_ASSERT(!(std::is_same<SUT, result_type>::value));
   TS_ASSERT((std::is_same<Hg::Hg_nested_adjusted, result_type>::value));
 }
@@ -276,7 +274,6 @@ void HgTypeListTestSuite::TestVectorSubBitFields(void)
 
   typedef make_Hg_type_list<SUT>::type     result_type;
 
-//  TS_ASSERT((std::is_same<SUT, result_type>::value));
   TS_ASSERT(!(std::is_same<SUT, result_type>::value));
 }
 

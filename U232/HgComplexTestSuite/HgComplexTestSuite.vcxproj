@@ -189,6 +189,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Hg\detail\pack_array.h" />
     <ClInclude Include="..\..\Hg\detail\pack_message_detail.h" />
     <ClInclude Include="..\..\Hg\detail\pack_nested.h" />
+    <ClInclude Include="..\..\Hg\detail\pack_packed_bits.h" />
     <ClInclude Include="..\..\Hg\detail\pack_vector.h" />
     <ClInclude Include="..\..\Hg\detail\unpack_array.h" />
     <ClInclude Include="..\..\Hg\detail\unpack_message_detail.h" />
@@ -212,11 +213,10 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Hg\unused\multival_data.h" />
     <ClInclude Include="..\..\Hg\unused\select_proxy_type.h" />
     <ClInclude Include="..\..\Pb\auto_index.h" />
-    <ClInclude Include="..\..\Pb\bit_field\basic_list.h" />
     <ClInclude Include="..\..\Pb\bit_field\bit_field.h" />
     <ClInclude Include="..\..\Pb\bit_field\bit_field_array.h" />
     <ClInclude Include="..\..\Pb\bit_field\bit_field_vector.h" />
-    <ClInclude Include="..\..\Pb\bit_field_list.h" />
+    <ClInclude Include="..\..\Pb\bit_field\packed_bits.h" />
     <ClInclude Include="..\..\Pb\byte_order.h" />
     <ClInclude Include="..\..\Pb\compiler.h" />
     <ClInclude Include="..\..\Pb\container_size.h" />
@@ -242,6 +242,10 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\type_list\type_at.h" />
     <ClInclude Include="..\..\Pb\type_node.h" />
     <ClInclude Include="..\..\storage_policy.h" />
+    <ClInclude Include="..\common\geometry_testdata.h" />
+    <ClInclude Include="..\common\geometry_typelist.h" />
+    <ClInclude Include="..\common\test_def.h" />
+    <ClInclude Include="..\common\test_helper.h" />
     <ClInclude Include="geometry_testdata.h" />
     <ClInclude Include="geometry_typelist.h" />
     <ClInclude Include="msgtest_typelist.h" />

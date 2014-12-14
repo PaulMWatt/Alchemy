@@ -41,9 +41,7 @@ namespace Hg
 
 //  Typedefs *******************************************************************
 
-// TODO: Working to resolve an issue where nested types in arrays and vectors need to be redefined with their internal format that contains data rather than the typelist definition.
-//typedef world_tFormat<0> world_message_type;
-typedef object_t_HgFormat world_message_type;
+typedef world_t_HgFormat world_message_type;
 
 } // namespace Hg
 
@@ -59,6 +57,8 @@ public:
 
   TestDynTypePermsSuite()
   { 
+    test::data::to_buffer(test::data::k_world, perms_msg, false);
+    test::data::to_buffer(test::data::k_other_world, other_perms_msg, true);
   }
 
   // Fixture Management ********************************************************
@@ -75,6 +75,13 @@ public:
   { }
 
 protected:
+
+
+  //  Typedefs *******************************************************************
+  typedef std::array<char, 16>          array_16_t;
+  typedef std::vector<uint32_t>         uint32_vec_t;
+
+
   //  Constants ******************************************************************
 
   // TODO: Define the correct size based on the test data when ready
@@ -84,38 +91,8 @@ protected:
   test::data::World m_world;
   test::data::World m_other_world;
 
-  uint8_t         perms_msg[k_sut_msg_size];
-
-  //uint8_t         bytes             [k_byte_size];
-  //array_16_t      arrays            [k_array_size];
-  //pt3d_t          pts               [k_pts_size];
-  //uint32_vec_t    vectors           [k_vector_size];
-  //vector_of_pts_t pathological      [k_path_size];
-
-
-  uint8_t         other_perms_msg[k_sut_msg_size];
-
-  //uint8_t         other_bytes       [k_byte_size];
-  //array_16_t      other_arrays      [k_array_size];
-  //pt3d_t          other_pts         [k_pts_size];
-  //uint32_vec_t    other_vectors     [k_vector_size];
-  //vector_of_pts_t other_pathological[k_path_size];
-
-
-  //typedef std::array<char, 16>          array_16_t;
-  //typedef std::vector<uint32_t>         uint32_vec_t;
-
-  //uint8_t
-  //array_16_t
-  //pt3d_t
-  //uint32_vec_t
-  //vector_of_pts_t
-
-  //byte_vec_t;
-  //string_vec_t;
-  //pt_vec_t;
-  //vec_of_vec_t;
-  //pathological_t;
+  test::data::byte_vector     perms_msg;
+  test::data::byte_vector     other_perms_msg;
 
   //  Typedefs *****************************************************************
   //  These typedefs allow the creation of the different msg field types
@@ -135,83 +112,124 @@ protected:
   template <typename SUT_t>
   void PopulateBaseValues(SUT_t& msg)
   {
-    bool isValue = Hg::nested_value<Hg::triangle_t_HgFormat>::value;
-    bool isType  = Hg::nested_value<Hg::triangle_t>::value;
-
-// TODO: Work in progress. Fixing Dynamic focused tests first.
-
-    Hg::detail::field_data_t<Hg::triangle_t_HgFormat>::value_type m;
-    Hg::detail::field_data_t<Hg::triangle_t_HgFormat>::value_type n;
-
-    int x = 0;
-//    to_sut(msg, m_world);
+    to_sut(msg, m_world, false);
   }
+
 
   //  ****************************************************************************
   template <typename SUT_t>
   void PopulateOtherValues(SUT_t& msg)
   {
-//    to_sut(msg, m_other_world);
+    to_sut(msg, m_other_world, true);
   }
 
   //  ****************************************************************************
-  //object_t to_object_t(const test::data::Object &object)
-  //{
-  //  object_t out;
+  Hg::triangle_t_HgFormat to_triangle_t(const test::data::Triangle &triangle)
+  {
+    Hg::triangle_t_HgFormat out;
+
+    out.pts[0] = triangle.pts[0];
+    out.pts[1] = triangle.pts[1];
+    out.pts[2] = triangle.pts[2];
+
+    out.normal.start.X = triangle.normal.start.X;
+    out.normal.start.Y = triangle.normal.start.Y;
+    out.normal.start.Z = triangle.normal.start.Z;
+
+    out.normal.magnitude.X = triangle.normal.magnitude.X;
+    out.normal.magnitude.Y = triangle.normal.magnitude.Y;
+    out.normal.magnitude.Z = triangle.normal.magnitude.Z;
+
+    return out;
+  }
+
+  //  ****************************************************************************
+  Hg::object_t_HgFormat to_object_t(const test::data::Object &object, bool is_network)
+  {
+    Hg::object_t_HgFormat out;
+
+    out.count = object.count;
+
+    uint32_t count = object.count;
+    if (is_network)
+    {
+      count = Hg::EndianSwap(object.count);
+    }
+
+    for (uint32_t index = 0; index < count; ++index)
+    {
+      out.surfaces.push_back(to_triangle_t(object.surfaces[index]));
+    }
+
+    return out;
+  }
+
+  //  ****************************************************************************
+  Hg::instance_t_HgFormat to_instance_t(const test::data::Instance &instance)
+  {
+    Hg::instance_t_HgFormat out;
+
+    out.object_index    = instance.object_index;
+    out.location.X      = instance.location.X;
+    out.location.Y      = instance.location.Y;
+    out.location.Z      = instance.location.Z;
+
+    out.transform[0][0] = instance.transform[0][0];
+    out.transform[0][1] = instance.transform[0][1];
+    out.transform[0][2] = instance.transform[0][2];
+
+    out.transform[1][0] = instance.transform[1][0];
+    out.transform[1][1] = instance.transform[1][1];
+    out.transform[1][2] = instance.transform[1][2];
+
+    out.transform[2][0] = instance.transform[2][0];
+    out.transform[2][1] = instance.transform[2][1];
+    out.transform[2][2] = instance.transform[2][2];
 
 
-
-
-  //  return out;
-  //}
-
-  ////  ****************************************************************************
-  //instance_t to_instance_t(const test::data::Instance &instance)
-  //{
-  //
-  //  return instance_t();
-  //}
+    return out;
+  }
 
   //  ****************************************************************************
   template <typename SUT_t>
-  void to_sut(SUT_t& msg, test::data::World &world)
+  void to_sut(SUT_t& msg, test::data::World &world, bool is_network)
   {
-    //msg.width         = world.width;
-    //msg.height        = world.height;
+    using namespace test::data;
 
-    //msg.camera.eye.X  = world.camera.eye.X;
-    //msg.camera.eye.Y  = world.camera.eye.Y;
-    //msg.camera.eye.Z  = world.camera.eye.Z;
-    //msg.camera.at.X   = world.camera.at.X;
-    //msg.camera.at.Y   = world.camera.at.Y;
-    //msg.camera.at.Z   = world.camera.at.Z;
-    //msg.camera.up.X   = world.camera.up.X;
-    //msg.camera.up.Y   = world.camera.up.Y;
-    //msg.camera.up.Z   = world.camera.up.Z;
+    msg.width         = world.width;
+    msg.height        = world.height;
+    
+    msg.camera.eye.X  = world.camera.eye.X;
+    msg.camera.eye.Y  = world.camera.eye.Y;
+    msg.camera.eye.Z  = world.camera.eye.Z;
+    msg.camera.at.X   = world.camera.at.X;
+    msg.camera.at.Y   = world.camera.at.Y;
+    msg.camera.at.Z   = world.camera.at.Z;
+    msg.camera.up.X   = world.camera.up.X;
+    msg.camera.up.Y   = world.camera.up.Y;
+    msg.camera.up.Z   = world.camera.up.Z;
 
-    //msg.fov           = world.fov;
-    //msg.ambient       = world.ambient;
+    msg.fov           = world.fov;
+    msg.ambient       = world.ambient;
 
-    //msg.light.pt.X    = world.light.pt.X;
-    //msg.light.pt.Y    = world.light.pt.Y;
-    //msg.light.pt.Z    = world.light.pt.Z;
-    //msg.light.color   = world.light.color;
+    msg.light.pt.X    = world.light.pt.X;
+    msg.light.pt.Y    = world.light.pt.Y;
+    msg.light.pt.Z    = world.light.pt.Z;
+    msg.light.color   = world.light.color;
 
+    msg.object_count  = world.object_count;
 
+    for (size_t index = 0; index < world.object_count; ++index)
+    {
+      msg.objects.push_back(to_object_t(world.objects[index], is_network));
+    }
 
-    //msg.object_count  = world.object_count;
+    msg.instance_count  = world.instance_count;
 
-    //for (size_t index = 0; index < world.object_count; ++index)
-    //{
-    //  msg.objects.push_back(to_object_t(world.objects[index]));
-    //}
-
-    //msg.instance_count  = world.instance_count;
-
-    //for (size_t index = 0; index < world.instance_count; ++index)
-    //{
-    //  msg.instances.push_back(to_instance_t(world.instances[index]));
-    //}
+    for (size_t index = 0; index < world.instance_count; ++index)
+    {
+      msg.instances.push_back(to_instance_t(world.instances[index]));
+    }
   }
 
 
@@ -258,7 +276,8 @@ void TestDynTypePermsSuite::TestCopyCtor(void)
 
   // SUT
   SUT sut(rhs);
-  TS_ASSERT_SAME_DATA(perms_msg, sut.data(), sut.size());
+
+  TS_ASSERT_SAME_DATA(&perms_msg[0], sut.data(), sut.size());
 }
 
 //  ****************************************************************************
@@ -266,9 +285,10 @@ void TestDynTypePermsSuite::TestValueCtor(void)
 {
   SUT                 rhs;
   PopulateBaseValues (rhs);
+
   // SUT
   SUT sut(rhs.data(), rhs.size());
-  TS_ASSERT_SAME_DATA(perms_msg, sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(&perms_msg[0], sut.data(), sut.size());
 }
 
 //  ****************************************************************************
@@ -280,7 +300,7 @@ void TestDynTypePermsSuite::TestAssignmentOperator(void)
   // SUT
   SUT sut;
   sut = rhs;
-  TS_ASSERT_SAME_DATA(perms_msg, sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(&perms_msg[0], sut.data(), sut.size());
 }
 
 //  ****************************************************************************
@@ -364,49 +384,14 @@ void TestDynTypePermsSuite::TestClone(void)
   SUT sut;
   sut = rhs.clone();
 
-  TS_ASSERT_SAME_DATA(perms_msg, rhs.data(), sut.size());
+  TS_ASSERT_SAME_DATA(&perms_msg[0], rhs.data(), sut.size());
 }
 
 //  ****************************************************************************
 void TestDynTypePermsSuite::Testdata(void)
 {
-  //SUT sut;
-  //sut.size_8       = k_count_seq_8;
-  //sut.size_16      = k_count_seq_16;
-  //sut.size_32      = k_count_seq_32;
-  //sut.size_64      = k_count_seq_64;
 
-  //sut.word_0       = k_word_0;
-  //sut.word_1       = k_word_1;
-  //sut.word_2       = k_word_2;
 
-  //// allocate and copy with the vector assign
-  //uint8_t* seq8_first = &seq_8[0];
-  //uint8_t* seq8_last  = seq8_first;
-  //std::advance(seq8_last, k_count_seq_8);
-  //sut.seq_8.assign(seq8_first, seq8_last);
-
-  //// grow incrementally with push_back for each element.
-  //sut.seq_16.push_back(seq_16[0]);
-  //sut.seq_16.push_back(seq_16[1]);
-  //sut.seq_16.push_back(seq_16[2]);
-  //sut.seq_16.push_back(seq_16[3]);
-  //sut.seq_16.push_back(seq_16[4]);
-  //sut.seq_16.push_back(seq_16[5]);
-
-  //// Allocate the memory up front.
-  //sut.seq_32.resize(k_count_seq_32);
-  //sut.seq_32[0] = seq_32[0];
-  //sut.seq_32[1] = seq_32[1];
-  //sut.seq_32[2] = seq_32[2];
-
-  //sut.seq_64.resize(k_count_seq_64);
-  //sut.seq_64[0] = seq_64[0];
-  //sut.seq_64[1] = seq_64[1];
-  //sut.seq_64[2] = seq_64[2];
-
-  //TS_ASSERT_EQUALS(k_sut_msg_size, sut.size());
-  //TS_ASSERT_SAME_DATA(perms_msg, sut.data(), sut.size());
 }
 
 //  ****************************************************************************
@@ -429,8 +414,8 @@ void TestDynTypePermsSuite::Testto_host(void)
   SUT result = to_host(sut);
   SUT no_op_result = to_host(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(other_perms_msg, result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(other_perms_msg, no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -453,8 +438,8 @@ void TestDynTypePermsSuite::Testto_network(void)
   SUT_net_order result = to_network(sut);
   SUT_net_order no_op_result = to_network(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(other_perms_msg, result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(other_perms_msg, no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -477,8 +462,8 @@ void TestDynTypePermsSuite::Testto_big_endian(void)
   SUT_big_endian result = to_big_endian(sut);
   SUT_big_endian no_op_result = to_big_endian(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(other_perms_msg, result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(other_perms_msg, no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -501,8 +486,8 @@ void TestDynTypePermsSuite::Testto_little_endian(void)
   SUT_little_endian result        = to_little_endian(sut);
   SUT_little_endian no_op_result  = to_little_endian(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(other_perms_msg, result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(other_perms_msg, no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());
 }
 
 

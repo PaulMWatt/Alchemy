@@ -317,7 +317,6 @@ private:
 };
 
 
-
 //  ****************************************************************************
 /// Reports the number of bytes this message object occupies.
 /// This instance of size calculates the size for dynamically sized messages.
@@ -329,7 +328,6 @@ template< class HgMessageT,
         >
 struct Msg_size
 {
-//  typedef Message<MessageT, ByteOrderT, StorageT>       message_t;
   typedef HgMessageT message_t;
 
   static size_t calculate(const message_t &msg)
@@ -366,6 +364,7 @@ struct Msg_size<HgMessageT, false>
     return Hg::SizeOf<typename HgMessageT::format_type>::value;
   }
 };
+
 
 } // namespace Hg
 

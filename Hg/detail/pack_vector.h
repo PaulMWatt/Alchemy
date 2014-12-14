@@ -34,12 +34,6 @@ template< class T,
 size_t SerializeByItem( std::vector<T,A>  &value, 
                         BufferT           &buffer,
                         size_t             offset);
-//template< typename ValueT,
-//          typename BufferT
-//        >
-//size_t SerializeByItem( ValueT  &value, 
-//                        BufferT &buffer,
-//                        size_t  offset);
 
 namespace Vector
 {
