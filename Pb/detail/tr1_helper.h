@@ -8,15 +8,21 @@
 #define TR1_HELPER_H_INCLUDED
 //  Includes *******************************************************************
 
-// TODO: Need to add more correct feature support detection for the various 
-//       compilers that we are trying to support.
+// TODO:  Need to add more correct feature support detection for the various 
+//        compilers that we are trying to support.
+//
+//        I discovered the yyvals.h header for VS compilers contain flags
+//        that indicate the features that are supported.
+//
+//        I need to investigate support like this for other compilers.
+//
 
 #if defined(_WIN32)
 
 #if defined(_HAS_TR1)
 //  Static Conditional Test ****************************************************
 #include <Pb/detail/conditional.h>
-// TODO: I know this is just as bad as crossing the streams, but we'll fix this really soon.
+// TODO: I know this is just as bad as crossing the streams, but we'll fix this soon (soon is a relative term...).
 
 namespace std
 {

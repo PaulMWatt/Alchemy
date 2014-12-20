@@ -9,7 +9,26 @@
 #define COMPILER_H_INCLUDED
 //  Includes *******************************************************************
 #include <Pb/detail/tr1_helper.h>
+#include <Pb/detail/auto.h>
+#include <Pb/detail/decltype.h>
+#include <Pb/detail/static_assert.h>
+#include <Pb/detail/explicit_conversion.h>
+#include <Pb/detail/alias_templates.h>
+#include <Pb/detail/variadic_templates.h>
+#include <Pb/detail/range_for.h>
 #include <Pb/detail/rvalue_ref.h>
+#include <Pb/detail/trailing_fn_return.h>
+
+
+//  ****************************************************************************
+//  Reference for compiler flags and versions.
+//
+//  MSVC++ 12.0 _MSC_VER == 1800 (Visual Studio 2013)
+//  MSVC++ 11.0 _MSC_VER == 1700 (Visual Studio 2012)
+//  MSVC++ 10.0 _MSC_VER == 1600 (Visual Studio 2010)
+//  MSVC++ 9.0  _MSC_VER == 1500 (Visual Studio 2008)
+//
+
 
 // CxxUnit Testing *************************************************************
 // Change the mock namespace from T to cxx to reduce confusion with template semantics. 

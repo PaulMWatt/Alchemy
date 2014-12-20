@@ -59,11 +59,6 @@ public:
                                         ///  defined by the user to access 
                                         ///  individual value entries in the vector.
 
-  // TODO: Remove this if the alternate implementation checks out.
-  //typedef typename
-  //  DeclareBitFieldList
-  //    < user_bit_field_type>::type      
-
   typedef user_bit_field_type           bit_field_type;
                                         ///< The Hg type required to properly 
                                         ///  initialized nested structures to

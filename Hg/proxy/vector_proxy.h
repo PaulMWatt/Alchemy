@@ -71,22 +71,8 @@ struct DataProxy <vector_trait, IdxT, FormatT>
                     index_type,                  
                     typename field_type::value_type                  
                   >::type
-
                                         value_type;
 
-//std::vector<data_type, typename index_type::allocator_type>
-  //typedef typename
-  //  field_type::value_type              value_type;
-                                        ///< The vector type defined in the 
-                                        ///  message format. This type definition
-                                        ///  is possibly altered to appropriately
-                                        ///  manage the type, such as nested types.
-  //typedef typename
-  //  value_type::value_type              data_type;
-  //                                      ///< The data type managed by this Vector.
-  //                                      ///  This is the type of data that will 
-  //                                      ///  be written to the attached buffer.
-  
   typedef typename                      ///  Reference to an element in the vector.
     value_type::reference               reference;
                                                                                 
@@ -224,12 +210,6 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   template <size_t ExtentT>
   void set(const data_type (&value)[ExtentT])
   {
-    if (!value)
-    {
-      // TODO: Return and add exception handling. 
-      return;
-    }
-
     std::copy( &value[0], 
               (&value[0]) + ExtentT, 
                 std::back_inserter(this->get()));
