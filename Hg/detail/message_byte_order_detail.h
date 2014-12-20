@@ -255,7 +255,7 @@ struct ByteOrderConversionFunctor
       proxy_type::value_type                                  value_type;
                                       
     value_type from_value  = input.template FieldAt<Idx>().get();
-    value_type to_value    = from_value;
+    value_type to_value;
 
     // Create an instance of a selection template that will choose between
     // nested processing, and value conversion.
