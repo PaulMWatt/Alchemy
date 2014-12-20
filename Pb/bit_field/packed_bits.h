@@ -134,7 +134,7 @@ struct PackedBits
   //  **************************************************************************
   //  Returns the value of the packed bits.
   // 
-  const value_type value() const
+  const value_type& value() const
   { 
     return m_data; 
   }

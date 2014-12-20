@@ -191,9 +191,6 @@
     <ClInclude Include="..\..\Pb\auto_index.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Pb\bit_field_list.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\byte_order.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>

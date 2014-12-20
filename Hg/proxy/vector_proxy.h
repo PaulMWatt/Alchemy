@@ -260,7 +260,7 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   //  **************************************************************************
   /// Value Conversion Operator (value_type)
   /// 
-  /// Allows the entire BitSet to be extracted and assigned as a value to
+  /// Allows the entire vector to be extracted and assigned as a value to
   /// the host value type.
   /// 
   operator value_type() const

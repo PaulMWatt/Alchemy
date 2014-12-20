@@ -39,7 +39,6 @@ struct field_data_t
                                         ///  the same type as the index type.
 };
 
-
 //  ****************************************************************************
 /// Generalized copy function for message field value types.
 ///
@@ -210,7 +209,7 @@ void copy_value_type(       std::vector<SubTypeT, AllocT>& to,
 
 
 //  ****************************************************************************
-/// Provides the index and data field type definitions.
+/// Provides the data field type definitions.
 /// 
 /// This class acts as a discriminator object to choose the proper msg field types.
 /// This method of field and data definition allows the use of virtual 
@@ -340,8 +339,10 @@ struct FieldTypes <FieldT, packed_trait>
                                         ///  parent type container.
   typedef typename
     field_data_t<index_type>::value_type
-                        value_type;     ///< The specified value type for 
-                                        ///  the current Datum.
+                        packed_type;    ///< The packed-bit container type.
+  typedef typename
+    packed_type::value_type
+                        value_type;     ///< The value type used by the packed-bits.
 
   //  **************************************************************************
   /// Returns a reference to the internal data storage.
@@ -351,7 +352,7 @@ struct FieldTypes <FieldT, packed_trait>
   ///
   value_type& reference()                     
   { 
-    return *static_cast<value_type*>(this);
+    return value();
   }
 
   //  **************************************************************************
@@ -359,11 +360,11 @@ struct FieldTypes <FieldT, packed_trait>
   /// 
   const value_type& data() const
   { 
-    return *static_cast<const value_type*>(this);
+    return this->value();
   }
 
   //  **************************************************************************
-  /// Returns the value of the data buffer.
+  /// Assigns a new value to the data buffer.
   /// 
   void data(const value_type &value)                
   { 
@@ -377,6 +378,9 @@ struct FieldTypes <FieldT, packed_trait>
 //  ****************************************************************************
 /// A meta-function that simplfies the declaration of a FieldType.
 /// Publically derive from the type member of this struct.
+///
+/// Specialize this template class to customize the internal type that 
+/// an index_type will resolve to.
 ///
 /// @paramt  Idx              [size_t] The index of this element in the 
 ///                           TypeList definition.
@@ -399,8 +403,6 @@ struct DefineFieldType
   typedef  
     detail::FieldTypes  
       < index_type >                    type;
-      //  Hg::detail::DeduceTypeTrait<index_type>::type
-      //>                                 type;
                                         ///< The field type definition that maps
                                         ///  a field type with it's value_type.
 };
