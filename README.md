@@ -132,12 +132,17 @@ These are the basic benchmark tests that have been written:
 
 I intend to create a more thorough set of tests. For now these 4 types have helped me identify plenty of hot-spots to improve the performance. Originally I only had a memory model that was dynamically allocated. When I ran the first benchmarks, Hg was 100x slower. After that I added a static memory model that can be used as well. This improved the performance dramatically. I will continue to comb through the Hg implementation and structure to improve its speed. The current performance report is listed below.
 
-- Currently Hg incurs ~30% overhead (slower) compared to the hand-written version.
-- However, in some cases Hg produces faster code, ~10%. This was the fundamental field test.
-- Some overhead is incurred because all of the fields are zero initialized when an object is created.
--- I am considering adding an option to not initialize the objects for people who are performance concsious. However, I hesitate to do that because it could cause more problems than the performance penalty that it incurs. 
-- Nested structures and Packed bit fields cause the largest increase in cost.
--- I have tracked down many of the causes to be unnecessary copies of the objects.  
+- I have been able to improve the overal speed of Hg so it only incurs a ~15% overhead.
+- The fundamental types produce code that runs at the same speed.
+- The packed-bit fields have been completely reworked. They are now smaller, and for the benchmarks they produce faster code.
+-- Some overhead is incurred because all of the fields are zero initialized when an object is created.
+-- I am considering adding an option to not initialize the objects for people who are performance concsious. However, I hesitate to do that because it could cause more problems than the performance penalty incurs. 
+- Nested structures cause the largest increase in cost.
+-- I have tracked down many of the causes to be unnecessary copies of the objects. I will continue to eliminate these as I find them.  
+
+     History: Hg incurs ~30% overhead (slower) compared to the hand-written version.
+     History: In some cases Hg produces faster code, ~10%. This was the fundamental field test.
+     History: Packed bit fields cause the largest increase in cost.
 
 -------------
 
@@ -145,6 +150,8 @@ Active and Planned Improvements:
 
 Currently in progress:
  * Cross-compiler support and cross-platform integration with auto-tools. Currently the projects are Visual Studio Solutions.
+ * Adding support for Clang.
+ * Clean up TODO: tags left in the code. Place an official exception handling mechanism in place that is disabled by default.
 
 Soon to follow:
  * Sample applications to demonstrate it's usage.
