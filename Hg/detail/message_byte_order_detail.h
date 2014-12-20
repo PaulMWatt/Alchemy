@@ -57,7 +57,7 @@ Hg::Message<MessageT, ToT, StorageT>
 {
   typedef typename 
     MessageT::format_type                         format_type;
-  // Initialize a functor to convert data to network byte order,
+  // Initialize a functor to convert the data byte order,
   // then call this operation for each element in the defined message.
   detail::ByteOrderConversionFunctor< Hg::Message< MessageT, FromT, StorageT>,
                                       Hg::Message< MessageT, ToT, StorageT>  >  ftor(from);  
@@ -113,7 +113,7 @@ struct ConvertEndianess<T, StorageT, nested_trait>
     typedef Hg::HostByteOrder   to_order;
 
     // Construct a shallow message wrapper around the nested data.
-    Hg::Message<T, from_order, StorageT>  from;
+    Hg::Message<T, from_order, StorageT>  from ;
     from = input;
 
     // Pass this message to be byte-order swapped.

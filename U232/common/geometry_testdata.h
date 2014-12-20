@@ -432,19 +432,6 @@ struct World
 };
 
 // Create two data definitions, 
-// Start Byte-order
-const World k_world = 
-{
-  512, 512,
-  k_camera,
-  90,
-  k_gray,
-  k_light,
-  uint8_t(1), 
-  &k_obj_cube,
-  uint8_t(2),
-  k_instances
-};
 
 //  ****************************************************************************
 inline
@@ -549,7 +536,7 @@ const Triangle k_other_cube_triangles[12] =
 const Object k_other_obj_cube = 
 {
   Hg::EndianSwap<uint32_t>(k_obj_cube.count),
-  k_cube_triangles
+  k_other_cube_triangles
 };
 
 // Only the 32-bit fields in the point def require conversion.
@@ -571,6 +558,20 @@ const Instance k_other_instances[2] =
   }
 };
 
+//  ****************************************************************************
+// Start Byte-order
+const World k_world = 
+{
+  512, 512,
+  k_camera,
+  90,
+  k_gray,
+  k_light,
+  uint8_t(1), 
+  &k_obj_cube,
+  uint8_t(2),
+  k_instances
+};
 
 
 // Converted Byte-order
@@ -579,12 +580,12 @@ const World k_other_world =
   Hg::EndianSwap<uint16_t>(k_world.width), 
   Hg::EndianSwap<uint16_t>(k_world.height),
   k_other_camera,
-  Hg::EndianSwap<uint16_t>(90),
-  Hg::EndianSwap<uint32_t>(k_gray),
+  Hg::EndianSwap<uint16_t>(k_world.fov),
+  Hg::EndianSwap<uint32_t>(k_world.ambient),
   k_other_light,
-  uint8_t(1),                               // 8-bits, no conversion req.
+  k_world.object_count, 
   &k_other_obj_cube,
-  uint8_t(2),                               // 8-bits, no conversion req.
+  k_world.instance_count, 
   k_other_instances
 };
 

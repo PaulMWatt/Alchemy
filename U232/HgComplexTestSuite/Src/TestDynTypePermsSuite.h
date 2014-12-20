@@ -414,8 +414,8 @@ void TestDynTypePermsSuite::Testto_host(void)
   SUT result = to_host(sut);
   SUT no_op_result = to_host(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), result.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_result.size());
 }
 
 //  ****************************************************************************
