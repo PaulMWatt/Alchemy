@@ -173,7 +173,7 @@ protected:
 
 
 
-// TODO: Keep temporarily until the tests are altered to match the new adjustments.
+//  ****************************************************************************
 template< size_t    Idx,
           typename  format_type
         >

@@ -138,7 +138,6 @@ public:
   void TestSizeOf_TypeList(void);
   void TestSizeOf_BitSet(void);
   void TestSizeOf_DynamicValue(void);
-  void TestSizeOf_ArrayValue(void);
 
   // SizeAt Template Tests *****************************************************
   void TestSizeAt_1_to_max(void);
@@ -527,23 +526,6 @@ void TestMeta::TestSizeOf_DynamicValue(void)
 
   size_t size_array = Hg::SizeOf<char_vec>::value;
   TS_ASSERT_EQUALS(0, size_array);
-}
-
-//  ****************************************************************************
-void TestMeta::TestSizeOf_ArrayValue(void)
-{
-// TODO: Remove this test. these constructs are not longer used.
-  //typedef Hg::array_n<size_t, 10>              sut;
-
-  //const size_t k_control = sizeof(size_t)* 10;
-
-  //// SUT
-  //TS_ASSERT_EQUALS(k_control, Hg::SizeOf<sut>::value);
-
-  // The standard array object is not guaranteed to be the same
-  // size as a basic array allocated with the same time and count.
-  // Therefore, this test is not valid.
-  //    TS_ASSERT_EQUALS(sizeof(sut), Hg::SizeOf<sut>::value);
 }
 
 //  ****************************************************************************

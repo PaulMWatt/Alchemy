@@ -211,12 +211,6 @@ struct DataProxy <array_trait, IdxT, FormatT>
   /// 
   void set(const data_type (&value)[k_extent])
   {
-    if (!value)
-    {
-      // TODO: Return and add exception handling. 
-      return;
-    }
-
     std::copy( &value[0], 
               (&value[0]) + k_extent, 
                 begin());
