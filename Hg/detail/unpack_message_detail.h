@@ -305,9 +305,10 @@ size_t unpack_message (       MessageT  &msg_values,
                                 MessageT,
                                 BufferT
                               > unpack;
-  unpack(msg_values, working);
+  size_t dynamic_offset = 0;
+  unpack(msg_values, working, dynamic_offset);
 
-  return length;
+  return length + dynamic_offset;
 }
 
 } // namespace detail
