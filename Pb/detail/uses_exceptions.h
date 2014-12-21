@@ -10,8 +10,6 @@
 //  ****************************************************************************
 #ifndef USES_EXCEPTIONS_H_INCLUDED
 #define USES_EXCEPTIONS_H_INCLUDED
-//  Includes *******************************************************************
-#include <utility>
 
 // Enable Exception Support
 // If there are other compiler pre-processor definitions
@@ -19,7 +17,8 @@
 // add there definition to the clause below.
 
 #ifdef _USES_EXCEPTIONS
-# define ALCHEMY_USES_EXCEPTIONS
+# include <stdexcept>
+# define ALCHEMY_USES_EXCEPTIONS 1
 #endif
 
 

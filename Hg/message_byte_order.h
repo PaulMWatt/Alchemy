@@ -36,11 +36,15 @@ Message<typename T::message_type,
         typename T::storage_type>
   to_network(T& from)
 {
+  Message<typename T::message_type,
+          NetByteOrder,
+          typename T::storage_type> to;
+
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
                                       typename T::storage_type,
                                       NetByteOrder
-                                    >(from);
+                                    >(from, to);
 }
 
 //  ****************************************************************************
@@ -66,11 +70,15 @@ Message<typename T::message_type,
         typename T::storage_type>
   to_host(T& from)
 {
+  Message<typename T::message_type,
+          HostByteOrder,
+          typename T::storage_type> to;
+  
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
                                       typename T::storage_type,
                                       HostByteOrder
-                                    >(from);
+                                    >(from, to);
 }
 
 //  ****************************************************************************
@@ -96,11 +104,15 @@ Message<typename T::message_type,
         typename T::storage_type>
   to_big_endian(T& from)
 {
+  Message<typename T::message_type,
+          BigEndian,
+          typename T::storage_type> to;
+
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
                                       typename T::storage_type,
                                       BigEndian
-                                    >(from);
+                                    >(from, to);
 }
 
 //  ****************************************************************************
@@ -126,12 +138,16 @@ Message<typename T::message_type,
         typename T::storage_type>
   to_little_endian(T& from)
 {
+  Message<typename T::message_type,
+          LittleEndian,
+          typename T::storage_type> to;
+
   // convert the values of the message parameters.
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
                                       typename T::storage_type,
                                       LittleEndian
-                                    >(from);
+                                    >(from, to);
 }
 
 } // namespace Hg

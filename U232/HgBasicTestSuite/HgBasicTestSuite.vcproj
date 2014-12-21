@@ -186,6 +186,14 @@
 				<File
 					RelativePath=".\Src\Generated\HgBasicTestSuiteRunner.cpp"
 					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							GeneratePreprocessedFile="0"
+						/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 		</Filter>
@@ -221,10 +229,6 @@
 					>
 					<File
 						RelativePath="..\..\Pb\auto_index.h"
-						>
-					</File>
-					<File
-						RelativePath="..\..\Pb\bit_field_list.h"
 						>
 					</File>
 					<File
@@ -303,10 +307,6 @@
 						Name="bit_field"
 						>
 						<File
-							RelativePath="..\..\Pb\bit_field\basic_list.h"
-							>
-						</File>
-						<File
 							RelativePath="..\..\Pb\bit_field\bit_field.h"
 							>
 						</File>
@@ -316,6 +316,10 @@
 						</File>
 						<File
 							RelativePath="..\..\Pb\bit_field\bit_field_vector.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Pb\bit_field\packed_bits.h"
 							>
 						</File>
 					</Filter>
@@ -343,11 +347,51 @@
 						Name="detail"
 						>
 						<File
+							RelativePath="..\..\Pb\detail\alias_templates.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Pb\detail\auto.h"
+							>
+						</File>
+						<File
 							RelativePath="..\..\Pb\detail\conditional.h"
 							>
 						</File>
 						<File
+							RelativePath="..\..\Pb\detail\decltype.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Pb\detail\explicit_conversion.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Pb\detail\range_for.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Pb\detail\rvalue_ref.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Pb\detail\static_assert.h"
+							>
+						</File>
+						<File
 							RelativePath="..\..\Pb\detail\tr1_helper.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Pb\detail\trailing_fn_return.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Pb\detail\uses_exceptions.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Pb\detail\variadic_templates.h"
 							>
 						</File>
 					</Filter>
@@ -463,6 +507,10 @@
 							</File>
 							<File
 								RelativePath="..\..\Hg\detail\pack_nested.h"
+								>
+							</File>
+							<File
+								RelativePath="..\..\Hg\detail\pack_packed_bits.h"
 								>
 							</File>
 							<File

@@ -39,11 +39,10 @@ template <size_t CurIndex,
           typename Function>
 class ForEachTypeHelper
 {
-  // TODO: Add these static asserts back once a suitable replacement is created for tr1 libraries.
-  //static_assert((CurIndex <= EndIndex), 
-  //              "The Current Index must be not be greater than the End Index");
-  //static_assert(type_container<ContainerT>::value, 
-  //              "ContainerT must be derived from \"container_trait\"");
+  static_assert((CurIndex <= EndIndex), 
+                "The Current Index must be not be greater than the End Index");
+  static_assert(type_container<ContainerT>::value, 
+                "ContainerT must be derived from \"container_trait\"");
 
 public:
   //  **************************************************************************
@@ -151,13 +150,12 @@ template <size_t   BeginIndex,
           typename Function>
 Function& ForEachType(Function   &fn)
 {
-  // TODO: Return with a static_assert that is compatible with tr1 compilers.
-//  static_assert (BeginIndex <= EndIndex,
-//                "The Begin Index must not be greater than the End Index");
-  //static_assert (type_container<ContainerT>::value,
-  //                "ContainerT must be derived from \"container_trait\"");
-  //static_assert (length<ContainerT>::value > 0,
-  //               "ContainerT must contain more than 0 type entries.");
+  static_assert (BeginIndex <= EndIndex,
+                "The Begin Index must not be greater than the End Index");
+  static_assert (type_container<ContainerT>::value,
+                  "ContainerT must be derived from \"container_trait\"");
+  static_assert (length<ContainerT>::value > 0,
+                 "ContainerT must contain more than 0 type entries.");
 
   // The helper template is required because this processing is performed
   // on types at compile-time. Dynamic input variables are not permitted for

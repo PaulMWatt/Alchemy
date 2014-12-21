@@ -206,7 +206,6 @@ public:
   ///
   void assign(const_pointer pBuffer, size_t n)
   {
-    // TODO: Throw an exception if p is invalid with n > 0
     if ( pBuffer
       && n > 0)
     {
@@ -219,6 +218,12 @@ public:
                                 buffer_type,
                                 size_trait
                               >(*this, m_msgBuffer);
+    }
+    else
+    {
+#if ALCHEMY_HAS_EXCEPTIONS
+      throw std::invalid_argument("Hg::Message<>::assign() - pBuffer is invalid or length n is 0");
+#endif
     }
   }
 

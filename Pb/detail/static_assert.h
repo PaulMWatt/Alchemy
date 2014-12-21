@@ -8,9 +8,9 @@
 #define STATIC_ASSERT_H_INCLUDED
 //  Includes *******************************************************************
 #include <utility>
+#include <type_traits>
 
 // static assert supported in these compilers:
-
 #if _MSC_VER >= 1600 
 
 # define    ALCHEMY_STATIC_ASSERT_SUPPORTED    1 
@@ -23,9 +23,18 @@
 #   define  ALCHEMY_STATIC_ASSERT_SUPPORTED    1    
 
 #else 
-  // Compiler does not support rvalue references
-//# define    ALCHEMY_STATIC_ASSERT_SUPPORTED    0
-#endif
+
+# define     ALCHEMY_STATIC_ASSERT_SUPPORTED 0
+
+# ifndef static_assert
+// The Compiler does not support static assert
+// implementing an empty MACRO for now.
+#   define static_assert(expr, msg)
+
+# endif
+
+#endif // Static_assert support
+
 
 
 #endif 

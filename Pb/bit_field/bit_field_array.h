@@ -59,11 +59,6 @@ public:
                                         ///  defined by the user to access 
                                         ///  individual value entries in the array.
 
-  // TODO: Remove this if the alternate implementation checks out.
-  //typedef typename
-  //  DeclareBitFieldList
-  //    < user_bit_field_type>::type      
-
   typedef user_bit_field_type           bit_field_type;
                                         ///< The Hg type required to properly 
                                         ///  initialized nested structures to
@@ -106,7 +101,9 @@ public:
   /// 
   BitFieldArray()
   {
-    // TODO: Considering a compilation flag to not initialize buffers for performance conscieous users.
+    static_assert(false, "Support for Bitfield Arrays is not complete. This type is not supported.");
+
+    // TODO: Considering a compilation flag to not initialize buffers for performance conscious users.
     std::fill(m_data.begin(), m_data.end(), value_type());
   }
 
