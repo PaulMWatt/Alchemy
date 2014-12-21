@@ -296,6 +296,9 @@
     <ClInclude Include="..\..\Pb\detail\uses_exceptions.h">
       <Filter>Header Files\Alchemy\Pb\detail</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\pack_packed_bits.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgBasicTestSuiteRunner.cpp">

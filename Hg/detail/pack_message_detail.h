@@ -58,7 +58,7 @@ struct PackDatum
     typedef typename
       proxy_type::value_type                      value_type;
 
-    value_type value  = msg.template FieldAt<IdxT>().get();
+    value_type &value = msg.template FieldAt<IdxT>().get();
     size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
                       + dynamic_offset;
     buffer.set_data(value, offset);
