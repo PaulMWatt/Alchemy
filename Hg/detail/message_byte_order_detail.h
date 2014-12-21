@@ -224,8 +224,8 @@ struct ByteOrderConversionFunctor
     from_message_type::storage_type     storage_type;
 
   //  Data Members *************************************************************
-  from_message_type input;
-  to_message_type&  output;
+  const from_message_type  input;
+  to_message_type&         output;
 
   //  **************************************************************************
   /// Value constructor that initializes the input message to be converted.
@@ -262,8 +262,13 @@ struct ByteOrderConversionFunctor
     typedef typename
       proxy_type::value_type                                  value_type;
                                       
-    value_type from_value  = input.template FieldAt<Idx>().get();
-    value_type to_value;
+    // The context for which the const input parameter is
+    // being used here does not change the value.
+    // However, a non-const version of get() causes conflicts.
+    // Therefore, casting away const is the safest and cleanest solution.
+    from_message_type &mutable_input = const_cast<from_message_type &>(input);
+
+    value_type& from_value = mutable_input.template FieldAt<Idx>().get();
 
     // Create an instance of a selection template that will choose between
     // nested processing, and value conversion.
@@ -271,8 +276,9 @@ struct ByteOrderConversionFunctor
                       storage_type,
                       typename DeduceTypeTrait<value_type>::type
                     > swap_order;
-    swap_order(from_value, to_value);
-    output.template FieldAt<Idx>().set(to_value);
+    // Swap directly into the value storage for the conversion output.
+    swap_order( from_value, 
+                output.template FieldAt<Idx>().get());
   }
 };
 
@@ -293,8 +299,8 @@ struct ByteOrderConversionFunctor <MessageT, MessageT>
   typedef MessageT                      to_message_type;
 
   //  Data Members *************************************************************
-  from_message_type input;
-  to_message_type&  output;
+  const from_message_type &input;
+  to_message_type&         output;
 
   //  **************************************************************************
   /// Value constructor that initializes the input message to be converted.
@@ -324,9 +330,14 @@ struct ByteOrderConversionFunctor <MessageT, MessageT>
             typename value_t>
   void operator()(const value_t*)
   { 
+    // The context for which the const input parameter is
+    // being used here does not change the value.
+    // However, a non-const version of get() causes conflicts.
+    // Therefore, casting away const is the safest and cleanest solution.
+    from_message_type &mutable_input = const_cast<from_message_type &>(input);
     // Simply copy the input value to the output value.
     output.template FieldAt<Idx>().set( 
-      input.template FieldAt<Idx>().get() 
+      mutable_input.template FieldAt<Idx>().get() 
     );
   }
 };
