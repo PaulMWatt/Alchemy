@@ -521,7 +521,7 @@ struct UnpackDatum< IdxT,
                         size_t   &dynamic_offset)
   {
 
-    value_type value  = value_type();
+    value_type value;
     size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
                       + dynamic_offset;
     

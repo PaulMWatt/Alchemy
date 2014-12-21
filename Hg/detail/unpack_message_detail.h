@@ -59,12 +59,11 @@ struct UnpackDatum
     typedef typename
       proxy_type::value_type                                            value_type;
 
-    value_type value  = value_type();
-    size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
-                      + dynamic_offset;
+    size_t offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
+                  + dynamic_offset;
 
-    buffer.get_data(value, offset);
-    msg.template FieldAt<IdxT>().set(value);
+    buffer.get_data(msg.template FieldAt<IdxT>().get(), 
+                    offset);
   }
 };
 

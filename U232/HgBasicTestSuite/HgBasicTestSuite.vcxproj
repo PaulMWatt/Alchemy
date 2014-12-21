@@ -189,6 +189,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Hg\detail\pack_array.h" />
     <ClInclude Include="..\..\Hg\detail\pack_message_detail.h" />
     <ClInclude Include="..\..\Hg\detail\pack_nested.h" />
+    <ClInclude Include="..\..\Hg\detail\pack_packed_bits.h" />
     <ClInclude Include="..\..\Hg\detail\pack_vector.h" />
     <ClInclude Include="..\..\Hg\detail\unpack_array.h" />
     <ClInclude Include="..\..\Hg\detail\unpack_message_detail.h" />

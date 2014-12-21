@@ -505,7 +505,7 @@ struct PackDatum< IdxT,
                    BufferT&  buffer,
                    size_t&   dynamic_offset)
   {
-    value_type value = msg.template FieldAt<IdxT>().get();
+    value_type &value = msg.template FieldAt<IdxT>().get();
     
     // Exit if there are no entries in this dynamic value.
     if (value.empty())

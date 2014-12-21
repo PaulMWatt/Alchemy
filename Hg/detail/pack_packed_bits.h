@@ -54,7 +54,7 @@ struct PackDatum<IdxT, MessageT, BufferT, packed_trait>
     typedef typename
       packed_type::value_type                     value_type;
 
-    packed_type packed_value  = msg.template FieldAt<IdxT>().get();
+    packed_type &packed_value = msg.template FieldAt<IdxT>().get();
     value_type  value         = packed_value;
     size_t      offset        = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
                               + dynamic_offset;
