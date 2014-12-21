@@ -1,3 +1,5 @@
+Hg is now **5.5% faster** overall compared to the hand-written benchmarks (more details below)
+
 Network Alchemy
 ========================================================
 A portable framework to robustly process network messages and structured data. 
@@ -121,6 +123,28 @@ If you know of other transport libraries and would like to see an Hg adapter to 
 -------------
 Benchmark performance:
 
+* I have been able to improve the overal speed of Hg so overall it is **5.5% faster** than the hand-written version.
+* Current performance results:
+* Fundamental Types: 20% faster
+* Packed-bits:       10% faster
+* Unaligned ints:    32% faster
+* Nested types:      28% slower
+* Overall:           5.5% faster
+
+Results for Hg: 
+Basic:     0.0201853s 
+Packed:    0.0211743s 
+Unaligned: 0.0134641s 
+Complex:   0.0320937s 
+Total:     0.0869173s 
+
+Results for memcpy: 
+Basic:     0.0252621s 
+Packed:    0.0235868s 
+Unaligned: 0.0198044s 
+Complex:   0.0232371s 
+Total:     0.0918904s 
+
 I have started creating benchmarks to measure Hg's performance. The benchmarks compare the Hg implementation to a hand-written struct, using memcpy and the network byte-order conversion functions. 
 
 These are the basic benchmark tests that have been written:
@@ -132,25 +156,17 @@ These are the basic benchmark tests that have been written:
 
 I intend to create a more thorough set of tests. For now these 4 types have helped me identify plenty of hot-spots to improve the performance. Originally I only had a memory model that was dynamically allocated. When I ran the first benchmarks, Hg was 100x slower. After that I added a static memory model that can be used as well. This improved the performance dramatically. I will continue to comb through the Hg implementation and structure to improve its speed. The current performance report is listed below.
 
-* I have been able to improve the overal speed of Hg so it only incurs a ~12% overhead.
-* Current performance results:
-* Fundamental Types: 13% faster
-* Packed-bits:        7% faster
-* Unaligned ints:    12% faster
-* Nested types:      70% slower
-* Overall:           12% slower
- 
 * Notes: 
-** The packed-bit fields have been completely reworked. They are now smaller, and for the benchmarks they produce faster code.
-** Some overhead is incurred because all of the fields are zero initialized when an object is created.
-** I am considering adding an option to not initialize the objects for people who are performance concsious. However, I hesitate to do that because it could cause more problems than the performance penalty incurs. 
-** Nested structures cause the largest increase in cost.
-** I have tracked down many of the causes to be unnecessary copies of the objects. I will continue to eliminate these as I find them.  
+** The packed-bit fields have been completely reworked. They are now smaller, and for the benchmarks they produce faster code. 
+** Some overhead is incurred because all of the fields are zero initialized when an object is created. 
+** I am considering adding an option to not initialize the objects for people who are performance concsious. However, I hesitate to do that because it could cause more problems than the performance penalty incurs.  
+** Nested structures cause the largest increase in cost. 
+** I have tracked down many of the causes to be unnecessary copies of the objects. I will continue to eliminate these as I find them.   
 
 Previous History (November):
-*    History: Hg incurs ~30% overhead (slower) compared to the hand-written version.
-*    History: In some cases Hg produces faster code, ~10%. This was the fundamental field test.
-*    History: Packed bit fields cause the largest increase in cost.
+* History: Hg incurs ~30% overhead (slower) compared to the hand-written version. 
+* History: In some cases Hg produces faster code, ~10%. This was the fundamental field test. 
+* History: Packed bit fields cause the largest increase in cost. 
 
 -------------
 
