@@ -53,14 +53,18 @@ template< typename MessageT,
           typename ToT
         >
 Hg::Message<MessageT, ToT, StorageT>
-  convert_byte_order(const Hg::Message<MessageT, FromT, StorageT>& from)
+  convert_byte_order(const Hg::Message<MessageT, FromT, StorageT>& from,
+                           Hg::Message<MessageT, ToT, StorageT>&   to)
 {
   typedef typename 
     MessageT::format_type                         format_type;
   // Initialize a functor to convert the data byte order,
   // then call this operation for each element in the defined message.
-  detail::ByteOrderConversionFunctor< Hg::Message< MessageT, FromT, StorageT>,
-                                      Hg::Message< MessageT, ToT, StorageT>  >  ftor(from);  
+  detail::ByteOrderConversionFunctor
+    < Hg::Message< MessageT, FromT, StorageT>,
+      Hg::Message< MessageT, ToT, StorageT>  
+    > ftor(from, to);  
+
   Hg::ForEachType < 0,
                     Hg::length<format_type>::value - 1,
                     format_type
@@ -113,11 +117,13 @@ struct ConvertEndianess<T, StorageT, nested_trait>
     typedef Hg::HostByteOrder   to_order;
 
     // Construct a shallow message wrapper around the nested data.
-    Hg::Message<T, from_order, StorageT>  from ;
+    Hg::Message<T, from_order, StorageT>  from;
     from = input;
+    Hg::Message<T, to_order, StorageT>  to;
+
 
     // Pass this message to be byte-order swapped.
-    output = convert_byte_order<T, from_order, StorageT, to_order>(from).values();
+    output = convert_byte_order<T, from_order, StorageT, to_order>(from, to).values();
   }
 };
 
@@ -219,7 +225,7 @@ struct ByteOrderConversionFunctor
 
   //  Data Members *************************************************************
   from_message_type input;
-  to_message_type   output;
+  to_message_type&  output;
 
   //  **************************************************************************
   /// Value constructor that initializes the input message to be converted.
@@ -227,8 +233,10 @@ struct ByteOrderConversionFunctor
   /// @param rhs      The Message object that contains the input data.
   ///
   explicit
-    ByteOrderConversionFunctor(const from_message_type& rhs)
-    : input(rhs)
+    ByteOrderConversionFunctor(const from_message_type& from,
+                                     to_message_type&   to)
+    : input(from)
+    , output(to)
   { }
 
   //  **************************************************************************
@@ -286,7 +294,7 @@ struct ByteOrderConversionFunctor <MessageT, MessageT>
 
   //  Data Members *************************************************************
   from_message_type input;
-  to_message_type   output;
+  to_message_type&  output;
 
   //  **************************************************************************
   /// Value constructor that initializes the input message to be converted.
@@ -294,8 +302,10 @@ struct ByteOrderConversionFunctor <MessageT, MessageT>
   /// @param rhs      The Message object that contains the input data.
   /// 
   explicit
-    ByteOrderConversionFunctor(const from_message_type& from)
+    ByteOrderConversionFunctor(const from_message_type& from,
+                                     to_message_type&   to)
     : input(from)
+    , output(to)
   { }
 
   //  **************************************************************************

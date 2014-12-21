@@ -95,9 +95,6 @@
     <ClInclude Include="Src\TestFocusedDynamicMessageSuite.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Hg\unused\array_data.h">
-      <Filter>Header Files\Alchemy\Hg\Detail\Unused</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Hg\deduce_type_trait.h">
       <Filter>Header Files\Alchemy\Hg</Filter>
     </ClInclude>
@@ -166,15 +163,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Hg\detail\message_dynamic_detail.h">
       <Filter>Header Files\Alchemy\Hg\Detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Hg\unused\multival_data.h">
-      <Filter>Header Files\Alchemy\Hg\Detail\Unused</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Hg\unused\select_proxy_type.h">
-      <Filter>Header Files\Alchemy\Hg\Detail\Unused</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Hg\unused\message_iterator.h">
-      <Filter>Header Files\Alchemy\Hg\Detail\Unused</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Hg\datum\basic_datum.h">
       <Filter>Header Files\Alchemy\Hg\Datum</Filter>
@@ -292,6 +280,36 @@
     </ClInclude>
     <ClInclude Include="..\..\Hg\detail\pack_packed_bits.h">
       <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\alias_templates.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\auto.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\decltype.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\explicit_conversion.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\range_for.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\rvalue_ref.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\static_assert.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\trailing_fn_return.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\uses_exceptions.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\variadic_templates.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -183,7 +183,7 @@ MessageT& unpack_message(       MessageT &msg_values,
     || buffer.size() < k_msg_size)
   {
 #ifdef ALCHEMY_USES_EXCEPTIONS
-    throw length_error("Static unpack_message does not have enough space to complete its operation.");
+    throw std::length_error("Static unpack_message does not have enough space to complete its operation.");
 #endif
 
     return msg_values;
@@ -261,7 +261,7 @@ MessageT& unpack_message(       MessageT &msg_values,
     || buffer.size() < k_msg_size)
   {
 #ifdef ALCHEMY_USES_EXCEPTIONS
-    throw length_error("Dynamic unpack_message does not have enough space to complete its operation.");
+    throw std::length_error("Dynamic unpack_message does not have enough space to complete its operation.");
 #endif
 
     return msg_values;

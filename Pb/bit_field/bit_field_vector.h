@@ -104,6 +104,7 @@ public:
   /// 
   BitFieldVector()
   {
+    static_assert(false, "Support for Bitfield Vectors is not complete. This type is not supported.");
     // TODO: Considering a compilation flag to not initialize buffers for performance conscieous users.
     std::fill(m_data.begin(), m_data.end(), value_type());
   }
