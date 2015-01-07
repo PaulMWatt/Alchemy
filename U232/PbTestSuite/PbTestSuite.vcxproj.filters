@@ -30,6 +30,9 @@
     <Filter Include="Header Files\Alchemy\Pb\detail">
       <UniqueIdentifier>{22bf15e3-2bc9-4ab8-8ed6-eb99a6e683d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tests\common">
+      <UniqueIdentifier>{f6593902-328d-4bd3-9fa9-233dc6819e01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -83,12 +86,6 @@
     <ClInclude Include="..\..\Pb\dynamic.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
-    <ClInclude Include="geometry_testdata.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="geometry_typelist.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\integer_sequence.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
@@ -113,9 +110,6 @@
     <ClInclude Include="..\..\Pb\meta_util.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
-    <ClInclude Include="msgtest_typelist.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\offset_of.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
@@ -123,12 +117,6 @@
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Pb\size_of.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="test_def.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="test_helper.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Pb\type_at.h">
@@ -175,6 +163,21 @@
     </ClInclude>
     <ClInclude Include="..\..\Pb\detail\variadic_templates.h">
       <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_testdata.h">
+      <Filter>Header Files\Tests\common</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry_typelist.h">
+      <Filter>Header Files\Tests\common</Filter>
+    </ClInclude>
+    <ClInclude Include="msgtest_typelist.h">
+      <Filter>Header Files\Tests\common</Filter>
+    </ClInclude>
+    <ClInclude Include="test_helper.h">
+      <Filter>Header Files\Tests\common</Filter>
+    </ClInclude>
+    <ClInclude Include="test_def.h">
+      <Filter>Header Files\Tests\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
