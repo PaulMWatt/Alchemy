@@ -1,3 +1,4 @@
+(Status - I have entered a crunch-mode (Jan 23, 2015) with work and I have not had any time to devote to continuing to improve Alchemy. Early February I believe I will have more time and you will begin to see updates again.)
 Hg is now **5.5% faster** overall compared to the hand-written benchmarks (more details below)
 
 Network Alchemy
