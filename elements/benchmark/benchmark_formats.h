@@ -195,7 +195,7 @@ HG_END_FORMAT(Unaligned);
 HG_BEGIN_FORMAT(Complex)
   HG_DATUM(uint32_t,        seq)
   HG_ARRAY(Basic, 3,        basic)
-  HG_DATUM(PackedBits,      bits)
+  HG_DATUM(Packed,          bits)
   HG_DATUM(Unaligned,       unaligned)
 HG_END_FORMAT(Complex);
 

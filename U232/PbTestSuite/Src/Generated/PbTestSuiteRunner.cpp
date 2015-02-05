@@ -287,63 +287,69 @@ public:
  void runTest() { suite_TestMeta.TestSizeOf_DynamicValue(); }
 } testDescription_suite_TestMeta_TestSizeOf_DynamicValue;
 
+static class TestDescription_suite_TestMeta_TestSizeOf_NestedArray : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestMeta_TestSizeOf_NestedArray() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 141, "TestSizeOf_NestedArray" ) {}
+ void runTest() { suite_TestMeta.TestSizeOf_NestedArray(); }
+} testDescription_suite_TestMeta_TestSizeOf_NestedArray;
+
 static class TestDescription_suite_TestMeta_TestSizeAt_1_to_max : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeAt_1_to_max() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 143, "TestSizeAt_1_to_max" ) {}
+ TestDescription_suite_TestMeta_TestSizeAt_1_to_max() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 144, "TestSizeAt_1_to_max" ) {}
  void runTest() { suite_TestMeta.TestSizeAt_1_to_max(); }
 } testDescription_suite_TestMeta_TestSizeAt_1_to_max;
 
 static class TestDescription_suite_TestMeta_TestOffsetOf_basic : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestOffsetOf_basic() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 146, "TestOffsetOf_basic" ) {}
+ TestDescription_suite_TestMeta_TestOffsetOf_basic() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 147, "TestOffsetOf_basic" ) {}
  void runTest() { suite_TestMeta.TestOffsetOf_basic(); }
 } testDescription_suite_TestMeta_TestOffsetOf_basic;
 
 static class TestDescription_suite_TestMeta_TestOffsetOf_bitset : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestOffsetOf_bitset() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 147, "TestOffsetOf_bitset" ) {}
+ TestDescription_suite_TestMeta_TestOffsetOf_bitset() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 148, "TestOffsetOf_bitset" ) {}
  void runTest() { suite_TestMeta.TestOffsetOf_bitset(); }
 } testDescription_suite_TestMeta_TestOffsetOf_bitset;
 
 static class TestDescription_suite_TestMeta_TestOffsetOf_nested : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestOffsetOf_nested() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 148, "TestOffsetOf_nested" ) {}
+ TestDescription_suite_TestMeta_TestOffsetOf_nested() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 149, "TestOffsetOf_nested" ) {}
  void runTest() { suite_TestMeta.TestOffsetOf_nested(); }
 } testDescription_suite_TestMeta_TestOffsetOf_nested;
 
 static class TestDescription_suite_TestMeta_TestBitSet_constructor : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestBitSet_constructor() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 151, "TestBitSet_constructor" ) {}
+ TestDescription_suite_TestMeta_TestBitSet_constructor() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 152, "TestBitSet_constructor" ) {}
  void runTest() { suite_TestMeta.TestBitSet_constructor(); }
 } testDescription_suite_TestMeta_TestBitSet_constructor;
 
 static class TestDescription_suite_TestMeta_TestBitSet_conversion : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestBitSet_conversion() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 152, "TestBitSet_conversion" ) {}
+ TestDescription_suite_TestMeta_TestBitSet_conversion() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 153, "TestBitSet_conversion" ) {}
  void runTest() { suite_TestMeta.TestBitSet_conversion(); }
 } testDescription_suite_TestMeta_TestBitSet_conversion;
 
 static class TestDescription_suite_TestMeta_TestBitSet_assignment_BitSet : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestBitSet_assignment_BitSet() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 153, "TestBitSet_assignment_BitSet" ) {}
+ TestDescription_suite_TestMeta_TestBitSet_assignment_BitSet() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 154, "TestBitSet_assignment_BitSet" ) {}
  void runTest() { suite_TestMeta.TestBitSet_assignment_BitSet(); }
 } testDescription_suite_TestMeta_TestBitSet_assignment_BitSet;
 
 static class TestDescription_suite_TestMeta_TestBitSet_assignment_value_type : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestBitSet_assignment_value_type() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 154, "TestBitSet_assignment_value_type" ) {}
+ TestDescription_suite_TestMeta_TestBitSet_assignment_value_type() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 155, "TestBitSet_assignment_value_type" ) {}
  void runTest() { suite_TestMeta.TestBitSet_assignment_value_type(); }
 } testDescription_suite_TestMeta_TestBitSet_assignment_value_type;
 
 static class TestDescription_suite_TestMeta_TestBitSet_size : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestBitSet_size() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 155, "TestBitSet_size" ) {}
+ TestDescription_suite_TestMeta_TestBitSet_size() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 156, "TestBitSet_size" ) {}
  void runTest() { suite_TestMeta.TestBitSet_size(); }
 } testDescription_suite_TestMeta_TestBitSet_size;
 
 static class TestDescription_suite_TestMeta_TestForEach : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestForEach() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 158, "TestForEach" ) {}
+ TestDescription_suite_TestMeta_TestForEach() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 159, "TestForEach" ) {}
  void runTest() { suite_TestMeta.TestForEach(); }
 } testDescription_suite_TestMeta_TestForEach;
 
