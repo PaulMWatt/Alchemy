@@ -30,6 +30,10 @@ void UsingHg::test_basic(DataBuffer &data,
   size_t len   = Hg::SizeOf<Hg::Basic>::value;
   size_t count = data.Size() / len;
 
+
+  HgBasicHost::format_type   t1;
+  HgBasicHost::format_type_2 t2;
+
   cout << "basic size:      " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {

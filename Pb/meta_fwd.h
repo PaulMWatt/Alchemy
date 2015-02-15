@@ -32,8 +32,12 @@ struct pop_front
 };
 
 template <typename ContainerT,
-  typename T>
+          typename T>
 struct push_front;
+
+template <typename ContainerT,
+          typename T>
+struct push_back;
 
 template <typename ContainerT>
 struct back;

@@ -311,6 +311,9 @@
     <ClInclude Include="..\..\Pb\detail\variadic_templates.h">
       <Filter>Header Files\Alchemy\Pb\detail</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Hg\deduce_msg_type_list.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgComplexTestSuiteRunner.cpp">

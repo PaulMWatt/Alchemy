@@ -113,6 +113,24 @@
 #define TMP_INC_13   14
 #define TMP_INC_14   15
 #define TMP_INC_15   16
+#define TMP_INC_16   15
+#define TMP_INC_17   16
+#define TMP_INC_18   17
+#define TMP_INC_19   18
+#define TMP_INC_20   19
+#define TMP_INC_21   20
+#define TMP_INC_22   21
+#define TMP_INC_23   22
+#define TMP_INC_24   23
+#define TMP_INC_25   24
+#define TMP_INC_26   25
+#define TMP_INC_27   26
+#define TMP_INC_28   27
+#define TMP_INC_29   28
+#define TMP_INC_30   29
+#define TMP_INC_31   30
+#define TMP_INC_32   31
+
 
 // Decrements 1 from the supplied number, 16 to 1 are supported.
 #define TMP_DEC(x)    TMP_DEC_DO(x)
@@ -134,5 +152,21 @@
 #define TMP_DEC_14   13
 #define TMP_DEC_15   14
 #define TMP_DEC_16   15
+#define TMP_DEC_17   16
+#define TMP_DEC_18   17
+#define TMP_DEC_19   18
+#define TMP_DEC_20   19
+#define TMP_DEC_21   20
+#define TMP_DEC_22   21
+#define TMP_DEC_23   22
+#define TMP_DEC_24   23
+#define TMP_DEC_25   24
+#define TMP_DEC_26   25
+#define TMP_DEC_27   26
+#define TMP_DEC_28   27
+#define TMP_DEC_29   28
+#define TMP_DEC_30   29
+#define TMP_DEC_31   30
+#define TMP_DEC_32   31
 
 #endif

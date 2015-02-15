@@ -40,6 +40,7 @@
 #include <Pb/size_of.h>
 #include <Pb/meta_math.h>
 #include <Pb/dynamic.h>
+#include <Hg/deduce_msg_type_list.h>
 #include <Hg/make_Hg_type_list.h>
 #include <Hg/proxy/deduce_proxy_type.h>
 
@@ -81,19 +82,20 @@ struct message_size_trait
 
 } // namespace Hg
 
-// *****************************************************************************
+//  ****************************************************************************
 //  Abstracted Message Definition MACROS ***************************************
 //  Simplified user MACROS use these definitions.
 //  These definitions have been abstracted to simplify the user header files.
-// *****************************************************************************
+//  ****************************************************************************
 
-// *****************************************************************************
+//  ****************************************************************************
 //  Primary Message Declaration MACROS *****************************************
-// *****************************************************************************
+//  ****************************************************************************
 #define DEFINE_HG_FORMAT_HEADER(F)                                             \
   struct F##Format                                                             \
     : nested_trait                                                             \
   {                                                                            \
+    typedef F##Format                   this_type;                             \
     typedef F                           format_type;                           \
     enum { k_size = SizeOf<format_type>::value };                              \
     enum { k_length                   = length<format_type>::value };          \
@@ -110,85 +112,103 @@ struct message_size_trait
     {                                                                          \
       return const_cast<F##Format*>(this)->FieldAt();                          \
     }                                                                          \
+    template<size_t I> struct TypeAtIndex;            \
     BEGIN_COUNTER
 
-// *****************************************************************************
+//  ****************************************************************************
 #define DECLARE_FORMAT_HEADER(F)                                               \
   typedef Hg::make_Hg_type_list<F>::type                    F##_Hg;            \
   DEFINE_HG_FORMAT_HEADER(F##_Hg)
 
-// *****************************************************************************
+//  ****************************************************************************
 #define DECLARE_DATUM_FORMAT_IDX(IDX,T,P)                                      \
-  typedef                                                                      \
-    Hg::detail::DeduceProxyType < IDX,                                         \
-                                  format_type>::type        Proxy##P;          \
-  typedef Proxy##P::datum_type                              datum_##P;         \
-  Proxy##P   P;                                                                \
+    typedef                                                                    \
+      Hg::detail::DeduceProxyType < IDX,                                       \
+                                    format_type>::type        Proxy##P;        \
+    typedef Proxy##P::datum_type                              datum_##P;       \
+    Proxy##P   P;                                                              \
                                                                                \
-  datum_##P& FieldAtIndex(const datum_##P*)                                    \
-  { return *static_cast<datum_##P*>(&P); }                                     \
+    datum_##P& FieldAtIndex(const datum_##P*)                                  \
+    { return *static_cast<datum_##P*>(&P); }                                   \
                                                                                \
-  const char* FieldName(const Proxy##P&)                    { return #P; }
+    const char* FieldName(const Proxy##P&)                    { return #P; }   \
+    template<> struct TypeAtIndex<IDX> { typedef T type; };              
 
 
-// *****************************************************************************
+//  ****************************************************************************
 #define DECLARE_DATUM_FORMAT(T, P)                                             \
   INC_COUNTER                                                                  \
   DECLARE_DATUM_FORMAT_IDX((COUNTER_VALUE), T, P)
 
 
-// *****************************************************************************
+//  ****************************************************************************
+#define DECLARE_ARRAY(T,N)        std::array<T,N>
+
+
+//  ****************************************************************************
 #define DECLARE_ARRAY_FORMAT_IDX(IDX,T,N,P)                                    \
-  DECLARE_DATUM_FORMAT_IDX(IDX,(std::array<T,N>),P)
+  DECLARE_DATUM_FORMAT_IDX(IDX,DECLARE_ARRAY(T,N),P)
 
 
-// *****************************************************************************
+//  ****************************************************************************
 #define DECLARE_ARRAY_FORMAT(T, N, P)                                          \
   INC_COUNTER                                                                  \
   DECLARE_ARRAY_FORMAT_IDX((COUNTER_VALUE), T, N, P)
 
 
-// *****************************************************************************
+//  ****************************************************************************
+#define DECLARE_VECTOR(T)        std::vector<T>
+
+
+//  ****************************************************************************
 #define DECLARE_DYNAMIC_FORMAT_IDX(IDX,T,N,P)                                  \
-  DECLARE_DATUM_FORMAT_IDX(IDX,(std::vector<T>),P)                             \
-  template <typename U>                                                        \
-  size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, buffer); }
+    DECLARE_DATUM_FORMAT_IDX(IDX,DECLARE_VECTOR(T),P)                          \
+  public:                                                                      \
+    template <typename U>                                                      \
+    size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
 
 
-// *****************************************************************************
+//  ****************************************************************************
 #define DECLARE_DYNAMIC_FORMAT(T, N, P)                                        \
-  INC_COUNTER                                                                  \
-  DECLARE_DYNAMIC_FORMAT_IDX((COUNTER_VALUE), T, N, P)
+    INC_COUNTER                                                                \
+    DECLARE_DYNAMIC_FORMAT_IDX((COUNTER_VALUE), T, N, P)
 
 
-// *****************************************************************************
+//  ****************************************************************************
 #define DECLARE_ALLOCATOR_FORMAT_IDX(IDX,T,N,P)                                \
-  DECLARE_DATUM_FORMAT_IDX(IDX,(std::vector<T,A>),P)                           \
-  template <typename U>                                                        \
-  size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, buffer); }
+    DECLARE_DATUM_FORMAT_IDX(IDX,(std::vector<T,A>),P)                         \
+  public:                                                                      \
+    template <typename U>                                                      \
+    size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
 
 
-// *****************************************************************************
+//  ****************************************************************************
 #define DECLARE_ALLOCATOR_FORMAT(T, A, N, P)                                   \
-  INC_COUNTER                                                                  \
-  DECLARE_ALLOCATOR_FORMAT_IDX((COUNTER_VALUE), T, A, N, P)
+    INC_COUNTER                                                                \
+    DECLARE_ALLOCATOR_FORMAT_IDX((COUNTER_VALUE), T, A, N, P)
 
 
-// *****************************************************************************
+//  ****************************************************************************
 #define DECLARE_FORMAT_FOOTER(F)                                               \
   private:                                                                     \
     template <typename T, typename U>                                          \
-    size_t DatumSize(T value, U&)                                              \
+    size_t DatumSize(T value, U*)                                              \
     {                                                                          \
       return value;                                                            \
     }                                                                          \
                                                                                \
     template <typename U>                                                      \
-    size_t DatumSize(pfnGetDatumSize ftor, U& buffer)                          \
+    size_t DatumSize(pfnGetDatumSize ftor, U* buffer)                          \
     {                                                                          \
-      if (buffer.empty()) { return 0; }                                        \
-      return ftor(buffer.data(), buffer.size());                               \
+      if (buffer->empty()) { return 0; }                                       \
+      return ftor(buffer->data(), buffer->size());                             \
     }                                                                          \
+  public:                                                                      \
+    typedef                                                         \
+      Hg::detail::DeduceMsgTypeList                                            \
+        < this_type,                                                           \
+          (COUNTER_VALUE - 1)                                                  \
+        >::type     format_type_2;                                             \
   };                                                                           \
   namespace detail {                                                           \
   template <>                                                                  \
@@ -199,9 +219,9 @@ struct message_size_trait
   } // namespace detail
 
 
-// ****************************************************************************
-//  Bit Fields ****************************************************************
-// ****************************************************************************
+//  ****************************************************************************
+//  Bit Fields *****************************************************************
+//  ****************************************************************************
 #define DECLARE_PACKED_HEADER(T,C)                                             \
   struct C;                                                                    \
   template <>                                                                  \

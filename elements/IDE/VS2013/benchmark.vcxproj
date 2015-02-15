@@ -12,7 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\benchmark\benchmark.cpp" />
-    <ClCompile Include="..\..\benchmark\using_Hg.cpp" />
+    <ClCompile Include="..\..\benchmark\using_Hg.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+    </ClCompile>
     <ClCompile Include="..\..\benchmark\using_memcpy.cpp" />
   </ItemGroup>
   <ItemGroup>

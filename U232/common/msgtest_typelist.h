@@ -127,7 +127,7 @@ typedef TypeList
 > single_array_t;
 
 HG_BEGIN_FORMAT(single_array_t)
-  HG_DATUM ((std::array<point_format_t, 2>), line)
+  HG_ARRAY (point_format_t, 2, line)
 HG_END_FORMAT(single_array_t)
 
 

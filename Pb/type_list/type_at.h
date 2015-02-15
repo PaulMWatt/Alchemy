@@ -156,6 +156,17 @@ struct push_front<TypeList<TMP_ARRAY_32(T)>, T>
 };
 
 //  ****************************************************************************
+/// This allows the a new type to be pushed at the back of the list.
+/// The new list will become the typedef of the pushed type and
+/// the existing type list.
+/// 
+template<TMP_ARRAY_32(typename T), typename T>
+struct push_back<TypeList<TMP_ARRAY_32(T)>, T>
+{
+  typedef TypeList<TMP_ARRAY_31(T), T> type;
+};
+
+//  ****************************************************************************
 /// This allows the last type of the list to be returned.
 /// 
 template<TMP_ARRAY_32(typename T)>

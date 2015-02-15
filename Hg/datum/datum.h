@@ -19,7 +19,7 @@ namespace Hg
 
 //  ****************************************************************************
 /// A type-wrapper that provides transparent access to a range 
-/// of memory in message buffer is if it were the specified 
+/// of memory in a message buffer as if it were the specified 
 /// type itself.
 ///                 
 /// The Datum<> is intended to be used as if it were the direct field itself.
@@ -89,6 +89,35 @@ public:
   { 
     set(datum.get());
   }
+
+#ifdef ALCHEMY_RVALUE_REF_SUPPORTED
+
+  //  **************************************************************************
+  /// Move Constructor
+  ///
+  /// Moves the current instance from one datum to another.
+  ///
+  /// @param proxy           A rvalue  reference to the another instance of a Datum.
+  /// 
+  Datum(Datum&& datum)
+  {
+    *this = std::move(datum);
+  }
+  
+  //  **************************************************************************
+  /// Move Assignment operator
+  ///
+  /// Moves the current instance from one datum to another.
+  ///
+  /// @param proxy           A rvalue  reference to the another instance of a Datum.
+  /// 
+  Datum& operator=(Datum&& datum)
+  {
+    this->set(datum.get());
+    return *this;
+  }
+
+#endif
 
   //  **************************************************************************
   /// Assignment Operator

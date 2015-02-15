@@ -56,7 +56,7 @@ HG_BEGIN_FORMAT(no_dyn_format_t)
   HG_DATUM (uint32_t,                 word_0)
   HG_DATUM (uint32_t,                 word_1)
   HG_DATUM (uint32_t,                 word_2)
-  HG_DATUM ((std::array<uint32_t,20>),  arry_3)
+  HG_ARRAY (uint32_t,20,              arry_3)
 HG_END_FORMAT(no_dyn_format_t)
 
 typedef no_dyn_format_t_HgFormat no_dyn_type;
@@ -75,7 +75,7 @@ typedef TypeList
 HG_BEGIN_FORMAT(dyn_basic_format_t)
   HG_DATUM (uint32_t,                 word_0)
   HG_DATUM (uint32_t,                 word_1)
-  HG_DATUM ((std::vector<uint16_t>),  seq_16)
+  HG_DYNAMIC(uint16_t,   word_0,      seq_16)
   HG_DATUM (uint32_t,                 word_2)
 HG_END_FORMAT(dyn_basic_format_t)
 

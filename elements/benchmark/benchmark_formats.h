@@ -163,15 +163,45 @@ typedef TypeList
   Unaligned
 > Complex;
 
+typedef TypeList
+<
+  uint32_t,
+  uint32_t,
+  uint32_t,
+  std::array<uint32_t,20>
+> no_dyn_format_t;
+
 //  ****************************************************************************
-HG_BEGIN_FORMAT(Basic)
-  HG_DATUM(int32_t,         i32)
-  HG_DATUM(uint32_t,        u32)
-  HG_DATUM(int16_t,         i16)
-  HG_DATUM(uint16_t,        u16)
-  HG_DATUM(char,            ch)
-  HG_DATUM(uint8_t,         u8)
-HG_END_FORMAT(Basic);
+//HG_BEGIN_FORMAT(Basic)
+//  HG_DATUM(int32_t,         i32)
+//  HG_DATUM(uint32_t,        u32)
+//  HG_DATUM(int16_t,         i16)
+//  HG_DATUM(uint16_t,        u16)
+//  HG_DATUM(char,            ch)
+//  HG_DATUM(uint8_t,         u8)
+//HG_END_FORMAT(Basic);
+
+typedef Hg::make_Hg_type_list<Basic>::type Basic_Hg; struct Basic_HgFormat : nested_trait { typedef Basic_HgFormat this_type; typedef Basic_Hg format_type; enum { k_size = SizeOf<format_type>::value }; enum { k_length = length<format_type>::value }; template< size_t IDX> Datum<IDX, format_type>& FieldAt() { typedef Datum < IDX, format_type> datum_type_t; return FieldAtIndex((datum_type_t*)0); } template< size_t IDX> const Datum<IDX, format_type>& const_FieldAt() const { return const_cast<Basic_HgFormat*>(this)->FieldAt(); } template<size_t I> struct TypeAtIndex; static const size_t k_enum_base = 0 + 1;
+   typedef Hg::detail::DeduceProxyType < ((1 - k_enum_base)), format_type>::type Proxyi32; typedef Proxyi32::datum_type datum_i32; Proxyi32 i32; datum_i32& FieldAtIndex(const datum_i32*) { return *static_cast<datum_i32*>(&i32); } const char* FieldName(const Proxyi32&) { return "i32"; } template<> struct TypeAtIndex<((1 - k_enum_base))> { typedef int32_t type; };
+   typedef Hg::detail::DeduceProxyType < ((2 - k_enum_base)), format_type>::type Proxyu32; typedef Proxyu32::datum_type datum_u32; Proxyu32 u32; datum_u32& FieldAtIndex(const datum_u32*) { return *static_cast<datum_u32*>(&u32); } const char* FieldName(const Proxyu32&) { return "u32"; } template<> struct TypeAtIndex<((2 - k_enum_base))> { typedef uint32_t type; };
+   typedef Hg::detail::DeduceProxyType < ((3 - k_enum_base)), format_type>::type Proxyi16; typedef Proxyi16::datum_type datum_i16; Proxyi16 i16; datum_i16& FieldAtIndex(const datum_i16*) { return *static_cast<datum_i16*>(&i16); } const char* FieldName(const Proxyi16&) { return "i16"; } template<> struct TypeAtIndex<((3 - k_enum_base))> { typedef int16_t type; };
+   typedef Hg::detail::DeduceProxyType < ((4 - k_enum_base)), format_type>::type Proxyu16; typedef Proxyu16::datum_type datum_u16; Proxyu16 u16; datum_u16& FieldAtIndex(const datum_u16*) { return *static_cast<datum_u16*>(&u16); } const char* FieldName(const Proxyu16&) { return "u16"; } template<> struct TypeAtIndex<((4 - k_enum_base))> { typedef uint16_t type; };
+   typedef Hg::detail::DeduceProxyType < ((5 - k_enum_base)), format_type>::type Proxych; typedef Proxych::datum_type datum_ch; Proxych ch; datum_ch& FieldAtIndex(const datum_ch*) { return *static_cast<datum_ch*>(&ch); } const char* FieldName(const Proxych&) { return "ch"; } template<> struct TypeAtIndex<((5 - k_enum_base))> { typedef char type; };
+   typedef Hg::detail::DeduceProxyType < ((6 - k_enum_base)), format_type>::type Proxyu8; typedef Proxyu8::datum_type datum_u8; Proxyu8 u8; datum_u8& FieldAtIndex(const datum_u8*) { return *static_cast<datum_u8*>(&u8); } const char* FieldName(const Proxyu8&) { return "u8"; } template<> struct TypeAtIndex<((6 - k_enum_base))> { typedef uint8_t type; };
+private: 
+  template <typename T, typename U> size_t DatumSize(T value, U*) { return value; } 
+  template <typename U> size_t DatumSize(pfnGetDatumSize ftor, U* buffer) { if (buffer->empty()) { return 0; } return ftor(buffer->data(), buffer->size()); } 
+
+public: 
+  typedef 
+    detail::DeduceMsgTypeList 
+    < this_type, 
+      ((7 - k_enum_base) - 1) 
+    >::type                     format_type_2; 
+}; 
+
+namespace detail { template <> struct field_data_t <Basic> { typedef Basic_HgFormat value_type; }; };
+
 
 //  ****************************************************************************
 HG_BEGIN_FORMAT(Packed)

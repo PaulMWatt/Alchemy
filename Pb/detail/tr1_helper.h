@@ -19,7 +19,7 @@
 
 #if defined(_WIN32)
 
-#if defined(_HAS_TR1)
+# if defined(_HAS_TR1)
 //  Static Conditional Test ****************************************************
 #include <Pb/detail/conditional.h>
 
@@ -42,9 +42,9 @@ typedef unsigned short      uint16_t;
 typedef unsigned long       uint32_t;
 typedef unsigned long long  uint64_t;
 
-#else
-# include <cstdint>
-#endif
+# else
+#   include <cstdint>
+# endif
 #endif
 
 
