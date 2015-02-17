@@ -163,6 +163,35 @@ struct DataProxy <array_trait, IdxT, FormatT>
     set(value);
   }
 
+#ifdef ALCHEMY_RVALUE_REF_SUPPORTED
+
+  //  **************************************************************************
+  /// Move Constructor
+  ///
+  /// Moves the current instance from one proxy to another.
+  ///
+  /// @param proxy           A rvalue  reference to the another instance of a DataProxy.
+  /// 
+  DataProxy(DataProxy&& proxy)
+    : m_data(std::move(proxy.m_data))
+  { }
+  
+  //  **************************************************************************
+  /// Move Assignment operator
+  ///
+  /// Moves the current instance from one proxy to another.
+  ///
+  /// @param proxy           A rvalue  reference to the another instance of a DataProxy.
+  /// 
+  DataProxy& operator=(DataProxy&& proxy)
+  {
+    this->set(std::forward<DataProxy>proxy.get());
+    return *this;
+  }
+
+#endif
+
+
   //  **************************************************************************
   /// Value assignment
   ///

@@ -317,7 +317,7 @@ struct FieldTypes <FieldT, nested_trait>
   //  **************************************************************************
   /// Returns the value of the data buffer.
   /// 
-  void data(const value_type &value)                
+  void data( value_type &value)                
   { 
     reference() = value;
   }
