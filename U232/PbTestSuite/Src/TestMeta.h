@@ -138,7 +138,6 @@ public:
   void TestSizeOf_TypeList(void);
   void TestSizeOf_BitSet(void);
   void TestSizeOf_DynamicValue(void);
-  void TestSizeOf_NestedArray(void);
 
   // SizeAt Template Tests *****************************************************
   void TestSizeAt_1_to_max(void);
@@ -527,26 +526,6 @@ void TestMeta::TestSizeOf_DynamicValue(void)
 
   size_t size_array = Hg::SizeOf<char_vec>::value;
   TS_ASSERT_EQUALS(0, size_array);
-}
-
-//  ****************************************************************************
-void TestMeta::TestSizeOf_NestedArray(void)
-{
-  typedef Hg::TypeList
-  <
-    int32_t,    // 4-bytes
-    uint32_t,   // 4-bytes
-    int16_t,    // 2-bytes
-    uint16_t,   // 2-bytes
-    char,       // 1-byte
-    uint8_t     // 1-byte
-  > Inner;      // 14-bytes total
-
-  typedef Hg::TypeList<std::array<Inner, 3> > sut_t;
-  const size_t k_control  = Hg::SizeOf<Inner>::value * 3;
-
-  // SUT
-  TS_ASSERT_EQUALS(k_control, Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************

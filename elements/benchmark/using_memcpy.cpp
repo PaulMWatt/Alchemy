@@ -134,7 +134,7 @@ void ReadComplex( alchemy::benchmark::DataBuffer &data,
   ReadBasic(data, msg.basic[1]);
   ReadBasic(data, msg.basic[2]);
 
-  ReadPacked(data, msg.bits);
+//  ReadBasic(data, msg.basic[0]);
 
   ReadUnaligned(data, msg.unaligned);
 }
@@ -150,7 +150,7 @@ void WriteComplex(alchemy::benchmark::DataBuffer &data,
   WriteBasic(data, msg.basic[1]);
   WriteBasic(data, msg.basic[2]);
 
-  WritePacked(data, msg.bits);
+//  ReadBasic(data, msg.basic[0]);
 
   WriteUnaligned(data, msg.unaligned);
 }
@@ -166,7 +166,9 @@ void ComplexToNetwork(const alchemy::benchmark::Complex &host,
   BasicToNetwork(host.basic[1], net.basic[1]);
   BasicToNetwork(host.basic[2], net.basic[2]);
 
-  PackedToNetwork(host.bits, net.bits);
+  net.bits.set_a = host.bits.set_a;
+  net.bits.set_b = host.bits.set_b;
+  net.bits.set_c = host.bits.set_c;
 
   UnalignedToNetwork(host.unaligned, net.unaligned);
 }

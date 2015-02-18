@@ -56,36 +56,14 @@ struct SizeOf_Impl<Hg::BitFieldArray<T,N>, true>
   : std::integral_constant< size_t, Hg::SizeOf<T>::value * N>
 { };
 
-
-//  ****************************************************************************
-//  Calculates the size of an array of types.
-//
-template< typename T,
-          size_t   N,
-          bool     IsNestedT
-        >
-struct SizeOf_Array
-  : std::integral_constant< size_t, Hg::SizeOf<T>::value * N>
-{ };
-
-//  ****************************************************************************
-//  Calculates the size of an array of nested_types.
-//
-template< typename T,
-          size_t   N
-        >
-struct SizeOf_Array<T,N,true>
-  : std::integral_constant< size_t, Hg::SizeOf<typename T::format_type>::value * N>
-{ };
-
 //  ****************************************************************************
 //  Arrays size should only include the elements in the array. 
 //
 template< typename T,
           size_t   N
         >
-struct SizeOf_Impl<std::array<T,N>, false>
-  : SizeOf_Array<T, N, std::is_base_of<nested_trait, T>::value>
+struct SizeOf_Impl<std::array<T,N>, true>
+  : std::integral_constant< size_t, Hg::SizeOf<T>::value * N>
 { };
 
 //  ****************************************************************************
