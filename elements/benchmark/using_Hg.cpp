@@ -92,12 +92,7 @@ typedef Hg::Message<Hg::Complex_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticSt
 void UsingHg::test_complex(DataBuffer &data,
                            DataBuffer &out)
 {
-  // This format does not work because the typelist has no size
-  // and the std::array definition creates a basic array.
-  //size_t len   = Hg::SizeOf<Hg::Complex>::value;
-
-  // The post processed version creates a substitution and takes this into account.
-  size_t len   = HgComplexHost::k_size;
+  size_t len = Hg::SizeOf<Hg::Complex>::value;
   size_t count = data.Size() / len;
 
   cout << "complex size:    " << len   << ", count; " << count << endl;

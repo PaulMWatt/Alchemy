@@ -28,9 +28,9 @@ namespace Hg
 /// @return                   The buffer that has been allocated to store the 
 ///                           message.
 ///
-template< class MessageT,
-          class BufferT,
-          class SizeTraitT
+template< typename MessageT,
+          typename BufferT,
+          typename SizeTraitT
         >
 std::shared_ptr<BufferT>
   pack_message( MessageT& msg_values,
@@ -56,9 +56,9 @@ std::shared_ptr<BufferT>
 /// @return                   The buffer that has been allocated to store the 
 ///                           message.
 ///
-template< class MessageT,
-          class BufferT,
-          class SizeTraitT
+template< typename MessageT,
+          typename BufferT,
+          typename SizeTraitT
         >
 size_t pack_message(MessageT &msg_values,
                     BufferT  &buffer,
@@ -83,19 +83,35 @@ size_t pack_message(MessageT &msg_values,
 /// @return                   The buffer that has been allocated to store the 
 ///                           message.
 ///
-template< class MessageT,
-          class BufferT,
-          class SizeTraitT
+template< typename MessageT,
+          typename BufferT,
+          typename SizeTraitT
         >
 bool
   pack_message( MessageT& msg_values,
                 BufferT & fixed_buffer)
 {
-    return   detail::pack_fixed_size_message( msg_values,
-                                              fixed_buffer,
-                                              SizeTraitT());
+  return   detail::pack_fixed_size_message( msg_values,
+                                            fixed_buffer,
+                                            SizeTraitT());
 }
 
+
+//  ****************************************************************************
+/// Writes the values of a message into an ostream object.
+///
+/// @param os                 The output stream that will accept the serialized
+///                           form of the message.
+/// @param msg                The message to be serialized.
+///
+/// @return                   A reference to os will be returned to allow these
+///                           calls to be chained.
+///
+template< typename T >
+std::ostream& operator<<(std::ostream& os, const T& msg)
+{
+  return os << msg.data();
+}
 
 } // namespace Hg
 

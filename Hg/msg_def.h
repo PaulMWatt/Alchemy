@@ -203,12 +203,6 @@ struct message_size_trait
       if (buffer->empty()) { return 0; }                                       \
       return ftor(buffer->data(), buffer->size());                             \
     }                                                                          \
-  public:                                                                      \
-    typedef                                                         \
-      Hg::detail::DeduceMsgTypeList                                            \
-        < this_type,                                                           \
-          (COUNTER_VALUE - 1)                                                  \
-        >::type     format_type_2;                                             \
   };                                                                           \
   namespace detail {                                                           \
   template <>                                                                  \
