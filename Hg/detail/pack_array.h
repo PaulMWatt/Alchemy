@@ -35,13 +35,6 @@ template< class   T,
 size_t SerializeByItem( std::array<T,N> &value, 
                         BufferT         &buffer,
                         size_t          offset);
-//template< typename ValueT,
-//          typename BufferT
-//        >
-//size_t SerializeByItem( ValueT  &value, 
-//                        BufferT &buffer,
-//                        size_t  offset);
-
 
 //  ****************************************************************************
 //  Adapter function to simplify serializing a buffer from a vector-field.

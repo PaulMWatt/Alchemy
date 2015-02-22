@@ -10,10 +10,6 @@
 //  Includes *******************************************************************
 #include <memory>
 #include <Pb/meta_util.h>
-
-typedef unsigned char   byte_t;
-
-
 #include <Pb/meta_error.h>
 
 namespace Hg

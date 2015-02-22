@@ -52,6 +52,12 @@ struct MT { };
 /// 
 typedef MT        empty;
 
+
+//  ****************************************************************************
+/// A short alias for the 'unsigned char'.
+/// 
+typedef unsigned char   byte_t;
+
 //  ****************************************************************************
 /// This construct provides mechanism to declare and 
 /// initialize compile-time global constants.
@@ -66,8 +72,7 @@ struct instance_of
 
   // This constructor allows global constants to be declared and initialized.
   instance_of(int = 0)
-  {
-  }
+  { }
 };
 
 //  ***************************************************************************
@@ -197,12 +202,14 @@ struct packed_trait
 ///
 struct container_trait{ };
 
+
 //  ***************************************************************************
 /// A nested type indicates that the data that is contained within, 
 /// possibly requires an internal inspection to facilitate correct behavior.
 ///
 struct nested_trait 
   : container_trait   { };
+
 
 //  ***************************************************************************
 /// Sequence types are a class of types that contain more than one element
@@ -212,12 +219,19 @@ struct sequence_trait
   : nested_trait      { };
 
 //  ***************************************************************************
+/// Indicates the fields format is undefined and will be determined by context.
+///
+struct opaque_trait 
+  : sequence_trait { };
+
+//  ***************************************************************************
 /// A sequence type that represents a dynamically sized field.
 ///
 struct vector_trait
   : sequence_trait
   , dynamic_size_trait
 { };
+
 
 //  ***************************************************************************
 /// A sequence type that has a fixed size.
@@ -226,6 +240,25 @@ struct array_trait
   : sequence_trait    
   , static_size_trait
 { };
+
+
+//  ***************************************************************************
+/// Indicates the format of the vector data is undefined, opaque.
+///
+struct opaque_vector_trait 
+  : vector_trait
+  , opaque_trait
+{ };
+
+//  ***************************************************************************
+/// Indicates the format of the array data is undefined, opaque.
+///
+struct opaque_array_trait 
+  : array_trait
+  , opaque_trait
+{ };
+
+
 
 //  BitField Message Field Discriminators *************************************
 //  Objects derived from the packed_trait are considered bitlist containers.
@@ -244,6 +277,7 @@ struct type_container
                             std::is_base_of<container_trait, T>::value>
 {  };
 
+
 //  A specialization of the emtpy type because it acts as a teminator. ********
 template<>
 struct type_container<MT>
@@ -258,11 +292,13 @@ struct nested_value
                              type_container<T>::value && !packed_value<T>::value>
 {  };
 
+
 //  A specialization of the emtpy type because it acts as a teminator. ********
 template<>
 struct nested_value<MT>
   : std::integral_constant<bool, false>
 { };
+
 
 //  Variable Length Homogenous Containers are considered vector_values *******
 //  ***************************************************************************
@@ -272,6 +308,7 @@ template< typename T >
 struct is_std_vector
   : std::false_type
 { };
+
 
 //  ***************************************************************************
 /// Detect a std::vector type. This version identifies the std::vector.
@@ -291,7 +328,8 @@ struct vector_value
   : And < Or < std::is_base_of<vector_trait, T>,
                is_std_vector<T>
              >,
-          Not < std::is_base_of<array_trait, T> > >
+          Not < std::is_base_of<array_trait, T> > 
+        >
 { };
 
 //  ***************************************************************************
@@ -326,7 +364,7 @@ struct array_value
   : And < Or < std::is_base_of<array_trait, T>,
                is_std_array<T>
              >,
-          Not < std::is_base_of<vector_trait, T> > 
+          Not < std::is_base_of<vector_trait, T> >
         >
 { };
 
@@ -347,6 +385,46 @@ template<>
 struct sequence_value<MT>
   : std::integral_constant<bool, false>
 { };
+
+
+//  Reports if a data type is opaque ******************************************
+//  ***************************************************************************
+/// Detect a sequence type that uses an unsigned char (byte_t).
+///
+template< typename T >
+struct is_opaque
+  : std::false_type
+{ };
+
+
+//  ***************************************************************************
+/// Detect a std::vector opaque type.
+/// A is the allocator.
+///
+template< typename A >
+struct is_opaque<std::vector<byte_t,A> > 
+  : std::true_type
+{ };
+
+
+//  ***************************************************************************
+/// Detect a std::array opaque type. 
+/// N is the number of entries.
+///
+template< size_t   N >
+struct is_opaque<std::array<byte_t,N> > 
+  : std::true_type
+{ };
+
+
+//  ***************************************************************************
+/// Detect if the current value type is opaque.
+///
+template< typename T >
+struct opaque_value 
+  : std::integral_constant< bool, is_opaque<T>::value >
+{ };
+
 
 
 } // namespace Hg

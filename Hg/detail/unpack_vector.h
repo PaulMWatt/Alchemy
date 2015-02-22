@@ -476,7 +476,6 @@ struct UnpackDatum< IdxT,
                   const buffer_type  &buffer,
                         size_t   &dynamic_offset)
   {
-    value_type value;
     size_t     offset = Hg::OffsetOf<IdxT, typename message_type::format_type>::value
                       + dynamic_offset;
     
@@ -490,13 +489,11 @@ struct UnpackDatum< IdxT,
     }
 
     // Allocate space for the incoming data.
+    value_type& value = msg.template FieldAt<IdxT>().get();
     value.resize(count);
 
     size_t bytes_read = 
       DeserializeVector(value, count, buffer, offset);
-
-    // TODO: (Optimization) Look into reading directly into the vector without the copy.
-    msg.template FieldAt<IdxT>().set(value);
 
     dynamic_offset += bytes_read;
   }

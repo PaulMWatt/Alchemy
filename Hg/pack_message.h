@@ -110,7 +110,8 @@ bool
 template< typename T >
 std::ostream& operator<<(std::ostream& os, const T& msg)
 {
-  return os << msg.data();
+  os.write(reinterpret_cast<const char*>(msg.data()), msg.size());
+  return os;
 }
 
 } // namespace Hg

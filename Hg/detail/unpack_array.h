@@ -520,25 +520,12 @@ struct UnpackDatum< IdxT,
                   const BufferT  &buffer,
                         size_t   &dynamic_offset)
   {
-
-    value_type value;
     size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
                       + dynamic_offset;
-    
-    // Query the message object for the number of elements in the buffer;
-    size_t      count = value.size();
 
-    // For zero-size move on.
-    if (0 == count)
-    {
-      return;
-    }
-
+    // Read directly into the output array.
     size_t bytes_read = 
-      DeserializeArray(value, buffer, offset);
-
-    // TODO: (Optimization) Look into reading directly into the array without the copy.
-    msg.template FieldAt<IdxT>().set(value);
+      DeserializeArray(msg.template FieldAt<IdxT>().get(), buffer, offset);
 
     dynamic_offset += bytes_read;
   }
