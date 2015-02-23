@@ -195,6 +195,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Hg\detail\unpack_array.h" />
     <ClInclude Include="..\..\Hg\detail\unpack_message_detail.h" />
     <ClInclude Include="..\..\Hg\detail\unpack_nested.h" />
+    <ClInclude Include="..\..\Hg\detail\unpack_stream.h" />
     <ClInclude Include="..\..\Hg\detail\unpack_vector.h" />
     <ClInclude Include="..\..\Hg\make_Hg_type_list.h" />
     <ClInclude Include="..\..\Hg\message_byte_order.h" />
@@ -208,6 +209,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Hg\proxy\data_proxy.h" />
     <ClInclude Include="..\..\Hg\proxy\deduce_proxy_type.h" />
     <ClInclude Include="..\..\Hg\proxy\vector_proxy.h" />
+    <ClInclude Include="..\..\Hg\static_storage_policy.h" />
     <ClInclude Include="..\..\Hg\unpack_message.h" />
     <ClInclude Include="..\..\Pb\auto_index.h" />
     <ClInclude Include="..\..\Pb\bit_field\bit_field.h" />

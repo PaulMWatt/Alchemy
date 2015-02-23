@@ -299,6 +299,9 @@
     <ClInclude Include="..\..\Hg\detail\pack_packed_bits.h">
       <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Hg\proxy\opaque_proxy.h">
+      <Filter>Header Files\Alchemy\Hg\Proxy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgBasicTestSuiteRunner.cpp">

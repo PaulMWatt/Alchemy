@@ -35,6 +35,7 @@
 #include <Hg/unpack_message.h>
 #include <Pb/dynamic.h>
 
+
 namespace Hg
 {
 
@@ -226,6 +227,42 @@ public:
 #endif
     }
   }
+
+#ifdef ALCHEMY_RVALUE_REF_SUPPORTED
+// TODO: Opportunity, add move assignment to populate the message. 
+//       Return and complete this if possible. Try to focus on iterator logic.
+//  //  **************************************************************************
+//  /// Assigns the contents of an incoming raw memory buffer to the message.
+//  /// 
+//  /// @param pBuffer         A memory buffer whose contents will be assigned to
+//  ///                        this message object. The values of the buffer are 
+//  ///                        copied into the message.
+//  /// @param n               The number of bytes held in p_buffer.
+//  ///
+//  void assign(const_pointer pBuffer, size_t n)
+//  {
+//    if ( pBuffer
+//      && n > 0)
+//    {
+//      m_msgBuffer.assign(pBuffer, n);
+//
+//      // Casting this object to the base object MessageT.
+//      // This pointer will accept the data read in from the buffer.
+//      Message &refThis = *static_cast<Message*>(this);
+//      refThis = unpack_message< message_type, 
+//                                buffer_type,
+//                                size_trait
+//                              >(*this, m_msgBuffer);
+//    }
+//    else
+//    {
+//#if ALCHEMY_HAS_EXCEPTIONS
+//      throw std::invalid_argument("Hg::Message<>::assign() - pBuffer is invalid or length n is 0");
+//#endif
+//    }
+//  }
+#endif
+
 
   //  **************************************************************************
   /// Releases any reference to internal memory buffers.

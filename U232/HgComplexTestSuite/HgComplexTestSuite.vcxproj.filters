@@ -314,6 +314,12 @@
     <ClInclude Include="..\..\Hg\deduce_msg_type_list.h">
       <Filter>Header Files\Alchemy\Hg</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Hg\static_storage_policy.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\unpack_stream.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unpack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgComplexTestSuiteRunner.cpp">

@@ -13,6 +13,7 @@
 #include <Hg/detail/unpack_array.h>
 #include <Hg/detail/unpack_nested.h>
 #include <Hg/detail/unpack_vector.h>
+#include <Hg/detail/unpack_stream.h>
 
 namespace Hg
 {
@@ -63,6 +64,32 @@ size_t unpack_message(       MessageT  &msg_values,
                                   buffer,
                                   offset,
                                   SizeTraitT());
+}
+
+
+//  ****************************************************************************
+/// Reads the values of a message from an istream object.
+///
+/// @param is                 The input stream that will provide the data
+///                           to populate the message.
+/// @param msg                The message to be serialized.
+///
+/// @return                   A reference to is will be returned to allow these
+///                           calls to be chained.
+///
+template< typename T >
+std::istream& operator>>(std::istream& is, T& msg)
+{
+  if (Hg::has_dynamic< typename T::format_type >::value)
+  {
+    detail::unpack_stream_dynamic(is, msg);  
+  }
+  else
+  {
+    detail::unpack_stream_static(is, msg);
+  }
+  
+  return is;
 }
 
 } // namespace Hg

@@ -18,11 +18,20 @@
 #include <Hg/datum/datum.h>
 #include <Pb/bit_field/bit_field_vector.h>
 #include <Hg/storage_policy.h>
+#include <Hg/static_storage_policy.h>
 
 #include <vector>
 
 namespace Hg
 {
+
+//  Forward Declarations *******************************************************
+template< typename MessageT,
+          typename ByteOrderT,
+          typename StorageT
+        >
+class Message;
+
 
 namespace detail
 {
@@ -390,6 +399,25 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   /// @param other    The other vector to swap elements.
   ///
   void swap(value_type& other)                    { this->get().swap(other);   }
+
+
+  //  **************************************************************************
+  //  Opaque-type functions ****************************************************
+  //  These functions are only present if the vector is defined with the
+  //  opaque-type, byte_t.
+  //  **************************************************************************
+  template<typename U>
+  typename 
+    std::enable_if< is_opaque<value_type>::value, 
+                    Hg::Message<U,
+                                Hg::HostByteOrder,
+                                BufferedStaticStoragePolicy>>::type
+  make_view()
+  {
+    return Hg::Message< U,
+                        Hg::HostByteOrder,
+                        BufferedStaticStoragePolicy>(&front(), size());
+  }
 
 };
 
