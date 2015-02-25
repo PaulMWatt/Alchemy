@@ -31,6 +31,7 @@
 //  Includes *******************************************************************
 #include <alchemy.h>
 #include <Hg/msg_buffer.h>
+#include <Hg/msg_view.h>
 #include <Hg/pack_message.h>
 #include <Hg/unpack_message.h>
 #include <Pb/dynamic.h>

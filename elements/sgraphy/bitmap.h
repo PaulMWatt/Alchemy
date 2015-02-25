@@ -174,6 +174,7 @@ public:
   bool Load (const std::string &name);
   bool Store(const std::string &name);
 
+  void process();
 
 private:
   // Currently assuming the bitmap is of the form

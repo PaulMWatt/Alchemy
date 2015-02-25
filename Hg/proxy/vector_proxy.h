@@ -18,7 +18,7 @@
 #include <Hg/datum/datum.h>
 #include <Pb/bit_field/bit_field_vector.h>
 #include <Hg/storage_policy.h>
-#include <Hg/static_storage_policy.h>
+#include <Hg/msg_view.h>
 
 #include <vector>
 
@@ -405,18 +405,38 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   //  Opaque-type functions ****************************************************
   //  These functions are only present if the vector is defined with the
   //  opaque-type, byte_t.
+
   //  **************************************************************************
   template<typename U>
   typename 
     std::enable_if< is_opaque<value_type>::value, 
-                    Hg::Message<U,
-                                Hg::HostByteOrder,
-                                BufferedStaticStoragePolicy>>::type
+                    Hg::Msg_view_iterator<U>>::type
   make_view()
   {
-    return Hg::Message< U,
-                        Hg::HostByteOrder,
-                        BufferedStaticStoragePolicy>(&front(), size());
+    return Hg::Msg_view_iterator<U>(&front());
+  }
+
+  //  **************************************************************************
+  template<typename U>
+  typename 
+    std::enable_if< is_opaque<value_type>::value, 
+                    Hg::Msg_view_iterator<U>>::type
+  end_view()
+  {
+
+    // TODO: This is not correct, return and correct to point to end.
+    return Hg::Msg_view_iterator<U>(&back());
+  }
+
+
+  //  **************************************************************************
+  template<typename U>
+  typename 
+    std::enable_if< is_opaque<value_type>::value, 
+                    Hg::Msg_view_const_iterator<U>>::type
+  make_view() const
+  {
+    return Hg::Msg_view_const_iterator<U>(&front());
   }
 
 };

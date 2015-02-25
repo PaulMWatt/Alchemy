@@ -320,6 +320,15 @@
     <ClInclude Include="..\..\Hg\detail\unpack_stream.h">
       <Filter>Header Files\Alchemy\Hg\Detail\Unpack</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Hg\static_msg_buffer.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\msg_view_iterator.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\msg_view.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgComplexTestSuiteRunner.cpp">

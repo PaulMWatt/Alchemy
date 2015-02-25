@@ -92,6 +92,24 @@ public:
   }
 
   //  **************************************************************************
+  /// Resizes the buffer to contain n elements.
+  /// This function is not supported for this fixed size buffer.
+  ///
+  /// @param n        The number of elements to allocate for the buffer.
+  /// @param val      Optional value to be copied into each element allocated.
+  ///
+  void resize(size_t n)
+  {
+    // Not supported
+  }
+
+  //  **************************************************************************
+  void resize(size_t n, byte_t val)
+  {
+    // Not supported
+  }
+
+  //  **************************************************************************
   /// Provides access to the packed memory buffer.
   /// 
   /// @return       Returns a constant pointer to the buffer that contains the 
