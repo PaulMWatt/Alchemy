@@ -27,6 +27,9 @@
     <ClInclude Include="bitmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sgraphy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

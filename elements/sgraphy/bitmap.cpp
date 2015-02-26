@@ -38,31 +38,28 @@ bool Bitmap::Load (const std::string &name)
 }
 
 
-void Bitmap::process()
+
+
+void Bitmap::process( const std::string &msg,
+                      pixel_ftor         ftor)
 {
-  auto t   = m_info.pixels.make_view<Hg::rgba_t_HgFormat>();
-  auto end = m_info.pixels.end_view<Hg::rgba_t_HgFormat>();
+  auto t = Hg::make_view<Hg::rgba_t_HgFormat>(m_info.pixels.get());
 
+  auto iter = t.begin();
+  size_t index = 0;
+  size_t length= msg.length();
 
-  for (; t < end; ++t)
+  for (index = 0; iter != t.end(); ++iter, ++index)
   {
-    t->blue     = 12;
-    t->green    = 93;
-    t->red      = 34;
-    t->alpha    = 0;
+    ftor(*iter, msg[index % length]);
   }
-
-  // TODO: New syntax
-  //auto view = make_msg_view<Hg::rgba_t_HgFormat>(m_info_pixels);
-  //std::for_each(view.begin(), view.end(), ftor);
-
 }
+
+
 
 bool Bitmap::Store (const std::string &name)
 {
-  m_file_name = name;
-
-  std::ofstream output(m_file_name);
+  std::ofstream output(name);
   if (output.bad())
   {
     return false;

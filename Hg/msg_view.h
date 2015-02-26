@@ -77,18 +77,6 @@ public:
   { }
 
   //  **************************************************************************
-  /// Copy Constructor
-  ///
-  /// Makes a complete copy of an existing msg_view object.
-  ///
-  /// @param view            A reference to the another instance of a msg_view.
-  /// 
-  msg_view(const msg_view& view)
-  {
-    // view
-  }
-
-  //  **************************************************************************
   /// Value constructor
   ///
   /// Create a view from an array of bytes.
@@ -97,9 +85,15 @@ public:
   ///                        view will be mapped.
   /// 
   template <size_t SizeT>
-  msg_view(const std::array<byte_t,SizeT>& data)
+  msg_view(std::array<byte_t,SizeT>& data)
   {
-    // data
+    m_pFirst = &data[0];
+
+    // Configure the last pointer to be the byte
+    // passed the last valid message that fits
+    // into the buffer specified by the caller.
+    size_t count = SizeT / k_size;
+    m_pLast = m_pFirst + (count * k_size);
   }
 
   //  **************************************************************************
@@ -110,15 +104,21 @@ public:
   /// @param view            A reference to a vector of bytes, to which this
   ///                        view will be mapped.
   /// 
-  msg_view(const std::vector<byte_t>& data)
+  msg_view(std::vector<byte_t>& data)
   {
-    // data
+    m_pFirst = &data[0];
+
+    // Configure the last pointer to be the byte
+    // passed the last valid message that fits
+    // into the buffer specified by the caller.
+    size_t count = data.size() / k_size;
+    m_pLast = m_pFirst + (count * k_size);
   }
 
   //  **************************************************************************
   /// Value constructor
   ///
-  /// Create a view from an vector of bytes.
+  /// Create a view from an existing array of bytes.
   ///
   /// @param pData          A pointer to an array of bytes, to which this
   ///                       view will be mapped.
@@ -126,16 +126,13 @@ public:
   /// 
   msg_view(const byte_t* pData, size_t length)
   {
-    // data
-  }
+    m_pFirst = pData;
 
-  //  **************************************************************************
-  /// Assignment Operator
-  ///
-  msg_view& operator=(const msg_view &view)
-  {
-    // view
-    return *this;
+    // Configure the last pointer to be the byte
+    // passed the last valid message that fits
+    // into the buffer specified by the caller.
+    size_t count = length / k_size;
+    m_pLast = m_pFirst + (count * k_size);
   }
 
   //  **************************************************************************
@@ -194,16 +191,16 @@ public:
   //  **************************************************************************
   /// Returns an iterator to the first item in the array.
   /// 
-  iterator begin()                                { return msg_view_iterator(m_pFirst);       }
-  const_iterator begin()  const                   { return msg_view_const_iterator(m_pFirst); }
-  const_iterator cbegin() const                   { return msg_view_const_iterator(m_pFirst); }
+  iterator begin()                                { return msg_view_iterator<MessageT>(m_pFirst);       }
+  const_iterator begin()  const                   { return msg_view_const_iterator<MessageT>(m_pFirst); }
+  const_iterator cbegin() const                   { return msg_view_const_iterator<MessageT>(m_pFirst); }
 
   //  **************************************************************************
   /// Returns an iterator to the item one passed the end of the array.
   /// 
-  iterator end()                                  { return msg_view_iterator(m_pLast);       }
-  const_iterator end()  const                     { return msg_view_const_iterator(m_pLast); }
-  const_iterator cend() const                     { return msg_view_const_iterator(m_pLast); }
+  iterator end()                                  { return msg_view_iterator<MessageT>(m_pLast);       }
+  const_iterator end()  const                     { return msg_view_const_iterator<MessageT>(m_pLast); }
+  const_iterator cend() const                     { return msg_view_const_iterator<MessageT>(m_pLast); }
 
   // TODO: Revisit and complete.
   ////  **************************************************************************
@@ -226,6 +223,52 @@ protected:
   raw_pointer   m_pLast;      ///< A pointer to the last element + 1.
 
 };
+
+
+//  **************************************************************************
+//  Opaque-type functions ****************************************************
+//  These functions are only present for buffers to bytes.
+
+//  **************************************************************************
+template< typename MessageT,
+          typename T
+        >
+typename
+  std::enable_if< is_opaque<T>::value,
+                  msg_view<MessageT> >::type
+make_view(T& buffer)
+{
+  return msg_view<MessageT>(buffer);
+}
+
+
+//  **************************************************************************
+//template< typename MessageT,
+//          typename T
+//        >
+//typename
+//  std::enable_if< is_opaque<T>::value,
+//                  const msg_view<const MessageT> >::type
+//make_view(const T& buffer)
+//{
+//  return msg_view<const MessageT>(buffer);
+//}
+
+//  **************************************************************************
+//template < typename MessageT >
+//msg_view<MessageT>
+//make_view(byte_t* pData, size_t length)
+//{
+//  return msg_view<MessageT>(pData, length);
+//}
+//
+////  **************************************************************************
+//template< typename MessageT >
+//const msg_view<MessageT>
+//make_view(const byte_t* pData, size_t length)
+//{
+//  return msg_view<MessageT>(pData, length);
+//}
 
 
 

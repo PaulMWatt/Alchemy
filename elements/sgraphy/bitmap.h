@@ -167,6 +167,11 @@ typedef Hg::Message<Hg::bitmap_info_t_HgFormat,
                     Hg::LittleEndian, 
                     Hg::BufferedStaticStoragePolicy>    info_t;
 
+
+typedef void (*pixel_ftor) (      Hg::rgba_t_HgFormat&  pixel,
+                            const Hg::byte_t            data);
+
+
 class Bitmap
 {
 public:
@@ -174,7 +179,8 @@ public:
   bool Load (const std::string &name);
   bool Store(const std::string &name);
 
-  void process();
+  void process( const std::string &msg,
+                pixel_ftor         ftor);
 
 private:
   // Currently assuming the bitmap is of the form

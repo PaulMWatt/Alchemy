@@ -303,7 +303,16 @@ public:
   }
 
   //  **************************************************************************
+  /// Returns a pointer to the current memory buffer for the message.
+  ///
+  const_pointer cur_data() const
+  {
+    return m_msgBuffer.data();
+  }
+
+  //  **************************************************************************
   /// Returns a pointer to the memory buffer that contains the packed message.
+  /// This function will pack the data bytes from the message into the buffer.
   ///
   const_pointer data() const
   {
