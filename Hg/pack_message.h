@@ -32,15 +32,19 @@ template< typename MessageT,
           typename BufferT,
           typename SizeTraitT
         >
-std::shared_ptr<BufferT>
+BufferT&
   pack_message( MessageT& msg_values,
-                size_t    size)
+                size_t    size,
+                BufferT & buffer
+              )
 {
-  return detail::pack_message < MessageT, 
-                                BufferT
-                              >(msg_values, 
-                                size, 
-                                SizeTraitT());
+  detail::pack_message < MessageT, 
+                         BufferT
+                       >(msg_values, 
+                         size, 
+                         buffer, 
+                         SizeTraitT());
+  return  buffer;
 }
 
 //  ****************************************************************************
@@ -110,7 +114,13 @@ bool
 template< typename T >
 std::ostream& operator<<(std::ostream& os, const T& msg)
 {
-  os.write(reinterpret_cast<const char*>(msg.data()), msg.size());
+  Hg::Message<T::message_type, 
+              T::byte_order_type, 
+              Hg::BufferedStoragePolicy> outMsg;
+
+  outMsg = msg;
+
+  os.write(reinterpret_cast<const char*>(outMsg.data()), outMsg.size());
   return os;
 }
 

@@ -303,16 +303,7 @@ public:
   }
 
   //  **************************************************************************
-  /// Returns a pointer to the current memory buffer for the message.
-  ///
-  const_pointer cur_data() const
-  {
-    return m_msgBuffer.data();
-  }
-
-  //  **************************************************************************
   /// Returns a pointer to the memory buffer that contains the packed message.
-  /// This function will pack the data bytes from the message into the buffer.
   ///
   const_pointer data() const
   {
@@ -339,10 +330,10 @@ private:
   //  **************************************************************************
   void pack_data()
   {
-    m_msgBuffer =  *pack_message < message_type, 
-                                   buffer_type,
-                                   size_trait
-                                 >(values(), size()).get();
+    pack_message< message_type, 
+                  buffer_type,
+                  size_trait
+                >(values(), size(), m_msgBuffer);
   }
 
 
@@ -402,10 +393,6 @@ struct Msg_size
 /// 
 /// @return       The number of bytes that are used to pack this message.
 ///
-//template< class MessageT,
-//          class ByteOrderT,
-//          class StorageT
-//        >
 template< class HgMessageT >
 struct Msg_size<HgMessageT, false>
 {

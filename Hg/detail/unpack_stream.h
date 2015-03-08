@@ -67,7 +67,19 @@ void unpack_stream_dynamic(std::istream& is, T& msg)
   std::vector<byte_t> data(len);
   ::memcpy(&data[0], body, k_static_len);
   
-  is.read(reinterpret_cast<char*>(&data[k_static_len]), len - k_static_len);
+  // Read in 1K chunks
+  const size_t  k_one_kb = 1024;
+  size_t remains = len - k_static_len;
+  size_t offset  = k_static_len;
+  while (remains != 0)
+  {
+    is.read(reinterpret_cast<char*>(&data[offset]), k_one_kb);
+
+    remains = remains > k_one_kb
+            ? remains - k_one_kb
+            : 0;
+    offset  += k_one_kb;
+  }
 
   msg.assign(&data[0], len);
 }

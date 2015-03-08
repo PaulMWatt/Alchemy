@@ -144,49 +144,6 @@ public:
           / k_size; 
   }
 
-  // TODO: References cannot exist because no real objects exist.
-  //       For now all access to the data must be performed through iterators.
-  //       Return to determine if there is some way to allow this to work.
-  ////  **************************************************************************
-  ///// Accesses the value at the specified index in the array data..
-  ///// 
-  //const_reference at(size_t idx) const            { return ; }
-
-  ////  **************************************************************************
-  ///// Accesses the value at the specified index in the array data..
-  ///// 
-  //reference at(size_t idx)                        { return ; }
-
-  ////  **************************************************************************
-  ///// Accesses the value at the specified index in the array data..
-  ///// 
-  //const_reference operator[](size_t idx) const    { return at(idx); }
-
-  ////  **************************************************************************
-  ///// Accesses the value at the specified index in the array data..
-  ///// 
-  //reference operator[](size_t idx)                { return at(idx); }
-
-  ////  **************************************************************************
-  ///// Accesses the value at the specified index in the array data..
-  ///// 
-  //const_reference front() const                   { return *((const_pointer)m_pFirst); }
-
-  ////  **************************************************************************
-  ///// Accesses the value at the specified index in the array data..
-  ///// 
-  //reference front()                               { return *((pointer)m_pFirst); }
-
-  ////  **************************************************************************
-  ///// Accesses the value at the specified index in the array data..
-  ///// 
-  //const_reference back() const                    { return *(const_pointer(m_pLast-k_size)); }
-
-  ////  **************************************************************************
-  ///// Accesses the value at the specified index in the array data..
-  ///// 
-  //reference back()                                { return *(pointer(m_pLast-k_size)); }
-
   //  Iterator Functions *******************************************************
   //  **************************************************************************
   /// Returns an iterator to the first item in the array.

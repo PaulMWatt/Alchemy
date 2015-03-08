@@ -206,23 +206,22 @@ bool
 template< typename MessageT,
           typename BufferT
         >
-std::shared_ptr<BufferT>
+BufferT&
   pack_message( MessageT& msg_values, 
-                size_t          size,
+                size_t    size,
+                BufferT & buffer,
                 const static_size_trait&)
 {
-  // Allocate a new buffer manager.
-  std::shared_ptr<BufferT> spBuffer(new BufferT);
   // Resize the buffer.
-  spBuffer->resize(Hg::SizeOf<typename MessageT::format_type>::value);
+  buffer.resize(Hg::SizeOf<typename MessageT::format_type>::value);
 
   detail::PackMessageWorker < 0, 
                               Hg::length<typename MessageT::format_type>::value,
                               MessageT,
                               BufferT
                             > pack;
-  pack(msg_values, *spBuffer.get());
-  return spBuffer;
+  pack(msg_values, buffer);
+  return buffer;
 }
 
 //  ****************************************************************************
@@ -286,15 +285,14 @@ size_t pack_message(MessageT  &msg_values,
 template< typename MessageT,
           typename BufferT
         >
-std::shared_ptr<BufferT>
+BufferT &
   pack_message( MessageT  &msg_values, 
-                size_t          size,
+                size_t     size,
+                BufferT   & buffer,
                 const dynamic_size_trait&)
 {
-  // Allocate a new buffer manager.
-  std::shared_ptr<BufferT> spBuffer(new BufferT);
   // Resize the buffer.
-  spBuffer->resize(size);
+   buffer.resize(size);
 
   detail::PackMessageWorker < 0, 
                               Hg::length<typename MessageT::format_type>::value,
@@ -302,8 +300,8 @@ std::shared_ptr<BufferT>
                               BufferT
                             > pack;
   size_t dynamic_offset = 0;
-  pack(msg_values, *spBuffer.get(), dynamic_offset);
-  return spBuffer;
+  pack(msg_values,  buffer, dynamic_offset);
+  return buffer;
 }
 
 //  ****************************************************************************
