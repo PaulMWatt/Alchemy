@@ -18,7 +18,7 @@ bool Bitmap::Load (const std::string &name)
 {
   m_file_name = name;
 
-  std::ifstream input(m_file_name);
+  std::ifstream input(m_file_name, std::ios::binary);
   if (input.bad())
   {
     return false;
@@ -59,7 +59,7 @@ void Bitmap::process( const std::string &msg,
 
 bool Bitmap::Store (const std::string &name)
 {
-  std::ofstream output(name);
+  std::ofstream output(name, std::ios::binary);
   if (output.bad())
   {
     return false;
