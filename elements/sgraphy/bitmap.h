@@ -140,7 +140,6 @@ typedef
     bitmap_info_header_t,
     std::vector<byte_t>
   > bitmap_info_t;
-//    rgba_t
 
 HG_BEGIN_FORMAT(bitmap_info_t)
   HG_DATUM(bitmap_core_header_t, header)
@@ -168,8 +167,8 @@ typedef Hg::Message<Hg::bitmap_info_t_HgFormat,
                     Hg::BufferedStaticStoragePolicy>    info_t;
 
 
-typedef void (*pixel_ftor) (      Hg::rgba_t_HgFormat&  pixel,
-                            const Hg::byte_t            data);
+typedef void (*pixel_ftor) ( Hg::rgba_t_HgFormat&  pixel,
+                             Hg::byte_t&           data);
 
 
 class Bitmap
@@ -179,8 +178,8 @@ public:
   bool Load (const std::string &name);
   bool Store(const std::string &name);
 
-  void process( const std::string &msg,
-                pixel_ftor         ftor);
+  void process( std::string &msg,
+                pixel_ftor   ftor);
 
 private:
   // Currently assuming the bitmap is of the form

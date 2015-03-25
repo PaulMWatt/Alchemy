@@ -10,10 +10,11 @@
 #include <fstream>
 
 
+//  ****************************************************************************
 namespace sgraph
 {
 
-
+//  ****************************************************************************
 bool Bitmap::Load (const std::string &name)
 {
   m_file_name = name;
@@ -37,26 +38,25 @@ bool Bitmap::Load (const std::string &name)
   return true;
 }
 
-
-
-
-void Bitmap::process( const std::string &msg,
-                      pixel_ftor         ftor)
+//  ****************************************************************************
+void Bitmap::process( std::string &msg,
+                      pixel_ftor   ftor)
 {
-  auto t = Hg::make_view<Hg::rgba_t_HgFormat>(m_info.pixels.get());
-
+  auto t    = Hg::make_view<Hg::rgba_t_HgFormat>(m_info.pixels.get());
   auto iter = t.begin();
-  size_t index = 0;
-  size_t length= msg.length();
 
-  for (index = 0; iter != t.end(); ++iter, ++index)
+  // Calculate the number of bytes that can be encoded or extracted
+  // from the image and ensure the the message buffer is large enough.
+  size_t length = t.end() - iter;
+  msg.resize(length);
+
+  for (size_t index = 0; iter != t.end(); ++iter, ++index)
   {
-    ftor(*iter, msg[index % length]);
+    ftor(*iter, (Hg::byte_t&)(msg[index]));
   }
 }
 
-
-
+//  ****************************************************************************
 bool Bitmap::Store (const std::string &name)
 {
   std::ofstream output(name, std::ios::binary);
@@ -70,8 +70,6 @@ bool Bitmap::Store (const std::string &name)
 
   return true;
 }
-
-
 
 
 } // namespace sgraph
