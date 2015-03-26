@@ -26,10 +26,10 @@ namespace detail
 //                  is actually a format_type for the nested structure.
 //  
 template< size_t   IdxT,      
-          typename MessageT,
+          typename MsgT,
           typename BufferT
         >
-struct PackDatum<IdxT, MessageT, BufferT, nested_trait>
+struct PackDatum<IdxT, MsgT, BufferT, nested_trait>
 {
   //  **************************************************************************
   //  Writes a nested field to the specified buffer.
@@ -42,19 +42,19 @@ struct PackDatum<IdxT, MessageT, BufferT, nested_trait>
   //                        to this input value to report how much larger the
   //                        message has become. 
   //
-  void operator()(MessageT &msg,
+  void operator()(MsgT &msg,
                   BufferT  &buffer,
                   size_t   &dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
-                                    typename MessageT::format_type
+                                    typename MsgT::format_type
                                   >::type                               proxy_type;
     typedef typename
       proxy_type::value_type                                            value_type;
 
     value_type &value  = msg.template FieldAt<IdxT>().get();
-    size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
+    size_t     offset = Hg::OffsetOf<IdxT, typename MsgT::format_type>::value
                       + dynamic_offset;
     pack_message< value_type, 
                   BufferT,

@@ -29,11 +29,11 @@ namespace Hg
 ///                           This is simply the same message object reference
 ///                           passed as input for expressive syntax.
 ///
-template< typename MessageT,
+template< typename MsgT,
           typename BufferT,
           typename SizeTraitT
         >
-MessageT& unpack_message(       MessageT &msg_values,
+MsgT& unpack_message(       MsgT &msg_values,
                           const BufferT  &buffer)
 {
   return detail::unpack_message ( msg_values,
@@ -52,11 +52,11 @@ MessageT& unpack_message(       MessageT &msg_values,
 ///
 /// @return                   The number of bytes that were read in from the buffer.
 ///
-template< typename MessageT,
+template< typename MsgT,
           typename BufferT,
           typename SizeTraitT
         >
-size_t unpack_message(       MessageT  &msg_values,
+size_t unpack_message(       MsgT  &msg_values,
                        const BufferT   &buffer,
                              size_t    offset)
 {

@@ -31,7 +31,7 @@ namespace detail
 //                            fundamental types.
 //  
 template< size_t   IdxT,      
-          typename MessageT, 
+          typename MsgT, 
           typename BufferT,
           typename TraitT
         >
@@ -45,21 +45,21 @@ struct PackDatum
   //  @param dynamic_size An additional offset for messages with dynamically 
   //                      sized fields.
   //
-  void operator()(MessageT &msg,
+  void operator()(MsgT &msg,
                   BufferT  &buffer,
                   size_t    dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType 
         < IdxT,
-          typename MessageT::format_type
+          typename MsgT::format_type
         >::type                                   proxy_type;
 
     typedef typename
       proxy_type::value_type                      value_type;
 
     value_type &value = msg.template FieldAt<IdxT>().get();
-    size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
+    size_t     offset = Hg::OffsetOf<IdxT, typename MsgT::format_type>::value
                       + dynamic_offset;
     buffer.set_data(value, offset);
   }
@@ -71,22 +71,22 @@ struct PackDatum
 //  Creates a serializer object to write a single datum to the message buffer.
 // 
 template< size_t   IdxT,      
-          typename MessageT,
+          typename MsgT,
           typename BufferT
         >
-void WriteDatum(MessageT& message, 
+void WriteDatum(MsgT& message, 
                 BufferT&  buffer, 
                 size_t&   dynamic_offset)
 {
   typedef typename
     Hg::detail::DeduceProxyType < IdxT,
-                                  typename MessageT::format_type
+                                  typename MsgT::format_type
                                 >::type                               proxy_type;
   typedef typename
     proxy_type::value_type                                            value_type;
 
   PackDatum < IdxT,
-              MessageT,
+              MsgT,
               BufferT, 
               typename DeduceTypeTrait<value_type>::type
             > pack;
@@ -98,37 +98,37 @@ void WriteDatum(MessageT& message,
 // 
 //  @tparam Idx                 [size_t] The index of this Datum in the container.
 //  @tparam Count               [size_t] The number of fields in the container.
-//  @tparam MessageT            [typename] The message type, which is a 
+//  @tparam MsgT            [typename] The message type, which is a 
 //                              collection of Datum fields.
 //  @param msg                  A reference to the msg instance with the data fields.
 //  @param buffer               A reference to the buffer that data will be written.
 //  
 template <size_t    Idx,
           size_t    Count,
-          typename  MessageT,
+          typename  MsgT,
           typename  BufferT
          >
 struct PackMessageWorker
 { 
-  void operator()(MessageT &message,
+  void operator()(MsgT &message,
                   BufferT  &buffer)
   {
     // Write the current value, then move to the next value for the message.
     size_t dynamic_offset = 0;
-    WriteDatum< Idx, MessageT, BufferT>(message, buffer,dynamic_offset);
+    WriteDatum< Idx, MsgT, BufferT>(message, buffer,dynamic_offset);
 
-    PackMessageWorker < Idx+1, Count, MessageT, BufferT> pack;
+    PackMessageWorker < Idx+1, Count, MsgT, BufferT> pack;
     pack(message, buffer);
   }
 
-  void operator()(MessageT &message,
+  void operator()(MsgT &message,
                   BufferT  &buffer,
                   size_t   &dynamic_offset)
   {
     // Write the current value, then move to the next value for the message.
-    WriteDatum< Idx, MessageT, BufferT>(message, buffer, dynamic_offset);
+    WriteDatum< Idx, MsgT, BufferT>(message, buffer, dynamic_offset);
 
-    PackMessageWorker < Idx+1, Count, MessageT, BufferT> pack;
+    PackMessageWorker < Idx+1, Count, MsgT, BufferT> pack;
     pack(message, buffer, dynamic_offset);
   }
 };
@@ -138,20 +138,20 @@ struct PackMessageWorker
 //  This function captures the case when the index = count.
 // 
 template <size_t    Idx,
-          typename  MessageT,
+          typename  MsgT,
           typename  BufferT
          >
 struct PackMessageWorker< Idx, 
                           Idx, 
-                          MessageT, 
+                          MsgT, 
                           BufferT
                         >
 { 
-  void operator()(MessageT& msg, 
+  void operator()(MsgT& msg, 
                   BufferT& buffer)
   { }
 
-  void operator()(MessageT& msg, 
+  void operator()(MsgT& msg, 
                   BufferT& buffer,
                   size_t   dynamic_offset)
   { }
@@ -167,22 +167,22 @@ struct PackMessageWorker< Idx,
 // 
 //  @return                   True on success, false otherwise.
 // 
-template< typename MessageT,
+template< typename MsgT,
           typename BufferT
         >
 bool
-  pack_fixed_size_message(MessageT& msg_values,
+  pack_fixed_size_message(MsgT& msg_values,
                           BufferT & fixed_buffer,
                           const static_size_trait&)
 {
-  if (fixed_buffer.size() < Hg::SizeOf<typename MessageT::format_type>::value)
+  if (fixed_buffer.size() < Hg::SizeOf<typename MsgT::format_type>::value)
   {
     return false;
   }
 
   detail::PackMessageWorker < 0, 
-                              Hg::length<typename MessageT::format_type>::value,
-                              MessageT,
+                              Hg::length<typename MsgT::format_type>::value,
+                              MsgT,
                               BufferT
                             > pack;
   pack(msg_values, fixed_buffer);
@@ -203,21 +203,21 @@ bool
 //  @return                   The buffer that has been allocated to store the 
 //                            message.
 // 
-template< typename MessageT,
+template< typename MsgT,
           typename BufferT
         >
 BufferT&
-  pack_message( MessageT& msg_values, 
+  pack_message( MsgT& msg_values, 
                 size_t    size,
                 BufferT & buffer,
                 const static_size_trait&)
 {
   // Resize the buffer.
-  buffer.resize(Hg::SizeOf<typename MessageT::format_type>::value);
+  buffer.resize(Hg::SizeOf<typename MsgT::format_type>::value);
 
   detail::PackMessageWorker < 0, 
-                              Hg::length<typename MessageT::format_type>::value,
-                              MessageT,
+                              Hg::length<typename MsgT::format_type>::value,
+                              MsgT,
                               BufferT
                             > pack;
   pack(msg_values, buffer);
@@ -236,16 +236,16 @@ BufferT&
 //  @return                   The buffer that has been allocated to store the 
 //                            message.
 // 
-template< typename MessageT,
+template< typename MsgT,
           typename BufferT
         >
-size_t pack_message(MessageT  &msg_values,
+size_t pack_message(MsgT  &msg_values,
                     BufferT   &buffer,
                     size_t     offset, 
                     const static_size_trait&)
 {
   // Calculate the number of bytes that is expected to be written.
-  size_t length = Hg::SizeOf<typename MessageT::format_type>::value;
+  size_t length = Hg::SizeOf<typename MsgT::format_type>::value;
 
   size_t org_offset = buffer.offset();
 
@@ -256,8 +256,8 @@ size_t pack_message(MessageT  &msg_values,
   // Writing constantly progresses further into the buffer.
   buffer.offset(offset + org_offset);
   detail::PackMessageWorker < 0, 
-                              Hg::length<typename MessageT::format_type>::value,
-                              MessageT,
+                              Hg::length<typename MsgT::format_type>::value,
+                              MsgT,
                               BufferT
                             > pack;
   pack(msg_values, buffer);
@@ -282,11 +282,11 @@ size_t pack_message(MessageT  &msg_values,
 //  @return                   The buffer that has been allocated to store the 
 //                            message.
 // 
-template< typename MessageT,
+template< typename MsgT,
           typename BufferT
         >
 BufferT &
-  pack_message( MessageT  &msg_values, 
+  pack_message( MsgT  &msg_values, 
                 size_t     size,
                 BufferT   & buffer,
                 const dynamic_size_trait&)
@@ -295,8 +295,8 @@ BufferT &
    buffer.resize(size);
 
   detail::PackMessageWorker < 0, 
-                              Hg::length<typename MessageT::format_type>::value,
-                              MessageT,
+                              Hg::length<typename MsgT::format_type>::value,
+                              MsgT,
                               BufferT
                             > pack;
   size_t dynamic_offset = 0;
@@ -318,16 +318,16 @@ BufferT &
 //  @return                   The buffer that has been allocated to store the 
 //                            message.
 // 
-template< typename MessageT,
+template< typename MsgT,
           typename BufferT
         >
-size_t pack_message(MessageT  &msg_values,
+size_t pack_message(MsgT  &msg_values,
                     BufferT   &buffer,
                     size_t    offset,
                     const dynamic_size_trait&)
 {
   // Calculate the number of bytes that is expected to be written.
-  size_t length = Hg::SizeOf<typename MessageT::format_type>::value;
+  size_t length = Hg::SizeOf<typename MsgT::format_type>::value;
 
   size_t org_offset = buffer.offset();
   // The new adjusted offset must be cumulative in order to 
@@ -337,8 +337,8 @@ size_t pack_message(MessageT  &msg_values,
   // Writing constantly progresses further into the buffer.
   buffer.offset(org_offset + offset);
   detail::PackMessageWorker < 0, 
-                              Hg::length<typename MessageT::format_type>::value,
-                              MessageT,
+                              Hg::length<typename MsgT::format_type>::value,
+                              MsgT,
                               BufferT
                             > pack;
   size_t dynamic_offset = 0;

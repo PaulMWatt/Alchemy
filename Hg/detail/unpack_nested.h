@@ -23,16 +23,16 @@ namespace detail
 //  A specialized functor to read nested types.
 // 
 //  @tparam IdxT              [size_t] The index of the field to read.
-//  @tparam MessageT          [typename] The message defintition used to parse the
+//  @tparam MsgT          [typename] The message defintition used to parse the
 //                            buffer.
 //  @tparam BufferT           [typename] The buffer type that provides the data
 //                            to read into the message.  
 //  
 template< size_t   IdxT,      
-          typename MessageT,
+          typename MsgT,
           typename BufferT
         >
-struct UnpackDatum<IdxT, MessageT, BufferT, nested_trait>
+struct UnpackDatum<IdxT, MsgT, BufferT, nested_trait>
 {
   //  **************************************************************************
   //  Reads a nested field to the specified buffer.
@@ -45,18 +45,18 @@ struct UnpackDatum<IdxT, MessageT, BufferT, nested_trait>
   //                        to this input value to report how much larger the
   //                        message has become. 
   //
-  void operator()(      MessageT &msg,
+  void operator()(      MsgT &msg,
                   const BufferT  &buffer,
                         size_t   &dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType < IdxT,
-                                    typename MessageT::format_type
+                                    typename MsgT::format_type
                                   >::type                               proxy_type;
     typedef typename
       proxy_type::value_type                                            value_type;
 
-    size_t     offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
+    size_t     offset = Hg::OffsetOf<IdxT, typename MsgT::format_type>::value
                       + dynamic_offset;
     value_type& value = msg.template FieldAt<IdxT>().get();
     unpack_message< value_type, 

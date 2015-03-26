@@ -13,26 +13,26 @@
 namespace Hg
 {
 
-template< typename MessageT,
+template< typename MsgT,
           typename ByteOrderT,
           typename StorageT
         >
-class Message;
+class MessageT;
 
 //  **************************************************************************
 /// The MsgView object to manage structured access over an opaque buffer.
 ///
-template< typename MessageT,
+template< typename MsgT,
           typename ByteOrderT = Hg::HostByteOrder
         >
 class msg_view
 {      
 public:
   //  Typedefs *****************************************************************
-  typedef MessageT                            message_type;
+  typedef MsgT                            message_type;
 
   typedef typename 
-    MessageT::format_type                     format_type;
+    MsgT::format_type                     format_type;
   typedef Hg::BufferedStoragePolicy           storage_type;
 
   // TODO: Not sure this is useful.
@@ -41,7 +41,7 @@ public:
   
   typedef ByteOrderT                          byte_order_type;
 
-  typedef Message 
+  typedef MessageT 
           < message_type, 
             byte_order_type,
             storage_type
@@ -66,8 +66,8 @@ public:
                                         ///  message contains fields that are
                                         ///  potentially dynamically allocated.
 
-  typedef msg_view_iterator<MessageT>         iterator;
-  typedef msg_view_const_iterator<MessageT>   const_iterator;
+  typedef msg_view_iterator<MsgT>         iterator;
+  typedef msg_view_const_iterator<MsgT>   const_iterator;
 
 
   //  **************************************************************************
@@ -148,16 +148,16 @@ public:
   //  **************************************************************************
   /// Returns an iterator to the first item in the array.
   /// 
-  iterator begin()                                { return msg_view_iterator<MessageT>(m_pFirst);       }
-  const_iterator begin()  const                   { return msg_view_const_iterator<MessageT>(m_pFirst); }
-  const_iterator cbegin() const                   { return msg_view_const_iterator<MessageT>(m_pFirst); }
+  iterator begin()                                { return msg_view_iterator<MsgT>(m_pFirst);       }
+  const_iterator begin()  const                   { return msg_view_const_iterator<MsgT>(m_pFirst); }
+  const_iterator cbegin() const                   { return msg_view_const_iterator<MsgT>(m_pFirst); }
 
   //  **************************************************************************
   /// Returns an iterator to the item one passed the end of the array.
   /// 
-  iterator end()                                  { return msg_view_iterator<MessageT>(m_pLast);       }
-  const_iterator end()  const                     { return msg_view_const_iterator<MessageT>(m_pLast); }
-  const_iterator cend() const                     { return msg_view_const_iterator<MessageT>(m_pLast); }
+  iterator end()                                  { return msg_view_iterator<MsgT>(m_pLast);       }
+  const_iterator end()  const                     { return msg_view_const_iterator<MsgT>(m_pLast); }
+  const_iterator cend() const                     { return msg_view_const_iterator<MsgT>(m_pLast); }
 
   // TODO: Revisit and complete.
   ////  **************************************************************************
@@ -187,44 +187,44 @@ protected:
 //  These functions are only present for buffers to bytes.
 
 //  **************************************************************************
-template< typename MessageT,
+template< typename MsgT,
           typename T
         >
 typename
   std::enable_if< is_opaque<T>::value,
-                  msg_view<MessageT> >::type
+                  msg_view<MsgT> >::type
 make_view(T& buffer)
 {
-  return msg_view<MessageT>(buffer);
+  return msg_view<MsgT>(buffer);
 }
 
 
 //  **************************************************************************
-//template< typename MessageT,
+//template< typename MsgT,
 //          typename T
 //        >
 //typename
 //  std::enable_if< is_opaque<T>::value,
-//                  const msg_view<const MessageT> >::type
+//                  const msg_view<const MsgT> >::type
 //make_view(const T& buffer)
 //{
-//  return msg_view<const MessageT>(buffer);
+//  return msg_view<const MsgT>(buffer);
 //}
 
 //  **************************************************************************
-//template < typename MessageT >
-//msg_view<MessageT>
+//template < typename MsgT >
+//msg_view<MsgT>
 //make_view(byte_t* pData, size_t length)
 //{
-//  return msg_view<MessageT>(pData, length);
+//  return msg_view<MsgT>(pData, length);
 //}
 //
 ////  **************************************************************************
-//template< typename MessageT >
-//const msg_view<MessageT>
+//template< typename MsgT >
+//const msg_view<MsgT>
 //make_view(const byte_t* pData, size_t length)
 //{
-//  return msg_view<MessageT>(pData, length);
+//  return msg_view<MsgT>(pData, length);
 //}
 
 

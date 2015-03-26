@@ -20,8 +20,8 @@ namespace benchmark
 {
 
 //  ****************************************************************************
-typedef Hg::Message<Hg::Basic_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgBasicHost;
-typedef Hg::Message<Hg::Basic_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgBasicNet;
+typedef Hg::MessageT<Hg::Basic_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgBasicHost;
+typedef Hg::MessageT<Hg::Basic_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgBasicNet;
 
 
 void UsingHg::test_basic(DataBuffer &data,
@@ -42,8 +42,8 @@ void UsingHg::test_basic(DataBuffer &data,
 }
 
 //  ****************************************************************************
-typedef Hg::Message<Hg::Packed_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgPackedHost;
-typedef Hg::Message<Hg::Packed_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgPackedNet;
+typedef Hg::MessageT<Hg::Packed_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgPackedHost;
+typedef Hg::MessageT<Hg::Packed_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgPackedNet;
 
 void UsingHg::test_packed_bits( DataBuffer &data,
                                 DataBuffer &out)
@@ -64,8 +64,8 @@ void UsingHg::test_packed_bits( DataBuffer &data,
 
 
 //  ****************************************************************************
-typedef Hg::Message<Hg::Unaligned_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgUnalignedHost;
-typedef Hg::Message<Hg::Unaligned_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgUnalignedNet;
+typedef Hg::MessageT<Hg::Unaligned_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgUnalignedHost;
+typedef Hg::MessageT<Hg::Unaligned_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgUnalignedNet;
 
 void UsingHg::test_unaligned( DataBuffer &data,
                               DataBuffer &out)
@@ -86,8 +86,8 @@ void UsingHg::test_unaligned( DataBuffer &data,
 }
 
 //  ****************************************************************************
-typedef Hg::Message<Hg::Complex_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgComplexHost;
-typedef Hg::Message<Hg::Complex_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgComplexNet;
+typedef Hg::MessageT<Hg::Complex_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgComplexHost;
+typedef Hg::MessageT<Hg::Complex_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgComplexNet;
 
 void UsingHg::test_complex(DataBuffer &data,
                            DataBuffer &out)

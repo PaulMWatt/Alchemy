@@ -14,9 +14,9 @@ namespace Hg
 {
 
 //  ****************************************************************************
-/// Query for the amount of dynamic memory required by a specified Hg::Message.
+/// Query for the amount of dynamic memory required by a specified Hg::MessageT.
 ///
-/// @paramt T       [typename] The Hg::Message format definition of the 
+/// @paramt T       [typename] The Hg::MessageT format definition of the 
 ///                 message to be converted.
 /// @param msg      The message object to be queried.
 ///                           
@@ -34,14 +34,14 @@ size_t dynamic_size_of(const T& msg)
 //  ****************************************************************************
 /// Reports the total size of the dynamic buffers required for this message.
 ///    
-template< typename MessageT,
+template< typename MsgT,
           typename ByteOrderT,
           typename StorageT
         >
-size_t dynamic_size_of(const Message<MessageT, ByteOrderT, StorageT>& msg)
+size_t dynamic_size_of(const MessageT<MsgT, ByteOrderT, StorageT>& msg)
 {
-  return detail::DynamicSizeWorker< MessageT, 
-                                    has_dynamic<typename MessageT::format_type>::value
+  return detail::DynamicSizeWorker< MsgT, 
+                                    has_dynamic<typename MsgT::format_type>::value
                                   >().size(msg);
 }
 

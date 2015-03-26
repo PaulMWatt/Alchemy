@@ -109,10 +109,10 @@ protected:
   //  with a simplified syntax for readability in the unit-tests.
   typedef Hg::BufferedStoragePolicy                         storage_type;
   typedef Hg::message_type                                  msg_type;
-  typedef Hg::Message<msg_type>                             SUT;
-  typedef Hg::Message<msg_type, Hg::NetByteOrder>           SUT_net_order;
-  typedef Hg::Message<msg_type, Hg::BigEndian>              SUT_big_endian;
-  typedef Hg::Message<msg_type, Hg::LittleEndian>           SUT_little_endian;
+  typedef Hg::MessageT<msg_type>                            SUT;
+  typedef Hg::MessageT<msg_type, Hg::NetByteOrder>          SUT_net_order;
+  typedef Hg::MessageT<msg_type, Hg::BigEndian>             SUT_big_endian;
+  typedef Hg::MessageT<msg_type, Hg::LittleEndian>          SUT_little_endian;
 
   typedef storage_type::data_type                           data_type;
   typedef storage_type::s_pointer                           s_pointer;

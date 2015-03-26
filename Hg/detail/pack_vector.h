@@ -426,11 +426,11 @@ size_t SerializeVector (VectorT<T, A> &value,
 //  @return         Returns the item after the last element written by this call.
 //
 template< size_t   IdxT,      
-          typename MessageT,
+          typename MsgT,
           typename BufferT
         >
 struct PackDatum< IdxT, 
-                  MessageT, 
+                  MsgT, 
                   BufferT, 
                   vector_trait>
 {
@@ -438,7 +438,7 @@ struct PackDatum< IdxT,
   typedef typename
     Hg::detail::DeduceProxyType 
       < IdxT,
-        typename MessageT::format_type
+        typename MsgT::format_type
       >::type                                     proxy_type;
 
   typedef typename
@@ -446,7 +446,7 @@ struct PackDatum< IdxT,
   typedef typename
     value_type::value_type                        data_type;
 
-  typedef MessageT                                message_type;
+  typedef MsgT                                message_type;
 
   typedef BufferT                                 buffer_type;
 

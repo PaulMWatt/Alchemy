@@ -26,11 +26,11 @@ namespace Hg
 {
 
 //  Forward Declarations *******************************************************
-template< typename MessageT,
+template< typename MsgT,
           typename ByteOrderT,
           typename StorageT
         >
-class Message;
+class MessageT;
 
 
 namespace detail
