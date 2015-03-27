@@ -99,9 +99,10 @@ protected:
   //  with a simplified syntax for readability in the unit-tests.
   typedef Hg::BufferedStoragePolicy                               storage_type;
   typedef Hg::world_message_type                                  msg_type;
-  typedef Hg::basic_msg<msg_type>                                  SUT;
-  typedef Hg::Message<Hg::basic_msg<msg_type>, Hg::BigEndian>      SUT_big_endian;
-  typedef Hg::Message<Hg::basic_msg<msg_type>, Hg::LittleEndian>   SUT_little_endian;
+  typedef Hg::basic_msg<msg_type>                                 SUT;
+  typedef Hg::basic_msg<msg_type>::net_t                          SUT_net;
+  typedef Hg::basic_msg<msg_type>::big_t                          SUT_big;
+  typedef Hg::basic_msg<msg_type>::little_t                       SUT_little;
 
   typedef storage_type::data_type                                 data_type;
   typedef storage_type::s_pointer                                 s_pointer;
@@ -247,7 +248,6 @@ public:
   void Testis_host_order_false(void);
   void TestAssign(void);
   void TestClear(void);
-  void TestClone(void);
   void Testdata(void);
 
   //  Worker Functions *********************************************************
@@ -342,7 +342,7 @@ void TestDynTypePermsSuite::Testis_host_order_false(void)
 {
   // SUT: Net order is defined within the type itself. 
   //      Look at the typedef for details
-  SUT::net_t sut;
+  SUT_net sut;
   TS_ASSERT(!sut.is_host_order());
 }
 
@@ -374,19 +374,6 @@ void TestDynTypePermsSuite::TestClear(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::TestClone(void)
-{
-  SUT rhs;
-  PopulateBaseValues(rhs);
-
-  // SUT
-  SUT sut;
-  sut = rhs.clone();
-
-  TS_ASSERT_SAME_DATA(&perms_msg[0], rhs.data(), sut.size());
-}
-
-//  ****************************************************************************
 void TestDynTypePermsSuite::Testdata(void)
 {
 
@@ -397,13 +384,13 @@ void TestDynTypePermsSuite::Testdata(void)
 void TestDynTypePermsSuite::Testto_host(void)
 {
   // Populate the expected results.
-  SUT::net_t expected;
+  SUT_net expected;
   PopulateOtherValues(expected);
 
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT::net_t sut;
+  SUT_net sut;
   PopulateBaseValues(sut);
 
   SUT::host_t no_op_sut;
@@ -430,12 +417,12 @@ void TestDynTypePermsSuite::Testto_network(void)
   SUT::host_t sut;
   PopulateBaseValues(sut);
 
-  SUT::net_t no_op_sut;
+  SUT_net no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT::net_t result = to_network(sut);
-  SUT::net_t no_op_result = to_network(no_op_sut);
+  SUT_net result = to_network(sut);
+  SUT_net no_op_result = to_network(no_op_sut);
 
   TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
   TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());
@@ -445,21 +432,21 @@ void TestDynTypePermsSuite::Testto_network(void)
 void TestDynTypePermsSuite::Testto_big_endian(void)
 {
   // Populate the expected results.
-  SUT_big_endian expected;
+  SUT_big expected;
   PopulateOtherValues(expected);
 
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT_little_endian sut;
+  SUT_little sut;
   PopulateBaseValues(sut);
 
-  SUT_big_endian no_op_sut;
+  SUT_big no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT_big_endian result = to_big_endian(sut);
-  SUT_big_endian no_op_result = to_big_endian(no_op_sut);
+  SUT_big result = to_big_endian(sut);
+  SUT_big no_op_result = to_big_endian(no_op_sut);
 
   TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
   TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());
@@ -469,21 +456,21 @@ void TestDynTypePermsSuite::Testto_big_endian(void)
 void TestDynTypePermsSuite::Testto_little_endian(void)
 {
   // Populate the expected results.
-  SUT_little_endian expected;
+  SUT_little expected;
   PopulateOtherValues(expected);
 
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT_big_endian sut;
+  SUT_big sut;
   PopulateBaseValues(sut);
 
-  SUT_little_endian no_op_sut;
+  SUT_little no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT_little_endian result        = to_little_endian(sut);
-  SUT_little_endian no_op_result  = to_little_endian(no_op_sut);
+  SUT_little result        = to_little_endian(sut);
+  SUT_little no_op_result  = to_little_endian(no_op_sut);
 
   TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
   TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());

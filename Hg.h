@@ -44,15 +44,17 @@ namespace Hg
 template< typename T >
 size_t dynamic_size_of(const T& msg);
 
+//  ****************************************************************************
 template< typename MsgT,
           typename StorageT
         >
 class basic_msg;
 
+//  ****************************************************************************
 template< class HgMsgT,
           bool  has_dynamic
         >
-struct Msg_size;
+struct msg_size;
 
 
 //  ****************************************************************************
@@ -71,16 +73,19 @@ class Message
 {
 public:
   //  Typedefs *****************************************************************
-  typedef HgT                                 hg_msg_type;
+  typedef HgT                                 base_type;
 
   typedef typename
-    hg_msg_type::message_type                 message_type;
+    base_type::message_type                   message_type;
 
   typedef typename
-    hg_msg_type::storage_type                 storage_type;
+    base_type::format_type                    format_type;
 
   typedef typename
-    hg_msg_type::const_pointer                const_pointer;
+    base_type::storage_type                   storage_type;
+
+  typedef typename
+    base_type::const_pointer                  const_pointer;
 
   typedef ByteOrderT                          byte_order_type;
 
@@ -169,8 +174,8 @@ public:
 ///                           defined the format and utilities for field access.
 ///                           The MsgT must define these member-types:
 ///                             format_type:    TypeList defines the format
-///                             storage_type:   StoragePolicy that manages
-///                                             access rules for the buffer.
+/// @paramt StorageT        StoragePolicy that manages access rules for the buffer.
+///
 ///                           @note The HG declaration MACROs define a template
 ///                                 format that is compatible with Hg::basic_msg.
 /// 
@@ -188,6 +193,11 @@ public:
     MsgT::format_type                         format_type;
   typedef StorageT                            storage_type;
 
+  typedef MsgBuffer<storage_type>             buffer_type;
+
+  typedef typename
+    message_size_trait<format_type>::type     size_trait;
+
   typedef typename 
     storage_type::data_type                   data_type;
   typedef data_type*                          pointer;
@@ -195,23 +205,19 @@ public:
   typedef MsgT&                               reference;
   typedef const MsgT&                         const_reference;
 
-  typedef basic_msg 
-          < MsgT, 
-            StorageT
-          >                                   this_type;
-
-  typedef MsgBuffer<storage_type>             buffer_type;
-  typedef std::shared_ptr<buffer_type>        buffer_sptr;
-
-  typedef typename
-    message_size_trait<format_type>::type     size_trait;
-
+  typedef basic_msg< MsgT, StorageT >         this_type;
 
   typedef Message<this_type, 
                   Hg::HostByteOrder>          host_t;
 
   typedef Message<this_type, 
                   Hg::NetByteOrder>           net_t;
+
+  typedef Message<this_type, 
+                  Hg::BigEndian>              big_t;
+
+  typedef Message<this_type, 
+                  Hg::LittleEndian>           little_t;
 
   //  Constants ****************************************************************
   enum { k_size = SizeOf<format_type>::value };
@@ -288,7 +294,7 @@ public:
   ///               
   size_t size() const
   {
-    return Msg_size<this_type, 
+    return msg_size<this_type, 
                     k_has_dynamic>::calculate(*this); 
   }
 
@@ -370,18 +376,6 @@ public:
   }
 
   //  **************************************************************************
-  /// Returns a clone of this message object.
-  /// 
-  /// A new memory buffer will be allocated to accept the stored data for the
-  /// clone operation.
-  ///
-  basic_msg clone() const
-  {
-    // Clone and assign the new message buffer to the return message object.
-    return basic_msg(data(), size());
-  }
-
-  //  **************************************************************************
   /// Returns a const reference to the underlying collection of value objects.
   ///
   const_reference values() const
@@ -459,22 +453,16 @@ private:
 /// 
 /// @return       The number of bytes that are used to pack this message.
 ///
-template< class HgMsgT,
+template< typename T,
           bool  has_dynamic
         >
-struct Msg_size
+struct msg_size
 {
-  typedef HgMsgT message_t;
-
-  static size_t calculate(const message_t &msg)
+  static size_t calculate(const T &msg)
   {
-    typedef typename
-      message_t::message_type     message_type;
-    typedef typename
-      message_t::storage_type     storage_type;
-
-    size_t fixed_size   = Hg::SizeOf<typename HgMsgT::format_type>::value;
-    size_t dynamic_size = dynamic_size_of<message_type, storage_type>(msg);
+    size_t fixed_size   = Hg::SizeOf<typename T::format_type>::value;
+    size_t dynamic_size = dynamic_size_of<typename T::message_type, 
+                                          typename T::storage_type>(msg);
     return fixed_size + dynamic_size; 
   }
 };
@@ -484,14 +472,12 @@ struct Msg_size
 /// 
 /// @return       The number of bytes that are used to pack this message.
 ///
-template< class HgMsgT >
-struct Msg_size<HgMsgT, false>
+template< typename T >
+struct msg_size<T, false>
 {
-  typedef HgMsgT message_t;
-
-  static size_t calculate(const message_t &msg)
+  static size_t calculate(const T &msg)
   {
-    return Hg::SizeOf<typename HgMsgT::format_type>::value;
+    return Hg::SizeOf<typename T::format_type>::value;
   }
 };
 
