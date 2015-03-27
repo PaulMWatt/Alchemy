@@ -16,7 +16,7 @@ namespace Hg
 template< typename MsgT,
           typename StorageT
         >
-class MessageT;
+class basic_msg;
 
 //  **************************************************************************
 /// Iterator for nonmutable msg_view.
@@ -28,7 +28,7 @@ public:
   typedef msg_view_const_iterator<T>              iter_t;
   typedef std::random_access_iterator_tag         iterator_category;
 
-  typedef MessageT< T,
+  typedef basic_msg< T,
                     BufferedStaticStoragePolicy>  value_type;
   typedef ptrdiff_t                               difference_type;
   typedef const value_type*                       pointer;
@@ -270,7 +270,7 @@ public:
   typedef msg_view_const_iterator<T>              base_t;
   typedef std::random_access_iterator_tag         iterator_category;
 
-  typedef MessageT< T,
+  typedef basic_msg< T,
                     BufferedStaticStoragePolicy>  value_type;
   typedef ptrdiff_t                               difference_type;
   typedef value_type*                             pointer;

@@ -156,13 +156,13 @@ namespace sgraph
 
 namespace detail
 {
-typedef Hg::MessageT< Hg::bitmap_file_header_t_HgFormat, 
+typedef Hg::basic_msg< Hg::bitmap_file_header_t_HgFormat, 
                       Hg::BufferedStaticStoragePolicy>      hg_file_t;
 
-typedef Hg::MessageT< Hg::core_info_t_HgFormat, 
+typedef Hg::basic_msg< Hg::core_info_t_HgFormat, 
                       Hg::BufferedStaticStoragePolicy>      hg_core_t;
 
-typedef Hg::MessageT< Hg::bitmap_info_t_HgFormat, 
+typedef Hg::basic_msg< Hg::bitmap_info_t_HgFormat, 
                       Hg::BufferedStaticStoragePolicy>      hg_info_t;
 }
 

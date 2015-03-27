@@ -34,7 +34,7 @@ class Message;
 template< typename MsgT,
           typename StorageT
         >
-class MessageT;
+class basic_msg;
 
 
 //  ****************************************************************************
@@ -57,17 +57,17 @@ template< typename MsgT,
           typename StorageT,
           typename ToT
         >
-Hg::Message < Hg::MessageT<MsgT, StorageT>, ToT>
-  convert_byte_order(const Hg::Message < Hg::MessageT<MsgT, StorageT>, FromT>& from,
-                           Hg::Message < Hg::MessageT<MsgT, StorageT>, ToT>&   to)
+Hg::Message < Hg::basic_msg<MsgT, StorageT>, ToT>
+  convert_byte_order(const Hg::Message < Hg::basic_msg<MsgT, StorageT>, FromT>& from,
+                           Hg::Message < Hg::basic_msg<MsgT, StorageT>, ToT>&   to)
 {
   typedef typename 
     MsgT::format_type                         format_type;
   // Initialize a functor to convert the data byte order,
   // then call this operation for each element in the defined message.
   detail::ByteOrderConversionFunctor
-    < Hg::Message < Hg::MessageT<MsgT, StorageT>, FromT>,
-      Hg::Message < Hg::MessageT<MsgT, StorageT>, ToT>
+    < Hg::Message < Hg::basic_msg<MsgT, StorageT>, FromT>,
+      Hg::Message < Hg::basic_msg<MsgT, StorageT>, ToT>
     > ftor(from, to);  
 
   Hg::ForEachType < 0,
@@ -122,8 +122,8 @@ struct ConvertEndianess<T, StorageT, nested_trait>
     typedef Hg::BigEndian       to_order;
 
     // Construct a shallow message wrapper around the nested data.
-    Hg::Message< Hg::MessageT<T, StorageT>, from_order>  from(input);
-    Hg::Message< Hg::MessageT<T, StorageT>, to_order>    to;
+    Hg::Message< Hg::basic_msg<T, StorageT>, from_order>  from(input);
+    Hg::Message< Hg::basic_msg<T, StorageT>, to_order>    to;
 
     // Pass this message to be byte-order swapped.
     output = convert_byte_order<T, from_order, StorageT, to_order>(from, to).values();
@@ -233,7 +233,7 @@ struct ByteOrderConversionFunctor
   //  **************************************************************************
   /// Value constructor that initializes the input message to be converted.
   ///
-  /// @param rhs      The MessageT object that contains the input data.
+  /// @param rhs      The basic_msg object that contains the input data.
   ///
   explicit
     ByteOrderConversionFunctor(const from_message_type& from,
@@ -308,7 +308,7 @@ struct ByteOrderConversionFunctor <MsgT, MsgT>
   //  **************************************************************************
   /// Value constructor that initializes the input message to be converted.
   ///
-  /// @param rhs      The MessageT object that contains the input data.
+  /// @param rhs      The basic_msg object that contains the input data.
   /// 
   explicit
     ByteOrderConversionFunctor(const from_message_type& from,

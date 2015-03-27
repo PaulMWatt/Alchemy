@@ -30,7 +30,7 @@ struct DynamicSizeWorker;
 //template< typename MsgT,
 //          typename ByteOrderT,
 //          typename StorageT>
-//class MessageT;
+//class basic_msg;
 
 //  ****************************************************************************
 /// Determines the number of bytes required to serialize a vector.

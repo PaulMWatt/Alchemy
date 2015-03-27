@@ -116,7 +116,7 @@ std::ostream& operator<<(std::ostream& os, const T& msg)
 {
   Hg::Message 
     <
-      Hg::MessageT< T::message_type, Hg::BufferedStoragePolicy>,
+      Hg::basic_msg< T::message_type, Hg::BufferedStoragePolicy>,
       T::byte_order_type
     > outMsg;
 

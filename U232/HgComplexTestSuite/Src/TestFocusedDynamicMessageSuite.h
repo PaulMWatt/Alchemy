@@ -124,7 +124,7 @@ namespace fixed_array
 {
 namespace bit_list
 {
-typedef Hg::MessageT<Hg::color_map_t_HgFormat >   MsgColorMap;
+typedef Hg::basic_msg<Hg::color_map_t_HgFormat >   MsgColorMap;
 typedef MsgColorMap                               SUT;
 
 //  ************************************
@@ -268,7 +268,7 @@ namespace nested
 {
 namespace fixed
 {
-typedef Hg::MessageT<Hg::points_t_HgFormat >      MsgPoints;
+typedef Hg::basic_msg<Hg::points_t_HgFormat >      MsgPoints;
 typedef MsgPoints                                 SUT;
 
 //  ************************************
@@ -391,7 +391,7 @@ namespace dynamic
 {
 namespace fundamental
 {
-typedef Hg::MessageT<Hg::vstr_t_HgFormat>      MsgStr;
+typedef Hg::basic_msg<Hg::vstr_t_HgFormat>      MsgStr;
 typedef MsgStr                                 SUT;
 
 const char   k_test_str[] = "- Happy Fun Ball -";
@@ -503,7 +503,7 @@ namespace nested
 {
 namespace fixed
 {
-typedef Hg::MessageT<Hg::vpoints_t_HgFormat>      MsgPoints;
+typedef Hg::basic_msg<Hg::vpoints_t_HgFormat>      MsgPoints;
 typedef MsgPoints                                 SUT;
 
 // 2 for count field, 3 * 4 for data = 14
@@ -632,7 +632,7 @@ namespace nested
 {
 namespace dynamic
 {
-typedef Hg::MessageT<Hg::vinst_t_HgFormat>        MsgInstance;
+typedef Hg::basic_msg<Hg::vinst_t_HgFormat>        MsgInstance;
 typedef MsgInstance                               SUT;
 
 const size_t k_count        = 2;
@@ -830,7 +830,7 @@ namespace dynamic
 {
 namespace bit_list
 {
-typedef Hg::MessageT<Hg::color_table_t_HgFormat>     MsgColorTable;
+typedef Hg::basic_msg<Hg::color_table_t_HgFormat>     MsgColorTable;
 typedef MsgColorTable                                SUT;
 
 //  ************************************
@@ -982,7 +982,7 @@ namespace vector
 {
 namespace fixed_array
 {
-typedef Hg::MessageT<Hg::vec_array_t_HgFormat>       MsgVecArray;
+typedef Hg::basic_msg<Hg::vec_array_t_HgFormat>       MsgVecArray;
 typedef MsgVecArray                                  SUT;
 
 
@@ -1182,7 +1182,7 @@ namespace vec
 {
 namespace vec
 {
-typedef Hg::MessageT<Hg::string_vec_t_HgFormat>     MsgStrVec;
+typedef Hg::basic_msg<Hg::string_vec_t_HgFormat>     MsgStrVec;
 typedef MsgStrVec                                   SUT;
 
 //  Constants **************************

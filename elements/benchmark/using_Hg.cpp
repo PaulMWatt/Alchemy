@@ -20,7 +20,7 @@ namespace benchmark
 {
 
 //  ****************************************************************************
-typedef Hg::MessageT<Hg::Basic_HgFormat, Hg::BufferedStaticStoragePolicy>   HgBasic;
+typedef Hg::basic_msg<Hg::Basic_HgFormat, Hg::BufferedStaticStoragePolicy>   HgBasic;
 
 
 void UsingHg::test_basic(DataBuffer &data,
@@ -41,7 +41,7 @@ void UsingHg::test_basic(DataBuffer &data,
 }
 
 //  ****************************************************************************
-typedef Hg::MessageT<Hg::Packed_HgFormat, Hg::BufferedStaticStoragePolicy>   HgPacked;
+typedef Hg::basic_msg<Hg::Packed_HgFormat, Hg::BufferedStaticStoragePolicy>   HgPacked;
 
 void UsingHg::test_packed_bits( DataBuffer &data,
                                 DataBuffer &out)
@@ -62,7 +62,7 @@ void UsingHg::test_packed_bits( DataBuffer &data,
 
 
 //  ****************************************************************************
-typedef Hg::MessageT<Hg::Unaligned_HgFormat, Hg::BufferedStaticStoragePolicy>   HgUnaligned;
+typedef Hg::basic_msg<Hg::Unaligned_HgFormat, Hg::BufferedStaticStoragePolicy>   HgUnaligned;
 
 void UsingHg::test_unaligned( DataBuffer &data,
                               DataBuffer &out)
@@ -83,7 +83,7 @@ void UsingHg::test_unaligned( DataBuffer &data,
 }
 
 //  ****************************************************************************
-typedef Hg::MessageT<Hg::Complex_HgFormat, Hg::BufferedStaticStoragePolicy>   HgComplex;
+typedef Hg::basic_msg<Hg::Complex_HgFormat, Hg::BufferedStaticStoragePolicy>   HgComplex;
 
 void UsingHg::test_complex(DataBuffer &data,
                            DataBuffer &out)

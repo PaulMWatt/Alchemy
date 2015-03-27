@@ -47,7 +47,7 @@ size_t dynamic_size_of(const T& msg);
 template< typename MsgT,
           typename StorageT
         >
-class MessageT;
+class basic_msg;
 
 template< class HgMsgT,
           bool  has_dynamic
@@ -90,7 +90,7 @@ public:
   /// Default Constructor
   ///
   Message()
-    : MessageT()
+    : basic_msg()
   { }
 
   //  **************************************************************************
@@ -108,8 +108,8 @@ public:
   /// 
   /// @param rhs              The Hg message object from which data is copied. 
   ///
-  Message(const MessageT& rhs)
-    : MessageT(rhs)
+  Message(const basic_msg& rhs)
+    : basic_msg(rhs)
   { }
 
   //  **************************************************************************
@@ -121,7 +121,7 @@ public:
   /// @param n                The size of the buffer in sp.
   ///
   Message(const_pointer p, size_t n)
-    : MessageT(p,n)
+    : basic_msg(p,n)
   { }
 
   //  Operations ***************************************************************
@@ -172,12 +172,12 @@ public:
 ///                             storage_type:   StoragePolicy that manages
 ///                                             access rules for the buffer.
 ///                           @note The HG declaration MACROs define a template
-///                                 format that is compatible with Hg::MessageT.
+///                                 format that is compatible with Hg::basic_msg.
 /// 
 template< typename MsgT,
           typename StorageT   = Hg::BufferedStoragePolicy
         >
-class MessageT
+class basic_msg
   : public MsgT
 {
 public:
@@ -195,7 +195,7 @@ public:
   typedef MsgT&                               reference;
   typedef const MsgT&                         const_reference;
 
-  typedef MessageT 
+  typedef basic_msg 
           < MsgT, 
             StorageT
           >                                   this_type;
@@ -227,7 +227,7 @@ public:
   //  **************************************************************************
   /// Default Constructor
   ///
-  MessageT()
+  basic_msg()
   { }
 
   //  **************************************************************************
@@ -235,7 +235,7 @@ public:
   /// 
   /// @param rhs              The Hg message object from which data is copied. 
   ///
-  MessageT(const MessageT& rhs)
+  basic_msg(const basic_msg& rhs)
   {
     *static_cast<message_type*>(this) = rhs;
   }
@@ -248,7 +248,7 @@ public:
   ///                         size n is larger than zero.
   /// @param n                The size of the buffer in sp.
   ///
-  MessageT(const_pointer p, size_t n)
+  basic_msg(const_pointer p, size_t n)
   {
     assign(p,n);
   }
@@ -259,7 +259,7 @@ public:
   /// 
   /// @param rhs              Basic message values to initialize this instance.
   ///
-  MessageT& operator=(const message_type& rhs)
+  basic_msg& operator=(const message_type& rhs)
   {
     if (this != &rhs)
     {
@@ -310,7 +310,7 @@ public:
 
       // Casting this object to the base object MsgT.
       // This pointer will accept the data read in from the buffer.
-      MessageT &refThis = *static_cast<MessageT*>(this);
+      basic_msg &refThis = *static_cast<basic_msg*>(this);
       refThis = unpack_message< message_type, 
                                 buffer_type,
                                 size_trait
@@ -319,7 +319,7 @@ public:
     else
     {
 #if ALCHEMY_HAS_EXCEPTIONS
-      throw std::invalid_argument("Hg::MessageT<>::assign() - pBuffer is invalid or length n is 0");
+      throw std::invalid_argument("Hg::basic_msg<>::assign() - pBuffer is invalid or length n is 0");
 #endif
     }
   }
@@ -344,7 +344,7 @@ public:
 //
 //      // Casting this object to the base object MsgT.
 //      // This pointer will accept the data read in from the buffer.
-//      MessageT &refThis = *static_cast<Message*>(this);
+//      basic_msg &refThis = *static_cast<Message*>(this);
 //      refThis = unpack_message< message_type, 
 //                                buffer_type,
 //                                size_trait
@@ -353,7 +353,7 @@ public:
 //    else
 //    {
 //#if ALCHEMY_HAS_EXCEPTIONS
-//      throw std::invalid_argument("Hg::MessageT<>::assign() - pBuffer is invalid or length n is 0");
+//      throw std::invalid_argument("Hg::basic_msg<>::assign() - pBuffer is invalid or length n is 0");
 //#endif
 //    }
 //  }
@@ -375,10 +375,10 @@ public:
   /// A new memory buffer will be allocated to accept the stored data for the
   /// clone operation.
   ///
-  MessageT clone() const
+  basic_msg clone() const
   {
     // Clone and assign the new message buffer to the return message object.
-    return MessageT(data(), size());
+    return basic_msg(data(), size());
   }
 
   //  **************************************************************************
@@ -402,7 +402,7 @@ public:
   ///
   const_pointer data() const
   {
-    MessageT *pThis = const_cast<MessageT*>(this);
+    basic_msg *pThis = const_cast<basic_msg*>(this);
     pThis->pack_data();
 
     return m_msgBuffer.data();
@@ -449,7 +449,7 @@ private:
             typename other_StorageT
             >
   friend 
-  class MessageT;
+  class basic_msg;
 };
 
 

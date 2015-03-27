@@ -99,9 +99,9 @@ protected:
   //  with a simplified syntax for readability in the unit-tests.
   typedef Hg::BufferedStoragePolicy                               storage_type;
   typedef Hg::world_message_type                                  msg_type;
-  typedef Hg::MessageT<msg_type>                                  SUT;
-  typedef Hg::Message<Hg::MessageT<msg_type>, Hg::BigEndian>      SUT_big_endian;
-  typedef Hg::Message<Hg::MessageT<msg_type>, Hg::LittleEndian>   SUT_little_endian;
+  typedef Hg::basic_msg<msg_type>                                  SUT;
+  typedef Hg::Message<Hg::basic_msg<msg_type>, Hg::BigEndian>      SUT_big_endian;
+  typedef Hg::Message<Hg::basic_msg<msg_type>, Hg::LittleEndian>   SUT_little_endian;
 
   typedef storage_type::data_type                                 data_type;
   typedef storage_type::s_pointer                                 s_pointer;

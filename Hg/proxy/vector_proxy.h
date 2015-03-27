@@ -30,7 +30,7 @@ namespace Hg
 //          typename ByteOrderT,
 //          typename StorageT
 //        >
-//class MessageT;
+//class basic_msg;
 
 
 namespace detail

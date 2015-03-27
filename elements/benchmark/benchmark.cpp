@@ -84,10 +84,16 @@ void RunTest(DataBuffer &data, TimeValues &times)
 
 
 //  ****************************************************************************
-void DisplayResults(const std::string &name, 
+void DisplayResults(const std::string &control_name, 
+                    const TimeValues  &control_times,
+                    const std::string &name, 
                     const TimeValues  &times)
 {
-  cout << "Results for " << name << "\n";
+  double c_basic_len     = control_times[k_end_basic]     - control_times[k_start_basic];
+  double c_packed_len    = control_times[k_end_packed]    - control_times[k_start_packed];   
+  double c_unaligned_len = control_times[k_end_unaligned] - control_times[k_start_unaligned];
+  double c_complex_len   = control_times[k_end_complex]   - control_times[k_start_complex];
+  double c_total_len     = c_basic_len + c_packed_len + c_unaligned_len + c_complex_len;
 
   double basic_len     = times[k_end_basic]     - times[k_start_basic];
   double packed_len    = times[k_end_packed]    - times[k_start_packed];   
@@ -95,11 +101,13 @@ void DisplayResults(const std::string &name,
   double complex_len   = times[k_end_complex]   - times[k_start_complex];
   double total_len     = basic_len + packed_len + unaligned_len + complex_len;
 
-  cout << "Basic:     " << basic_len     << "s\n";
-  cout << "Packed:    " << packed_len    << "s\n";
-  cout << "Unaligned: " << unaligned_len << "s\n";
-  cout << "Complex:   " << complex_len   << "s\n";
-  cout << "Total:     " << total_len     << "s\n" << endl;
+  cout << "           " << control_name << "\t" << name << "\tdiff\t\tpercent\n";
+
+  cout << "Basic:     " << c_basic_len     << "s\t" << basic_len     << "s\t" << (basic_len     - c_basic_len    ) << "\t" << 100.0 - (basic_len     / c_basic_len    ) * 100.0 << "%\n";
+  cout << "Packed:    " << c_packed_len    << "s\t" << packed_len    << "s\t" << (packed_len    - c_packed_len   ) << "\t" << 100.0 - (packed_len    / c_packed_len   ) * 100.0 << "%\n";
+  cout << "Unaligned: " << c_unaligned_len << "s\t" << unaligned_len << "s\t" << (unaligned_len - c_unaligned_len) << "\t" << 100.0 - (unaligned_len / c_unaligned_len) * 100.0 << "%\n";
+  cout << "Complex:   " << c_complex_len   << "s\t" << complex_len   << "s\t" << (complex_len   - c_complex_len  ) << "\t" << 100.0 - (complex_len   / c_complex_len  ) * 100.0 << "%\n";
+  cout << "Total:     " << c_total_len     << "s\t" << total_len     << "s\t" << (total_len     - c_total_len    ) << "\t" << 100.0 - (total_len     / c_total_len    ) * 100.0 << "%\n" << endl;
 }
 
 } // namespace benchmark
@@ -131,10 +139,9 @@ int main(int argc, char* argv[])
   RunTest<UsingMemcpy>(data, memcpyTime);
   cout << "Test completed\n" << endl;
 
-  DisplayResults("Hg:     ", hgTime);
-
   // Display the tabulated results.
-  DisplayResults("memcpy: ", memcpyTime);
+  DisplayResults( "Hg:     ", hgTime,
+                  "memcpy: ", memcpyTime);
 
   cout << "Hit enter to exit.";
   cin.ignore();
