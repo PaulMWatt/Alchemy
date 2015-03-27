@@ -32,14 +32,9 @@ namespace Hg
 ///
 template< typename T >
 typename
-  //basic_msg< typename T::message_type,
-  //          typename T::storage_type
-  //        >::net_t
   T::hg_msg_type::net_t
   to_network(T& from)
 {
-  //basic_msg< typename T::message_type,
-  //          typename T::storage_type>::net_t    to;
   T::hg_msg_type::net_t                         to;
 
   return detail::convert_byte_order < typename T::message_type,
@@ -68,13 +63,10 @@ typename
 ///
 template< typename T >
 typename
-  basic_msg< typename T::message_type,
-            typename T::storage_type
-          >::host_t
+  T::hg_msg_type::host_t
   to_host(T& from)
 {
-  basic_msg< typename T::message_type,
-            typename T::storage_type>::host_t   to;
+  T::hg_msg_type::host_t                        to;
   
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
