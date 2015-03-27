@@ -32,14 +32,12 @@ namespace Hg
 ///
 template< typename T >
 typename
-  T::hg_msg_type::net_t
+  T::base_type::net_t
   to_network(T& from)
 {
-  T::hg_msg_type::net_t                         to;
+  T::base_type::net_t                         to;
 
-  return detail::convert_byte_order < typename T::message_type,
-                                      typename T::byte_order_type,
-                                      typename T::storage_type,
+  return detail::convert_byte_order < T,
                                       NetByteOrder
                                     >(from, to);
 }
@@ -63,14 +61,12 @@ typename
 ///
 template< typename T >
 typename
-  T::hg_msg_type::host_t
+  T::base_type::host_t
   to_host(T& from)
 {
-  T::hg_msg_type::host_t                        to;
+  T::base_type::host_t                        to;
   
-  return detail::convert_byte_order < typename T::message_type,
-                                      typename T::byte_order_type,
-                                      typename T::storage_type,
+  return detail::convert_byte_order < T,
                                       HostByteOrder
                                     >(from, to);
 }
@@ -93,18 +89,12 @@ typename
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-Message < typename T::hg_msg_type,
-          BigEndian
-        >
+  typename T::base_type::big_t
   to_big_endian(T& from)
 {
-  Message < typename T::hg_msg_type,
-            BigEndian
-          >                                       to;
+  typename T::base_type::big_t                    to;
 
-  return detail::convert_byte_order < typename T::message_type,
-                                      typename T::byte_order_type,
-                                      typename T::storage_type,
+  return detail::convert_byte_order < T,
                                       BigEndian
                                     >(from, to);
 }
@@ -127,19 +117,13 @@ Message < typename T::hg_msg_type,
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-Message < typename T::hg_msg_type,
-          LittleEndian
-        >
+  typename T::base_type::little_t
   to_little_endian(T& from)
 {
-  Message < typename T::hg_msg_type,
-            LittleEndian
-          >                                     to;
+  typename T::base_type::little_t               to;
 
   // convert the values of the message parameters.
-  return detail::convert_byte_order < typename T::message_type,
-                                      typename T::byte_order_type,
-                                      typename T::storage_type,
+  return detail::convert_byte_order < T,
                                       LittleEndian
                                     >(from, to);
 }
