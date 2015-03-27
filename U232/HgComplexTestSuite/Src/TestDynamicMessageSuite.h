@@ -208,15 +208,14 @@ protected:
   //  Typedefs *****************************************************************
   //  These typedefs allow the creation of the different msg field types
   //  with a simplified syntax for readability in the unit-tests.
-  typedef Hg::BufferedStoragePolicy                         storage_type;
-  typedef Hg::dyn_message_type                              msg_type;
-  typedef Hg::MessageT<msg_type>                            SUT;
-  typedef Hg::MessageT<msg_type, Hg::NetByteOrder>          SUT_net_order;
-  typedef Hg::MessageT<msg_type, Hg::BigEndian>             SUT_big_endian;
-  typedef Hg::MessageT<msg_type, Hg::LittleEndian>          SUT_little_endian;
+  typedef Hg::BufferedStoragePolicy                               storage_type;
+  typedef Hg::dyn_message_type                                    msg_type;
+  typedef Hg::MessageT<msg_type>                                  SUT;
+  typedef Hg::Message<Hg::MessageT<msg_type>, Hg::BigEndian>      SUT_big_endian;
+  typedef Hg::Message<Hg::MessageT<msg_type>, Hg::LittleEndian>   SUT_little_endian;
 
-  typedef storage_type::data_type                           data_type;
-  typedef storage_type::s_pointer                           s_pointer;
+  typedef storage_type::data_type                                 data_type;
+  typedef storage_type::s_pointer                                 s_pointer;
 
   // Helper Functions ************************************************************
   //  ****************************************************************************
@@ -539,7 +538,7 @@ void TestDynamicMessageSuite::Testis_host_order(void)
 {
   // SUT: Host order is defined within the type itself.
   //      Look at the typedef for details
-  SUT sut;
+  SUT::host_t sut;
   TS_ASSERT(sut.is_host_order());
 }
 
@@ -548,7 +547,7 @@ void TestDynamicMessageSuite::Testis_host_order_false(void)
 {
   // SUT: Net order is defined within the type itself. 
   //      Look at the typedef for details
-  SUT_net_order sut;
+  SUT::net_t sut;
   TS_ASSERT(!sut.is_host_order());
 }
 
@@ -637,21 +636,21 @@ void TestDynamicMessageSuite::Testdata(void)
 void TestDynamicMessageSuite::Testto_host(void)
 {
   // Populate the expected results.
-  SUT_net_order expected;
+  SUT::net_t expected;
   PopulateOtherValues(expected);
 
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT_net_order sut;
+  SUT::net_t sut;
   PopulateBaseValues(sut);
 
-  SUT no_op_sut;
+  SUT::host_t no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT result = to_host(sut);
-  SUT no_op_result = to_host(no_op_sut);
+  SUT::host_t result = to_host(sut);
+  SUT::host_t no_op_result = to_host(no_op_sut);
 
   TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
   TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
@@ -661,21 +660,21 @@ void TestDynamicMessageSuite::Testto_host(void)
 void TestDynamicMessageSuite::Testto_network(void)
 {
   // Populate the expected results.
-  SUT expected;
+  SUT::host_t expected;
   PopulateOtherValues(expected);
 
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT sut;
+  SUT::host_t sut;
   PopulateBaseValues(sut);
 
-  SUT_net_order no_op_sut;
+  SUT::net_t no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT_net_order result = to_network(sut);
-  SUT_net_order no_op_result = to_network(no_op_sut);
+  SUT::net_t result = to_network(sut);
+  SUT::net_t no_op_result = to_network(no_op_sut);
 
   TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
   TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());

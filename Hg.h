@@ -45,7 +45,6 @@ template< typename T >
 size_t dynamic_size_of(const T& msg);
 
 template< typename MsgT,
-          typename ByteOrderT,
           typename StorageT
         >
 class MessageT;
@@ -55,10 +54,118 @@ template< class HgMsgT,
         >
 struct Msg_size;
 
+
 //  ****************************************************************************
 /// An object that defines and manages access to a formatted message buffer.
 ///                 
-/// @paramt MsgT         A message description that has 
+/// @paramt HgT             A message description that has 
+///                           defined the format and utilities for field access.
+/// @paramt ByteOrderT      The specified byte-order for this
+///                           message definition. HostByteOrder is the default.
+/// 
+template< typename HgT,
+          typename ByteOrderT = Hg::HostByteOrder
+        >
+class Message
+  : public HgT
+{
+public:
+  //  Typedefs *****************************************************************
+  typedef HgT                                 hg_msg_type;
+
+  typedef typename
+    hg_msg_type::message_type                 message_type;
+
+  typedef typename
+    hg_msg_type::storage_type                 storage_type;
+
+  typedef typename
+    hg_msg_type::const_pointer                const_pointer;
+
+  typedef ByteOrderT                          byte_order_type;
+
+
+  //  Construction *************************************************************
+  //  **************************************************************************
+  /// Default Constructor
+  ///
+  Message()
+    : MessageT()
+  { }
+
+  //  **************************************************************************
+  /// Copy Constructor
+  /// 
+  /// @param rhs              The Hg message object from which data is copied. 
+  ///
+  Message(const message_type& rhs)
+  { 
+    *static_cast<message_type*>(this) = rhs;  
+  }
+
+  //  **************************************************************************
+  /// Copy Constructor
+  /// 
+  /// @param rhs              The Hg message object from which data is copied. 
+  ///
+  Message(const MessageT& rhs)
+    : MessageT(rhs)
+  { }
+
+  //  **************************************************************************
+  /// Value constructor. Constructs an initialized message from a raw data buffer.
+  ///               
+  /// @param p                The initialization data. The contents will only 
+  ///                         be verified for validity of the pointer if the
+  ///                         size n is larger than zero.
+  /// @param n                The size of the buffer in sp.
+  ///
+  Message(const_pointer p, size_t n)
+    : MessageT(p,n)
+  { }
+
+  //  Operations ***************************************************************
+  //  **************************************************************************
+  /// Assignment Operator
+  /// 
+  /// @param rhs              Basic message values to initialize this instance.
+  ///
+  Message& operator=(const message_type& rhs)
+  {
+    if (this != &rhs)
+    {
+      *static_cast<message_type*>(this) = rhs;
+    }
+
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Indicates if the byte-order of the message is host-order.
+  /// 
+  /// @return       true  -   The message is defined in host byte-order.
+  ///               false -   The mesage is not in host byte-order.
+  ///                         Most likely net byte-order.
+  ///
+  bool is_host_order() const
+  {
+    return byte_order_type::is_host;
+  }
+
+  // Give friendship to message instantiations of other types for conversion.
+  template< typename other_MsgT,
+            typename other_ByteOrderT
+          >
+  friend 
+  class Message;
+};
+
+
+
+//  ****************************************************************************
+/// An object that defines and manages access to a formatted message buffer.
+///                 
+/// @paramt MsgT            A message description that has 
 ///                           defined the format and utilities for field access.
 ///                           The MsgT must define these member-types:
 ///                             format_type:    TypeList defines the format
@@ -66,11 +173,8 @@ struct Msg_size;
 ///                                             access rules for the buffer.
 ///                           @note The HG declaration MACROs define a template
 ///                                 format that is compatible with Hg::MessageT.
-/// @paramt ByteOrderT      The specified byte-order for this
-///                           message definition. HostByteOrderfi is the default.
 /// 
 template< typename MsgT,
-          typename ByteOrderT = Hg::HostByteOrder,
           typename StorageT   = Hg::BufferedStoragePolicy
         >
 class MessageT
@@ -78,24 +182,21 @@ class MessageT
 {
 public:
   //  Typedefs *****************************************************************
-  typedef MsgT                            message_type;
+  typedef MsgT                                message_type;
 
   typedef typename 
-    MsgT::format_type                     format_type;
+    MsgT::format_type                         format_type;
   typedef StorageT                            storage_type;
 
   typedef typename 
     storage_type::data_type                   data_type;
   typedef data_type*                          pointer;
   typedef const data_type*                    const_pointer;
-  typedef MsgT&                           reference;
-  typedef const MsgT&                     const_reference;
-
-  typedef ByteOrderT                          byte_order_type;
+  typedef MsgT&                               reference;
+  typedef const MsgT&                         const_reference;
 
   typedef MessageT 
           < MsgT, 
-            ByteOrderT,
             StorageT
           >                                   this_type;
 
@@ -104,6 +205,13 @@ public:
 
   typedef typename
     message_size_trait<format_type>::type     size_trait;
+
+
+  typedef Message<this_type, 
+                  Hg::HostByteOrder>          host_t;
+
+  typedef Message<this_type, 
+                  Hg::NetByteOrder>           net_t;
 
   //  Constants ****************************************************************
   enum { k_size = SizeOf<format_type>::value };
@@ -182,19 +290,6 @@ public:
   {
     return Msg_size<this_type, 
                     k_has_dynamic>::calculate(*this); 
-  }
-
-
-  //  **************************************************************************
-  /// Indicates if the byte-order of the message is host-order.
-  /// 
-  /// @return       true  -   The message is defined in host byte-order.
-  ///               false -   The mesage is not in host byte-order.
-  ///                         Most likely net byte-order.
-  ///
-  bool is_host_order() const
-  {
-    return ByteOrderT::is_host;
   }
 
   //  Methods ******************************************************************
@@ -350,9 +445,7 @@ private:
   }
 
   // Give friendship to message instantiations of other types for conversion.
-  // Conversion between ByteOrderT has been provided.
   template <typename other_MsgT,
-            typename other_ByteOrderT,
             typename other_StorageT
             >
   friend 
@@ -378,12 +471,10 @@ struct Msg_size
     typedef typename
       message_t::message_type     message_type;
     typedef typename
-      message_t::byte_order_type  byte_order_type;
-    typedef typename
       message_t::storage_type     storage_type;
 
     size_t fixed_size   = Hg::SizeOf<typename HgMsgT::format_type>::value;
-    size_t dynamic_size = dynamic_size_of<message_type, byte_order_type, storage_type>(msg);
+    size_t dynamic_size = dynamic_size_of<message_type, storage_type>(msg);
     return fixed_size + dynamic_size; 
   }
 };

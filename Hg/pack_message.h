@@ -114,9 +114,11 @@ bool
 template< typename T >
 std::ostream& operator<<(std::ostream& os, const T& msg)
 {
-  Hg::MessageT< T::message_type, 
-                T::byte_order_type, 
-                Hg::BufferedStoragePolicy> outMsg;
+  Hg::Message 
+    <
+      Hg::MessageT< T::message_type, Hg::BufferedStoragePolicy>,
+      T::byte_order_type
+    > outMsg;
 
   outMsg = msg;
 

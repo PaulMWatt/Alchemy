@@ -31,15 +31,16 @@ namespace Hg
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-MessageT< typename T::message_type,
-          NetByteOrder,
-          typename T::storage_type
-        >
+typename
+  //MessageT< typename T::message_type,
+  //          typename T::storage_type
+  //        >::net_t
+  T::hg_msg_type::net_t
   to_network(T& from)
 {
-  MessageT< typename T::message_type,
-            NetByteOrder,
-            typename T::storage_type> to;
+  //MessageT< typename T::message_type,
+  //          typename T::storage_type>::net_t    to;
+  T::hg_msg_type::net_t                         to;
 
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
@@ -66,15 +67,14 @@ MessageT< typename T::message_type,
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-MessageT< typename T::message_type,
-          HostByteOrder,
-          typename T::storage_type
-        >
+typename
+  MessageT< typename T::message_type,
+            typename T::storage_type
+          >::host_t
   to_host(T& from)
 {
   MessageT< typename T::message_type,
-            HostByteOrder,
-            typename T::storage_type> to;
+            typename T::storage_type>::host_t   to;
   
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
@@ -101,15 +101,14 @@ MessageT< typename T::message_type,
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-MessageT< typename T::message_type,
-          BigEndian,
-          typename T::storage_type
+Message < typename T::hg_msg_type,
+          BigEndian
         >
   to_big_endian(T& from)
 {
-  MessageT< typename T::message_type,
-            BigEndian,
-            typename T::storage_type> to;
+  Message < typename T::hg_msg_type,
+            BigEndian
+          >                                       to;
 
   return detail::convert_byte_order < typename T::message_type,
                                       typename T::byte_order_type,
@@ -136,15 +135,14 @@ MessageT< typename T::message_type,
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-MessageT< typename T::message_type,
-          LittleEndian,
-          typename T::storage_type
+Message < typename T::hg_msg_type,
+          LittleEndian
         >
   to_little_endian(T& from)
 {
-  MessageT< typename T::message_type,
-            LittleEndian,
-            typename T::storage_type> to;
+  Message < typename T::hg_msg_type,
+            LittleEndian
+          >                                     to;
 
   // convert the values of the message parameters.
   return detail::convert_byte_order < typename T::message_type,

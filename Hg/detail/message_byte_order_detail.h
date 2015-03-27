@@ -26,7 +26,12 @@ struct ByteOrderConversionFunctor;
 
 //  ****************************************************************************
 template< typename MsgT,
-          typename ByteOrderT,
+          typename ByteOrderT
+        >
+class Message;
+
+//  ****************************************************************************
+template< typename MsgT,
           typename StorageT
         >
 class MessageT;
@@ -52,17 +57,17 @@ template< typename MsgT,
           typename StorageT,
           typename ToT
         >
-Hg::MessageT<MsgT, ToT, StorageT>
-  convert_byte_order(const Hg::MessageT<MsgT, FromT, StorageT>& from,
-                           Hg::MessageT<MsgT, ToT, StorageT>&   to)
+Hg::Message < Hg::MessageT<MsgT, StorageT>, ToT>
+  convert_byte_order(const Hg::Message < Hg::MessageT<MsgT, StorageT>, FromT>& from,
+                           Hg::Message < Hg::MessageT<MsgT, StorageT>, ToT>&   to)
 {
   typedef typename 
     MsgT::format_type                         format_type;
   // Initialize a functor to convert the data byte order,
   // then call this operation for each element in the defined message.
   detail::ByteOrderConversionFunctor
-    < Hg::MessageT< MsgT, FromT, StorageT>,
-      Hg::MessageT< MsgT, ToT, StorageT>  
+    < Hg::Message < Hg::MessageT<MsgT, StorageT>, FromT>,
+      Hg::Message < Hg::MessageT<MsgT, StorageT>, ToT>
     > ftor(from, to);  
 
   Hg::ForEachType < 0,
@@ -113,14 +118,12 @@ struct ConvertEndianess<T, StorageT, nested_trait>
     // Byte-order swapping is a symetric action.
     // The important goal is to define two differing orders to ensure
     // that the byte-orders are swapped.
-    typedef Hg::NetByteOrder    from_order;
-    typedef Hg::HostByteOrder   to_order;
+    typedef Hg::LittleEndian    from_order;
+    typedef Hg::BigEndian       to_order;
 
     // Construct a shallow message wrapper around the nested data.
-    Hg::MessageT<T, from_order, StorageT>  from;
-    from = input;
-    Hg::MessageT<T, to_order, StorageT>  to;
-
+    Hg::Message< Hg::MessageT<T, StorageT>, from_order>  from(input);
+    Hg::Message< Hg::MessageT<T, StorageT>, to_order>    to;
 
     // Pass this message to be byte-order swapped.
     output = convert_byte_order<T, from_order, StorageT, to_order>(from, to).values();

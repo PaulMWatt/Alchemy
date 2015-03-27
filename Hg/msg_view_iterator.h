@@ -14,7 +14,6 @@ namespace Hg
 {
 
 template< typename MsgT,
-          typename ByteOrderT,
           typename StorageT
         >
 class MessageT;
@@ -30,7 +29,6 @@ public:
   typedef std::random_access_iterator_tag         iterator_category;
 
   typedef MessageT< T,
-                    HostByteOrder,
                     BufferedStaticStoragePolicy>  value_type;
   typedef ptrdiff_t                               difference_type;
   typedef const value_type*                       pointer;
@@ -273,7 +271,6 @@ public:
   typedef std::random_access_iterator_tag         iterator_category;
 
   typedef MessageT< T,
-                    HostByteOrder,
                     BufferedStaticStoragePolicy>  value_type;
   typedef ptrdiff_t                               difference_type;
   typedef value_type*                             pointer;

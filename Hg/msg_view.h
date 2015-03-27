@@ -14,10 +14,9 @@ namespace Hg
 {
 
 template< typename MsgT,
-          typename ByteOrderT,
           typename StorageT
         >
-class MessageT;
+class Message;
 
 //  **************************************************************************
 /// The MsgView object to manage structured access over an opaque buffer.
@@ -29,23 +28,17 @@ class msg_view
 {      
 public:
   //  Typedefs *****************************************************************
-  typedef MsgT                            message_type;
+  typedef MsgT                                message_type;
 
   typedef typename 
-    MsgT::format_type                     format_type;
+    MsgT::format_type                         format_type;
   typedef Hg::BufferedStoragePolicy           storage_type;
 
-  // TODO: Not sure this is useful.
-  //typedef typename 
-  //  storage_type::data_type                   data_type;
-  
   typedef ByteOrderT                          byte_order_type;
 
-  typedef MessageT 
-          < message_type, 
-            byte_order_type,
-            storage_type
-          >                                   value_type;
+  typedef Message < MsgT, 
+                    byte_order_type
+                  >                           value_type;
 
   typedef byte_t*                             raw_pointer;
 

@@ -154,17 +154,22 @@ HG_END_FORMAT(bitmap_info_t)
 namespace sgraph
 {
 
+namespace detail
+{
 typedef Hg::MessageT< Hg::bitmap_file_header_t_HgFormat, 
-                      Hg::LittleEndian, 
-                      Hg::BufferedStaticStoragePolicy>    file_t;
+                      Hg::BufferedStaticStoragePolicy>      hg_file_t;
 
 typedef Hg::MessageT< Hg::core_info_t_HgFormat, 
-                      Hg::LittleEndian, 
-                      Hg::BufferedStaticStoragePolicy>    core_t;
+                      Hg::BufferedStaticStoragePolicy>      hg_core_t;
 
 typedef Hg::MessageT< Hg::bitmap_info_t_HgFormat, 
-                      Hg::LittleEndian, 
-                      Hg::BufferedStaticStoragePolicy>    info_t;
+                      Hg::BufferedStaticStoragePolicy>      hg_info_t;
+}
+
+typedef Hg::Message< detail::hg_file_t, Hg::LittleEndian>   file_t;
+typedef Hg::Message< detail::hg_core_t, Hg::LittleEndian>   core_t;
+typedef Hg::Message< detail::hg_info_t, Hg::LittleEndian>   info_t;
+                       
 
 
 typedef void (*pixel_ftor) ( Hg::rgba_t_HgFormat&  pixel,
