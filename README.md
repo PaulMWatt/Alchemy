@@ -1,5 +1,9 @@
-(Status - I have entered a crunch-mode (Jan 23, 2015) with work and I have not had any time to devote to continuing to improve Alchemy. Early February I believe I will have more time and you will begin to see updates again.) 
-Hg is now **5.5% faster** overall compared to the hand-written benchmarks (more details below)
+Activity
+========================================================
+I have added a sample program to demonstrate how Alchemy
+can be used. It is called, sgraphy. This program performs
+stenography on a bitmap. It will allow you to embed a hidden 
+message in the bitmap as well as extract the message.
 
 Network Alchemy
 ========================================================
@@ -89,19 +93,16 @@ Here is a short example of a Hg message definition and how it can be used:
   
 `// Typedefs such as these are recommended to simplify the usage.`  
 `// These typedefs create message objects that associate`  
-`// a Hg format, with a platform byte-order.`  
-`// The message object also provides memory management options.`  
-`typedef Hg::Message<AppError_HgFormat, Hg::HostByteOrder>     AppErrorMsg;`  
-`typedef Hg::Message<AppError_HgFormat, Hg::NetByteOrder>      AppErrorMsgNet;`  
+`typedef Hg::Message<AppError_HgFormat>     AppErrorMsg;`  
   
 `// Now messages can be created, populated, copied, and converted between byte-order.`  
-`AppErrorMsg msg;`  
+`AppErrorMsg::host_t msg;`  
 `msg.id   = 1;`  
 `msg.code = GetError();`  
 `strncpy(msg.desc, GetErrorDesc(), sizeof(msg.desc));`  
   
 `// Convert to network byte-order`  
-`AppErrorMsgNet msgNet = Hg::to_network(msg);`  
+`AppErrorMsg::net_t msgNet = Hg::to_network(msg);`  
   
 `// The fields id and code will have been converted if this is`   
 `// a little endian system, otherwise no change will have occured.`  
@@ -126,27 +127,40 @@ Benchmark performance:
 
 * I have been able to improve the overal speed of Hg so overall it is **5.5% faster** than the hand-written version.
 * Current performance results:
-* Fundamental Types: 20% faster
-* Packed-bits:       10% faster
-* Unaligned ints:    32% faster
-* Nested types:      28% slower
-* Overall:           5.5% faster
+* Fundamental Types: 29%  faster
+* Packed-bits:       13%  faster
+* Unaligned ints:    48%  faster
+* Nested types:      23%  slower
+* Overall:           7.5% faster
 
-Results for Hg: 
-Basic:     0.0201853s 
-Packed:    0.0211743s 
-Unaligned: 0.0134641s 
-Complex:   0.0320937s 
-Total:     0.0869173s 
+Benchmark output:
+-----------------
+Loading test data:
+Hit enter when ready...:
+Running Hg benchmark:
+basic size:      14, count; 38347922
+packed size:     7,  count; 76695844
+unaligned size:  19, count; 28256363
+complex size:    72, count; 7456540
+Test completed
 
-Results for memcpy: 
-Basic:     0.0252621s 
-Packed:    0.0235868s 
-Unaligned: 0.0198044s 
-Complex:   0.0232371s 
-Total:     0.0918904s 
+Running memcpy benchmark:
+basic size:      14, count; 38347922
+packed size:     7,  count; 76695844
+unaligned size:  19, count; 28256363
+complex size:    72, count; 7456540
+Test completed
 
-I have started creating benchmarks to measure Hg's performance. The benchmarks compare the Hg implementation to a hand-written struct, using memcpy and the network byte-order conversion functions. 
+           Hg:          memcpy:         diff            percent
+Basic:     0.533849s    0.691942s        0.158093       -29.6138%
+Packed:    0.630563s    0.713644s        0.0830816      -13.1758%
+Unaligned: 0.399894s    0.593238s        0.193344       -48.3489%
+Complex:   1.0218s      0.781852s       -0.239947        23.4828%
+Total:     2.5861s      2.78068s         0.194572       -7.52373%
+
+Hit enter to exit.
+-----------------
+
 
 These are the basic benchmark tests that have been written:
 
@@ -158,16 +172,9 @@ These are the basic benchmark tests that have been written:
 I intend to create a more thorough set of tests. For now these 4 types have helped me identify plenty of hot-spots to improve the performance. Originally I only had a memory model that was dynamically allocated. When I ran the first benchmarks, Hg was 100x slower. After that I added a static memory model that can be used as well. This improved the performance dramatically. I will continue to comb through the Hg implementation and structure to improve its speed. The current performance report is listed below.
 
 * Notes: 
-** The packed-bit fields have been completely reworked. They are now smaller, and for the benchmarks they produce faster code. 
 ** Some overhead is incurred because all of the fields are zero initialized when an object is created. 
 ** I am considering adding an option to not initialize the objects for people who are performance concsious. However, I hesitate to do that because it could cause more problems than the performance penalty incurs.  
 ** Nested structures cause the largest increase in cost. 
-** I have tracked down many of the causes to be unnecessary copies of the objects. I will continue to eliminate these as I find them.   
-
-Previous History (November):
-* History: Hg incurs ~30% overhead (slower) compared to the hand-written version. 
-* History: In some cases Hg produces faster code, ~10%. This was the fundamental field test. 
-* History: Packed bit fields cause the largest increase in cost. 
 
 -------------
 
@@ -176,10 +183,8 @@ Active and Planned Improvements:
 Currently in progress:
  * Cross-compiler support and cross-platform integration with auto-tools. Currently the projects are Visual Studio Solutions.
  * Adding support for Clang.
- * Clean up TODO: tags left in the code. Place an official exception handling mechanism in place that is disabled by default.
+ * Clean up TODO: tags left in the code. 
 
 Soon to follow:
- * Sample applications to demonstrate it's usage.
  * Message converters, to simplify the task of receiving a message and translating it to another format before forwarding it on to the stage of processing.
- * Generate a Wireshark dissector from the Hg definition.
  
