@@ -134,39 +134,36 @@ Benchmark performance:
 * Overall:           7.5% faster
 
 Machine:
-Intel Core i7-4790L @ 4.00GHz 
-16 GB RAM 
-Windows 8.1 
+*Intel Core i7-4790L @ 4.00GHz 
+*16 GB RAM 
+*Windows 8.1 
 
 Benchmark output:
 -----------------
- Loading test data: 
- Hit enter when ready...: 
- Running Hg benchmark: 
- basic size:      14, count; 38347922 
- packed size:     7,  count; 76695844 
- unaligned size:  19, count; 28256363 
- complex size:    72, count; 7456540 
- Test completed 
+ *Loading test data: 
+ *Hit enter when ready...: 
+ **Running Hg benchmark:** 
+ *basic size:      14, count; 38347922 
+ *packed size:     7,  count; 76695844 
+ *unaligned size:  19, count; 28256363 
+ *complex size:    72, count; 7456540 
+ *Test completed 
 
- Running memcpy benchmark: 
- basic size:      14, count; 38347922 
- packed size:     7,  count; 76695844 
- unaligned size:  19, count; 28256363 
- complex size:    72, count; 7456540 
- Test completed 
+ **Running memcpy benchmark:** 
+ *basic size:      14, count; 38347922 
+ *packed size:     7,  count; 76695844 
+ *unaligned size:  19, count; 28256363 
+ *complex size:    72, count; 7456540 
+ *Test completed 
 
-           Hg:          memcpy:         diff            percent
- Basic:     0.533849s    0.691942s        0.158093       -29.6138% 
- Packed:    0.630563s    0.713644s        0.0830816      -13.1758% 
- Unaligned: 0.399894s    0.593238s        0.193344       -48.3489% 
- Complex:   1.0218s      0.781852s       -0.239947        23.4828% 
- Total:     2.5861s      2.78068s         0.194572       -7.52373% 
+            Hg:          memcpy:         diff            percent
+ *Basic:     0.533849s    0.691942s        0.158093       -29.6138% 
+ *Packed:    0.630563s    0.713644s        0.0830816      -13.1758% 
+ *Unaligned: 0.399894s    0.593238s        0.193344       -48.3489% 
+ *Complex:   1.0218s      0.781852s       -0.239947        23.4828% 
+ *Total:     2.5861s      2.78068s         0.194572       -7.52373% 
 
- Hit enter to exit. 
-
-
-
+ 
 These are the basic benchmark tests that have been written:
 
 1. A single struct with fundamental type fields.  
