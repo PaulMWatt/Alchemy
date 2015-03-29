@@ -91,7 +91,7 @@ struct message_size_trait
 //  ****************************************************************************
 //  Primary Message Declaration MACROS *****************************************
 //  ****************************************************************************
-#define DEFINE_HG_FORMAT_HEADER(F)                                             \
+#define DEFINE_HG_STRUCT_HEADER(F)                                             \
   struct F##Format                                                             \
     : nested_trait                                                             \
   {                                                                            \
@@ -116,12 +116,13 @@ struct message_size_trait
     BEGIN_COUNTER
 
 //  ****************************************************************************
-#define DECLARE_FORMAT_HEADER(F)                                               \
+#define DECLARE_STRUCT_HEADER(F)                                               \
   typedef Hg::make_Hg_type_list<F>::type                    F##_Hg;            \
-  DEFINE_HG_FORMAT_HEADER(F##_Hg)
+  DEFINE_HG_STRUCT_HEADER(F##_Hg)
+
 
 //  ****************************************************************************
-#define DECLARE_DATUM_FORMAT_IDX(IDX,T,P)                                      \
+#define DECLARE_DATUM_ENTRY_IDX(IDX,T,P)                                       \
     typedef                                                                    \
       Hg::detail::DeduceProxyType < IDX,                                       \
                                     format_type>::type        Proxy##P;        \
@@ -136,60 +137,53 @@ struct message_size_trait
 
 
 //  ****************************************************************************
-#define DECLARE_DATUM_FORMAT(T, P)                                             \
+#define DECLARE_DATUM_ENTRY(T, P)                                              \
   INC_COUNTER                                                                  \
-  DECLARE_DATUM_FORMAT_IDX((COUNTER_VALUE), T, P)
+  DECLARE_DATUM_ENTRY_IDX((COUNTER_VALUE), T, P)
 
 
 //  ****************************************************************************
-#define DECLARE_ARRAY(T,N)        std::array<T,N>
+#define DECLARE_ARRAY_ENTRY_IDX(IDX,A,P)                                       \
+  DECLARE_DATUM_ENTRY_IDX(IDX,A,P)
 
 
 //  ****************************************************************************
-#define DECLARE_ARRAY_FORMAT_IDX(IDX,T,N,P)                                    \
-  DECLARE_DATUM_FORMAT_IDX(IDX,DECLARE_ARRAY(T,N),P)
-
+#define DECLARE_ARRAY(T,N)                std::array<T,N>
 
 //  ****************************************************************************
-#define DECLARE_ARRAY_FORMAT(T, N, P)                                          \
+#define DECLARE_ARRAY_ENTRY(T, N, P)                                           \
   INC_COUNTER                                                                  \
-  DECLARE_ARRAY_FORMAT_IDX((COUNTER_VALUE), T, N, P)
+  DECLARE_ARRAY_ENTRY_IDX((COUNTER_VALUE), DECLARE_ARRAY(T, N), P)
 
 
 //  ****************************************************************************
-#define DECLARE_VECTOR(T)        std::vector<T>
-
-
-//  ****************************************************************************
-#define DECLARE_DYNAMIC_FORMAT_IDX(IDX,T,N,P)                                  \
-    DECLARE_DATUM_FORMAT_IDX(IDX,DECLARE_VECTOR(T),P)                          \
+#define DECLARE_DYNAMIC_ENTRY_IDX(IDX,V,N,P)                                   \
+    DECLARE_DATUM_ENTRY_IDX(IDX,V,P)                                           \
   public:                                                                      \
     template <typename U>                                                      \
     size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
 
 
 //  ****************************************************************************
-#define DECLARE_DYNAMIC_FORMAT(T, N, P)                                        \
+#define DECLARE_VECTOR(T)                 std::vector<T>
+
+//  ****************************************************************************
+#define DECLARE_DYNAMIC_ENTRY(T, N, P)                                         \
     INC_COUNTER                                                                \
-    DECLARE_DYNAMIC_FORMAT_IDX((COUNTER_VALUE), T, N, P)
+    DECLARE_DYNAMIC_ENTRY_IDX((COUNTER_VALUE), DECLARE_VECTOR(T), N, P)
 
 
 //  ****************************************************************************
-#define DECLARE_ALLOCATOR_FORMAT_IDX(IDX,T,N,P)                                \
-    DECLARE_DATUM_FORMAT_IDX(IDX,(std::vector<T,A>),P)                         \
-  public:                                                                      \
-    template <typename U>                                                      \
-    size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
-
+#define DECLARE_ALLOCATED_VECTOR(T,A)     std::vector<T,A>
 
 //  ****************************************************************************
-#define DECLARE_ALLOCATOR_FORMAT(T, A, N, P)                                   \
+#define DECLARE_ALLOCATOR_ENTRY(T, A, N, P)                                    \
     INC_COUNTER                                                                \
-    DECLARE_ALLOCATOR_FORMAT_IDX((COUNTER_VALUE), T, A, N, P)
+    DECLARE_DYNAMIC_ENTRY_IDX((COUNTER_VALUE), DECLARE_ALLOCATED_VECTOR(T,A), N, P)
 
 
 //  ****************************************************************************
-#define DECLARE_FORMAT_FOOTER(F)                                               \
+#define DECLARE_STRUCT_FOOTER(F)                                               \
   private:                                                                     \
     template <typename T, typename U>                                          \
     size_t DatumSize(T value, U*)                                              \

@@ -109,7 +109,7 @@
 ///   } // namespace Hg
 /// ~~~
 ///             
-#define HG_BEGIN_FORMAT(TYPE_LIST)      DECLARE_FORMAT_HEADER(TYPE_LIST)
+#define HG_BEGIN_FORMAT(TYPE_LIST)      DECLARE_STRUCT_HEADER(TYPE_LIST)
 
 
 //  ****************************************************************************
@@ -123,7 +123,7 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define HG_DATUM(TYPE,NAME)            DECLARE_DATUM_FORMAT(TYPE,NAME)
+#define HG_DATUM(TYPE,NAME)            DECLARE_DATUM_ENTRY(TYPE,NAME)
 
 //  ****************************************************************************
 /// Adds a fixed-size array field to the message definition.
@@ -137,7 +137,7 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define HG_ARRAY(TYPE,COUNT,NAME)      DECLARE_ARRAY_FORMAT(TYPE,COUNT,NAME)
+#define HG_ARRAY(TYPE,COUNT,NAME)      DECLARE_ARRAY_ENTRY(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size to the message definition.
@@ -162,7 +162,7 @@
 ///
 ///             
 #define HG_DYNAMIC(TYPE,COUNT,NAME)\
-                                        DECLARE_DYNAMIC_FORMAT(TYPE,COUNT,NAME)
+                                        DECLARE_DYNAMIC_ENTRY(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size controlled by a user specified allocator.
@@ -190,7 +190,7 @@
 ///
 ///             
 #define HG_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)\
-                                        DECLARE_ALLOCATOR_FORMAT(TYPE,ALLOCATOR,COUNT,NAME)
+                                        DECLARE_ALLOCATOR_ENTRY(TYPE,ALLOCATOR,COUNT,NAME)
 
 //  ****************************************************************************
 /// Marks the end of a message format.
@@ -203,7 +203,7 @@
 /// data format definition. A compiler error will be emitted if the number 
 /// of declared HG_MSG_FIELD entries does not match the number expected.
 /// 
-#define HG_END_FORMAT(TYPE_LIST)       DECLARE_FORMAT_FOOTER(TYPE_LIST)
+#define HG_END_FORMAT(TYPE_LIST)       DECLARE_STRUCT_FOOTER(TYPE_LIST)
 
 
 //  ****************************************************************************
