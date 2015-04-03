@@ -44,6 +44,7 @@ HG_BEGIN_FORMAT(base_format_t)
   HG_ARRAY (uint32_t, 3,              sequence)
 HG_END_FORMAT(base_format_t)
 
+
 typedef base_format_t_HgFormat    message_type;
 
 } // namespace Hg

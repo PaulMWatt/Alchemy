@@ -88,6 +88,71 @@ struct message_size_trait
 //  These definitions have been abstracted to simplify the user header files.
 //  ****************************************************************************
 
+
+//  ****************************************************************************
+
+
+#define EACH_TYPE(r, data, i, x) \
+  BOOST_PP_TUPLE_ELEM(3,0,x), 
+
+#define EACH_PARAM(r, data, i, x) \
+  BOOST_PP_TUPLE_ELEM(3,1,x)(BOOST_PP_TUPLE_ELEM(3,2,x)); 
+
+
+#define DEFINE_TYPELIST(N,...)\
+  typedef TypeList < __VA_ARGS__ > N;
+
+#define DEFINE_PARAMLIST(...)\
+  __VA_ARGS__
+
+
+#define DEFINE_STRUCT_TYPELIST(N, S) \
+  DEFINE_TYPELIST(N, \
+    BOOST_PP_SEQ_FOR_EACH_I(EACH_TYPE, unused, BOOST_PP_VARIADIC_TO_SEQ(S)) Hg::MT)
+
+#define DEFINE_STRUCT_PARAMS(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_PARAM, unused, BOOST_PP_VARIADIC_TO_SEQ(S))
+
+#define PAUL_PARAM(T,P) (T,HG_DATUM,P)
+#define PAUL_DATUM(T,P) PAUL_PARAM(T,P)
+
+// TODO: Temporarily will try to put the source back together the way it is currently 
+//       structured. Then will move the placement of the definitions to 
+//       solve some of the incompatibilities for duplicate types.
+
+//  ****************************************************************************
+//  Defines the outer value container as well as the formatted type-list.
+//
+#define DEFINE_HG_STRUCT(NAME, ...)                                            \
+  DEFINE_STRUCT_TYPELIST(NAME##_tl, __VA_ARGS__)                               \
+  struct NAME                                                                  \
+    : nested_trait                                                             \
+  {                                                                            \
+    typedef NAME                        this_type;                             \
+    typedef NAME##_tl                   format_type;                           \
+    enum { k_size = SizeOf<format_type>::value };                              \
+    enum { k_length                   = length<format_type>::value };          \
+                                                                               \
+    template< size_t IDX>                                                      \
+    Datum<IDX, format_type>& FieldAt()                                         \
+    {                                                                          \
+      typedef Datum   < IDX,                                                   \
+                        format_type>    datum_type_t;                          \
+      return FieldAtIndex((datum_type_t*)0);                                   \
+    }                                                                          \
+    template< size_t IDX>                                                      \
+    const Datum<IDX, format_type>& const_FieldAt() const                       \
+    {                                                                          \
+      return const_cast<F##Format*>(this)->FieldAt();                          \
+    }                                                                          \
+    template<size_t I> struct TypeAtIndex;                                     \
+    BEGIN_COUNTER                                                              \
+                                                                               \
+    DEFINE_STRUCT_PARAMS(__VA_ARGS__)                                          \
+    DECLARE_STRUCT_FOOTER(NAME)
+  
+
+
 //  ****************************************************************************
 //  Primary Message Declaration MACROS *****************************************
 //  ****************************************************************************
@@ -119,7 +184,6 @@ struct message_size_trait
 #define DECLARE_STRUCT_HEADER(F)                                               \
   typedef Hg::make_Hg_type_list<F>::type                    F##_Hg;            \
   DEFINE_HG_STRUCT_HEADER(F##_Hg)
-
 
 //  ****************************************************************************
 #define DECLARE_DATUM_ENTRY_IDX(IDX,T,P)                                       \
@@ -183,7 +247,7 @@ struct message_size_trait
 
 
 //  ****************************************************************************
-#define DECLARE_STRUCT_FOOTER(F)                                               \
+#define DECLARE_STRUCT_FOOTER(NAME)                                            \
   private:                                                                     \
     template <typename T, typename U>                                          \
     size_t DatumSize(T value, U*)                                              \
@@ -200,9 +264,9 @@ struct message_size_trait
   };                                                                           \
   namespace detail {                                                           \
   template <>                                                                  \
-  struct field_data_t <F>                                                      \
+  struct field_data_t <NAME##_tl>                                              \
   {                                                                            \
-  typedef F##_HgFormat                  value_type;                            \
+  typedef NAME                          value_type;                            \
   };                                                                           \
   } // namespace detail
 

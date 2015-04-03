@@ -8,10 +8,33 @@
 ///
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
+///
+//  ****************************************************************************
+/// Additional copyright information:
+///
+/// This MACRO was adapted from the BOOST Preprocessing library.
+/// Copyright Housemarque Oy 2002 
+/// Copyright Paul Mensonides 2002 
+/// 
+/// Distributed under the Boost Software License, Version 1.0. 
+/// (See at www.boost.org/LICENSE_1_0.txt
+///
+//  ****************************************************************************
 //  ****************************************************************************
 #ifndef META_MACROS_H_INCLUDED
 #define META_MACROS_H_INCLUDED
 
+//  ****************************************************************************
+// Evaluates the two input expressions, 
+// then uses the token paste operator to fuse them together.
+#define TMP_PASTE(A,B)    TMP_PASTE_DO(A,B)
+#define TMP_PASTE_DO(A,B) A ## B
+
+//  ****************************************************************************
+// TODO: Include a pruned version of the BOOST_PP MACROS that are used here.
+//#include <Pb/meta_variadic_macros.h>
+
+//  ****************************************************************************
 /** MACRO set to simplify the declaration of many array entries **************/
 #define TMP_ARRAY_1(T)    T##0
 #define TMP_ARRAY_2(T)    TMP_ARRAY_1(T),  T##1
@@ -52,15 +75,15 @@
 
 /** MACROS used to simplify the replication of an item ********************/
 #define TMP_REPEAT_1(T)    T 
-#define TMP_REPEAT_2(T)    TMP_REPEAT_1(T) T
-#define TMP_REPEAT_3(T)    TMP_REPEAT_2(T) T
-#define TMP_REPEAT_4(T)    TMP_REPEAT_3(T) T
-#define TMP_REPEAT_5(T)    TMP_REPEAT_4(T) T
-#define TMP_REPEAT_6(T)    TMP_REPEAT_5(T) T
-#define TMP_REPEAT_7(T)    TMP_REPEAT_6(T) T
-#define TMP_REPEAT_8(T)    TMP_REPEAT_7(T) T
-#define TMP_REPEAT_9(T)    TMP_REPEAT_8(T) T
-#define TMP_REPEAT_10(T)   TMP_REPEAT_9(T) T
+#define TMP_REPEAT_2(T)    TMP_REPEAT_1(T)  T
+#define TMP_REPEAT_3(T)    TMP_REPEAT_2(T)  T
+#define TMP_REPEAT_4(T)    TMP_REPEAT_3(T)  T
+#define TMP_REPEAT_5(T)    TMP_REPEAT_4(T)  T
+#define TMP_REPEAT_6(T)    TMP_REPEAT_5(T)  T
+#define TMP_REPEAT_7(T)    TMP_REPEAT_6(T)  T
+#define TMP_REPEAT_8(T)    TMP_REPEAT_7(T)  T
+#define TMP_REPEAT_9(T)    TMP_REPEAT_8(T)  T
+#define TMP_REPEAT_10(T)   TMP_REPEAT_9(T)  T
 #define TMP_REPEAT_11(T)   TMP_REPEAT_10(T) T
 #define TMP_REPEAT_12(T)   TMP_REPEAT_11(T) T
 #define TMP_REPEAT_13(T)   TMP_REPEAT_12(T) T
@@ -88,12 +111,7 @@
 // Note: The value N passed in must be a literal number.
 #define TMP_REPEAT_N(N,T)  TMP_REPEAT_##N(T)
 
-// Evaluates the two input expressions, 
-// then uses the token paste operator to fuse them together.
-#define TMP_PASTE(A,B)    TMP_PASTE_DO(A,B)
-#define TMP_PASTE_DO(A,B) A ## B
-
-// Increments 1 to the supplied number, 0 to 15 are supported
+// Increments 1 to the supplied number, 0 to 16 are supported
 #define TMP_INC(x)    TMP_INC_DO(x)
 #define TMP_INC_DO(x) TMP_INC_ ## x
 
@@ -132,7 +150,7 @@
 #define TMP_INC_32   31
 
 
-// Decrements 1 from the supplied number, 16 to 1 are supported.
+// Decrements 1 from the supplied number, 32 to 1 are supported.
 #define TMP_DEC(x)    TMP_DEC_DO(x)
 #define TMP_DEC_DO(x) TMP_DEC_ ## x
 
