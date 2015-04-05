@@ -79,37 +79,24 @@
 ///   // Currently the BIT_SET definitions must occur in the *alchemy* namespace.
 ///   namespace Hg
 ///   {
-///   // A TypeList definition provides a map to navigate the data structure,.
-///   typedef TypeList
-///   {
-///     uint8_t,
-///     uint8_t,
-///     uint16_t,
-///     uint32_t,
-///     uint32_t,
-///     uint32_t,
-///     uint16_t,
-///     uint8_t,
-///     uint8_t,
-///   } new_point_t;        
 ///
 ///   // Define the message data format
-///   HG_BEGIN_FORMAT(new_point_t)
-///     HG_DATUM (uint8_t,    msgType)              
-///     HG_DATUM (uint8_t,    verNum)               
-///     HG_DATUM (uint16_t,   id)            
-///     HG_DATUM (uint32_t,   X)            
-///     HG_DATUM (uint32_t,   Y)             
-///     HG_DATUM (uint32_t,   Z)         
-///     HG_DATUM (uint16_t,   flags)            
-///     HG_DATUM (uint8_t,    priority)             
-///     HG_DATUM (uint8_t,    count)      
-///   END_MSG_FORMAT
+///   HG_BEGIN_FORMAT(new_point_t,
+///     HG_DATUM (uint8_t,    msgType),
+///     HG_DATUM (uint8_t,    verNum),
+///     HG_DATUM (uint16_t,   id),
+///     HG_DATUM (uint32_t,   X),
+///     HG_DATUM (uint32_t,   Y),
+///     HG_DATUM (uint32_t,   Z),
+///     HG_DATUM (uint16_t,   flags),
+///     HG_DATUM (uint8_t,    priority),
+///     HG_DATUM (uint8_t,    count)
+///   )
 ///     
 ///   } // namespace Hg
 /// ~~~
 ///             
-#define HG_BEGIN_FORMAT(TYPE_LIST)      DECLARE_STRUCT_HEADER(TYPE_LIST)
+#define HG_BEGIN_FORMAT(TYPE_LIST, ...)  DECLARE_STRUCT_HEADER(TYPE_LIST, __VA_ARGS__)
 
 
 //  ****************************************************************************
@@ -123,7 +110,7 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define HG_DATUM(TYPE,NAME)            DECLARE_DATUM_ENTRY(TYPE,NAME)
+#define HG_DATUM(TYPE,NAME)            D_DATUM(TYPE,NAME)
 
 //  ****************************************************************************
 /// Adds a fixed-size array field to the message definition.
@@ -190,7 +177,7 @@
 ///
 ///             
 #define HG_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)\
-                                        DECLARE_ALLOCATOR_ENTRY(TYPE,ALLOCATOR,COUNT,NAME)
+                                        D_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
 
 //  ****************************************************************************
 /// Marks the end of a message format.

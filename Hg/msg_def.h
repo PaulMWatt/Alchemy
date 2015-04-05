@@ -88,12 +88,22 @@ struct message_size_trait
 //  These definitions have been abstracted to simplify the user header files.
 //  ****************************************************************************
 
+//  ****************************************************************************
+#define DO_REMOVE(...)   __VA_ARGS__
+#define REMOVE_PARENS(N) DO_REMOVE N
+
+#define BOOST_PP_REMOVE_PARENS(param) \
+    BOOST_PP_IIF \
+      ( \
+      BOOST_PP_IS_BEGIN_PARENS(param), \
+      DO_REMOVE, \
+      BOOST_PP_IDENTITY \
+      ) \
+    (param)() \
 
 //  ****************************************************************************
-
-
 #define EACH_TYPE(r, data, i, x) \
-  BOOST_PP_TUPLE_ELEM(3,0,x), 
+  REMOVE_PARENS(BOOST_PP_TUPLE_ELEM(3,0,x)), 
 
 #define EACH_PARAM(r, data, i, x) \
   BOOST_PP_TUPLE_ELEM(3,1,x)(BOOST_PP_TUPLE_ELEM(3,2,x)); 
@@ -110,6 +120,7 @@ struct message_size_trait
   DEFINE_TYPELIST(N, \
     BOOST_PP_SEQ_FOR_EACH_I(EACH_TYPE, unused, BOOST_PP_VARIADIC_TO_SEQ(S)) Hg::MT)
 
+
 #define DEFINE_STRUCT_PARAMS(S) \
   BOOST_PP_SEQ_FOR_EACH_I(EACH_PARAM, unused, BOOST_PP_VARIADIC_TO_SEQ(S))
 
@@ -120,13 +131,16 @@ struct message_size_trait
 //  ****************************************************************************
 //  Defines the outer value container as well as the formatted type-list.
 //
-#define DEFINE_HG_STRUCT(NAME, ...)                                            \
-  DEFINE_STRUCT_TYPELIST(NAME##_tl, __VA_ARGS__)                               \
-  struct NAME                                                                  \
+//#define DEFINE_HG_STRUCT(F, ...)                                               
+#define DECLARE_STRUCT_HEADER(F, ...)                                          \
+  DEFINE_STRUCT_TYPELIST(F##_tl, __VA_ARGS__)                                  \
+  typedef Hg::make_Hg_type_list<F##_tl>::type               F##_Hg;            \
+                                                                               \
+  struct F                                                                     \
     : nested_trait                                                             \
   {                                                                            \
-    typedef NAME                        this_type;                             \
-    typedef NAME##_tl                   format_type;                           \
+    typedef F                           this_type;                             \
+    typedef F##_tl                      format_type;                           \
     enum { k_size = SizeOf<format_type>::value };                              \
     enum { k_length                   = length<format_type>::value };          \
                                                                                \
@@ -146,41 +160,8 @@ struct message_size_trait
     BEGIN_COUNTER                                                              \
                                                                                \
     DEFINE_STRUCT_PARAMS(__VA_ARGS__)                                          \
-    DECLARE_STRUCT_FOOTER(NAME)
-  
-
-
-//  ****************************************************************************
-//  Primary Message Declaration MACROS *****************************************
-//  ****************************************************************************
-#define DEFINE_HG_STRUCT_HEADER(F)                                             \
-  struct F##Format                                                             \
-    : nested_trait                                                             \
-  {                                                                            \
-    typedef F##Format                   this_type;                             \
-    typedef F                           format_type;                           \
-    enum { k_size = SizeOf<format_type>::value };                              \
-    enum { k_length                   = length<format_type>::value };          \
-                                                                               \
-    template< size_t IDX>                                                      \
-    Datum<IDX, format_type>& FieldAt()                                         \
-    {                                                                          \
-      typedef Datum   < IDX,                                                   \
-                        format_type>    datum_type_t;                          \
-      return FieldAtIndex((datum_type_t*)0);                                   \
-    }                                                                          \
-    template< size_t IDX>                                                      \
-    const Datum<IDX, format_type>& const_FieldAt() const                       \
-    {                                                                          \
-      return const_cast<F##Format*>(this)->FieldAt();                          \
-    }                                                                          \
-    template<size_t I> struct TypeAtIndex;                                     \
-    BEGIN_COUNTER
-
-//  ****************************************************************************
-#define DECLARE_STRUCT_HEADER(F)                                               \
-  typedef Hg::make_Hg_type_list<F>::type                    F##_Hg;            \
-  DEFINE_HG_STRUCT_HEADER(F##_Hg)
+  DECLARE_STRUCT_FOOTER(F)
+    
 
 //  ****************************************************************************
 #define DECLARE_DATUM_ENTRY_IDX(IDX,P)                                         \
@@ -195,18 +176,17 @@ struct message_size_trait
                                                                                \
     const char* FieldName(const Proxy##P&)                    { return #P; }   \
     template<> struct TypeAtIndex<IDX>                                         \
-    { typedef typename Hg::TypeAt<IDX,format_type type>::type type; };              
+    { typedef Hg::TypeAt<IDX,format_type>::type type; };              
 
-
-////  ****************************************************************************
-//#define DECLARE_DATUM_ENTRY(P)                                                 \
-//  INC_COUNTER                                                                  \
-//  DECLARE_DATUM_ENTRY_IDX((COUNTER_VALUE), P)
 
 //  ****************************************************************************
 #define DECLARE_DATUM_ENTRY_X(P)                                               \
   INC_COUNTER                                                                  \
   DECLARE_DATUM_ENTRY_IDX((COUNTER_VALUE), P)
+
+
+#define D_DATUM_X(T,P) (T,DECLARE_DATUM_ENTRY_X,P)
+#define D_DATUM(T,P) D_DATUM_X((T),P)
 
 //  ****************************************************************************
 #define DECLARE_ARRAY(T,N)                std::array<T,N>
@@ -217,42 +197,22 @@ struct message_size_trait
 //  ****************************************************************************
 #define DECLARE_ALLOCATED_VECTOR(T,A)     std::vector<T,A>
 
-////  ****************************************************************************
-//#define DECLARE_DYNAMIC_ENTRY_IDX(IDX,V,N,P)                                   \
-//    DECLARE_DATUM_ENTRY_IDX(IDX,V,P)                                           \
-//  public:                                                                      \
-//    template <typename U>                                                      \
-//    size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
-//
-//
-////  ****************************************************************************
-//#define DECLARE_DYNAMIC_ENTRY(T, N, P)                                         \
-//    INC_COUNTER                                                                \
-//    DECLARE_DYNAMIC_ENTRY_IDX((COUNTER_VALUE), DECLARE_VECTOR(T), N, P)
-//
-//
-
-////  ****************************************************************************
-//#define DECLARE_ALLOCATOR_ENTRY(T, A, N, P)                                    \
-//    INC_COUNTER                                                                \
-//    DECLARE_DYNAMIC_ENTRY_IDX((COUNTER_VALUE), DECLARE_ALLOCATED_VECTOR(T,A), N, P)
-
-#define D_DATUM_X(T,P) (T,DECLARE_DATUM_ENTRY_X,P)
-#define D_DATUM(T,P) D_DATUM_X(T,P)
-
+//  ****************************************************************************
 #define D_ARRAY(T, N, P) D_DATUM_X((DECLARE_ARRAY(T,N)), P)
 
+//  ****************************************************************************
 #define D_DYNAMIC(N,P)                                                         \
-    DECLARE_DATUM_ENTRY_X P                                                    \
+    DECLARE_DATUM_ENTRY_X(P)                                                   \
   public:                                                                      \
     template <typename U>                                                      \
     size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
 
 
 #define D_DYNAMIC2(...)  D_DYNAMIC __VA_ARGS__
-#define D_VECTOR(T,N,P) (std::vector<T>,D_DYNAMIC2,(N,P))
+#define D_VECTOR(T,N,P) ((DECLARE_VECTOR(T)),D_DYNAMIC2,(N,P))
 
 
+#define DECLARE_ARRAY_ENTRY(T, N, P)        D_ARRAY(T, N, P) 
 #define DECLARE_DYNAMIC_ENTRY(T, N, P)      D_VECTOR(T, N, P)
 #define DECLARE_ALLOCATOR_ENTRY(T, A, N, P) D_VECTOR(DECLARE_ALLOCATED_VECTOR(T,A), N, P)             
 

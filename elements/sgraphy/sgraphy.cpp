@@ -29,18 +29,6 @@ using std::string;
 using std::stringstream;
 
 
-DEFINE_HG_STRUCT(ArrayTest, 
-  PAUL_DATUM    (uint32_t, width)
-  PAUL_DATUM    (uint16_t, height)
-);
-
-  //HG_DATUM    (uint32_t, camera)
-  //HG_DATUM    (uint16_t, fov)
-  //HG_DATUM    (uint8_t,  ambient)
-  //HG_DATUM    (uint16_t, light)
-  //HG_DATUM    (uint8_t,  object_count)
-
-
 //  Global Varibles ************************************************************
 
 bool   is_encode      = false;
@@ -113,8 +101,8 @@ void WriteFile( const string& path,
 }
 
 //  ****************************************************************************
-void weave_data ( Hg::rgba_t_HgFormat&  pixel,
-                  Hg::byte_t&           data)
+void weave_data ( Hg::rgba_t&  pixel,
+                  Hg::byte_t&  data)
 {
   using Hg::s_data;
 
@@ -134,8 +122,8 @@ void weave_data ( Hg::rgba_t_HgFormat&  pixel,
 }
 
 //  ****************************************************************************
-void extract_data ( Hg::rgba_t_HgFormat&  pixel,
-                    Hg::byte_t&           data)
+void extract_data ( Hg::rgba_t&  pixel,
+                    Hg::byte_t&  data)
 {
   using Hg::s_data;
 
@@ -179,4 +167,3 @@ int main(int argc, char* argv[])
   
 	return 0;
 }
-

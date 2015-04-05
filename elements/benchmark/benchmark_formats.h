@@ -93,17 +93,6 @@ namespace Hg
 {
 
 //  ****************************************************************************
-typedef TypeList
-<
-  int32_t,
-  uint32_t,
-  int16_t,
-  uint16_t,
-  char,
-  uint8_t
-> Basic;
-
-
 HG_BEGIN_PACKED (uint32_t, SetA)
   HG_BIT_FIELD   (0,   fifteen, 15)
   HG_BIT_FIELD   (1,   two,     2)
@@ -112,6 +101,7 @@ HG_BEGIN_PACKED (uint32_t, SetA)
   HG_BIT_FIELD   (4,   one,     1)
 HG_END_PACKED
 
+//  ****************************************************************************
 HG_BEGIN_PACKED (uint16_t, SetB)
   HG_BIT_FIELD   (0,   first,   4)
   HG_BIT_FIELD   (1,   second,  4)
@@ -119,6 +109,7 @@ HG_BEGIN_PACKED (uint16_t, SetB)
   HG_BIT_FIELD   (3,   fourth,  4)
 HG_END_PACKED
 
+//  ****************************************************************************
 HG_BEGIN_PACKED (uint8_t, SetC)
   HG_BIT_FIELD   (0,   a, 1)
   HG_BIT_FIELD   (1,   b, 1)
@@ -132,80 +123,41 @@ HG_END_PACKED
 
 
 //  ****************************************************************************
-typedef TypeList
-<
-  SetA,
-  SetB,
-  SetC
-> Packed;
-
-
-
-//  ****************************************************************************
-typedef TypeList
-<
-  char,
-  uint32_t,
-  uint32_t,
-  uint32_t,
-  int16_t,
-  int16_t,
-  int16_t
-> Unaligned;
-
-
-//  ****************************************************************************
-typedef TypeList
-<
-  uint32_t,
-  std::array<Basic,3>,
-  Packed,
-  Unaligned
-> Complex;
-
-typedef TypeList
-<
-  uint32_t,
-  uint32_t,
-  uint32_t,
-  std::array<uint32_t,20>
-> no_dyn_format_t;
-
-//  ****************************************************************************
-HG_BEGIN_FORMAT(Basic)
-  HG_DATUM(int32_t,         i32)
-  HG_DATUM(uint32_t,        u32)
-  HG_DATUM(int16_t,         i16)
-  HG_DATUM(uint16_t,        u16)
-  HG_DATUM(char,            ch)
+HG_BEGIN_FORMAT(Basic,
+  HG_DATUM(int32_t,         i32),
+  HG_DATUM(uint32_t,        u32),
+  HG_DATUM(int16_t,         i16),
+  HG_DATUM(uint16_t,        u16),
+  HG_DATUM(char,            ch),
   HG_DATUM(uint8_t,         u8)
-HG_END_FORMAT(Basic);
+);
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(Packed)
-  HG_DATUM(SetA,            set_a)
-  HG_DATUM(SetB,            set_b)
+HG_BEGIN_FORMAT(Packed,
+  HG_DATUM(SetA,            set_a),
+  HG_DATUM(SetB,            set_b),
   HG_DATUM(SetC,            set_c)
-HG_END_FORMAT(Packed);
+);
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(Unaligned)
-  HG_DATUM(char,            ch)
-  HG_DATUM(uint32_t,        u32_a)
-  HG_DATUM(uint32_t,        u32_b)
-  HG_DATUM(uint32_t,        u32_c)
-  HG_DATUM(int16_t,         i16_a)
-  HG_DATUM(int16_t,         i16_b)
+HG_BEGIN_FORMAT(Unaligned,
+  HG_DATUM(char,            ch),
+  HG_DATUM(uint32_t,        u32_a),
+  HG_DATUM(uint32_t,        u32_b),
+  HG_DATUM(uint32_t,        u32_c),
+  HG_DATUM(int16_t,         i16_a),
+  HG_DATUM(int16_t,         i16_b),
   HG_DATUM(int16_t,         i16_c)
-HG_END_FORMAT(Unaligned);
+);
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(Complex)
-  HG_DATUM(uint32_t,        seq)
-  HG_ARRAY(Basic, 3,        basic)
-  HG_DATUM(Packed,          bits)
+HG_BEGIN_FORMAT(Complex,
+  HG_DATUM(uint32_t,        seq),
+  HG_ARRAY(Basic, 3,        basic),
+  HG_DATUM(Packed,          bits),
   HG_DATUM(Unaligned,       unaligned)
-HG_END_FORMAT(Complex);
+);
+
 
 } // namespace Hg
 
