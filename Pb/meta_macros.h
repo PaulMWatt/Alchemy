@@ -23,6 +23,8 @@
 //  ****************************************************************************
 #ifndef META_MACROS_H_INCLUDED
 #define META_MACROS_H_INCLUDED
+//  Includes *******************************************************************
+#include <Pb/detail/boost_preprocessor.h>
 
 //  ****************************************************************************
 // Evaluates the two input expressions, 
