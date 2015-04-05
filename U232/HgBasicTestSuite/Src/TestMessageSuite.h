@@ -35,17 +35,17 @@
 namespace Hg
 {
 
-HG_BEGIN_FORMAT(base_format_t)
-  HG_DATUM (uint32_t,                 word_0)
-  HG_DATUM (uint32_t,                 word_1)
-  HG_DATUM (uint32_t,                 word_2)
-  HG_DATUM (uint8_t,                  val)
-  HG_DATUM (nested_format_t,          nested)
+HG_BEGIN_FORMAT(base_format_t,
+  HG_DATUM (uint32_t,                 word_0),
+  HG_DATUM (uint32_t,                 word_1),
+  HG_DATUM (uint32_t,                 word_2),
+  HG_DATUM (uint8_t,                  val),
+  HG_DATUM (nested_format_t,          nested),
   HG_ARRAY (uint32_t, 3,              sequence)
-HG_END_FORMAT(base_format_t)
+);
 
 
-typedef base_format_t_HgFormat    message_type;
+typedef base_format_t    message_type;
 
 } // namespace Hg
 
@@ -53,7 +53,7 @@ typedef base_format_t_HgFormat    message_type;
 /// @brief TestMessageSuite Test Suite class.
 ///
 class TestMessageSuite : public CxxTest::TestSuite
-  , HgTestHelper<Hg::base_format_t, Hg::BufferedStoragePolicy >
+  , HgTestHelper<Hg::base_format_t::format_type, Hg::BufferedStoragePolicy >
 {
 public:
 
@@ -108,16 +108,16 @@ protected:
   //  Typedefs *****************************************************************
   //  These typedefs allow the creation of the different msg field types
   //  with a simplified syntax for readability in the unit-tests.
-  typedef Hg::BufferedStoragePolicy                             storage_type;
-  typedef Hg::message_type                                      msg_type;
+  typedef Hg::BufferedStoragePolicy                              storage_type;
+  typedef Hg::message_type                                       msg_type;
   typedef Hg::basic_msg<msg_type>::host_t                        SUT;
   typedef Hg::basic_msg<msg_type>::net_t                         SUT_net;
   typedef Hg::basic_msg<msg_type>::big_t                         SUT_big;
   typedef Hg::basic_msg<msg_type>::little_t                      SUT_little;
   typedef Hg::Message<Hg::basic_msg<msg_type>, Hg::LittleEndian> SUT_little;
 
-  typedef storage_type::data_type                               data_type;
-  typedef storage_type::s_pointer                               s_pointer;
+  typedef storage_type::data_type                                data_type;
+  typedef storage_type::s_pointer                                s_pointer;
 
   // Helper Functions ************************************************************
   //  ****************************************************************************
@@ -331,7 +331,7 @@ void TestMessageSuite::Testdata(void)
 //  ****************************************************************************
 void TestMessageSuite::TestSingleFieldMsg_Basic(void)
 {
-  typedef Hg::single_t_HgFormat SingleMsg;
+  typedef Hg::single_t SingleMsg;
 
   SingleMsg sut;
   sut.only = 1001;
@@ -342,7 +342,7 @@ void TestMessageSuite::TestSingleFieldMsg_Basic(void)
 //  ****************************************************************************
 void TestMessageSuite::TestSingleFieldMsg_Nested(void)
 {
-  typedef Hg::single_nested_t_HgFormat SingleMsg;
+  typedef Hg::single_nested_t SingleMsg;
 
   SingleMsg sut;
   sut.only.zero = 255;
@@ -353,7 +353,7 @@ void TestMessageSuite::TestSingleFieldMsg_Nested(void)
 //  ****************************************************************************
 void TestMessageSuite::TestSingleFieldMsg_Bitlist(void)
 {
-  typedef Hg::single_bit_t_HgFormat SingleMsg;
+  typedef Hg::single_bit_t SingleMsg;
 
   SingleMsg sut;
   sut.only.lonely = 3;
