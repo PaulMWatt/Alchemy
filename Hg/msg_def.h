@@ -113,9 +113,6 @@ struct message_size_trait
 #define DEFINE_STRUCT_PARAMS(S) \
   BOOST_PP_SEQ_FOR_EACH_I(EACH_PARAM, unused, BOOST_PP_VARIADIC_TO_SEQ(S))
 
-#define PAUL_PARAM(T,P) (T,HG_DATUM,P)
-#define PAUL_DATUM(T,P) PAUL_PARAM(T,P)
-
 // TODO: Temporarily will try to put the source back together the way it is currently 
 //       structured. Then will move the placement of the definitions to 
 //       solve some of the incompatibilities for duplicate types.
@@ -177,7 +174,7 @@ struct message_size_trait
     {                                                                          \
       return const_cast<F##Format*>(this)->FieldAt();                          \
     }                                                                          \
-    template<size_t I> struct TypeAtIndex;            \
+    template<size_t I> struct TypeAtIndex;                                     \
     BEGIN_COUNTER
 
 //  ****************************************************************************
@@ -186,7 +183,7 @@ struct message_size_trait
   DEFINE_HG_STRUCT_HEADER(F##_Hg)
 
 //  ****************************************************************************
-#define DECLARE_DATUM_ENTRY_IDX(IDX,T,P)                                       \
+#define DECLARE_DATUM_ENTRY_IDX(IDX,P)                                         \
     typedef                                                                    \
       Hg::detail::DeduceProxyType < IDX,                                       \
                                     format_type>::type        Proxy##P;        \
@@ -197,53 +194,68 @@ struct message_size_trait
     { return *static_cast<datum_##P*>(&P); }                                   \
                                                                                \
     const char* FieldName(const Proxy##P&)                    { return #P; }   \
-    template<> struct TypeAtIndex<IDX> { typedef T type; };              
+    template<> struct TypeAtIndex<IDX>                                         \
+    { typedef typename Hg::TypeAt<IDX,format_type type>::type type; };              
 
+
+////  ****************************************************************************
+//#define DECLARE_DATUM_ENTRY(P)                                                 \
+//  INC_COUNTER                                                                  \
+//  DECLARE_DATUM_ENTRY_IDX((COUNTER_VALUE), P)
 
 //  ****************************************************************************
-#define DECLARE_DATUM_ENTRY(T, P)                                              \
+#define DECLARE_DATUM_ENTRY_X(P)                                               \
   INC_COUNTER                                                                  \
-  DECLARE_DATUM_ENTRY_IDX((COUNTER_VALUE), T, P)
-
-
-//  ****************************************************************************
-#define DECLARE_ARRAY_ENTRY_IDX(IDX,A,P)                                       \
-  DECLARE_DATUM_ENTRY_IDX(IDX,A,P)
-
+  DECLARE_DATUM_ENTRY_IDX((COUNTER_VALUE), P)
 
 //  ****************************************************************************
 #define DECLARE_ARRAY(T,N)                std::array<T,N>
 
 //  ****************************************************************************
-#define DECLARE_ARRAY_ENTRY(T, N, P)                                           \
-  INC_COUNTER                                                                  \
-  DECLARE_ARRAY_ENTRY_IDX((COUNTER_VALUE), DECLARE_ARRAY(T, N), P)
-
+#define DECLARE_VECTOR(T)                 std::vector<T>
 
 //  ****************************************************************************
-#define DECLARE_DYNAMIC_ENTRY_IDX(IDX,V,N,P)                                   \
-    DECLARE_DATUM_ENTRY_IDX(IDX,V,P)                                           \
+#define DECLARE_ALLOCATED_VECTOR(T,A)     std::vector<T,A>
+
+////  ****************************************************************************
+//#define DECLARE_DYNAMIC_ENTRY_IDX(IDX,V,N,P)                                   \
+//    DECLARE_DATUM_ENTRY_IDX(IDX,V,P)                                           \
+//  public:                                                                      \
+//    template <typename U>                                                      \
+//    size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
+//
+//
+////  ****************************************************************************
+//#define DECLARE_DYNAMIC_ENTRY(T, N, P)                                         \
+//    INC_COUNTER                                                                \
+//    DECLARE_DYNAMIC_ENTRY_IDX((COUNTER_VALUE), DECLARE_VECTOR(T), N, P)
+//
+//
+
+////  ****************************************************************************
+//#define DECLARE_ALLOCATOR_ENTRY(T, A, N, P)                                    \
+//    INC_COUNTER                                                                \
+//    DECLARE_DYNAMIC_ENTRY_IDX((COUNTER_VALUE), DECLARE_ALLOCATED_VECTOR(T,A), N, P)
+
+#define D_DATUM_X(T,P) (T,DECLARE_DATUM_ENTRY_X,P)
+#define D_DATUM(T,P) D_DATUM_X(T,P)
+
+#define D_ARRAY(T, N, P) D_DATUM_X((DECLARE_ARRAY(T,N)), P)
+
+#define D_DYNAMIC(N,P)                                                         \
+    DECLARE_DATUM_ENTRY_X P                                                    \
   public:                                                                      \
     template <typename U>                                                      \
     size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
 
 
-//  ****************************************************************************
-#define DECLARE_VECTOR(T)                 std::vector<T>
-
-//  ****************************************************************************
-#define DECLARE_DYNAMIC_ENTRY(T, N, P)                                         \
-    INC_COUNTER                                                                \
-    DECLARE_DYNAMIC_ENTRY_IDX((COUNTER_VALUE), DECLARE_VECTOR(T), N, P)
+#define D_DYNAMIC2(...)  D_DYNAMIC __VA_ARGS__
+#define D_VECTOR(T,N,P) (std::vector<T>,D_DYNAMIC2,(N,P))
 
 
-//  ****************************************************************************
-#define DECLARE_ALLOCATED_VECTOR(T,A)     std::vector<T,A>
+#define DECLARE_DYNAMIC_ENTRY(T, N, P)      D_VECTOR(T, N, P)
+#define DECLARE_ALLOCATOR_ENTRY(T, A, N, P) D_VECTOR(DECLARE_ALLOCATED_VECTOR(T,A), N, P)             
 
-//  ****************************************************************************
-#define DECLARE_ALLOCATOR_ENTRY(T, A, N, P)                                    \
-    INC_COUNTER                                                                \
-    DECLARE_DYNAMIC_ENTRY_IDX((COUNTER_VALUE), DECLARE_ALLOCATED_VECTOR(T,A), N, P)
 
 
 //  ****************************************************************************
