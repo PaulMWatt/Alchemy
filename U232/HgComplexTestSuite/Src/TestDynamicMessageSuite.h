@@ -44,76 +44,45 @@ namespace Hg
 //  ****************************************************************************
 //  A type list used to create a basic message with a dynamic value.
 // 
-typedef TypeList
-<
-  uint32_t,
-  uint32_t,
-  uint32_t,
-  std::array<uint32_t,20>
-> no_dyn_format_t;
-
-HG_BEGIN_FORMAT(no_dyn_format_t)
-  HG_DATUM (uint32_t,                 word_0)
-  HG_DATUM (uint32_t,                 word_1)
-  HG_DATUM (uint32_t,                 word_2)
+HG_BEGIN_FORMAT(no_dyn_format_t,
+  HG_DATUM (uint32_t,                 word_0),
+  HG_DATUM (uint32_t,                 word_1),
+  HG_DATUM (uint32_t,                 word_2),
   HG_ARRAY (uint32_t,20,              arry_3)
-HG_END_FORMAT(no_dyn_format_t)
+);
 
-typedef no_dyn_format_t_HgFormat no_dyn_type;
+typedef no_dyn_format_t no_dyn_type;
 
 //  ****************************************************************************
 //  A type list used to create a basic message with a dynamic value.
 // 
-typedef TypeList
-<
-  uint32_t,
-  uint32_t,
-  std::vector<uint16_t>,
-  uint32_t
-> dyn_basic_format_t;
-
-HG_BEGIN_FORMAT(dyn_basic_format_t)
-  HG_DATUM (uint32_t,                 word_0)
-  HG_DATUM (uint32_t,                 word_1)
-  HG_DYNAMIC(uint16_t,   word_0,      seq_16)
+HG_BEGIN_FORMAT(dyn_basic_format_t,
+  HG_DATUM (uint32_t,                 word_0),
+  HG_DATUM (uint32_t,                 word_1),
+  HG_DYNAMIC(uint16_t,   word_0,      seq_16),
   HG_DATUM (uint32_t,                 word_2)
-HG_END_FORMAT(dyn_basic_format_t)
+);
 
-typedef dyn_basic_format_t_HgFormat dyn_basic_type;
+typedef dyn_basic_format_t dyn_basic_type;
 
 //  ****************************************************************************
 //  A type list used to create the base message field.
 // 
-typedef TypeList
-<
-  uint8_t,
-  uint8_t,
-  uint8_t,
-  uint8_t,
-  uint32_t,
-  std::vector<uint8_t>,
-  std::vector<uint16_t>,
-  uint32_t,
-  std::vector<uint32_t>,
-  std::vector<uint64_t>,
-  uint32_t
-> dyn_test_format_t;
-
-HG_BEGIN_FORMAT(dyn_test_format_t)
-  HG_DATUM    (uint8_t,             size_8)
-  HG_DATUM    (uint8_t,             size_16)
-  HG_DATUM    (uint8_t,             size_32)
-  HG_DATUM    (uint8_t,             size_64)
-  HG_DATUM    (uint32_t,            word_0)
-  HG_DYNAMIC  (uint8_t,  size_8,    seq_8)
-  HG_DYNAMIC  (uint16_t, size_16,   seq_16)
-  HG_DATUM    (uint32_t,            word_1)
-  HG_DYNAMIC  (uint32_t, size_32,   seq_32)
-  HG_DYNAMIC  (uint64_t, size_64,   seq_64)
+HG_BEGIN_FORMAT(dyn_test_format_t,
+  HG_DATUM    (uint8_t,             size_8),
+  HG_DATUM    (uint8_t,             size_16),
+  HG_DATUM    (uint8_t,             size_32),
+  HG_DATUM    (uint8_t,             size_64),
+  HG_DATUM    (uint32_t,            word_0),
+  HG_DYNAMIC  (uint8_t,  size_8,    seq_8),
+  HG_DYNAMIC  (uint16_t, size_16,   seq_16),
+  HG_DATUM    (uint32_t,            word_1),
+  HG_DYNAMIC  (uint32_t, size_32,   seq_32),
+  HG_DYNAMIC  (uint64_t, size_64,   seq_64),
   HG_DATUM    (uint32_t,            word_2)
-HG_END_FORMAT(dyn_test_format_t)
+);
 
-typedef dyn_test_format_t_HgFormat dyn_message_type;
+typedef dyn_test_format_t dyn_message_type;
 
 } // namespace Hg
 
@@ -146,7 +115,7 @@ const size_t k_count_seq_64 = 3;
 /// @brief TestDynamicMessageSuite Test Suite class.
 ///
 class TestDynamicMessageSuite : public CxxTest::TestSuite
-  , HgTestHelper<Hg::dyn_test_format_t, Hg::BufferedStoragePolicy >
+  , HgTestHelper<Hg::dyn_test_format_t::format_type, Hg::BufferedStoragePolicy >
 {
 public:
 

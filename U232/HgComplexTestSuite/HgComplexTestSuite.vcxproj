@@ -224,6 +224,10 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\container_size.h" />
     <ClInclude Include="..\..\Pb\detail\alias_templates.h" />
     <ClInclude Include="..\..\Pb\detail\auto.h" />
+    <ClInclude Include="..\..\Pb\detail\boost_for_detail.h" />
+    <ClInclude Include="..\..\Pb\detail\boost_for_detail_msvc.h" />
+    <ClInclude Include="..\..\Pb\detail\boost_pp_config.h" />
+    <ClInclude Include="..\..\Pb\detail\boost_preprocessor.h" />
     <ClInclude Include="..\..\Pb\detail\conditional.h" />
     <ClInclude Include="..\..\Pb\detail\decltype.h" />
     <ClInclude Include="..\..\Pb\detail\explicit_conversion.h" />

@@ -41,7 +41,7 @@ namespace Hg
 
 //  Typedefs *******************************************************************
 
-typedef world_t_HgFormat world_message_type;
+typedef world_t world_message_type;
 
 } // namespace Hg
 
@@ -51,7 +51,7 @@ typedef world_t_HgFormat world_message_type;
 //  TestDynTypePermsSuite Test Suite class.
 //
 class TestDynTypePermsSuite : public CxxTest::TestSuite
-  , HgTestHelper<Hg::world_t, Hg::BufferedStoragePolicy >
+  , HgTestHelper<Hg::world_t::format_type, Hg::BufferedStoragePolicy >
 {
 public:
 
@@ -124,9 +124,9 @@ protected:
   }
 
   //  ****************************************************************************
-  Hg::triangle_t_HgFormat to_triangle_t(const test::data::Triangle &triangle)
+  Hg::triangle_t to_triangle_t(const test::data::Triangle &triangle)
   {
-    Hg::triangle_t_HgFormat out;
+    Hg::triangle_t out;
 
     out.pts[0] = triangle.pts[0];
     out.pts[1] = triangle.pts[1];
@@ -144,9 +144,9 @@ protected:
   }
 
   //  ****************************************************************************
-  Hg::object_t_HgFormat to_object_t(const test::data::Object &object, bool is_network)
+  Hg::object_t to_object_t(const test::data::Object &object, bool is_network)
   {
-    Hg::object_t_HgFormat out;
+    Hg::object_t out;
 
     out.count = object.count;
 
@@ -165,9 +165,9 @@ protected:
   }
 
   //  ****************************************************************************
-  Hg::instance_t_HgFormat to_instance_t(const test::data::Instance &instance)
+  Hg::instance_t to_instance_t(const test::data::Instance &instance)
   {
-    Hg::instance_t_HgFormat out;
+    Hg::instance_t out;
 
     out.object_index    = instance.object_index;
     out.location.X      = instance.location.X;

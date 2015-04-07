@@ -40,16 +40,6 @@
 
 #include <cxxtest/TestSuite.h>
 #include <Pb/meta_fwd.h>
-#include <Pb/meta_fwd.h>
-#include <Pb/meta_fwd.h>
-#include <Pb/meta_fwd.h>
-#include <Pb/meta_fwd.h>
-#include <Pb/meta_fwd.h>
-#include <Pb/meta_fwd.h>
-#include <Pb/meta_fwd.h>
-#include <Pb/meta_fwd.h>
-#include <Pb/meta_fwd.h>
-#include <Pb/meta_fwd.h>
 #include <test_def.h>
 
 //  ****************************************************************************

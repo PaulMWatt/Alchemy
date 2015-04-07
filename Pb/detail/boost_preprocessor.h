@@ -127,6 +127,14 @@
 
 
 //  ****************************************************************************
+# /* BOOST_PP_VARIADIC_TO_TUPLE */
+#
+# if BOOST_PP_VARIADICS
+#    define BOOST_PP_VARIADIC_TO_TUPLE(...) (__VA_ARGS__)
+# endif
+
+
+//  ****************************************************************************
 /* An empty array can be passed */
 # define BOOST_PP_TUPLE_TO_SEQ_0() ()
 #

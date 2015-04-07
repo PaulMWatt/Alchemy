@@ -96,7 +96,7 @@
 ///   } // namespace Hg
 /// ~~~
 ///             
-#define HG_BEGIN_FORMAT(TYPE_LIST, ...)  DECLARE_STRUCT_HEADER(TYPE_LIST, __VA_ARGS__)
+#define HG_BEGIN_FORMAT(NAME, ...)  DECLARE_STRUCT_HEADER(NAME, __VA_ARGS__)
 
 
 //  ****************************************************************************

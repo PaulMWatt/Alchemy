@@ -164,6 +164,33 @@ struct message_size_trait
     
 
 //  ****************************************************************************
+#define DECLARE_STRUCT_FOOTER(F)                                               \
+  private:                                                                     \
+    template <typename T, typename U>                                          \
+    size_t DatumSize(T value, U*)                                              \
+    {                                                                          \
+      return value;                                                            \
+    }                                                                          \
+                                                                               \
+    template <typename U>                                                      \
+    size_t DatumSize(pfnGetDatumSize ftor, U* buffer)                          \
+    {                                                                          \
+      if (buffer->empty()) { return 0; }                                       \
+      return ftor(buffer->data(), buffer->size());                             \
+    }                                                                          \
+  };                                                                           \
+  namespace detail {                                                           \
+  template <>                                                                  \
+  struct field_data_t <F##_Hg>                                                 \
+  {                                                                            \
+  typedef F                             value_type;                            \
+  };                                                                           \
+  } // namespace detail
+
+
+
+
+//  ****************************************************************************
 #define DECLARE_DATUM_ENTRY_IDX(IDX,P)                                         \
     typedef                                                                    \
       Hg::detail::DeduceProxyType < IDX,                                       \
@@ -184,8 +211,11 @@ struct message_size_trait
   INC_COUNTER                                                                  \
   DECLARE_DATUM_ENTRY_IDX((COUNTER_VALUE), P)
 
+//  ****************************************************************************
+#define D_FUNDAMENTAL(...)  DECLARE_DATUM_ENTRY_X __VA_ARGS__ 
+  
 
-#define D_DATUM_X(T,P) (T,DECLARE_DATUM_ENTRY_X,P)
+#define D_DATUM_X(T,P) (T,D_FUNDAMENTAL,(P))
 #define D_DATUM(T,P) D_DATUM_X((T),P)
 
 //  ****************************************************************************
@@ -216,31 +246,6 @@ struct message_size_trait
 #define DECLARE_DYNAMIC_ENTRY(T, N, P)      D_VECTOR(T, N, P)
 #define DECLARE_ALLOCATOR_ENTRY(T, A, N, P) D_VECTOR(DECLARE_ALLOCATED_VECTOR(T,A), N, P)             
 
-
-
-//  ****************************************************************************
-#define DECLARE_STRUCT_FOOTER(NAME)                                            \
-  private:                                                                     \
-    template <typename T, typename U>                                          \
-    size_t DatumSize(T value, U*)                                              \
-    {                                                                          \
-      return value;                                                            \
-    }                                                                          \
-                                                                               \
-    template <typename U>                                                      \
-    size_t DatumSize(pfnGetDatumSize ftor, U* buffer)                          \
-    {                                                                          \
-      if (buffer->empty()) { return 0; }                                       \
-      return ftor(buffer->data(), buffer->size());                             \
-    }                                                                          \
-  };                                                                           \
-  namespace detail {                                                           \
-  template <>                                                                  \
-  struct field_data_t <NAME##_tl>                                              \
-  {                                                                            \
-  typedef NAME                          value_type;                            \
-  };                                                                           \
-  } // namespace detail
 
 
 //  ****************************************************************************
