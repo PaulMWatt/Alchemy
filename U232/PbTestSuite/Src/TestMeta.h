@@ -39,6 +39,7 @@
 #define TESTMETA_H_INCLUDED
 
 #include <cxxtest/TestSuite.h>
+#include <geometry_typelist.h>
 #include <Pb/meta_fwd.h>
 #include <test_def.h>
 
@@ -126,6 +127,7 @@ public:
   // Verify the type_containers
   void TestSizeOf_empty(void);
   void TestSizeOf_TypeList(void);
+  void TestSizeOf_NestedNestedTypeList(void);
   void TestSizeOf_BitSet(void);
   void TestSizeOf_DynamicValue(void);
   void TestSizeOf_NestedArray(void);
@@ -486,6 +488,28 @@ void TestMeta::TestSizeOf_TypeList(void)
   // SUT
   TS_ASSERT_EQUALS(k_control, Hg::SizeOf<sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(sut_t::type), Hg::SizeOf<sut_t>::value);
+}
+
+//  ****************************************************************************
+void TestMeta::TestSizeOf_NestedNestedTypeList(void)
+{
+  const size_t k_control_pt      = sizeof(int32_t) * 3;
+  const size_t k_control_camera  = k_control_pt * 3;
+
+  const size_t pt_size      = Hg::SizeOf<Hg::pt3d_t>::value;
+  const size_t camera_size  = Hg::SizeOf<Hg::camera_t>::value;
+
+  const size_t pt_size_f      = Hg::SizeOf<Hg::pt3d_t::format_type>::value;
+  const size_t camera_size_f  = Hg::SizeOf<Hg::camera_t::format_type>::value;
+
+  bool is_pt = Hg::type_container<Hg::pt3d_t>::value;
+  bool is_camera = Hg::type_container<Hg::camera_t>::value;
+
+  // SUT
+  TS_ASSERT_EQUALS(k_control_pt, Hg::SizeOf<Hg::pt3d_t>::value);
+  TS_ASSERT_EQUALS(k_control_camera, Hg::SizeOf<Hg::camera_t>::value);
+  
+  //TS_ASSERT_EQUALS(sizeof(sut_t::type), Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************
