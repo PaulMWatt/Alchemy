@@ -1,9 +1,14 @@
 Activity
 ========================================================
-I have added a sample program to demonstrate how Alchemy
-can be used. It is called, sgraphy. This program performs
-stenography on a bitmap. It will allow you to embed a hidden 
-message in the bitmap as well as extract the message.
+- Overhauled the message generation MACRO to auto-generate
+  the typelist that is used with the message definition.
+  This eliminates redundancy.
+- The name specified by the user in the message definition
+  is the name of the message type the user interacts with.
+
+- A sample program has been included that demonstrates
+  stenography on the .bmp format. It uses Alchemy to 
+  load, process and store the data through its types.
 
 Network Alchemy
 ========================================================
@@ -46,17 +51,19 @@ structures in the same way structures are accessed.
 * Nested structures are supported.
 * Sequences of elements both fixed-size (arrays) and dynamically-sized (vectors)
 are supported.
+* An opaque view type exists that can be mapped against any sequence of
+bytes for temporary access. This allows the object to interact with a 
+packed structure at a byte-level, without making copies or taking ownership.
 
 Message structure definitions are created with the list of MACROs below.
 Refer to the appropriate MACROs documentation for details on correct
 usage:
 
-  - HG_BEGIN_FORMAT(TYPE_LIST)
+  HG_BEGIN_FORMAT(TYPE_LIST, ...)
   -   HG_DATUM(TYPE,NAME)
   -   HG_ARRAY(TYPE,COUNT,NAME)
   -   HG_DYNAMIC(TYPE,COUNT,NAME)
   -   HG_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
-  - HG_END_FORMAT(TYPE_LIST)
 
 Hg provides a portable bit-field interface that works by generating the
 appropriate shift and mask operations for each field. This provides the 
@@ -76,33 +83,21 @@ Hg currently is written to allow up to 32 bit-fields in a single parameter.
 
 Here is a short example of a Hg message definition and how it can be used:
 
-`// Typelist defines the format`  
-`typedef Typelist`  
-`<`  
-  `uint32_t,`  
-  `uint32_t,`  
-  `std::array<char, 128>`  
-`> AppError;`  
-  
 `// Message definition specifies the TypeList format, and associates a name with each field.`  
-`HG_BEGIN_FORMAT(AppError)`  
+`HG_BEGIN_FORMAT(AppError,`  
   `HG_DATUM(uint32_t,id)`  
-  `HG_DATUM(uint32_t,code)`  
+  `HG_DATUM(uint32_t,code),`  
   `HG_ARRAY(char,128,desc)`  
-`HG_END_FORMAT(AppError)`  
-  
-`// Typedefs such as these are recommended to simplify the usage.`  
-`// These typedefs create message objects that associate`  
-`typedef Hg::Message<AppError_HgFormat>     AppErrorMsg;`  
+`)`  
   
 `// Now messages can be created, populated, copied, and converted between byte-order.`  
-`AppErrorMsg::host_t msg;`  
+`AppError::host_t msg;`  
 `msg.id   = 1;`  
 `msg.code = GetError();`  
 `strncpy(msg.desc, GetErrorDesc(), sizeof(msg.desc));`  
   
 `// Convert to network byte-order`  
-`AppErrorMsg::net_t msgNet = Hg::to_network(msg);`  
+`AppError::net_t msgNet = Hg::to_network(msg);`  
   
 `// The fields id and code will have been converted if this is`   
 `// a little endian system, otherwise no change will have occured.`  
