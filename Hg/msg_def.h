@@ -88,14 +88,58 @@ struct message_size_trait
 //  ****************************************************************************
 
 //  ****************************************************************************
-//  Primary Message Declaration MACROS *****************************************
+#define DO_REMOVE(...)   __VA_ARGS__
+#define REMOVE_PARENS(N) DO_REMOVE N
+
+#define BOOST_PP_REMOVE_PARENS(param) \
+    BOOST_PP_IIF \
+      ( \
+      BOOST_PP_IS_BEGIN_PARENS(param), \
+      DO_REMOVE, \
+      BOOST_PP_IDENTITY \
+      ) \
+    (param)() \
+
 //  ****************************************************************************
-#define DEFINE_HG_FORMAT_HEADER(F)                                             \
-  struct F##Format                                                             \
+#define EACH_TYPE(r, data, i, x) \
+  REMOVE_PARENS(BOOST_PP_TUPLE_ELEM(3,0,x)), 
+
+#define EACH_PARAM(r, data, i, x) \
+  BOOST_PP_TUPLE_ELEM(3,1,x)(BOOST_PP_TUPLE_ELEM(3,2,x)); 
+
+
+#define DEFINE_TYPELIST(N,...)\
+  typedef TypeList < __VA_ARGS__ > N;
+
+#define DEFINE_PARAMLIST(...)\
+  __VA_ARGS__
+
+
+#define DEFINE_STRUCT_TYPELIST(N, S) \
+  DEFINE_TYPELIST(N, \
+    BOOST_PP_SEQ_FOR_EACH_I(EACH_TYPE, unused, BOOST_PP_VARIADIC_TO_SEQ(S)) Hg::MT)
+
+
+#define DEFINE_STRUCT_PARAMS(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_PARAM, unused, BOOST_PP_VARIADIC_TO_SEQ(S))
+
+// TODO: Temporarily will try to put the source back together the way it is currently 
+//       structured. Then will move the placement of the definitions to 
+//       solve some of the incompatibilities for duplicate types.
+
+//  ****************************************************************************
+//  Defines the outer value container as well as the formatted type-list.
+//
+//#define DEFINE_HG_STRUCT(F, ...)                                               
+#define DECLARE_STRUCT_HEADER(F, ...)                                          \
+  DEFINE_STRUCT_TYPELIST(F##_tl, __VA_ARGS__)                                  \
+  typedef Hg::make_Hg_type_list<F##_tl>::type               F##_Hg;            \
+                                                                               \
+  struct F                                                                     \
     : nested_trait                                                             \
   {                                                                            \
-    typedef F##Format                   this_type;                             \
-    typedef F                           format_type;                           \
+    typedef F                           this_type;                             \
+    typedef F##_tl                      format_type;                           \
     enum { k_size = SizeOf<format_type>::value };                              \
     enum { k_length                   = length<format_type>::value };          \
                                                                                \
@@ -111,81 +155,14 @@ struct message_size_trait
     {                                                                          \
       return const_cast<F##Format*>(this)->FieldAt<IDX>();                     \
     }                                                                          \
-    BEGIN_COUNTER
-
-//  ****************************************************************************
-#define DECLARE_FORMAT_HEADER(F)                                               \
-  typedef Hg::make_Hg_type_list<F>::type                    F##_Hg;            \
-  DEFINE_HG_FORMAT_HEADER(F##_Hg)
-
-//  ****************************************************************************
-#define DECLARE_DATUM_FORMAT_IDX(IDX,T,P)                                      \
-    typedef                                                                    \
-      Hg::detail::DeduceProxyType < IDX,                                       \
-                                    format_type>::type        Proxy##P;        \
-    typedef Proxy##P::datum_type                              datum_##P;       \
-    Proxy##P   P;                                                              \
+    BEGIN_COUNTER                                                              \
                                                                                \
-    datum_##P& FieldAtIndex(const datum_##P*)                                  \
-    { return *static_cast<datum_##P*>(&P); }                                   \
-                                                                               \
-    const char* FieldName(const Proxy##P&)                    { return #P; }   
+    DEFINE_STRUCT_PARAMS(__VA_ARGS__)                                          \
+  DECLARE_STRUCT_FOOTER(F)
+    
 
 //  ****************************************************************************
-#define DECLARE_DATUM_FORMAT(T, P)                                             \
-  INC_COUNTER                                                                  \
-  DECLARE_DATUM_FORMAT_IDX((COUNTER_VALUE), T, P)
-
-
-//  ****************************************************************************
-#define DECLARE_ARRAY(T,N)        std::array<T,N>
-
-
-//  ****************************************************************************
-#define DECLARE_ARRAY_FORMAT_IDX(IDX,T,N,P)                                    \
-  DECLARE_DATUM_FORMAT_IDX(IDX,DECLARE_ARRAY(T,N),P)
-
-
-//  ****************************************************************************
-#define DECLARE_ARRAY_FORMAT(T, N, P)                                          \
-  INC_COUNTER                                                                  \
-  DECLARE_ARRAY_FORMAT_IDX((COUNTER_VALUE), T, N, P)
-
-
-//  ****************************************************************************
-#define DECLARE_VECTOR(T)        std::vector<T>
-
-
-//  ****************************************************************************
-#define DECLARE_DYNAMIC_FORMAT_IDX(IDX,T,N,P)                                  \
-    DECLARE_DATUM_FORMAT_IDX(IDX,DECLARE_VECTOR(T),P)                          \
-  public:                                                                      \
-    template <typename U>                                                      \
-    size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
-
-
-//  ****************************************************************************
-#define DECLARE_DYNAMIC_FORMAT(T, N, P)                                        \
-    INC_COUNTER                                                                \
-    DECLARE_DYNAMIC_FORMAT_IDX((COUNTER_VALUE), T, N, P)
-
-
-//  ****************************************************************************
-#define DECLARE_ALLOCATOR_FORMAT_IDX(IDX,T,N,P)                                \
-    DECLARE_DATUM_FORMAT_IDX(IDX,(std::vector<T,A>),P)                         \
-  public:                                                                      \
-    template <typename U>                                                      \
-    size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
-
-
-//  ****************************************************************************
-#define DECLARE_ALLOCATOR_FORMAT(T, A, N, P)                                   \
-    INC_COUNTER                                                                \
-    DECLARE_ALLOCATOR_FORMAT_IDX((COUNTER_VALUE), T, A, N, P)
-
-
-//  ****************************************************************************
-#define DECLARE_FORMAT_FOOTER(F)                                               \
+#define DECLARE_STRUCT_FOOTER(F)                                               \
   private:                                                                     \
     template <typename T, typename U>                                          \
     size_t DatumSize(T value, U*)                                              \
@@ -202,11 +179,68 @@ struct message_size_trait
   };                                                                           \
   namespace detail {                                                           \
   template <>                                                                  \
-  struct field_data_t <F>                                                      \
+  struct field_data_t <F##_Hg>                                                 \
   {                                                                            \
-  typedef F##_HgFormat                  value_type;                            \
+  typedef F                             value_type;                            \
   };                                                                           \
   } // namespace detail
+
+
+
+
+//  ****************************************************************************
+#define DECLARE_DATUM_ENTRY_IDX(IDX,P)                                         \
+    typedef                                                                    \
+      Hg::detail::DeduceProxyType < IDX,                                       \
+                                    format_type>::type        Proxy##P;        \
+    typedef Proxy##P::datum_type                              datum_##P;       \
+    Proxy##P   P;                                                              \
+                                                                               \
+    datum_##P& FieldAtIndex(const datum_##P*)                                  \
+    { return *static_cast<datum_##P*>(&P); }                                   \
+                                                                               \
+    const char* FieldName(const Proxy##P&)                    { return #P; }   
+
+//  ****************************************************************************
+#define DECLARE_DATUM_ENTRY_X(P)                                               \
+  INC_COUNTER                                                                  \
+  DECLARE_DATUM_ENTRY_IDX((COUNTER_VALUE), P)
+
+//  ****************************************************************************
+#define D_FUNDAMENTAL(...)  DECLARE_DATUM_ENTRY_X __VA_ARGS__ 
+  
+
+#define D_DATUM_X(T,P) (T,D_FUNDAMENTAL,(P))
+#define D_DATUM(T,P) D_DATUM_X((T),P)
+
+//  ****************************************************************************
+#define DECLARE_ARRAY(T,N)                std::array<T,N>
+
+//  ****************************************************************************
+#define DECLARE_VECTOR(T)                 std::vector<T>
+
+//  ****************************************************************************
+#define DECLARE_ALLOCATED_VECTOR(T,A)     std::vector<T,A>
+
+//  ****************************************************************************
+#define D_ARRAY(T, N, P) D_DATUM_X((DECLARE_ARRAY(T,N)), P)
+
+//  ****************************************************************************
+#define D_DYNAMIC(N,P)                                                         \
+    DECLARE_DATUM_ENTRY_X(P)                                                   \
+  public:                                                                      \
+    template <typename U>                                                      \
+    size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
+
+
+#define D_DYNAMIC2(...)  D_DYNAMIC __VA_ARGS__
+#define D_VECTOR(T,N,P) ((DECLARE_VECTOR(T)),D_DYNAMIC2,(N,P))
+
+
+#define DECLARE_ARRAY_ENTRY(T, N, P)        D_ARRAY(T, N, P) 
+#define DECLARE_DYNAMIC_ENTRY(T, N, P)      D_VECTOR(T, N, P)
+#define DECLARE_ALLOCATOR_ENTRY(T, A, N, P) D_VECTOR(DECLARE_ALLOCATED_VECTOR(T,A), N, P)             
+
 
 
 //  ****************************************************************************

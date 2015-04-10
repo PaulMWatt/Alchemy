@@ -27,64 +27,27 @@ HG_END_PACKED
 //  ****************************************************************************
 //  A type array used to create the nested message field.
 //
-typedef TypeList
-<
-  uint8_t,      
-  uint16_t,     
-  mixed_bits,        // Extra bytes are required after this field to test offsets.
-  uint32_t,
-  int16_t
-> nested_format_t;
-
-HG_BEGIN_FORMAT(nested_format_t)
-  HG_DATUM (uint8_t, zero)
-  HG_DATUM (uint16_t, one)
-  HG_DATUM (mixed_bits, two)
-  HG_DATUM (uint32_t, three)
+HG_BEGIN_FORMAT(nested_format_t,
+  HG_DATUM (uint8_t, zero),
+  HG_DATUM (uint16_t, one),
+  HG_DATUM (mixed_bits, two),      // Extra bytes are required after this field to test offsets.
+  HG_DATUM (uint32_t, three),
   HG_DATUM (int16_t, four)
-HG_END_FORMAT(nested_format_t)
-
-//  ****************************************************************************
-//  A type array used to create the base message field.
-// 
-//  The entry, HG_TYPE_ARRAY(size_t, 3), defined below is equivalent to this:
-//
-//      array<size_t, 3>
-//
-typedef TypeList
-<
-  uint32_t,
-  uint32_t,
-  uint32_t,
-  uint8_t,
-  nested_format_t,
-  std::array<uint32_t, 3>
-> base_format_t;
-
+)
 
 //  ****************************************************************************
 //  A type list definition for a single entry message.
 // 
-typedef TypeList
-<
-  uint32_t      
-> single_t;
-
-HG_BEGIN_FORMAT(single_t)
+HG_BEGIN_FORMAT(single_t,
   HG_DATUM (uint32_t, only)
-HG_END_FORMAT(single_t)
+)
 
 //  ****************************************************************************
 //  A type list definition for a single nested message.
 // 
-typedef TypeList
-<
-  nested_format_t      
-> single_nested_t;
-
-HG_BEGIN_FORMAT(single_nested_t)
+HG_BEGIN_FORMAT(single_nested_t,
   HG_DATUM (nested_format_t, only)
-HG_END_FORMAT(single_nested_t)
+)
 
 //  ****************************************************************************
 //  Bitlist with a single entry 
@@ -93,44 +56,26 @@ HG_BEGIN_PACKED (uint8_t, single_bit)
   HG_BIT_FIELD   (0, lonely, 1)
 HG_END_PACKED
 
-typedef TypeList
-<
-  single_bit      
-> single_bit_t;
 
-HG_BEGIN_FORMAT(single_bit_t)
+HG_BEGIN_FORMAT(single_bit_t,
   HG_DATUM (single_bit, only)
-HG_END_FORMAT(single_bit_t)
+)
 
 //  ****************************************************************************
 //  A type list used to verify the sequence containers.
 //
-typedef TypeList
-<
-  uint32_t,      
-  uint32_t,     
-  uint32_t
-> point_format_t;
-
-HG_BEGIN_FORMAT(point_format_t)
-  HG_DATUM (uint32_t, X)
-  HG_DATUM (uint32_t, Y)
+HG_BEGIN_FORMAT(point_format_t,
+  HG_DATUM (uint32_t, X),
+  HG_DATUM (uint32_t, Y),
   HG_DATUM (uint32_t, Z)
-HG_END_FORMAT(point_format_t)
+)
 
 //  ****************************************************************************
 //  A type list definition that defines a single array as the only field.
 // 
-typedef TypeList
-<
-  std::array<point_format_t, 2>      
-> single_array_t;
-
-HG_BEGIN_FORMAT(single_array_t)
+HG_BEGIN_FORMAT(single_array_t,
   HG_ARRAY (point_format_t, 2, line)
-HG_END_FORMAT(single_array_t)
-
-
+)
 
 } // namespace Hg
 

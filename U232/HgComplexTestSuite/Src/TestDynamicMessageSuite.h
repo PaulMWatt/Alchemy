@@ -44,76 +44,45 @@ namespace Hg
 //  ****************************************************************************
 //  A type list used to create a basic message with a dynamic value.
 // 
-typedef TypeList
-<
-  uint32_t,
-  uint32_t,
-  uint32_t,
-  std::array<uint32_t,20>
-> no_dyn_format_t;
-
-HG_BEGIN_FORMAT(no_dyn_format_t)
-  HG_DATUM (uint32_t,                 word_0)
-  HG_DATUM (uint32_t,                 word_1)
-  HG_DATUM (uint32_t,                 word_2)
+HG_BEGIN_FORMAT(no_dyn_format_t,
+  HG_DATUM (uint32_t,                 word_0),
+  HG_DATUM (uint32_t,                 word_1),
+  HG_DATUM (uint32_t,                 word_2),
   HG_ARRAY (uint32_t,20,              arry_3)
-HG_END_FORMAT(no_dyn_format_t)
+);
 
-typedef no_dyn_format_t_HgFormat no_dyn_type;
+typedef no_dyn_format_t no_dyn_type;
 
 //  ****************************************************************************
 //  A type list used to create a basic message with a dynamic value.
 // 
-typedef TypeList
-<
-  uint32_t,
-  uint32_t,
-  std::vector<uint16_t>,
-  uint32_t
-> dyn_basic_format_t;
-
-HG_BEGIN_FORMAT(dyn_basic_format_t)
-  HG_DATUM (uint32_t,                 word_0)
-  HG_DATUM (uint32_t,                 word_1)
-  HG_DYNAMIC(uint16_t,   word_0,      seq_16)
+HG_BEGIN_FORMAT(dyn_basic_format_t,
+  HG_DATUM (uint32_t,                 word_0),
+  HG_DATUM (uint32_t,                 word_1),
+  HG_DYNAMIC(uint16_t,   word_0,      seq_16),
   HG_DATUM (uint32_t,                 word_2)
-HG_END_FORMAT(dyn_basic_format_t)
+);
 
-typedef dyn_basic_format_t_HgFormat dyn_basic_type;
+typedef dyn_basic_format_t dyn_basic_type;
 
 //  ****************************************************************************
 //  A type list used to create the base message field.
 // 
-typedef TypeList
-<
-  uint8_t,
-  uint8_t,
-  uint8_t,
-  uint8_t,
-  uint32_t,
-  std::vector<uint8_t>,
-  std::vector<uint16_t>,
-  uint32_t,
-  std::vector<uint32_t>,
-  std::vector<uint64_t>,
-  uint32_t
-> dyn_test_format_t;
-
-HG_BEGIN_FORMAT(dyn_test_format_t)
-  HG_DATUM    (uint8_t,             size_8)
-  HG_DATUM    (uint8_t,             size_16)
-  HG_DATUM    (uint8_t,             size_32)
-  HG_DATUM    (uint8_t,             size_64)
-  HG_DATUM    (uint32_t,            word_0)
-  HG_DYNAMIC  (uint8_t,  size_8,    seq_8)
-  HG_DYNAMIC  (uint16_t, size_16,   seq_16)
-  HG_DATUM    (uint32_t,            word_1)
-  HG_DYNAMIC  (uint32_t, size_32,   seq_32)
-  HG_DYNAMIC  (uint64_t, size_64,   seq_64)
+HG_BEGIN_FORMAT(dyn_test_format_t,
+  HG_DATUM    (uint8_t,             size_8),
+  HG_DATUM    (uint8_t,             size_16),
+  HG_DATUM    (uint8_t,             size_32),
+  HG_DATUM    (uint8_t,             size_64),
+  HG_DATUM    (uint32_t,            word_0),
+  HG_DYNAMIC  (uint8_t,  size_8,    seq_8),
+  HG_DYNAMIC  (uint16_t, size_16,   seq_16),
+  HG_DATUM    (uint32_t,            word_1),
+  HG_DYNAMIC  (uint32_t, size_32,   seq_32),
+  HG_DYNAMIC  (uint64_t, size_64,   seq_64),
   HG_DATUM    (uint32_t,            word_2)
-HG_END_FORMAT(dyn_test_format_t)
+);
 
-typedef dyn_test_format_t_HgFormat dyn_message_type;
+typedef dyn_test_format_t dyn_message_type;
 
 } // namespace Hg
 
@@ -146,7 +115,7 @@ const size_t k_count_seq_64 = 3;
 /// @brief TestDynamicMessageSuite Test Suite class.
 ///
 class TestDynamicMessageSuite : public CxxTest::TestSuite
-  , HgTestHelper<Hg::dyn_test_format_t, Hg::BufferedStoragePolicy >
+  , HgTestHelper<Hg::dyn_test_format_t::format_type, Hg::BufferedStoragePolicy >
 {
 public:
 
@@ -208,15 +177,15 @@ protected:
   //  Typedefs *****************************************************************
   //  These typedefs allow the creation of the different msg field types
   //  with a simplified syntax for readability in the unit-tests.
-  typedef Hg::BufferedStoragePolicy                         storage_type;
-  typedef Hg::dyn_message_type                              msg_type;
-  typedef Hg::Message<msg_type>                             SUT;
-  typedef Hg::Message<msg_type, Hg::NetByteOrder>           SUT_net_order;
-  typedef Hg::Message<msg_type, Hg::BigEndian>              SUT_big_endian;
-  typedef Hg::Message<msg_type, Hg::LittleEndian>           SUT_little_endian;
+  typedef Hg::BufferedStoragePolicy                               storage_type;
+  typedef Hg::dyn_message_type                                    msg_type;
+  typedef Hg::basic_msg<msg_type>::host_t                         SUT;
+  typedef Hg::basic_msg<msg_type>::net_t                          SUT_net;
+  typedef Hg::basic_msg<msg_type>::big_t                          SUT_big;
+  typedef Hg::basic_msg<msg_type>::little_t                       SUT_little;
 
-  typedef storage_type::data_type                           data_type;
-  typedef storage_type::s_pointer                           s_pointer;
+  typedef storage_type::data_type                                 data_type;
+  typedef storage_type::s_pointer                                 s_pointer;
 
   // Helper Functions ************************************************************
   //  ****************************************************************************
@@ -403,7 +372,6 @@ public:
   void Testis_host_order_false(void);
   void TestAssign(void);
   void TestClear(void);
-  void TestClone(void);
   void Testdata(void);
 
   //  Worker Functions *********************************************************
@@ -548,7 +516,7 @@ void TestDynamicMessageSuite::Testis_host_order_false(void)
 {
   // SUT: Net order is defined within the type itself. 
   //      Look at the typedef for details
-  SUT_net_order sut;
+  SUT_net sut;
   TS_ASSERT(!sut.is_host_order());
 }
 
@@ -576,19 +544,6 @@ void TestDynamicMessageSuite::TestClear(void)
   sut.clear();
 
   TS_ASSERT(sut.empty());
-}
-
-//  ****************************************************************************
-void TestDynamicMessageSuite::TestClone(void)
-{
-  SUT rhs;
-  PopulateBaseValues(rhs);
-
-  // SUT
-  SUT sut;
-  sut = rhs.clone();
-
-  TS_ASSERT_SAME_DATA(packed_msg, rhs.data(), sut.size());
 }
 
 //  ****************************************************************************
@@ -637,13 +592,13 @@ void TestDynamicMessageSuite::Testdata(void)
 void TestDynamicMessageSuite::Testto_host(void)
 {
   // Populate the expected results.
-  SUT_net_order expected;
+  SUT_net expected;
   PopulateOtherValues(expected);
 
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT_net_order sut;
+  SUT_net sut;
   PopulateBaseValues(sut);
 
   SUT no_op_sut;
@@ -670,12 +625,12 @@ void TestDynamicMessageSuite::Testto_network(void)
   SUT sut;
   PopulateBaseValues(sut);
 
-  SUT_net_order no_op_sut;
+  SUT_net no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT_net_order result = to_network(sut);
-  SUT_net_order no_op_result = to_network(no_op_sut);
+  SUT_net result = to_network(sut);
+  SUT_net no_op_result = to_network(no_op_sut);
 
   TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
   TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
@@ -691,15 +646,15 @@ void TestDynamicMessageSuite::Testto_big_endian(void)
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT_little_endian sut;
+  SUT_little sut;
   PopulateBaseValues(sut);
 
-  SUT_big_endian no_op_sut;
+  SUT_big no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT_big_endian result = to_big_endian(sut);
-  SUT_big_endian no_op_result = to_big_endian(no_op_sut);
+  SUT_big result = to_big_endian(sut);
+  SUT_big no_op_result = to_big_endian(no_op_sut);
 
   TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
   TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
@@ -715,15 +670,15 @@ void TestDynamicMessageSuite::Testto_little_endian(void)
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT_big_endian sut;
+  SUT_big sut;
   PopulateBaseValues(sut);
 
-  SUT_little_endian no_op_sut;
+  SUT_little no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT_little_endian result        = to_little_endian(sut);
-  SUT_little_endian no_op_result  = to_little_endian(no_op_sut);
+  SUT_little result        = to_little_endian(sut);
+  SUT_little no_op_result  = to_little_endian(no_op_sut);
 
   TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
   TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());

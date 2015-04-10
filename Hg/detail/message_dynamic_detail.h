@@ -21,16 +21,11 @@ namespace detail
 
 //  Forward Declarations *******************************************************
 //  ****************************************************************************
-template< typename MessageT,
+template< typename MsgT,
           bool     IsDynamicT
         >
 struct DynamicSizeWorker;
 
-//  ****************************************************************************
-template< typename MessageT,
-          typename ByteOrderT,
-          typename StorageT>
-class Message;
 
 //  ****************************************************************************
 /// Determines the number of bytes required to serialize a vector.
@@ -74,7 +69,7 @@ struct HelperSizeOfVector
 
     for (size_t index = 0; index < field.size(); ++index)
     {
-      // Type T is the MessageT parameter of a message definition.
+      // Type T is the MsgT parameter of a message definition.
       // Therefore there will be a format_type that can be used
       // to tag dispatch this variation of the DynamicSizeWorker.
       //
@@ -183,11 +178,11 @@ size_t dynamic_size(const T& field)
 }
 
 //  ****************************************************************************
-template< typename MessageT >
+template< typename MsgT >
 struct DynamicSizeFunctor
 {
   //  Typedefs *****************************************************************
-  typedef MessageT                      message_type;
+  typedef MsgT                      message_type;
   typedef typename
     message_type::format_type           format_type;
 
@@ -250,15 +245,15 @@ struct DynamicSizeFunctor
 //  ****************************************************************************
 /// 
 ///
-template< typename MessageT,
+template< typename MsgT,
           bool     IsDynamicT
         >
 struct DynamicSizeWorker
 {
   static
-    size_t size(const MessageT& msg)
+    size_t size(const MsgT& msg)
   {
-    typedef MessageT                      message_type;
+    typedef MsgT                      message_type;
     typedef typename  
       message_type::format_type           format_type;
 
@@ -276,11 +271,11 @@ struct DynamicSizeWorker
 //  ****************************************************************************
 /// Specialization that does not request dynamic size values for non-dynamic msgs.
 ///
-template< typename MessageT >
-struct DynamicSizeWorker<MessageT, false>
+template< typename MsgT >
+struct DynamicSizeWorker<MsgT, false>
 {
   static
-    size_t size(const MessageT& msg)
+    size_t size(const MsgT& msg)
   {
     return 0;  
   }

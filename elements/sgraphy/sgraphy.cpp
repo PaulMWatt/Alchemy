@@ -28,6 +28,7 @@ using std::endl;
 using std::string;
 using std::stringstream;
 
+
 //  Global Varibles ************************************************************
 
 bool   is_encode      = false;
@@ -100,8 +101,8 @@ void WriteFile( const string& path,
 }
 
 //  ****************************************************************************
-void weave_data ( Hg::rgba_t_HgFormat&  pixel,
-                  Hg::byte_t&           data)
+void weave_data ( Hg::rgba_t&  pixel,
+                  Hg::byte_t&  data)
 {
   using Hg::s_data;
 
@@ -121,8 +122,8 @@ void weave_data ( Hg::rgba_t_HgFormat&  pixel,
 }
 
 //  ****************************************************************************
-void extract_data ( Hg::rgba_t_HgFormat&  pixel,
-                    Hg::byte_t&           data)
+void extract_data ( Hg::rgba_t&  pixel,
+                    Hg::byte_t&  data)
 {
   using Hg::s_data;
 
@@ -166,4 +167,3 @@ int main(int argc, char* argv[])
   
 	return 0;
 }
-

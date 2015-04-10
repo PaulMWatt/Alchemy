@@ -24,14 +24,6 @@
 namespace Hg
 {
 
-//  Forward Declarations *******************************************************
-template< typename MessageT,
-          typename ByteOrderT,
-          typename StorageT
-        >
-class Message;
-
-
 namespace detail
 {
 

@@ -477,12 +477,12 @@ private:
                                           ///  all data reads should occur from.
 
   //  **************************************************************************
-  /// Provides access to the packed memory buffer.
-  /// 
-  /// @return       Returns a constant pointer to the buffer that contains the 
-  ///               packed memory.
-  ///               0 is returned if there is no memory associated with the buffer.
-  ///
+  //  Provides access to the packed memory buffer.
+  //  
+  //  @return       Returns a constant pointer to the buffer that contains the 
+  //                packed memory.
+  //                0 is returned if there is no memory associated with the buffer.
+  // 
   pointer raw_data()
   {
     return &m_data[0];

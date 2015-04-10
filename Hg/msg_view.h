@@ -13,8 +13,7 @@
 namespace Hg
 {
 
-template< typename MessageT,
-          typename ByteOrderT,
+template< typename MsgT,
           typename StorageT
         >
 class Message;
@@ -22,30 +21,24 @@ class Message;
 //  **************************************************************************
 /// The MsgView object to manage structured access over an opaque buffer.
 ///
-template< typename MessageT,
+template< typename MsgT,
           typename ByteOrderT = Hg::HostByteOrder
         >
 class msg_view
 {      
 public:
   //  Typedefs *****************************************************************
-  typedef MessageT                            message_type;
+  typedef MsgT                                message_type;
 
   typedef typename 
-    MessageT::format_type                     format_type;
+    MsgT::format_type                         format_type;
   typedef Hg::BufferedStoragePolicy           storage_type;
 
-  // TODO: Not sure this is useful.
-  //typedef typename 
-  //  storage_type::data_type                   data_type;
-  
   typedef ByteOrderT                          byte_order_type;
 
-  typedef Message 
-          < message_type, 
-            byte_order_type,
-            storage_type
-          >                                   value_type;
+  typedef Message < MsgT, 
+                    byte_order_type
+                  >                           value_type;
 
   typedef byte_t*                             raw_pointer;
 
@@ -66,8 +59,8 @@ public:
                                         ///  message contains fields that are
                                         ///  potentially dynamically allocated.
 
-  typedef msg_view_iterator<MessageT>         iterator;
-  typedef msg_view_const_iterator<MessageT>   const_iterator;
+  typedef msg_view_iterator<MsgT>         iterator;
+  typedef msg_view_const_iterator<MsgT>   const_iterator;
 
 
   //  **************************************************************************
@@ -148,16 +141,16 @@ public:
   //  **************************************************************************
   /// Returns an iterator to the first item in the array.
   /// 
-  iterator begin()                                { return msg_view_iterator<MessageT>(m_pFirst);       }
-  const_iterator begin()  const                   { return msg_view_const_iterator<MessageT>(m_pFirst); }
-  const_iterator cbegin() const                   { return msg_view_const_iterator<MessageT>(m_pFirst); }
+  iterator begin()                                { return msg_view_iterator<MsgT>(m_pFirst);       }
+  const_iterator begin()  const                   { return msg_view_const_iterator<MsgT>(m_pFirst); }
+  const_iterator cbegin() const                   { return msg_view_const_iterator<MsgT>(m_pFirst); }
 
   //  **************************************************************************
   /// Returns an iterator to the item one passed the end of the array.
   /// 
-  iterator end()                                  { return msg_view_iterator<MessageT>(m_pLast);       }
-  const_iterator end()  const                     { return msg_view_const_iterator<MessageT>(m_pLast); }
-  const_iterator cend() const                     { return msg_view_const_iterator<MessageT>(m_pLast); }
+  iterator end()                                  { return msg_view_iterator<MsgT>(m_pLast);       }
+  const_iterator end()  const                     { return msg_view_const_iterator<MsgT>(m_pLast); }
+  const_iterator cend() const                     { return msg_view_const_iterator<MsgT>(m_pLast); }
 
   // TODO: Revisit and complete.
   ////  **************************************************************************
@@ -187,15 +180,15 @@ protected:
 //  These functions are only present for buffers to bytes.
 
 //  **************************************************************************
-template< typename MessageT,
+template< typename MsgT,
           typename T
         >
 typename
   std::enable_if< is_opaque<T>::value,
-                  msg_view<MessageT> >::type
+                  msg_view<MsgT> >::type
 make_view(T& buffer)
 {
-  return msg_view<MessageT>(buffer);
+  return msg_view<MsgT>(buffer);
 }
 
 

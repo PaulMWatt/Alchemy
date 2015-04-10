@@ -35,16 +35,17 @@
 namespace Hg
 {
 
-HG_BEGIN_FORMAT(base_format_t)
-  HG_DATUM (uint32_t,                 word_0)
-  HG_DATUM (uint32_t,                 word_1)
-  HG_DATUM (uint32_t,                 word_2)
-  HG_DATUM (uint8_t,                  val)
-  HG_DATUM (nested_format_t,          nested)
+HG_BEGIN_FORMAT(base_format_t,
+  HG_DATUM (uint32_t,                 word_0),
+  HG_DATUM (uint32_t,                 word_1),
+  HG_DATUM (uint32_t,                 word_2),
+  HG_DATUM (uint8_t,                  val),
+  HG_DATUM (nested_format_t,          nested),
   HG_ARRAY (uint32_t, 3,              sequence)
-HG_END_FORMAT(base_format_t)
+);
 
-typedef base_format_t_HgFormat    message_type;
+
+typedef base_format_t    message_type;
 
 } // namespace Hg
 
@@ -52,7 +53,7 @@ typedef base_format_t_HgFormat    message_type;
 /// @brief TestMessageSuite Test Suite class.
 ///
 class TestMessageSuite : public CxxTest::TestSuite
-  , HgTestHelper<Hg::base_format_t, Hg::BufferedStoragePolicy >
+  , HgTestHelper<Hg::base_format_t::format_type, Hg::BufferedStoragePolicy >
 {
 public:
 
@@ -107,15 +108,16 @@ protected:
   //  Typedefs *****************************************************************
   //  These typedefs allow the creation of the different msg field types
   //  with a simplified syntax for readability in the unit-tests.
-  typedef Hg::BufferedStoragePolicy                         storage_type;
-  typedef Hg::message_type                                  msg_type;
-  typedef Hg::Message<msg_type>                             SUT;
-  typedef Hg::Message<msg_type, Hg::NetByteOrder>           SUT_net_order;
-  typedef Hg::Message<msg_type, Hg::BigEndian>              SUT_big_endian;
-  typedef Hg::Message<msg_type, Hg::LittleEndian>           SUT_little_endian;
+  typedef Hg::BufferedStoragePolicy                              storage_type;
+  typedef Hg::message_type                                       msg_type;
+  typedef Hg::basic_msg<msg_type>::host_t                        SUT;
+  typedef Hg::basic_msg<msg_type>::net_t                         SUT_net;
+  typedef Hg::basic_msg<msg_type>::big_t                         SUT_big;
+  typedef Hg::basic_msg<msg_type>::little_t                      SUT_little;
+  typedef Hg::Message<Hg::basic_msg<msg_type>, Hg::LittleEndian> SUT_little;
 
-  typedef storage_type::data_type                           data_type;
-  typedef storage_type::s_pointer                           s_pointer;
+  typedef storage_type::data_type                                data_type;
+  typedef storage_type::s_pointer                                s_pointer;
 
   // Helper Functions ************************************************************
   //  ****************************************************************************
@@ -170,7 +172,6 @@ public:
   void Testis_host_order_false(void);
   void TestAssign(void);
   void TestClear(void);
-  void TestClone(void);
   void Testdata(void);
 
   // Special cases
@@ -276,7 +277,7 @@ void TestMessageSuite::Testis_host_order_false(void)
 {
   // SUT: Net order is defined within the type itself. 
   //      Look at the typedef for details
-  SUT_net_order sut;
+  SUT_net sut;
   TS_ASSERT(!sut.is_host_order());
 }
 
@@ -308,19 +309,6 @@ void TestMessageSuite::TestClear(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestClone(void)
-{
-  SUT rhs;
-  PopulateBaseValues(rhs);
-
-  // SUT
-  SUT sut;
-  sut = rhs.clone();
-
-  TS_ASSERT_SAME_DATA(sut.data(), rhs.data(), sut.size());
-}
-
-//  ****************************************************************************
 void TestMessageSuite::Testdata(void)
 {
   // TODO: Add code to test that values are set to the interface, and can be read out of the data call.
@@ -343,7 +331,7 @@ void TestMessageSuite::Testdata(void)
 //  ****************************************************************************
 void TestMessageSuite::TestSingleFieldMsg_Basic(void)
 {
-  typedef Hg::single_t_HgFormat SingleMsg;
+  typedef Hg::single_t SingleMsg;
 
   SingleMsg sut;
   sut.only = 1001;
@@ -354,7 +342,7 @@ void TestMessageSuite::TestSingleFieldMsg_Basic(void)
 //  ****************************************************************************
 void TestMessageSuite::TestSingleFieldMsg_Nested(void)
 {
-  typedef Hg::single_nested_t_HgFormat SingleMsg;
+  typedef Hg::single_nested_t SingleMsg;
 
   SingleMsg sut;
   sut.only.zero = 255;
@@ -365,7 +353,7 @@ void TestMessageSuite::TestSingleFieldMsg_Nested(void)
 //  ****************************************************************************
 void TestMessageSuite::TestSingleFieldMsg_Bitlist(void)
 {
-  typedef Hg::single_bit_t_HgFormat SingleMsg;
+  typedef Hg::single_bit_t SingleMsg;
 
   SingleMsg sut;
   sut.only.lonely = 3;
@@ -377,13 +365,13 @@ void TestMessageSuite::TestSingleFieldMsg_Bitlist(void)
 void TestMessageSuite::Testto_host(void)
 {
   // Populate the expected results.
-  SUT_net_order expected;
+  SUT_net expected;
   PopulateOtherValues(expected);
 
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT_net_order sut;
+  SUT_net sut;
   PopulateBaseValues(sut);
 
   SUT no_op_sut;
@@ -410,12 +398,12 @@ void TestMessageSuite::Testto_network(void)
   SUT sut;
   PopulateBaseValues(sut);
 
-  SUT_net_order no_op_sut;
+  SUT_net no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT_net_order result = to_network(sut);
-  SUT_net_order no_op_result = to_network(no_op_sut);
+  SUT_net result = to_network(sut);
+  SUT_net no_op_result = to_network(no_op_sut);
 
   TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
   TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());
@@ -431,15 +419,15 @@ void TestMessageSuite::Testto_big_endian(void)
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT_little_endian sut;
+  SUT_little sut;
   PopulateBaseValues(sut);
 
-  SUT_big_endian no_op_sut;
+  SUT_big no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT_big_endian result = to_big_endian(sut);
-  SUT_big_endian no_op_result = to_big_endian(no_op_sut);
+  SUT_big result = to_big_endian(sut);
+  SUT_big no_op_result = to_big_endian(no_op_sut);
 
   TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
   TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());
@@ -455,15 +443,15 @@ void TestMessageSuite::Testto_little_endian(void)
   // Perform two instances of this test.
   // 1) with data that requires a conversion.
   // 2) with data that does not require a conversion
-  SUT_big_endian sut;
+  SUT_big sut;
   PopulateBaseValues(sut);
 
-  SUT_little_endian no_op_sut;
+  SUT_little no_op_sut;
   PopulateOtherValues(no_op_sut);
 
   // SUT
-  SUT_little_endian result        = to_little_endian(sut);
-  SUT_little_endian no_op_result  = to_little_endian(no_op_sut);
+  SUT_little result        = to_little_endian(sut);
+  SUT_little no_op_result  = to_little_endian(no_op_sut);
 
   TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
   TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());

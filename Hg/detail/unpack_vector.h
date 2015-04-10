@@ -430,17 +430,17 @@ size_t DeserializeVector (VectorT<T, A>  &value,
 //  A specialized functor to read vector types.
 // 
 //  @tparam IdxT              [size_t] The index of the field to read.
-//  @tparam MessageT          [typename] The message defintition used to parse the
+//  @tparam MsgT          [typename] The message defintition used to parse the
 //                            buffer.
 //  @tparam BufferT           [typename] The buffer type that provides the data
 //                            to read into the message.  
 //  
 template< size_t   IdxT,      
-          typename MessageT,
+          typename MsgT,
           typename BufferT
         >
 struct UnpackDatum< IdxT, 
-                    MessageT, 
+                    MsgT, 
                     BufferT, 
                     vector_trait>
 {
@@ -448,7 +448,7 @@ struct UnpackDatum< IdxT,
   typedef typename
     Hg::detail::DeduceProxyType 
       < IdxT,
-        typename MessageT::format_type
+        typename MsgT::format_type
       >::type                                     proxy_type;
 
   typedef typename
@@ -456,7 +456,7 @@ struct UnpackDatum< IdxT,
   typedef typename
     value_type::value_type                        data_type;
 
-  typedef MessageT                                message_type;
+  typedef MsgT                                message_type;
 
   typedef BufferT                                 buffer_type;
 

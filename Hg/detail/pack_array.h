@@ -459,11 +459,11 @@ size_t SerializeArray(ArrayT<T,N> &value,
 //  @return         Returns the item after the last element written by this call.
 //
 template< size_t   IdxT,      
-          typename MessageT,
+          typename MsgT,
           typename BufferT
         >
 struct PackDatum< IdxT, 
-                  MessageT, 
+                  MsgT, 
                   BufferT, 
                   array_trait>
 {
@@ -471,7 +471,7 @@ struct PackDatum< IdxT,
   typedef typename
     Hg::detail::DeduceProxyType 
       < IdxT,
-        typename MessageT::format_type
+        typename MsgT::format_type
       >::type                                     proxy_type;
 
   typedef typename
@@ -479,7 +479,7 @@ struct PackDatum< IdxT,
   typedef typename
     value_type::value_type                        data_type;
 
-  typedef MessageT                                message_type;
+  typedef MsgT                                message_type;
 
   typedef BufferT                                 buffer_type;
 
@@ -494,7 +494,7 @@ struct PackDatum< IdxT,
   //                      will be added to this input value to report how much 
   //                      larger the message has become. 
   //
-  void operator()( MessageT& msg,
+  void operator()( MsgT& msg,
                    BufferT&  buffer,
                    size_t&   dynamic_offset)
   {
@@ -507,7 +507,7 @@ struct PackDatum< IdxT,
     }
 
     // Calculate the total starting offset.
-    size_t offset = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
+    size_t offset = Hg::OffsetOf<IdxT, typename MsgT::format_type>::value
                   + dynamic_offset;
 
     size_t bytes_written = 

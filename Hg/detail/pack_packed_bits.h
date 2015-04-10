@@ -25,10 +25,10 @@ namespace detail
 //  @tparam T       [typename] The value_type for this specialization.
 //  
 template< size_t   IdxT,      
-          typename MessageT,
+          typename MsgT,
           typename BufferT
         >
-struct PackDatum<IdxT, MessageT, BufferT, packed_trait>
+struct PackDatum<IdxT, MsgT, BufferT, packed_trait>
 {
   //  **************************************************************************
   //  Writes a packed-bits field to the specified buffer.
@@ -38,14 +38,14 @@ struct PackDatum<IdxT, MessageT, BufferT, packed_trait>
   //  @param dynamic_offset An additional offset for messages with dynamically 
   //                        sized fields. 
   //
-  void operator()(MessageT &msg,
+  void operator()(MsgT &msg,
                   BufferT  &buffer,
                   size_t   &dynamic_offset)
   {
     typedef typename
       Hg::detail::DeduceProxyType 
         < IdxT,
-          typename MessageT::format_type
+          typename MsgT::format_type
         >::type                                   proxy_type;
 
     typedef typename
@@ -55,7 +55,7 @@ struct PackDatum<IdxT, MessageT, BufferT, packed_trait>
       packed_type::value_type                     value_type;
 
     packed_type &packed_value = msg.template FieldAt<IdxT>().get();
-    size_t      offset        = Hg::OffsetOf<IdxT, typename MessageT::format_type>::value
+    size_t      offset        = Hg::OffsetOf<IdxT, typename MsgT::format_type>::value
                               + dynamic_offset;
     buffer.set_data(static_cast<value_type>(packed_value), offset);
   }

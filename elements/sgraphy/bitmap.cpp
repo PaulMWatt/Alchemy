@@ -33,7 +33,10 @@ bool Bitmap::Load (const std::string &name)
     return false;
   }
 
-  input >> m_info;
+
+  size_t s = m_info.size();
+
+  //input >> m_info;
 
   return true;
 }
@@ -42,7 +45,7 @@ bool Bitmap::Load (const std::string &name)
 void Bitmap::process( std::string &msg,
                       pixel_ftor   ftor)
 {
-  auto t    = Hg::make_view<Hg::rgba_t_HgFormat>(m_info.pixels.get());
+  auto t    = Hg::make_view<Hg::rgba_t>(m_info.pixels.get());
   auto iter = t.begin();
 
   // Calculate the number of bytes that can be encoded or extracted

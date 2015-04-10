@@ -59,6 +59,18 @@ typedef MT        empty;
 typedef unsigned char   byte_t;
 
 //  ****************************************************************************
+/// Affirmative Type for use in SFINAE selection templates.
+/// 
+template < typename T > 
+struct yes_t 
+{ char buffer[2]; }; 
+ 
+//  ****************************************************************************
+/// Negative Type for use in SFINAE selection templates.
+/// 
+typedef char no_t; 
+
+//  ****************************************************************************
 /// This construct provides mechanism to declare and 
 /// initialize compile-time global constants.
 ///               
@@ -424,7 +436,6 @@ template< typename T >
 struct opaque_value 
   : std::integral_constant< bool, is_opaque<T>::value >
 { };
-
 
 
 } // namespace Hg

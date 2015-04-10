@@ -20,8 +20,7 @@ namespace benchmark
 {
 
 //  ****************************************************************************
-typedef Hg::Message<Hg::Basic_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgBasicHost;
-typedef Hg::Message<Hg::Basic_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgBasicNet;
+typedef Hg::basic_msg<Hg::Basic, Hg::BufferedStaticStoragePolicy>   HgBasic;
 
 
 void UsingHg::test_basic(DataBuffer &data,
@@ -33,17 +32,16 @@ void UsingHg::test_basic(DataBuffer &data,
   cout << "basic size:      " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
-    HgBasicHost host((HgBasicHost::data_type*)data.GetBytes(len), len);  
+    HgBasic::host_t host((HgBasic::data_type*)data.GetBytes(len), len);  
 
-    HgBasicNet  net = Hg::to_network(host);
+    HgBasic::net_t  net = Hg::to_network(host);
 
     net.data((unsigned char*)out.GetBytes(len), len);
   }
 }
 
 //  ****************************************************************************
-typedef Hg::Message<Hg::Packed_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgPackedHost;
-typedef Hg::Message<Hg::Packed_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgPackedNet;
+typedef Hg::basic_msg<Hg::Packed, Hg::BufferedStaticStoragePolicy>   HgPacked;
 
 void UsingHg::test_packed_bits( DataBuffer &data,
                                 DataBuffer &out)
@@ -54,9 +52,9 @@ void UsingHg::test_packed_bits( DataBuffer &data,
   cout << "packed size:     " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
-    HgPackedHost host((HgPackedHost::data_type*)data.GetBytes(len), len);  
+    HgPacked::host_t host((HgPacked::data_type*)data.GetBytes(len), len);  
 
-    HgPackedNet  net = Hg::to_network(host);
+    HgPacked::net_t  net = Hg::to_network(host);
 
     net.data((unsigned char*)out.GetBytes(len), len);
   }
@@ -64,8 +62,7 @@ void UsingHg::test_packed_bits( DataBuffer &data,
 
 
 //  ****************************************************************************
-typedef Hg::Message<Hg::Unaligned_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgUnalignedHost;
-typedef Hg::Message<Hg::Unaligned_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgUnalignedNet;
+typedef Hg::basic_msg<Hg::Unaligned, Hg::BufferedStaticStoragePolicy>   HgUnaligned;
 
 void UsingHg::test_unaligned( DataBuffer &data,
                               DataBuffer &out)
@@ -76,9 +73,9 @@ void UsingHg::test_unaligned( DataBuffer &data,
   cout << "unaligned size:  " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
-    HgUnalignedHost host((HgUnalignedHost::data_type*)data.GetBytes(len), len);  
+    HgUnaligned::host_t host((HgUnaligned::data_type*)data.GetBytes(len), len);  
 
-    HgUnalignedNet  net = Hg::to_network(host);
+    HgUnaligned::net_t  net = Hg::to_network(host);
 
     net.data((unsigned char*)out.GetBytes(len), len);
   }
@@ -86,8 +83,7 @@ void UsingHg::test_unaligned( DataBuffer &data,
 }
 
 //  ****************************************************************************
-typedef Hg::Message<Hg::Complex_HgFormat, Hg::HostByteOrder, Hg::BufferedStaticStoragePolicy>   HgComplexHost;
-typedef Hg::Message<Hg::Complex_HgFormat, Hg::NetByteOrder, Hg::BufferedStaticStoragePolicy>    HgComplexNet;
+typedef Hg::basic_msg<Hg::Complex, Hg::BufferedStaticStoragePolicy>   HgComplex;
 
 void UsingHg::test_complex(DataBuffer &data,
                            DataBuffer &out)
@@ -98,9 +94,9 @@ void UsingHg::test_complex(DataBuffer &data,
   cout << "complex size:    " << len   << ", count; " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
-    HgComplexHost host((HgComplexHost::data_type*)data.GetBytes(len), len);  
+    HgComplex::host_t host((HgComplex::data_type*)data.GetBytes(len), len);  
 
-    HgComplexNet  net = Hg::to_network(host);
+    HgComplex::net_t  net = Hg::to_network(host);
 
     net.data((unsigned char*)out.GetBytes(len), len);
   }

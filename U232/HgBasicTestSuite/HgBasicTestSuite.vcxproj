@@ -234,12 +234,14 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\dynamic.h" />
     <ClInclude Include="..\..\Pb\integer_sequence.h" />
     <ClInclude Include="..\..\Pb\length.h" />
+    <ClInclude Include="..\..\Pb\meta_auto_rec_macros.h" />
     <ClInclude Include="..\..\Pb\meta_error.h" />
     <ClInclude Include="..\..\Pb\meta_foreach.h" />
     <ClInclude Include="..\..\Pb\meta_fwd.h" />
     <ClInclude Include="..\..\Pb\meta_macros.h" />
     <ClInclude Include="..\..\Pb\meta_math.h" />
     <ClInclude Include="..\..\Pb\meta_util.h" />
+    <ClInclude Include="..\..\Pb\meta_variadic_macros.h" />
     <ClInclude Include="..\..\Pb\offset_of.h" />
     <ClInclude Include="..\..\Pb\size_at.h" />
     <ClInclude Include="..\..\Pb\size_of.h" />

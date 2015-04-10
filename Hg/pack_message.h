@@ -28,17 +28,17 @@ namespace Hg
 /// @return                   The buffer that has been allocated to store the 
 ///                           message.
 ///
-template< typename MessageT,
+template< typename MsgT,
           typename BufferT,
           typename SizeTraitT
         >
 BufferT&
-  pack_message( MessageT& msg_values,
+  pack_message( MsgT& msg_values,
                 size_t    size,
                 BufferT & buffer
               )
 {
-  detail::pack_message < MessageT, 
+  detail::pack_message < MsgT, 
                          BufferT
                        >(msg_values, 
                          size, 
@@ -60,15 +60,15 @@ BufferT&
 /// @return                   The buffer that has been allocated to store the 
 ///                           message.
 ///
-template< typename MessageT,
+template< typename MsgT,
           typename BufferT,
           typename SizeTraitT
         >
-size_t pack_message(MessageT &msg_values,
+size_t pack_message(MsgT &msg_values,
                     BufferT  &buffer,
                     size_t    offset)
 {
-  return detail::pack_message < MessageT, 
+  return detail::pack_message < MsgT, 
                                 BufferT
                               >(msg_values, 
                                 buffer,
@@ -87,12 +87,12 @@ size_t pack_message(MessageT &msg_values,
 /// @return                   The buffer that has been allocated to store the 
 ///                           message.
 ///
-template< typename MessageT,
+template< typename MsgT,
           typename BufferT,
           typename SizeTraitT
         >
 bool
-  pack_message( MessageT& msg_values,
+  pack_message( MsgT& msg_values,
                 BufferT & fixed_buffer)
 {
   return   detail::pack_fixed_size_message( msg_values,
@@ -114,9 +114,11 @@ bool
 template< typename T >
 std::ostream& operator<<(std::ostream& os, const T& msg)
 {
-  Hg::Message<typename T::message_type, 
-              typename T::byte_order_type, 
-              Hg::BufferedStoragePolicy> outMsg;
+  Hg::Message 
+    <
+      Hg::basic_msg< typename T::message_type, Hg::BufferedStoragePolicy>,
+      typename T::byte_order_type
+    > outMsg;
 
   outMsg = msg;
 

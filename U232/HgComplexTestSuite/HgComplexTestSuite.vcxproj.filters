@@ -329,6 +329,18 @@
     <ClInclude Include="..\..\Hg\msg_view.h">
       <Filter>Header Files\Alchemy\Hg</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\boost_for_detail.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\boost_for_detail_msvc.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\boost_pp_config.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\boost_preprocessor.h">
+      <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgComplexTestSuiteRunner.cpp">

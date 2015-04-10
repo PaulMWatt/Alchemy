@@ -302,6 +302,12 @@
     <ClInclude Include="..\..\Hg\proxy\opaque_proxy.h">
       <Filter>Header Files\Alchemy\Hg\Proxy</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Pb\meta_variadic_macros.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\meta_auto_rec_macros.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgBasicTestSuiteRunner.cpp">

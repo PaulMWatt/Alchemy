@@ -61,7 +61,7 @@
 ///// @brief TestBitFieldArray Test Suite class.
 /////
 //class TestBitFieldArray : public CxxTest::TestSuite
-////  , HgTestHelper<Hg::array_t, Hg::BufferedStoragePolicy >
+////  , HgTestHelper<Hg::array_t::format_type, Hg::BufferedStoragePolicy >
 //{
 //public:
 //  TestBitFieldArray() { }

@@ -13,11 +13,10 @@
 namespace Hg
 {
 
-template< typename MessageT,
-          typename ByteOrderT,
+template< typename MsgT,
           typename StorageT
         >
-class Message;
+class basic_msg;
 
 //  **************************************************************************
 /// Iterator for nonmutable msg_view.
@@ -26,16 +25,15 @@ template< typename T >
 class msg_view_const_iterator 
 {      
 public:
-  typedef msg_view_const_iterator<T>            iter_t;
-  typedef std::random_access_iterator_tag       iterator_category;
+  typedef msg_view_const_iterator<T>              iter_t;
+  typedef std::random_access_iterator_tag         iterator_category;
 
-  typedef Message<T,
-                  HostByteOrder,
-                  BufferedStaticStoragePolicy>  value_type;
-  typedef ptrdiff_t                             difference_type;
-  typedef const value_type*                     pointer;
-  typedef const value_type&                     reference;
-  typedef value_type*                           Tptr;
+  typedef basic_msg< T,
+                    BufferedStaticStoragePolicy>  value_type;
+  typedef ptrdiff_t                               difference_type;
+  typedef const value_type*                       pointer;
+  typedef const value_type&                       reference;
+  typedef value_type*                             Tptr;
 
   //  **************************************************************************
   /// Default constructor with a pointer to a NULL msg_view.
@@ -268,16 +266,15 @@ class msg_view_iterator
        : public msg_view_const_iterator<T>
 {
 public:
-  typedef msg_view_iterator<T>                  iter_t;
-  typedef msg_view_const_iterator<T>            base_t;
-  typedef std::random_access_iterator_tag       iterator_category;
+  typedef msg_view_iterator<T>                    iter_t;
+  typedef msg_view_const_iterator<T>              base_t;
+  typedef std::random_access_iterator_tag         iterator_category;
 
-  typedef Message<T,
-                  HostByteOrder,
-                  BufferedStaticStoragePolicy>  value_type;
-  typedef ptrdiff_t                             difference_type;
-  typedef value_type*                           pointer;
-  typedef value_type&                           reference;
+  typedef basic_msg< T,
+                    BufferedStaticStoragePolicy>  value_type;
+  typedef ptrdiff_t                               difference_type;
+  typedef value_type*                             pointer;
+  typedef value_type&                             reference;
 
   //  **************************************************************************
   /// Default constructor for an iterator with a NULL msg_view pointer.

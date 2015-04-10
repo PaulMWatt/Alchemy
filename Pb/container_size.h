@@ -28,11 +28,40 @@ namespace Hg
 namespace detail
 {
 
+
+//  ***************************************************************************
+/// Detect if the specified type has a type member called 'format_type'.
+///
+template < typename T > 
+struct has_format_type
+{ 
+private: 
+  // Identify by using a pointer to a member 
+  template < typename U > 
+  static yes_t  <typename U::format_type> selector(U); 
+  static no_t selector(...); 
+
+  static T* this_t(); 
+public: 
+  static const bool value = 
+    sizeof(selector(*this_t())) != sizeof(no_t);  
+}; 
+
+
 // Parameterized implementation of ContainerSize *******************************
-template <typename T, bool isMultiVar = false >
+template <typename T, bool use_format_type = has_format_type<T>::value>
 struct ContainerSize_Impl
   : std::integral_constant< size_t, 
                             OffsetOf< Hg::length<T>::value, T>::value
+                          >
+{ };
+
+template <typename T>
+struct ContainerSize_Impl<T, true>
+  : std::integral_constant< size_t, 
+                            OffsetOf< Hg::length< typename T::format_type>::value, 
+                                                  typename T::format_type
+                                    >::value
                           >
 { };
 
@@ -49,8 +78,7 @@ struct ContainerSize_Impl
 template <typename ContainerT>
 struct ContainerSize
   : type_check<type_container<ContainerT>::value>
-  , detail::ContainerSize_Impl< ContainerT, 
-                                sequence_value<ContainerT>::value >
+  , detail::ContainerSize_Impl< ContainerT>
 { };
 
 } // namespace Hg

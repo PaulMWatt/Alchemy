@@ -16,14 +16,14 @@ namespace Hg
 //  ****************************************************************************
 /// Parameterized function to convert a Hg::Message to network byte-order.
 ///
-/// @param T        [typename] The Hg::Message format definition of the 
+/// @param T        [typename] The Hg::basic_msg format definition of the 
 ///                 message to be converted.
 /// @param from     The message object to convert from.
 ///                 Ownership of the memory that belongs to the input type will 
 ///                 be transferred to the returned instance, and the conversion 
 ///                 will occur in-place.
 ///                           
-/// @return         A Hg::Message object using the same format and data type as the 
+/// @return         A Hg::basic_msg object using the same format and data type as the 
 ///                 input buffer will be returned. The data in the buffer will 
 ///                 be in network byte-order.
 ///                 
@@ -31,18 +31,13 @@ namespace Hg
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-Message<typename T::message_type,
-        NetByteOrder,
-        typename T::storage_type>
+typename
+  T::base_type::net_t
   to_network(T& from)
 {
-  Message<typename T::message_type,
-          NetByteOrder,
-          typename T::storage_type> to;
+  T::base_type::net_t                         to;
 
-  return detail::convert_byte_order < typename T::message_type,
-                                      typename T::byte_order_type,
-                                      typename T::storage_type,
+  return detail::convert_byte_order < T,
                                       NetByteOrder
                                     >(from, to);
 }
@@ -50,14 +45,14 @@ Message<typename T::message_type,
 //  ****************************************************************************
 /// Parameterized function to convert a Hg::Message to host byte-order.
 ///
-/// @param T        [typename] The Hg::Message format definition of the 
+/// @param T        [typename] The Hg::basic_msg format definition of the 
 ///                 message to be converted.
 /// @param from     The message object to convert from.
 ///                 Ownership of the memory that belongs to the input type will 
 ///                 be transferred to the returned instance, and the conversion 
 ///                 will occur in-place.
 ///                           
-/// @return         A Hg::Message object using the same format and data type as the 
+/// @return         A Hg::basic_msg object using the same format and data type as the 
 ///                 input buffer will be returned. The data in the buffer will 
 ///                 be in host byte-order.
 ///                 
@@ -65,18 +60,13 @@ Message<typename T::message_type,
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-Message<typename T::message_type,
-        HostByteOrder,
-        typename T::storage_type>
+typename
+  T::base_type::host_t
   to_host(T& from)
 {
-  Message<typename T::message_type,
-          HostByteOrder,
-          typename T::storage_type> to;
+  T::base_type::host_t                        to;
   
-  return detail::convert_byte_order < typename T::message_type,
-                                      typename T::byte_order_type,
-                                      typename T::storage_type,
+  return detail::convert_byte_order < T,
                                       HostByteOrder
                                     >(from, to);
 }
@@ -84,14 +74,14 @@ Message<typename T::message_type,
 //  ****************************************************************************
 /// Parameterized function to convert a Hg::Message to bit endian byte-order.
 ///
-/// @param T        [typename] The Hg::Message format definition of the 
+/// @param T        [typename] The Hg::basic_msg format definition of the 
 ///                 message to be converted.
 /// @param from     The message object to convert from.
 ///                 Ownership of the memory that belongs to the input type will 
 ///                 be transferred to the returned instance, and the conversion 
 ///                 will occur in-place.
 ///                           
-/// @return         A Hg::Message object using the same format and data type as the 
+/// @return         A Hg::basic_msg object using the same format and data type as the 
 ///                 input buffer will be returned. The data in the buffer will 
 ///                 be in big endian byte-order.
 ///                 
@@ -99,18 +89,12 @@ Message<typename T::message_type,
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-Message<typename T::message_type,
-        BigEndian,
-        typename T::storage_type>
+  typename T::base_type::big_t
   to_big_endian(T& from)
 {
-  Message<typename T::message_type,
-          BigEndian,
-          typename T::storage_type> to;
+  typename T::base_type::big_t                    to;
 
-  return detail::convert_byte_order < typename T::message_type,
-                                      typename T::byte_order_type,
-                                      typename T::storage_type,
+  return detail::convert_byte_order < T,
                                       BigEndian
                                     >(from, to);
 }
@@ -118,14 +102,14 @@ Message<typename T::message_type,
 //  ****************************************************************************
 /// Parameterized function to convert a Hg::Message to little endian byte-order.
 ///
-/// @param T        [typename] The Hg::Message format definition of the 
+/// @param T        [typename] The Hg::basic_msg format definition of the 
 ///                 message to be converted.
 /// @param from     The message object to convert from.
 ///                 Ownership of the memory that belongs to the input type will 
 ///                 be transferred to the returned instance, and the conversion 
 ///                 will occur in-place.
 ///                           
-/// @return         A Hg::Message object using the same format and data type as the 
+/// @return         A Hg::basic_msg object using the same format and data type as the 
 ///                 input buffer will be returned. The data in the buffer will 
 ///                 be in little endian byte-order.
 ///                 
@@ -133,19 +117,13 @@ Message<typename T::message_type,
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-Message<typename T::message_type,
-        LittleEndian,
-        typename T::storage_type>
+  typename T::base_type::little_t
   to_little_endian(T& from)
 {
-  Message<typename T::message_type,
-          LittleEndian,
-          typename T::storage_type> to;
+  typename T::base_type::little_t               to;
 
   // convert the values of the message parameters.
-  return detail::convert_byte_order < typename T::message_type,
-                                      typename T::byte_order_type,
-                                      typename T::storage_type,
+  return detail::convert_byte_order < T,
                                       LittleEndian
                                     >(from, to);
 }
