@@ -44,7 +44,6 @@
 #include <Hg/make_Hg_type_list.h>
 #include <Hg/proxy/deduce_proxy_type.h>
 
-#include <cstddef>
 
 //  ****************************************************************************
 //  Utility Constructs For Use With Hg Message Types ***************************
@@ -110,9 +109,8 @@ struct message_size_trait
     template< size_t IDX>                                                      \
     const Datum<IDX, format_type>& const_FieldAt() const                       \
     {                                                                          \
-      return const_cast<F##Format*>(this)->FieldAt();                          \
+      return const_cast<F##Format*>(this)->FieldAt<IDX>();                     \
     }                                                                          \
-    template<size_t I> struct TypeAtIndex;            \
     BEGIN_COUNTER
 
 //  ****************************************************************************
@@ -131,9 +129,7 @@ struct message_size_trait
     datum_##P& FieldAtIndex(const datum_##P*)                                  \
     { return *static_cast<datum_##P*>(&P); }                                   \
                                                                                \
-    const char* FieldName(const Proxy##P&)                    { return #P; }   \
-    template<> struct TypeAtIndex<IDX> { typedef T type; };              
-
+    const char* FieldName(const Proxy##P&)                    { return #P; }   
 
 //  ****************************************************************************
 #define DECLARE_DATUM_FORMAT(T, P)                                             \
@@ -252,6 +248,7 @@ struct message_size_trait
                                                                                \
     enum { k_offset_0 = 0 };                                                   \
 
+
 // *****************************************************************************
 #define DECLARE_BIT_FIELD(IDX,P,N)                                             \
   typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \
@@ -263,11 +260,10 @@ struct message_size_trait
   typedef BitField  < this_type, P##_tag, k_offset_##IDX, N, value_type > P##_t; \
   enum { TMP_PASTE(k_offset_, TMP_INC(IDX)) = k_offset_##IDX + N };            \
                                                                                \
-  P##_t P;
+  P##_t P;                                                                     \
 
 // *****************************************************************************
 #define DECLARE_PACKED_FOOTER                                                  \
   };
 
 #endif
-

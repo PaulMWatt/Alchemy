@@ -10,6 +10,7 @@
 #define OFFSET_OF_H_INCLUDED
 //  Includes ******************************************************************
 #include <Pb/size_at.h>
+#include <Pb/detail/offset_of.h>
 
 namespace Hg
 {

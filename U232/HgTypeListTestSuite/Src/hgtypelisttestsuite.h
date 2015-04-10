@@ -142,13 +142,17 @@ public:
   // Test Cases **************************************************************
   void TestNoSubstitution(void);
   void TestArrayNoSub(void);
-  void TestArraySubBitFields(void);
-  void TestArraySubNested(void);
+#ifdef ENABLE_BITFIELD_SEQUENCE
+//  void TestArraySubBitFields(void);
+//  void TestArraySubNested(void);
+#endif
   void TestArrayArrayNoSub(void);
   void TestArrayArrayBitSet(void);
   void TestVectorNoSub(void);
-  void TestVectorSubBitFields(void);
-  void TestVectorSubNested(void);
+#ifdef ENABLE_BITFIELD_SEQUENCE
+//  void TestVectorSubBitFields(void);
+//  void TestVectorSubNested(void);
+#endif
   void TestVectorArrayNoSub(void);
   void TestVectorArrayBitSet(void);
 
@@ -191,6 +195,7 @@ void HgTypeListTestSuite::TestArrayNoSub(void)
   TS_ASSERT((std::is_same<SUT, result_type>::value));
 }
 
+#ifdef ENABLE_BITFIELD_SEQUENCE
 //  ****************************************************************************
 void HgTypeListTestSuite::TestArraySubBitFields(void)
 {
@@ -213,6 +218,7 @@ void HgTypeListTestSuite::TestArraySubNested(void)
   TS_ASSERT(!(std::is_same<SUT, result_type>::value));
   TS_ASSERT((std::is_same<Hg::Hg_nested_adjusted, result_type>::value));
 }
+#endif
 
 //  ****************************************************************************
 void HgTypeListTestSuite::TestArrayArrayNoSub(void)
@@ -263,6 +269,7 @@ void HgTypeListTestSuite::TestVectorNoSub(void)
   TS_ASSERT((std::is_same<SUT, result_type>::value));
 }
 
+#ifdef ENABLE_BITFIELD_SEQUENCE
 //  ****************************************************************************
 void HgTypeListTestSuite::TestVectorSubBitFields(void)
 {
@@ -294,6 +301,7 @@ void HgTypeListTestSuite::TestVectorSubNested(void)
 
   TS_ASSERT(!(std::is_same<expected_type, result_type>::value));
 }
+#endif
 
 //  ****************************************************************************
 void HgTypeListTestSuite::TestVectorArrayNoSub(void)

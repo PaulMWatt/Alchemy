@@ -12,8 +12,6 @@
 #ifndef UNPACK_MESSAGE_H_INCLUDED
 # error Do not include this file directly. Use <detail/unpack_message.h> instead
 #endif
-//  Includes *******************************************************************
-#include <Pb/bit_field/bit_field_array.h>
 
 namespace Hg
 {

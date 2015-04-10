@@ -35,7 +35,7 @@ struct DeduceMsgTypeList_Worker
   typedef typename
     push_front
     < typename DeduceMsgTypeList_Worker<T,PosT+1, LimitT>::type, 
-      typename T::template TypeAtIndex<PosT>::type
+      typename Hg::TypeAt<PosT, typename T::format_type>::type
     >::type                                                     type;
 };
 
@@ -46,7 +46,7 @@ template< typename  T,
 struct DeduceMsgTypeList_Worker<T, PosT, PosT>
 { 
   typedef 
-    TypeList<typename T::template TypeAtIndex<PosT>::type>      type;
+    TypeList<typename Hg::TypeAt<PosT, typename T::format_type>::type>      type;
 };
 
 //  ****************************************************************************

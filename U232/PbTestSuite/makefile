@@ -60,7 +60,7 @@ SOURCES= PbTestSuiteRunner.cpp
 
 SOURCEPATHS= Src/Generated/PbTestSuiteRunner.cpp
 
-HEADERS= TestByteOrder.h TestMeta.h basic_list.h bit_field.h bit_field_array.h bit_field_list.h byte_order.h compiler.h conditional.h container_size.h dynamic.h integer_sequence.h length.h meta_error.h meta_foreach.h meta_fwd.h meta_macros.h meta_math.h meta_util.h offset_of.h size_at.h size_of.h test_def.h test_helper.h tr1_helper.h type_at.h type_list.h type_node.h
+HEADERS= TestByteOrder.h TestMeta.h basic_list.h bit_field.h bit_field_list.h byte_order.h compiler.h conditional.h container_size.h dynamic.h integer_sequence.h length.h meta_error.h meta_foreach.h meta_fwd.h meta_macros.h meta_math.h meta_util.h offset_of.h size_at.h size_of.h test_def.h test_helper.h tr1_helper.h type_at.h type_list.h type_node.h
 
 VPATH= $(INTERMEDIATE_DIR):Src/Generated
 

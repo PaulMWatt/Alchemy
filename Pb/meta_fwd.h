@@ -8,6 +8,7 @@
 #ifndef META_FWD_H_INCLUDED
 #define META_FWD_H_INCLUDED
 //  Includes *******************************************************************
+#include <cstddef>
 #include <memory>
 #include <Pb/meta_util.h>
 #include <Pb/meta_error.h>

@@ -159,8 +159,8 @@ void TestByteOrder::TestEndianSwap_uint32(void)
 //  ****************************************************************************
 void TestByteOrder::TestEndianSwap_int64(void)
 {
-  const int64_t k_control = 0x0123456789ABCDEF;
-  const int64_t k_expect  = 0xEFCDAB8967452301;
+  const int64_t k_control = 0x0123456789ABCDEFull;
+  const int64_t k_expect  = 0xEFCDAB8967452301ull;
 
   int64_t result  = Hg::EndianSwap(k_control);
   TS_ASSERT_EQUALS(k_expect, result);
@@ -169,8 +169,8 @@ void TestByteOrder::TestEndianSwap_int64(void)
 //  ****************************************************************************
 void TestByteOrder::TestEndianSwap_uint64(void)
 {
-  const uint64_t k_control = 0x0123456789ABCDEF;
-  const uint64_t k_expect  = 0xEFCDAB8967452301;
+  const uint64_t k_control = 0x0123456789ABCDEFull;
+  const uint64_t k_expect  = 0xEFCDAB8967452301ull;
 
   uint64_t result  = Hg::EndianSwap(k_control);
   TS_ASSERT_EQUALS(k_expect, result);

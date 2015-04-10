@@ -199,36 +199,6 @@ make_view(T& buffer)
 }
 
 
-//  **************************************************************************
-//template< typename MessageT,
-//          typename T
-//        >
-//typename
-//  std::enable_if< is_opaque<T>::value,
-//                  const msg_view<const MessageT> >::type
-//make_view(const T& buffer)
-//{
-//  return msg_view<const MessageT>(buffer);
-//}
-
-//  **************************************************************************
-//template < typename MessageT >
-//msg_view<MessageT>
-//make_view(byte_t* pData, size_t length)
-//{
-//  return msg_view<MessageT>(pData, length);
-//}
-//
-////  **************************************************************************
-//template< typename MessageT >
-//const msg_view<MessageT>
-//make_view(const byte_t* pData, size_t length)
-//{
-//  return msg_view<MessageT>(pData, length);
-//}
-
-
-
 } // namespace Hg
 
 #endif

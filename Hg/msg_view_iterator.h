@@ -220,7 +220,7 @@ public:
 protected:
   //  Member Data **************************************************************
   static const 
-    size_t  k_size = Hg::SizeOf<T::format_type>::value; 
+    size_t  k_size = Hg::SizeOf<typename T::format_type>::value; 
 
 
   byte_t     *m_pBuffer;      ///< pointer to the raw data buffer.
@@ -312,8 +312,10 @@ public:
   /// Return pointer to class object.
   ///
   pointer operator->() const
-  {    
-    return (std::pointer_traits<pointer>::pointer_to(**this));
+  {   
+    // TODO: Make sure a pointer_to implementation is always available.
+    //return (std::pointer_traits<pointer>::pointer_to(**this));
+    return ((pointer)*(base_t *)this);
   }
 
   //  **************************************************************************
@@ -415,9 +417,10 @@ private:
   ///
   void Store()
   {
-    if (is_referenced())
+    if (base_t::is_referenced())
     {
-      m_msg.data(m_pBuffer, k_size);
+      base_t::m_msg.data( base_t::m_pBuffer, 
+                          base_t::k_size);
     }
   }
 };
