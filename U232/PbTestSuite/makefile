@@ -89,9 +89,6 @@ clean:
 	$(RM) $(INTERMEDIATE_DIR)/PbTestSuite.d
 	$(RM) $(OBJECTPATHS)
 
-#%.o: %.cpp
-#	$(CXX) $(CXXFLAGS) -E $<
-
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $(INTERMEDIATE_DIR)/$@ $<
 

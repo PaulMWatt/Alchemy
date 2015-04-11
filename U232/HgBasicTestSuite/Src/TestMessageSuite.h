@@ -114,7 +114,6 @@ protected:
   typedef Hg::basic_msg<msg_type>::net_t                         SUT_net;
   typedef Hg::basic_msg<msg_type>::big_t                         SUT_big;
   typedef Hg::basic_msg<msg_type>::little_t                      SUT_little;
-  typedef Hg::Message<Hg::basic_msg<msg_type>, Hg::LittleEndian> SUT_little;
 
   typedef storage_type::data_type                                data_type;
   typedef storage_type::s_pointer                                s_pointer;

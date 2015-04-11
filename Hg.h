@@ -73,6 +73,7 @@ class Message
 {
 public:
   //  Typedefs *****************************************************************
+  typedef Message                             this_type;
   typedef HgT                                 base_type;
 
   typedef typename
@@ -95,7 +96,7 @@ public:
   /// Default Constructor
   ///
   Message()
-    : basic_msg()
+    : base_type()
   { }
 
   //  **************************************************************************
@@ -113,8 +114,8 @@ public:
   /// 
   /// @param rhs              The Hg message object from which data is copied. 
   ///
-  Message(const basic_msg& rhs)
-    : basic_msg(rhs)
+  Message(const base_type& rhs)
+    : base_type(rhs)
   { }
 
   //  **************************************************************************
@@ -126,7 +127,7 @@ public:
   /// @param n                The size of the buffer in sp.
   ///
   Message(const_pointer p, size_t n)
-    : basic_msg(p,n)
+    : base_type(p,n)
   { }
 
   //  Operations ***************************************************************

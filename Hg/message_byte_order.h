@@ -35,7 +35,7 @@ typename
   T::base_type::net_t
   to_network(T& from)
 {
-  T::base_type::net_t                         to;
+  typename T::base_type::net_t                to;
 
   return detail::convert_byte_order < T,
                                       NetByteOrder
@@ -64,7 +64,7 @@ typename
   T::base_type::host_t
   to_host(T& from)
 {
-  T::base_type::host_t                        to;
+  typename T::base_type::host_t               to;
   
   return detail::convert_byte_order < T,
                                       HostByteOrder
