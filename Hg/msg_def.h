@@ -107,7 +107,6 @@ struct message_size_trait
 #define EACH_PARAM(r, data, i, x) \
   BOOST_PP_TUPLE_ELEM(3,1,x)(BOOST_PP_TUPLE_ELEM(3,2,x)); 
 
-
 #define DEFINE_TYPELIST(N,...)\
   typedef TypeList < __VA_ARGS__ > N;
 
@@ -115,6 +114,7 @@ struct message_size_trait
   __VA_ARGS__
 
 
+#if defined(_MSC_VER)
 #define DEFINE_STRUCT_TYPELIST(N, S) \
   DEFINE_TYPELIST(N, \
     BOOST_PP_SEQ_FOR_EACH_I(EACH_TYPE, unused, BOOST_PP_VARIADIC_TO_SEQ(S)) Hg::MT)
@@ -122,6 +122,18 @@ struct message_size_trait
 
 #define DEFINE_STRUCT_PARAMS(S) \
   BOOST_PP_SEQ_FOR_EACH_I(EACH_PARAM, unused, BOOST_PP_VARIADIC_TO_SEQ(S))
+
+#else
+
+#define DEFINE_STRUCT_TYPELIST(N, ...) \
+  DEFINE_TYPELIST(N, \
+    BOOST_PP_SEQ_FOR_EACH_I(EACH_TYPE, unused, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)) Hg::MT)
+
+
+#define DEFINE_STRUCT_PARAMS(...) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_PARAM, unused, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+#endif
 
 // TODO: Temporarily will try to put the source back together the way it is currently 
 //       structured. Then will move the placement of the definitions to 
@@ -148,12 +160,12 @@ struct message_size_trait
     {                                                                          \
       typedef Datum   < IDX,                                                   \
                         format_type>    datum_type_t;                          \
-      return FieldAtIndex((datum_type_t*)0);                                   \
+      return this_type::FieldAtIndex((datum_type_t*)0);                        \
     }                                                                          \
     template< size_t IDX>                                                      \
     const Datum<IDX, format_type>& const_FieldAt() const                       \
     {                                                                          \
-      return const_cast<F##Format*>(this)->FieldAt<IDX>();                     \
+      return const_cast<this_type*>(this)->FieldAt<IDX>();                     \
     }                                                                          \
     BEGIN_COUNTER                                                              \
                                                                                \

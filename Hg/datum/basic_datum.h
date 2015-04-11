@@ -352,7 +352,7 @@ struct FieldTypes <FieldT, packed_trait>
   ///
   value_type& reference()                     
   { 
-    return value();
+    return this->value();
   }
 
   //  **************************************************************************
