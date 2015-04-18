@@ -12,7 +12,7 @@ Activity
 
 Network Alchemy
 ========================================================
-A portable framework to robustly process network messages and structured data. 
+A portable framework to robustly process network messages and structured data. This library can also be used for serialization tasks and provides compile-time reflection for Hg-defined structures. 
 
 Alchemy is portable across different processor types and platforms. 
 There is currently only one tool in the Alchemy framework, Hg (Mercury).
