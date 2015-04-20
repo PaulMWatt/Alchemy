@@ -1,18 +1,6 @@
-Activity
-========================================================
-- Overhauled the message generation MACRO to auto-generate
-  the typelist that is used with the message definition.
-  This eliminates redundancy.
-- The name specified by the user in the message definition
-  is the name of the message type the user interacts with.
-
-- A sample program has been included that demonstrates
-  stenography on the .bmp format. It uses Alchemy to 
-  load, process and store the data through its types.
-
 Network Alchemy
 ========================================================
-A portable framework to robustly process network messages and structured data. This library can also be used for serialization tasks and provides compile-time reflection for Hg-defined structures. 
+A portable framework to robustly process network messages and structured data. This library can also be used for serialization tasks and provides *compile-time reflection* for Hg-defined structures. 
 
 Alchemy is portable across different processor types and platforms. 
 There is currently only one tool in the Alchemy framework, Hg (Mercury).
