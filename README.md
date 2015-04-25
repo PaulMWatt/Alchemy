@@ -173,4 +173,5 @@ Currently in progress:
 
 Soon to follow:
  * Message converters, to simplify the task of receiving a message and translating it to another format before forwarding it on to the stage of processing.
+ * Add the automatic generation of C-linkable functions and structures that internally make use of Alchemy. This will allow Alchemy to be integrated with other languages, such as C, C#, JAVA, FORTRAN and any others capable of importing functions from C libraries.
  
