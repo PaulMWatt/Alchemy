@@ -34,6 +34,10 @@ struct UsingHg
     void test_complex(DataBuffer &data,
                       DataBuffer &out);
 
+  static 
+    void test_array(DataBuffer &data,
+                    DataBuffer &out);
+
 };
 
 } // benchmark

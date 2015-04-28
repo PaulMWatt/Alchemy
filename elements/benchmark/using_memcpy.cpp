@@ -171,6 +171,40 @@ void ComplexToNetwork(const alchemy::benchmark::Complex &host,
   UnalignedToNetwork(host.unaligned, net.unaligned);
 }
 
+
+//  ****************************************************************************
+void ReadArray (alchemy::benchmark::DataBuffer &data,
+                alchemy::benchmark::Array      &msg)
+{
+  for (size_t index = 0; index < 256; ++index)
+  {
+    ::memcpy(&msg.items[index], data.GetBytes(sizeof(int32_t)),  sizeof(int32_t));
+  }
+}
+
+//  ****************************************************************************
+void WriteArray ( alchemy::benchmark::DataBuffer &data,
+                  alchemy::benchmark::Array     &msg)
+{
+  for (size_t index = 0; index < 256; ++index)
+  {
+    ::memcpy(data.GetBytes(sizeof(uint32_t)),&msg.items[index], sizeof(uint32_t));
+  }
+}
+
+//  ****************************************************************************
+void ArrayToNetwork (const alchemy::benchmark::Array &host,
+                           alchemy::benchmark::Array &net)
+{
+  // Convert the necessary terms to network byte order.
+  for (size_t index = 0; index < 256; ++index)
+  {
+    net.items[index] = htonl(host.items[index]);
+  }
+}
+
+
+
 namespace alchemy
 {
 namespace benchmark
@@ -265,6 +299,28 @@ void UsingMemcpy::test_complex(DataBuffer &data,
     ComplexToNetwork(host, net);
 
     WriteComplex(out, net);
+  }
+}
+
+//  ****************************************************************************
+void UsingMemcpy::test_array (DataBuffer &data,
+                              DataBuffer &out)
+{
+  using alchemy::benchmark::DataBuffer;
+  using alchemy::benchmark::Array;
+
+  size_t len   = Hg::SizeOf<alchemy::benchmark::Array>::value;
+  size_t count = data.Size() / len;
+  cout << "array size:    " << len   << ", count; " << count << endl;
+  for (size_t index = 0; index < count; ++index)
+  {
+    Array host;
+    ReadArray(data, host);
+
+    Array net;
+    ArrayToNetwork(host, net);
+
+    WriteArray(out, net);
   }
 
 }

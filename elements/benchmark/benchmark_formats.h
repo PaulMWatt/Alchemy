@@ -82,6 +82,15 @@ struct Complex
   Packed          bits;
   Unaligned       unaligned;
 };
+
+
+//  ****************************************************************************
+struct Array
+{
+  uint32_t        items[256];
+};
+
+
 #pragma pack(pop)
 
 } // benchmark
@@ -158,6 +167,10 @@ HG_BEGIN_FORMAT(Complex,
   HG_DATUM(Unaligned,       unaligned)
 );
 
+//  ****************************************************************************
+HG_BEGIN_FORMAT(Array_test,
+  HG_ARRAY(uint32_t, 256,   items)
+);
 
 } // namespace Hg
 

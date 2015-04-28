@@ -27,6 +27,9 @@ namespace alchemy
 namespace benchmark
 {
 
+//const size_t k_cycles = 0x1000000;
+const size_t k_cycles   = 0x8000000;
+
 enum TimeIndex
 {
   k_start_basic = 0,
@@ -36,7 +39,9 @@ enum TimeIndex
   k_start_unaligned,
   k_end_unaligned,
   k_start_complex,
-  k_end_complex
+  k_end_complex,
+  k_start_array,
+  k_end_array
 };
 
 
@@ -80,6 +85,14 @@ void RunTest(DataBuffer &data, TimeValues &times)
   times.push_back(get_time());
   T::test_complex(data, output);
   times.push_back(get_time());
+
+  // Run and record the end of the Array test.
+  data.Reset();
+  output.Restart();
+
+  times.push_back(get_time());
+  T::test_array(data, output);
+  times.push_back(get_time());
 }
 
 
@@ -93,13 +106,15 @@ void DisplayResults(const std::string &control_name,
   double c_packed_len    = control_times[k_end_packed]    - control_times[k_start_packed];   
   double c_unaligned_len = control_times[k_end_unaligned] - control_times[k_start_unaligned];
   double c_complex_len   = control_times[k_end_complex]   - control_times[k_start_complex];
-  double c_total_len     = c_basic_len + c_packed_len + c_unaligned_len + c_complex_len;
+  double c_array_len     = control_times[k_end_array]   - control_times[k_start_array];
+  double c_total_len     = c_basic_len + c_packed_len + c_unaligned_len + c_complex_len + c_array_len;
 
   double basic_len     = times[k_end_basic]     - times[k_start_basic];
   double packed_len    = times[k_end_packed]    - times[k_start_packed];   
   double unaligned_len = times[k_end_unaligned] - times[k_start_unaligned];
   double complex_len   = times[k_end_complex]   - times[k_start_complex];
-  double total_len     = basic_len + packed_len + unaligned_len + complex_len;
+  double array_len     = times[k_end_array]     - times[k_start_array];
+  double total_len     = basic_len + packed_len + unaligned_len + complex_len + array_len;
 
   cout << "           " << control_name << "\t" << name << "\tdiff\t\tpercent\n";
 
@@ -107,6 +122,7 @@ void DisplayResults(const std::string &control_name,
   cout << "Packed:    " << c_packed_len    << "s\t" << packed_len    << "s\t" << (packed_len    - c_packed_len   ) << "\t" << 100.0 - (packed_len    / c_packed_len   ) * 100.0 << "%\n";
   cout << "Unaligned: " << c_unaligned_len << "s\t" << unaligned_len << "s\t" << (unaligned_len - c_unaligned_len) << "\t" << 100.0 - (unaligned_len / c_unaligned_len) * 100.0 << "%\n";
   cout << "Complex:   " << c_complex_len   << "s\t" << complex_len   << "s\t" << (complex_len   - c_complex_len  ) << "\t" << 100.0 - (complex_len   / c_complex_len  ) * 100.0 << "%\n";
+  cout << "Array:     " << c_array_len     << "s\t" << array_len     << "s\t" << (array_len     - c_array_len    ) << "\t" << 100.0 - (array_len     / c_array_len    ) * 100.0 << "%\n";
   cout << "Total:     " << c_total_len     << "s\t" << total_len     << "s\t" << (total_len     - c_total_len    ) << "\t" << 100.0 - (total_len     / c_total_len    ) * 100.0 << "%\n" << endl;
 }
 
@@ -121,7 +137,7 @@ int main(int argc, char* argv[])
   cout << "Loading test data:" << endl;
   // Pre-allocate memory for processing.
   DataBuffer data;
-  data.Init(0x1000000);
+  data.Init(k_cycles);
 
   cout << "Hit enter when ready...:";
   cin.ignore();

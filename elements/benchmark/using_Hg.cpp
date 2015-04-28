@@ -104,6 +104,30 @@ void UsingHg::test_complex(DataBuffer &data,
 }
 
 
+//  ****************************************************************************
+typedef Hg::basic_msg<Hg::Array_test, Hg::BufferedStaticStoragePolicy>   HgArray;
+
+void UsingHg::test_array(DataBuffer &data,
+                         DataBuffer &out)
+{
+  size_t len = Hg::SizeOf<Hg::Array_test>::value;
+  size_t count = data.Size() / len;
+
+  cout << "array size:    " << len   << ", count; " << count << endl;
+  for (size_t index = 0; index < count; ++index)
+  {
+    HgArray::host_t host((HgArray::data_type*)data.GetBytes(len), len);  
+
+    HgArray::net_t  net = Hg::to_network(host);
+
+    net.data((unsigned char*)out.GetBytes(len), len);
+  }
+
+}
+
+
+
+
 } // benchmark
 } // alchemy
 
