@@ -45,7 +45,7 @@ struct PackDatum
   //  @param dynamic_size An additional offset for messages with dynamically 
   //                      sized fields.
   //
-  void operator()(MsgT &msg,
+  void operator()(MsgT     &msg,
                   BufferT  &buffer,
                   size_t    dynamic_offset)
   {
