@@ -108,43 +108,30 @@ If you know of other transport libraries and would like to see an Hg adapter to 
 -------------
 Benchmark performance:
 
- Test | Hg | memcpy | diff | percent
- ----------- |:---------- |:--------- |:---------- |:------------
- Basic | 0.533849s | 0.691942s |  0.158093  | **-29.6138%**
- Packed | 0.630563s | 0.713644s |  0.0830816 | **-13.1758%**
- Unaligned | 0.399894s | 0.593238s |  0.193344  | **-48.3489%**
- Complex | 1.0218s | 0.781852s | -0.239947  | **23.4828%**
- Total | 2.5861s | 2.78068s  |  0.194572  | **-7.52373%**
+Machine:
+*Intel Core i7-4790L @ 4.00GHz 
+*16 GB RAM 
+*Windows 8.1 
+
 
 Loading test data:  
 Hit enter when ready...:  
    
+Test | Msg Size | Cycles 
+-------------- |:---------- |:---------
+no_conversion  | 64 | 8388608  
+        basic  | 14 | 38347922  
+       packed  | 7 | 76695844  
+    unaligned  | 19 | 28256363  
+      complex  | 86 | 6242685  
+        array  | 1024 | 524288  
+  
 Running control benchmark:  
-no_conversion  | size: 64 | count: 8388608  
-        basic  | size: 14 | count: 38347922  
-       packed  | size: 7 | count: 76695844  
-    unaligned  | size: 19 | count: 28256363  
-      complex  | size: 86 | count: 6242685  
-        array  | size: 1024 | count: 524288  
 Test completed  
   
-  
 Running Hg benchmark:
-no_conversion | size: 64 | count: 8388608  
-basic | size: 14 | count: 38347922  
-packed | size: 7 | count: 76695844  
-unaligned | size: 19 | count: 28256363  
-complex | size: 86 | count: 6242685  
-array | size: 1024 | count: 524288  
+Test completed  
 
-These scenarios are trivial to write by hand,  
-and are currently outside of Alchemy's capabilities.  
-Therefore, Alchemy woefully underperforms in these scenarios.  
-  
-Scenario | control | Hg | diff | percent
------------ |:---------- |:--------- |:---------- |:------------
-NoConversion: |  0.361389  s | 0.577049  s | 0.215659 | **-59.6751%**
-  
 diff:    Is time difference calculated as **control** - **Hg**  
 percent: Value indicates **Hg** performance (+ is better)  
     
@@ -157,6 +144,16 @@ Complex: | 0.806906  s | 0.776377  s | -0.0305296 | **3.78353%**
 Array: | 0.567276  s | 0.15729   s | -0.409986 | **72.2728%**
 Total: | 3.24906   s | 2.60136   s | -0.647704 | **19.9351%**
 
+These scenarios are trivial to write by hand,  
+and are currently outside of Alchemy's capabilities.  
+Therefore, Alchemy woefully underperforms in these scenarios.  
+  
+Scenario | control | Hg | diff | percent
+----------- |:---------- |:--------- |:---------- |:------------
+NoConversion: |  0.361389  s | 0.577049  s | 0.215659 | **-59.6751%**
+  
+
+**Previous Results**
 * I have been able to improve the overal speed of Hg so overall it is **7.5% faster** than the hand-written version.
 * Current performance results:
 * Fundamental Types: 29%  faster
@@ -164,11 +161,6 @@ Total: | 3.24906   s | 2.60136   s | -0.647704 | **19.9351%**
 * Unaligned ints:    48%  faster
 * Nested types:      23%  slower
 * Overall:           7.5% faster
-
-Machine:
-*Intel Core i7-4790L @ 4.00GHz 
-*16 GB RAM 
-*Windows 8.1 
 
 Benchmark output:
 -----------------
