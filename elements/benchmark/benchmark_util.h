@@ -132,12 +132,6 @@ public:
       return;
     }
 
-    //size_t offset = rand() % Size();
-
-    //char* pMid = m_pBuffer;
-    //std::advance(pMid, offset);
-    //std::rotate(m_pBuffer, pMid, m_pBuffer + Size());
-
     m_pCurrent = m_pBuffer;
   }
 
