@@ -108,6 +108,55 @@ If you know of other transport libraries and would like to see an Hg adapter to 
 -------------
 Benchmark performance:
 
+ Test | Hg | memcpy | diff | percent
+ ----------- |:---------- |:--------- |:---------- |:------------
+ Basic | 0.533849s | 0.691942s |  0.158093  | **-29.6138%**
+ Packed | 0.630563s | 0.713644s |  0.0830816 | **-13.1758%**
+ Unaligned | 0.399894s | 0.593238s |  0.193344  | **-48.3489%**
+ Complex | 1.0218s | 0.781852s | -0.239947  | **23.4828%**
+ Total | 2.5861s | 2.78068s  |  0.194572  | **-7.52373%**
+
+Loading test data:  
+Hit enter when ready...:  
+   
+Running control benchmark:  
+no_conversion  | size: 64 | count: 8388608  
+        basic  | size: 14 | count: 38347922  
+       packed  | size: 7 | count: 76695844  
+    unaligned  | size: 19 | count: 28256363  
+      complex  | size: 86 | count: 6242685  
+        array  | size: 1024 | count: 524288  
+Test completed  
+  
+  
+Running Hg benchmark:
+no_conversion | size: 64 | count: 8388608  
+basic | size: 14 | count: 38347922  
+packed | size: 7 | count: 76695844  
+unaligned | size: 19 | count: 28256363  
+complex | size: 86 | count: 6242685  
+array | size: 1024 | count: 524288  
+
+These scenarios are trivial to write by hand,  
+and are currently outside of Alchemy's capabilities.  
+Therefore, Alchemy woefully underperforms in these scenarios.  
+  
+Scenario | control | Hg | diff | percent
+----------- |:---------- |:--------- |:---------- |:------------
+NoConversion: |  0.361389  s | 0.577049  s | 0.215659 | **-59.6751%**
+  
+diff:    Is time difference calculated as **control** - **Hg**  
+percent: Value indicates **Hg** performance (+ is better)  
+    
+Test | control | Hg | diff | percent
+----------- |:---------- |:--------- |:---------- |:------------
+Basic: |  0.612162  s | 0.495236  s | -0.116926 | **19.1005%**
+Packed: | 0.691659  s | 0.612     s | -0.0796588 | **11.5171%**
+Unaligned: | 0.571058  s | 0.560454  s | -0.0106043 | **1.85696%**
+Complex: | 0.806906  s | 0.776377  s | -0.0305296 | **3.78353%**
+Array: | 0.567276  s | 0.15729   s | -0.409986 | **72.2728%**
+Total: | 3.24906   s | 2.60136   s | -0.647704 | **19.9351%**
+
 * I have been able to improve the overal speed of Hg so overall it is **7.5% faster** than the hand-written version.
 * Current performance results:
 * Fundamental Types: 29%  faster
@@ -139,72 +188,16 @@ Benchmark output:
 `complex size:    72, count; 7456540 `  
 `Test completed                      `  
 
- Test | Hg | memcpy | diff | percent
- ----------- |:---------- |:--------- |:---------- |:------------
- Basic | 0.533849s | 0.691942s |  0.158093  | **-29.6138%**
- Packed | 0.630563s | 0.713644s |  0.0830816 | **-13.1758%**
- Unaligned | 0.399894s | 0.593238s |  0.193344  | **-48.3489%**
- Complex | 1.0218s | 0.781852s | -0.239947  | **23.4828%**
- Total | 2.5861s | 2.78068s  |  0.194572  | **-7.52373%**
-
-`Loading test data:`  
-`Hit enter when ready...:`  
-` `  
-`Running control benchmark:`  
-`--------------------------`  
-`no_conversion size: 64          count: 8388608`  
-`        basic size: 14          count: 38347922`  
-`       packed size: 7           count: 76695844`  
-`    unaligned size: 19          count: 28256363`  
-`      complex size: 86          count: 6242685`  
-`        array size: 1024        count: 524288`  
-`Test completed`  
-` `  
-` `  
-`Running Hg benchmark:`  
-`--------------------------`  
-`no_conversion size: 64          count: 8388608`  
-`        basic size: 14          count: 38347922`  
-`       packed size: 7           count: 76695844`  
-`    unaligned size: 19          count: 28256363`  
-`      complex size: 86          count: 6242685`  
-`        array size: 1024        count: 524288`  
-`Test completed`  
-` `  
-`-------------------------------------------------------------------------`  
-`These scenarios are trivial to write by hand,`  
-`and are currently outside of Alchemy's capabilities.`  
-`Therefore, Alchemy woefully underperforms in these scenarios.`  
-` `  
-`Scenario:     memcpy:           Hg:             diff            percent`  
-`------------- ----------        ----------      ----------      ---------`  
-`NoConversion: 0.361389  s       0.577049  s     0.215659        -59.6751%`  
-` `  
-` `  
-`-------------------------------------------------------------------------`  
-`diff:    Is time difference calculated as **control** - **Hg**`  
-`percent: Value indicates **Hg** performance (+ is better)`  
-` `  
-`Test:         memcpy:           Hg:             diff            percent`  
-`------------- ----------        ----------      ----------      ---------`  
-`Basic:        0.612162  s       0.495236  s     -0.116926       19.1005%`  
-`Packed:       0.691659  s       0.612     s     -0.0796588      11.5171%`  
-`Unaligned:    0.571058  s       0.560454  s     -0.0106043      1.85696%`  
-`Complex:      0.806906  s       0.776377  s     -0.0305296      3.78353%`  
-`Array:        0.567276  s       0.15729   s     -0.409986       72.2728%`  
-`Total:        3.24906   s       2.60136   s     -0.647704       19.9351%`  
-``
-`-------------------------------------------------------------------------`
-
-
 These are the basic benchmark tests that have been written:
 
 1. A single struct with fundamental type fields.  
 2. A single struct with Packed bit fields.  
 3. A single struct with fundamental fields that are intentionally placed at unaligned memory positions.  
-4. A Nested struct that contains an instance of all of the previous structs. One of the nested structs is created in an   array.
+4. A Nested struct that contains an instance of all of the previous structs. One of the nested structs is created in an array. 
+5. An array of 256 32-bit integers
+6. A structure that does not perform byte-order conversion, but does read, copy, then write data.
 
-I intend to create a more thorough set of tests. For now these 4 types have helped me identify plenty of hot-spots to improve the performance. Originally I only had a memory model that was dynamically allocated. When I ran the first benchmarks, Hg was 100x slower. After that I added a static memory model that can be used as well. This improved the performance dramatically. I will continue to comb through the Hg implementation and structure to improve its speed. The current performance report is listed below.
+I intend to create a more thorough set of tests. For now these 6 types have helped me identify plenty of hot-spots to improve the performance. Originally I only had a memory model that was dynamically allocated. When I ran the first benchmarks, Hg was 100x slower. After that I added a static memory model that can be used as well. This improved the performance dramatically. I will continue to comb through the Hg implementation and structure to improve its speed. The current performance report is listed below.
 
 * Notes: 
 ** Some overhead is incurred because all of the fields are zero initialized when an object is created. 
