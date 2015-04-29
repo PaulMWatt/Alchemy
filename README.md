@@ -2,7 +2,7 @@ Benchmarks
 ========================================================
 Optimizations continue to improve the speed of Alchemy each week. This is a summary of the current benchmark results. The details are further below:
 
-Test | percent
+Test | % Faster
 ----------- |:------------
 Basic: |  **19.1005%**
 Packed: | **11.5171%**
