@@ -56,7 +56,7 @@ template< typename T,
           typename OrderT
         >
 Hg::Message < typename T::base_type, OrderT >
-  convert_byte_order(const T&                                     from,
+  convert_byte_order( T&                                     from,
                            Hg::Message < typename T::base_type, OrderT >&  to)
 {
   typedef typename 
@@ -231,7 +231,7 @@ struct ByteOrderConversionFunctor
     from_message_type::storage_type     storage_type;
 
   //  Data Members *************************************************************
-  const from_message_type  input;
+  from_message_type&       input;
   to_message_type&         output;
 
   //  **************************************************************************
@@ -240,7 +240,7 @@ struct ByteOrderConversionFunctor
   //  @param rhs      The basic_msg object that contains the input data.
   // 
   explicit
-    ByteOrderConversionFunctor(const from_message_type& from,
+    ByteOrderConversionFunctor(from_message_type& from,
                                      to_message_type&   to)
     : input(from)
     , output(to)
