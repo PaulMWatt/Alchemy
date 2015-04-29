@@ -14,6 +14,78 @@ using std::cout;
 using std::endl;
 
 //  ****************************************************************************
+void ReadNoConversion(alchemy::benchmark::DataBuffer    &data,
+                      alchemy::benchmark::NoConversion  &msg)
+{
+  // Read the basic field data in.
+  ::memcpy(&msg.ch_0,  data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_1,  data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_2,  data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_3,  data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_4,  data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_5,  data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_6,  data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_7,  data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_8,  data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_9,  data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_10, data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_11, data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_12, data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_13, data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_14, data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  ::memcpy(&msg.ch_15, data.GetBytes(sizeof(uint32_t)),  sizeof(uint32_t));
+  //  ::memcpy(&msg, data.GetBytes(sizeof(alchemy::benchmark::NoConversion)), sizeof(alchemy::benchmark::NoConversion));
+}
+
+//  ****************************************************************************
+void WriteNoConversion( alchemy::benchmark::DataBuffer    &data,
+                        alchemy::benchmark::NoConversion  &msg)
+{
+  // Read the basic field data in.
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_0,   sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_1,   sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_2,   sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_3,   sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_4,   sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_5,   sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_6,   sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_7,   sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_8,   sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_9,   sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_10,  sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_11,  sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_12,  sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_13,  sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_14,  sizeof(uint32_t));
+  ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.ch_15,  sizeof(uint32_t));
+//  ::memcpy(data.GetBytes(sizeof(alchemy::benchmark::NoConversion)), &msg, sizeof(alchemy::benchmark::NoConversion));
+}
+
+//  ****************************************************************************
+void NoConversionToNetwork( const alchemy::benchmark::NoConversion &host,
+                                  alchemy::benchmark::NoConversion &net)
+{
+  // Read the basic field data in.
+  ::memcpy(&net.ch_0,   &host.ch_0,   sizeof(uint32_t));
+  ::memcpy(&net.ch_1,   &host.ch_1,   sizeof(uint32_t));
+  ::memcpy(&net.ch_2,   &host.ch_2,   sizeof(uint32_t));
+  ::memcpy(&net.ch_3,   &host.ch_3,   sizeof(uint32_t));
+  ::memcpy(&net.ch_4,   &host.ch_4,   sizeof(uint32_t));
+  ::memcpy(&net.ch_5,   &host.ch_5,   sizeof(uint32_t));
+  ::memcpy(&net.ch_6,   &host.ch_6,   sizeof(uint32_t));
+  ::memcpy(&net.ch_7,   &host.ch_7,   sizeof(uint32_t));
+  ::memcpy(&net.ch_8,   &host.ch_8,   sizeof(uint32_t));
+  ::memcpy(&net.ch_9,   &host.ch_9,   sizeof(uint32_t));
+  ::memcpy(&net.ch_10,  &host.ch_10,  sizeof(uint32_t));
+  ::memcpy(&net.ch_11,  &host.ch_11,  sizeof(uint32_t));
+  ::memcpy(&net.ch_12,  &host.ch_12,  sizeof(uint32_t));
+  ::memcpy(&net.ch_13,  &host.ch_13,  sizeof(uint32_t));
+  ::memcpy(&net.ch_14,  &host.ch_14,  sizeof(uint32_t));
+  ::memcpy(&net.ch_15,  &host.ch_15,  sizeof(uint32_t));
+  //::memcpy(&net, &host, sizeof(alchemy::benchmark::NoConversion));
+}
+
+//  ****************************************************************************
 void ReadBasic( alchemy::benchmark::DataBuffer &data,
                 alchemy::benchmark::Basic      &msg)
 {
@@ -130,9 +202,10 @@ void ReadComplex( alchemy::benchmark::DataBuffer &data,
 {
   // Read the basic field data in.
   ::memcpy(&msg.seq, data.GetBytes(sizeof(uint32_t)), sizeof(uint32_t));
-  ReadBasic(data, msg.basic[0]);
-  ReadBasic(data, msg.basic[1]);
-  ReadBasic(data, msg.basic[2]);
+  for (size_t i = 0; i < alchemy::benchmark::k_complex_basic_count; ++i)
+  {
+    ReadBasic(data, msg.basic[i]);
+  }
 
   ReadPacked(data, msg.bits);
 
@@ -146,9 +219,10 @@ void WriteComplex(alchemy::benchmark::DataBuffer &data,
   // Read the basic field data in.
   ::memcpy(data.GetBytes(sizeof(uint32_t)), &msg.seq, sizeof(uint32_t));
 
-  WriteBasic(data, msg.basic[0]);
-  WriteBasic(data, msg.basic[1]);
-  WriteBasic(data, msg.basic[2]);
+  for (size_t i = 0; i < alchemy::benchmark::k_complex_basic_count; ++i)
+  {
+    WriteBasic(data, msg.basic[i]);
+  }
 
   WritePacked(data, msg.bits);
 
@@ -162,9 +236,10 @@ void ComplexToNetwork(const alchemy::benchmark::Complex &host,
   // Convert the necessary terms to network byte order.
   net.seq = htonl(host.seq);
 
-  BasicToNetwork(host.basic[0], net.basic[0]);
-  BasicToNetwork(host.basic[1], net.basic[1]);
-  BasicToNetwork(host.basic[2], net.basic[2]);
+  for (size_t i = 0; i < alchemy::benchmark::k_complex_basic_count; ++i)
+  {
+    BasicToNetwork(host.basic[i], net.basic[i]);  
+  }
 
   PackedToNetwork(host.bits, net.bits);
 
@@ -176,7 +251,7 @@ void ComplexToNetwork(const alchemy::benchmark::Complex &host,
 void ReadArray (alchemy::benchmark::DataBuffer &data,
                 alchemy::benchmark::Array      &msg)
 {
-  for (size_t index = 0; index < 256; ++index)
+  for (size_t index = 0; index < alchemy::benchmark::k_array_test_count; ++index)
   {
     ::memcpy(&msg.items[index], data.GetBytes(sizeof(int32_t)),  sizeof(int32_t));
   }
@@ -186,7 +261,7 @@ void ReadArray (alchemy::benchmark::DataBuffer &data,
 void WriteArray ( alchemy::benchmark::DataBuffer &data,
                   alchemy::benchmark::Array     &msg)
 {
-  for (size_t index = 0; index < 256; ++index)
+  for (size_t index = 0; index < alchemy::benchmark::k_array_test_count; ++index)
   {
     ::memcpy(data.GetBytes(sizeof(uint32_t)),&msg.items[index], sizeof(uint32_t));
   }
@@ -197,7 +272,7 @@ void ArrayToNetwork (const alchemy::benchmark::Array &host,
                            alchemy::benchmark::Array &net)
 {
   // Convert the necessary terms to network byte order.
-  for (size_t index = 0; index < 256; ++index)
+  for (size_t index = 0; index < alchemy::benchmark::k_array_test_count; ++index)
   {
     net.items[index] = htonl(host.items[index]);
   }
@@ -211,6 +286,29 @@ namespace benchmark
 {
 
 //  ****************************************************************************
+void UsingMemcpy::test_no_conversion( DataBuffer &data,
+                                      DataBuffer &out)
+{
+  using alchemy::benchmark::DataBuffer;
+  using alchemy::benchmark::NoConversion;
+
+  size_t len   = Hg::SizeOf<alchemy::benchmark::NoConversion>::value;
+  size_t count = data.Size() / len;
+
+  cout << "no_conversion size: " << len   << "\t\tcount: " << count << endl;
+  for (size_t index = 0; index < count; ++index)
+  {
+    alchemy::benchmark::NoConversion host;
+    ReadNoConversion(data, host);
+
+    alchemy::benchmark::NoConversion net;
+    NoConversionToNetwork(host, net);
+
+    WriteNoConversion(out, net);
+  }
+}
+
+//  ****************************************************************************
 void UsingMemcpy::test_basic( DataBuffer &data,
                               DataBuffer &out)
 {
@@ -220,7 +318,7 @@ void UsingMemcpy::test_basic( DataBuffer &data,
   size_t len   = Hg::SizeOf<alchemy::benchmark::Basic>::value;
   size_t count = data.Size() / len;
 
-  cout << "basic size:      " << len   << ", count; " << count << endl;
+  cout << "        basic size: " << len   << "\t\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     Basic host;
@@ -243,7 +341,7 @@ void UsingMemcpy::test_packed_bits(DataBuffer &data,
   size_t len   = Hg::SizeOf<alchemy::benchmark::Packed>::value;
   size_t count = data.Size() / len;
 
-  cout << "packed size:     " << len   << ", count; " << count << endl;
+  cout << "       packed size: " << len   << "\t\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     Packed host;
@@ -267,7 +365,7 @@ void UsingMemcpy::test_unaligned( DataBuffer &data,
   size_t len   = Hg::SizeOf<alchemy::benchmark::Unaligned>::value;
   size_t count = data.Size() / len;
 
-  cout << "unaligned size:  " << len   << ", count; " << count << endl;
+  cout << "    unaligned size: " << len   << "\t\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     Unaligned host;
@@ -289,7 +387,7 @@ void UsingMemcpy::test_complex(DataBuffer &data,
 
   size_t len   = Hg::SizeOf<alchemy::benchmark::Complex>::value;
   size_t count = data.Size() / len;
-  cout << "complex size:    " << len   << ", count; " << count << endl;
+  cout << "      complex size: " << len   << "\t\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     Complex host;
@@ -311,7 +409,7 @@ void UsingMemcpy::test_array (DataBuffer &data,
 
   size_t len   = Hg::SizeOf<alchemy::benchmark::Array>::value;
   size_t count = data.Size() / len;
-  cout << "array size:    " << len   << ", count; " << count << endl;
+  cout << "        array size: " << len   << "\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     Array host;

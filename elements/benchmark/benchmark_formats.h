@@ -16,8 +16,34 @@ namespace alchemy
 namespace benchmark
 {
 
+const size_t k_complex_basic_count = 4;
+const size_t k_array_test_count    = 256;
+
+
+
 #pragma pack(push)
 #pragma pack(1)
+
+//  ****************************************************************************
+struct NoConversion
+{
+  uint32_t            ch_0;
+  uint32_t            ch_1;
+  uint32_t            ch_2;
+  uint32_t            ch_3;
+  uint32_t            ch_4;
+  uint32_t            ch_5;
+  uint32_t            ch_6;
+  uint32_t            ch_7;
+  uint32_t            ch_8;
+  uint32_t            ch_9;
+  uint32_t            ch_10;
+  uint32_t            ch_11;
+  uint32_t            ch_12;
+  uint32_t            ch_13;
+  uint32_t            ch_14;
+  uint32_t            ch_15;
+};
 
 //  ****************************************************************************
 struct Basic
@@ -78,7 +104,7 @@ struct Unaligned
 struct Complex
 {
   uint32_t        seq;
-  Basic           basic[3];
+  Basic           basic[k_complex_basic_count];
   Packed          bits;
   Unaligned       unaligned;
 };
@@ -87,7 +113,7 @@ struct Complex
 //  ****************************************************************************
 struct Array
 {
-  uint32_t        items[256];
+  uint32_t        items[k_array_test_count];
 };
 
 
@@ -131,6 +157,25 @@ HG_BEGIN_PACKED (uint8_t, SetC)
 HG_END_PACKED
 
 
+HG_BEGIN_FORMAT(NoConversion,
+  HG_DATUM(uint32_t, ch_0),
+  HG_DATUM(uint32_t, ch_1),
+  HG_DATUM(uint32_t, ch_2),
+  HG_DATUM(uint32_t, ch_3),
+  HG_DATUM(uint32_t, ch_4),
+  HG_DATUM(uint32_t, ch_5),
+  HG_DATUM(uint32_t, ch_6),
+  HG_DATUM(uint32_t, ch_7),
+  HG_DATUM(uint32_t, ch_8),
+  HG_DATUM(uint32_t, ch_9),
+  HG_DATUM(uint32_t, ch_10),
+  HG_DATUM(uint32_t, ch_11),
+  HG_DATUM(uint32_t, ch_12),
+  HG_DATUM(uint32_t, ch_13),
+  HG_DATUM(uint32_t, ch_14),
+  HG_DATUM(uint32_t, ch_15)
+);
+
 //  ****************************************************************************
 HG_BEGIN_FORMAT(Basic,
   HG_DATUM(int32_t,         i32),
@@ -161,15 +206,15 @@ HG_BEGIN_FORMAT(Unaligned,
 
 //  ****************************************************************************
 HG_BEGIN_FORMAT(Complex,
-  HG_DATUM(uint32_t,        seq),
-  HG_ARRAY(Basic, 3,        basic),
-  HG_DATUM(Packed,          bits),
-  HG_DATUM(Unaligned,       unaligned)
+  HG_DATUM(uint32_t,                  seq),
+  HG_ARRAY(Basic, alchemy::benchmark::k_complex_basic_count, basic),
+  HG_DATUM(Packed,                    bits),
+  HG_DATUM(Unaligned,                 unaligned)
 );
 
 //  ****************************************************************************
 HG_BEGIN_FORMAT(Array_test,
-  HG_ARRAY(uint32_t, 256,   items)
+  HG_ARRAY(uint32_t, alchemy::benchmark::k_array_test_count,   items)
 );
 
 } // namespace Hg

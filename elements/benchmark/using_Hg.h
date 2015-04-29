@@ -19,6 +19,10 @@ namespace benchmark
 struct UsingHg
 {
   static 
+    void test_no_conversion(DataBuffer &data,
+                            DataBuffer &out);
+
+  static 
     void test_basic(DataBuffer &data,
                     DataBuffer &out);
 

@@ -20,6 +20,27 @@ namespace benchmark
 {
 
 //  ****************************************************************************
+typedef Hg::basic_msg<Hg::NoConversion, Hg::BufferedStaticStoragePolicy>   HgNoConversion;
+
+void UsingHg::test_no_conversion( DataBuffer &data,
+                                  DataBuffer &out)
+{
+  size_t len = Hg::SizeOf<Hg::NoConversion>::value;
+  size_t count = data.Size() / len;
+
+  cout << "no_conversion size: " << len   << "\t\tcount: " << count << endl;
+  for (size_t index = 0; index < count; ++index)
+  {
+    HgNoConversion::host_t host((HgNoConversion::data_type*)data.GetBytes(len), len);  
+
+    HgNoConversion::host_t  net = Hg::to_network(host);
+
+    net.data((unsigned char*)out.GetBytes(len), len);
+  }
+
+}
+
+//  ****************************************************************************
 typedef Hg::basic_msg<Hg::Basic, Hg::BufferedStaticStoragePolicy>   HgBasic;
 
 
@@ -29,7 +50,7 @@ void UsingHg::test_basic(DataBuffer &data,
   size_t len   = Hg::SizeOf<Hg::Basic>::value;
   size_t count = data.Size() / len;
 
-  cout << "basic size:      " << len   << ", count; " << count << endl;
+  cout << "        basic size: " << len   << "\t\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     HgBasic::host_t host((HgBasic::data_type*)data.GetBytes(len), len);  
@@ -49,7 +70,7 @@ void UsingHg::test_packed_bits( DataBuffer &data,
   size_t len   = Hg::SizeOf<Hg::Packed>::value;
   size_t count = data.Size() / len;
 
-  cout << "packed size:     " << len   << ", count; " << count << endl;
+  cout << "       packed size: " << len   << "\t\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     HgPacked::host_t host((HgPacked::data_type*)data.GetBytes(len), len);  
@@ -70,7 +91,7 @@ void UsingHg::test_unaligned( DataBuffer &data,
   size_t len   = Hg::SizeOf<Hg::Unaligned>::value;
   size_t count = data.Size() / len;
 
-  cout << "unaligned size:  " << len   << ", count; " << count << endl;
+  cout << "    unaligned size: " << len   << "\t\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     HgUnaligned::host_t host((HgUnaligned::data_type*)data.GetBytes(len), len);  
@@ -91,7 +112,7 @@ void UsingHg::test_complex(DataBuffer &data,
   size_t len = Hg::SizeOf<Hg::Complex>::value;
   size_t count = data.Size() / len;
 
-  cout << "complex size:    " << len   << ", count; " << count << endl;
+  cout << "      complex size: " << len   << "\t\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     HgComplex::host_t host((HgComplex::data_type*)data.GetBytes(len), len);  
@@ -113,7 +134,7 @@ void UsingHg::test_array(DataBuffer &data,
   size_t len = Hg::SizeOf<Hg::Array_test>::value;
   size_t count = data.Size() / len;
 
-  cout << "array size:    " << len   << ", count; " << count << endl;
+  cout << "        array size: " << len   << "\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
     HgArray::host_t host((HgArray::data_type*)data.GetBytes(len), len);  
