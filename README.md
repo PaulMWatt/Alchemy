@@ -1,3 +1,18 @@
+Benchmarks
+========================================================
+Optimizations continue to improve the speed of Alchemy each week. This is a summary of the current benchmark results. The details are further below:
+
+Test | percent
+----------- |:------------
+Basic: |  **19.1005%**
+Packed: | **11.5171%**
+Unaligned: | **1.85696%**
+Complex: | **3.78353%**
+Array: | **72.2728%**
+Total: | **19.9351%**
+
+Arrays appear to out-perform the basic hand-written equivalent by a considerable margin.
+
 Network Alchemy
 ========================================================
 A portable framework to robustly process network messages and structured data. This library can also be used for serialization tasks and provides **compile-time reflection** for Hg-defined structures. 
@@ -113,7 +128,8 @@ Machine:
 *16 GB RAM 
 *Windows 8.1 
 
-
+Benchmark output:
+-----------------
 Loading test data:  
 Hit enter when ready...:  
    
@@ -152,6 +168,14 @@ Scenario | control | Hg | diff | percent
 ----------- |:---------- |:--------- |:---------- |:------------
 NoConversion: |  0.361389  s | 0.577049  s | 0.215659 | **-59.6751%**
   
+These are the basic benchmark tests that have been written:
+
+1. A single struct with fundamental type fields.  
+2. A single struct with Packed bit fields.  
+3. A single struct with fundamental fields that are intentionally placed at unaligned memory positions.  
+4. A Nested struct that contains an instance of all of the previous structs. One of the nested structs is created in an array. 
+5. An array of 256 32-bit integers
+6. A structure that does not perform byte-order conversion, but does read, copy, then write data.
 
 **Previous Results**
 * I have been able to improve the overal speed of Hg so overall it is **7.5% faster** than the hand-written version.
@@ -162,39 +186,7 @@ NoConversion: |  0.361389  s | 0.577049  s | 0.215659 | **-59.6751%**
 * Nested types:      23%  slower
 * Overall:           7.5% faster
 
-Benchmark output:
------------------
-`Loading test data:`  
-`Hit enter when ready...:`  
-`**Running Hg benchmark:**`  
-`basic size:      14, count; 38347922`  
-`packed size:     7,  count; 76695844`  
-`unaligned size:  19, count; 28256363`  
-`complex size:    72, count; 7456540`  
-`Test completed`  
-` `
-`**Running memcpy benchmark:**`  
-`basic size:      14, count; 38347922`  
-`packed size:     7,  count; 76695844`  
-`unaligned size:  19, count; 28256363`  
-`complex size:    72, count; 7456540 `  
-`Test completed                      `  
-
-These are the basic benchmark tests that have been written:
-
-1. A single struct with fundamental type fields.  
-2. A single struct with Packed bit fields.  
-3. A single struct with fundamental fields that are intentionally placed at unaligned memory positions.  
-4. A Nested struct that contains an instance of all of the previous structs. One of the nested structs is created in an array. 
-5. An array of 256 32-bit integers
-6. A structure that does not perform byte-order conversion, but does read, copy, then write data.
-
-I intend to create a more thorough set of tests. For now these 6 types have helped me identify plenty of hot-spots to improve the performance. Originally I only had a memory model that was dynamically allocated. When I ran the first benchmarks, Hg was 100x slower. After that I added a static memory model that can be used as well. This improved the performance dramatically. I will continue to comb through the Hg implementation and structure to improve its speed. The current performance report is listed below.
-
-* Notes: 
-** Some overhead is incurred because all of the fields are zero initialized when an object is created. 
-** I am considering adding an option to not initialize the objects for people who are performance concsious. However, I hesitate to do that because it could cause more problems than the performance penalty incurs.  
-** Nested structures cause the largest increase in cost. 
+**Additional tests will be added as the existing implementation is refined.
 
 -------------
 
