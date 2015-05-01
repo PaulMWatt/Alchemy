@@ -18,6 +18,34 @@ namespace alchemy
 {
 namespace benchmark
 {
+namespace detail
+{
+
+//  ****************************************************************************
+template< typename T >
+void test_impl( DataBuffer &data,
+                DataBuffer &out,
+                const char (&name)[14])
+{
+  typedef Hg::basic_msg<T, Hg::BufferedStaticStoragePolicy>   HgType;
+
+  size_t len = Hg::SizeOf<HgType>::value;
+  size_t count = data.Size() / len;
+
+  cout << name << " size: " << len   << "\t\tcount: " << count << endl;
+  for (size_t index = 0; index < count; ++index)
+  {
+    HgType::host_t host((HgType::data_type*)data.GetBytes(len), len);  
+
+    HgType::net_t  net = Hg::to_network(host);
+
+    net.data((unsigned char*)out.GetBytes(len), len);
+  }
+
+}
+
+} // namespace detail
+
 
 //  ****************************************************************************
 typedef Hg::basic_msg<Hg::NoConversion, Hg::BufferedStaticStoragePolicy>   HgNoConversion;
@@ -25,127 +53,45 @@ typedef Hg::basic_msg<Hg::NoConversion, Hg::BufferedStaticStoragePolicy>   HgNoC
 void UsingHg::test_no_conversion( DataBuffer &data,
                                   DataBuffer &out)
 {
-  size_t len = Hg::SizeOf<Hg::NoConversion>::value;
-  size_t count = data.Size() / len;
-
-  cout << "no_conversion size: " << len   << "\t\tcount: " << count << endl;
-  for (size_t index = 0; index < count; ++index)
-  {
-    HgNoConversion::host_t host((HgNoConversion::data_type*)data.GetBytes(len), len);  
-
-    HgNoConversion::host_t  net = Hg::to_network(host);
-
-    net.data((unsigned char*)out.GetBytes(len), len);
-  }
-
+  detail::test_impl<Hg::NoConversion>(data, out, "no_conversion");
 }
 
 //  ****************************************************************************
-typedef Hg::basic_msg<Hg::Basic, Hg::BufferedStaticStoragePolicy>   HgBasic;
-
-
 void UsingHg::test_basic(DataBuffer &data,
                          DataBuffer &out)
 {
-  size_t len   = Hg::SizeOf<Hg::Basic>::value;
-  size_t count = data.Size() / len;
-
-  cout << "        basic size: " << len   << "\t\tcount: " << count << endl;
-  for (size_t index = 0; index < count; ++index)
-  {
-    HgBasic::host_t host((HgBasic::data_type*)data.GetBytes(len), len);  
-
-    HgBasic::net_t  net = Hg::to_network(host);
-
-    net.data((unsigned char*)out.GetBytes(len), len);
-  }
+  detail::test_impl<Hg::Basic>(data, out, "        basic");
 }
 
 //  ****************************************************************************
-typedef Hg::basic_msg<Hg::Packed, Hg::BufferedStaticStoragePolicy>   HgPacked;
-
 void UsingHg::test_packed_bits( DataBuffer &data,
                                 DataBuffer &out)
 {
-  size_t len   = Hg::SizeOf<Hg::Packed>::value;
-  size_t count = data.Size() / len;
-
-  cout << "       packed size: " << len   << "\t\tcount: " << count << endl;
-  for (size_t index = 0; index < count; ++index)
-  {
-    HgPacked::host_t host((HgPacked::data_type*)data.GetBytes(len), len);  
-
-    HgPacked::net_t  net = Hg::to_network(host);
-
-    net.data((unsigned char*)out.GetBytes(len), len);
-  }
+  detail::test_impl<Hg::Packed>(data, out, "       packed");
 }
 
 
 //  ****************************************************************************
-typedef Hg::basic_msg<Hg::Unaligned, Hg::BufferedStaticStoragePolicy>   HgUnaligned;
-
 void UsingHg::test_unaligned( DataBuffer &data,
                               DataBuffer &out)
 {
-  size_t len   = Hg::SizeOf<Hg::Unaligned>::value;
-  size_t count = data.Size() / len;
-
-  cout << "    unaligned size: " << len   << "\t\tcount: " << count << endl;
-  for (size_t index = 0; index < count; ++index)
-  {
-    HgUnaligned::host_t host((HgUnaligned::data_type*)data.GetBytes(len), len);  
-
-    HgUnaligned::net_t  net = Hg::to_network(host);
-
-    net.data((unsigned char*)out.GetBytes(len), len);
-  }
-
+  detail::test_impl<Hg::Unaligned>(data, out, "    unaligned");
 }
 
 //  ****************************************************************************
-typedef Hg::basic_msg<Hg::Complex, Hg::BufferedStaticStoragePolicy>   HgComplex;
-
 void UsingHg::test_complex(DataBuffer &data,
                            DataBuffer &out)
 {
-  size_t len = Hg::SizeOf<Hg::Complex>::value;
-  size_t count = data.Size() / len;
-
-  cout << "      complex size: " << len   << "\t\tcount: " << count << endl;
-  for (size_t index = 0; index < count; ++index)
-  {
-    HgComplex::host_t host((HgComplex::data_type*)data.GetBytes(len), len);  
-
-    HgComplex::net_t  net = Hg::to_network(host);
-
-    net.data((unsigned char*)out.GetBytes(len), len);
-  }
-
+  detail::test_impl<Hg::Complex>(data, out, "      complex");
 }
 
 
 //  ****************************************************************************
-typedef Hg::basic_msg<Hg::Array_test, Hg::BufferedStaticStoragePolicy>   HgArray;
-
 void UsingHg::test_array(DataBuffer &data,
                          DataBuffer &out)
 {
-  size_t len = Hg::SizeOf<Hg::Array_test>::value;
-  size_t count = data.Size() / len;
-
-  cout << "        array size: " << len   << "\tcount: " << count << endl;
-  for (size_t index = 0; index < count; ++index)
-  {
-    HgArray::host_t host((HgArray::data_type*)data.GetBytes(len), len);  
-
-    HgArray::net_t  net = Hg::to_network(host);
-
-    net.data((unsigned char*)out.GetBytes(len), len);
-  }
-
+  detail::test_impl<Hg::Array_test>(data, out, "        array");
 }
-
 
 
 
