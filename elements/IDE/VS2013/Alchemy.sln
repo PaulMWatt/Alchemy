@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "benchmark", "benchmark.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sgraphy", "..\..\sgraphy\sgraphy.vcxproj", "{73DC0735-11CE-4365-AFE1-CCD512F4349A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CarbonTestSuite", "..\..\..\U232\CarbonTestSuite\CarbonTestSuite.vcxproj", "{9135932B-0A26-4E2C-9D43-CB8063491E2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -99,6 +101,16 @@ Global
 		{73DC0735-11CE-4365-AFE1-CCD512F4349A}.Release|Win32.ActiveCfg = Release|Win32
 		{73DC0735-11CE-4365-AFE1-CCD512F4349A}.Release|Win32.Build.0 = Release|Win32
 		{73DC0735-11CE-4365-AFE1-CCD512F4349A}.Release|x64.ActiveCfg = Release|Win32
+		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Debug|Win32.Build.0 = Debug|Win32
+		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Debug|x64.ActiveCfg = Debug|Win32
+		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Release|Win32.ActiveCfg = Release|Win32
+		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Release|Win32.Build.0 = Release|Win32
+		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
