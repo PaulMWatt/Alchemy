@@ -35,9 +35,6 @@
 #include <vector>
 
 //  Test Types *****************************************************************
-namespace Hg
-{
-
 HG_BEGIN_PACKED (uint8_t, byte_1x8)
   HG_BIT_FIELD   (0,   first, 8)
 HG_END_PACKED
@@ -70,6 +67,8 @@ HG_BEGIN_PACKED (uint32_t, mixed_set)
   HG_BIT_FIELD   (6,   seventh, 1)
 HG_END_PACKED
 
+namespace Hg
+{
 //  ****************************************************************************
 //  A type array that contains an entry for each of the fundamental types.
 //

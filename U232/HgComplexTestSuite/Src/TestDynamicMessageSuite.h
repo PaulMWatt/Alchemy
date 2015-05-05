@@ -37,10 +37,6 @@
 #include <Hg.h>
 #include <algorithm>
 
-namespace Hg
-{
-
-
 //  ****************************************************************************
 //  A type list used to create a basic message with a dynamic value.
 // 
@@ -51,8 +47,6 @@ HG_BEGIN_FORMAT(no_dyn_format_t,
   HG_ARRAY (uint32_t,20,              arry_3)
 );
 
-typedef no_dyn_format_t no_dyn_type;
-
 //  ****************************************************************************
 //  A type list used to create a basic message with a dynamic value.
 // 
@@ -62,8 +56,6 @@ HG_BEGIN_FORMAT(dyn_basic_format_t,
   HG_DYNAMIC(uint16_t,   word_0,      seq_16),
   HG_DATUM (uint32_t,                 word_2)
 );
-
-typedef dyn_basic_format_t dyn_basic_type;
 
 //  ****************************************************************************
 //  A type list used to create the base message field.
@@ -82,6 +74,12 @@ HG_BEGIN_FORMAT(dyn_test_format_t,
   HG_DATUM    (uint32_t,            word_2)
 );
 
+
+namespace Hg
+{
+
+typedef no_dyn_format_t no_dyn_type;
+typedef dyn_basic_format_t dyn_basic_type;
 typedef dyn_test_format_t dyn_message_type;
 
 } // namespace Hg

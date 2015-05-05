@@ -245,14 +245,9 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_bitsets(void)
 
 //  ****************************************************************************
 
-namespace Hg {
-
 HG_BEGIN_FORMAT(points_t,
   HG_ARRAY (pt3d_t, 3, pts)
 );
-
-
-} // namespace Hg
 
 
 //  Nested-Fixed sub-fields ****************************************************
@@ -363,14 +358,10 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_arrays(void)
 //  ****************************************************************************
 //  ****************************************************************************
 
-namespace Hg {
-
 HG_BEGIN_FORMAT(vstr_t,
   HG_DATUM   (uint8_t,  len),
   HG_DYNAMIC (char,     len, str)
 );
-
-} // namespace Hg
 
 //  Nested-Fixed sub-fields ****************************************************
 namespace test
@@ -466,15 +457,10 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_fundamental(void)
 
 //  Nested-Fixed sub-fields ****************************************************
 
-namespace Hg {
-
 HG_BEGIN_FORMAT(vpoints_t,
   HG_DATUM   (uint16_t, count),
   HG_DYNAMIC (pt3d_t,   count, pts)
 );
-
-
-} // namespace Hg
 
 
 namespace test
@@ -589,15 +575,10 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_fixed_size(voi
 
 
 //  Dynamic Nested-Dynamic sub-fields ******************************************
-namespace Hg {
-
 HG_BEGIN_FORMAT(vinst_t,
   HG_DATUM   (uint16_t, count),
   HG_DYNAMIC (instance_t, count, inst)
 );
-
-
-} // namespace Hg
 
 
 namespace test
@@ -781,8 +762,6 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_dynamic_size(v
 
 
 //  Array of Bitsets ***********************************************************
-namespace Hg
-{
 //  ****************************************************************************
 //  Dynamically Sized Color Table
 //  This type represents a fixed-size array of bit-fields.
@@ -791,8 +770,6 @@ HG_BEGIN_FORMAT(color_table_t,
   HG_DATUM   (size_t, count),
   HG_DYNAMIC (color4, count, table)
 );
-
-} // namespace Hg
 
 namespace test
 {
@@ -927,17 +904,12 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_bitsets(void)
 }
 
 //  ****************************************************************************
-namespace Hg {
-
 typedef std::array<uint32_t, 5>     u32_array_t;
 
 HG_BEGIN_FORMAT(vec_array_t,
   HG_DATUM   (uint16_t,    count),
   HG_DYNAMIC (u32_array_t, count, items)
 );
-
-
-} // namespace Hg
 
 //  Vector of Arrays ***********************************************************
 namespace test
@@ -1127,12 +1099,13 @@ size_t StringCount(const uint8_t* pBuffer, size_t length)
   return count;
 }
 
+} // namespace Hg
+
+
 // Message definition
 HG_BEGIN_FORMAT(string_vec_t,
   HG_DYNAMIC (char_str, &StringCount, items)
 );
-
-} // namespace Hg
 
 //  Vector of vectors **********************************************************
 namespace test

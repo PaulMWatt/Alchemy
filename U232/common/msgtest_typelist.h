@@ -11,9 +11,6 @@
 //  Test Types *****************************************************************
 // A current limitation for the Hg definitions are they must be defined in 
 // the Hg namespace.
-namespace Hg
-{
-
 HG_BEGIN_PACKED (uint32_t, mixed_bits)
   HG_BIT_FIELD   (0,   first,   5)
   HG_BIT_FIELD   (1,   second,  4)
@@ -76,8 +73,6 @@ HG_BEGIN_FORMAT(point_format_t,
 HG_BEGIN_FORMAT(single_array_t,
   HG_ARRAY (point_format_t, 2, line)
 )
-
-} // namespace Hg
 
 
 #endif

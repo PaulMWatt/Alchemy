@@ -31,6 +31,8 @@ typedef TypeList
           uint8_t     
         > Nested_format;
 
+} // namespace Hg
+
 HG_BEGIN_PACKED (uint8_t, Bits_type_a)
   HG_BIT_FIELD   (0,   a_one,   1)
   HG_BIT_FIELD   (1,   a_two,   2)
@@ -45,6 +47,9 @@ HG_BEGIN_PACKED (uint32_t, Bits_type_b)
   HG_BIT_FIELD   (4,   b_five,  3)
   HG_BIT_FIELD   (5,   b_six,   4)
 HG_END_PACKED
+
+namespace Hg
+{
 
 typedef TypeList 
         <

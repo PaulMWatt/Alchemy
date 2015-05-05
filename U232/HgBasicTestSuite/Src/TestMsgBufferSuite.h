@@ -40,9 +40,6 @@
 #include <cxxtest/TestSuite.h>
 #include <alchemy.h>
 
-namespace Hg
-{
-
 //  ****************************************************************************
 /// A type array that contains 32-bit word aligned data structures.
 ///
@@ -69,8 +66,6 @@ HG_BEGIN_FORMAT(maligned_int_t,
   HG_DATUM   (uint32_t, ul32),
   HG_DATUM   (uint8_t, uc8)
 );
-
-} // namespace Hg
 
 // Constants used for endian or testing.
 const int8_t    k_signed8_t           = int8_t(0xA7);

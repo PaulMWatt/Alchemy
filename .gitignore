@@ -80,3 +80,6 @@ U232/HgComplexTestSuite/Src/Generated/HgComplexTestSuiteRunner.cpp
 U232/HgTypeListTestSuite/Debug/bin/HgTypeListTestSuite
 U232/HgBasicTestSuite/Src/Generated/HgBasicTestSuiteRunner.cpp
 U232/CarbonTestSuite/Src/Generated/CarbonTestSuiteRunner.cpp
+U232/HgBasicTestSuite/Src/Generated/HgBasicTestSuiteRunner.cpp
+U232/HgComplexTestSuite/Src/Generated/HgComplexTestSuiteRunner.cpp
+U232/HgTypeListTestSuite/Src/Generated/HgTypeListTestSuiteRunner.cpp

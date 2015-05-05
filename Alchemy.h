@@ -73,12 +73,10 @@
 ///             
 /// @param TYPE_LIST         The TypeList used to defined the layout format.
 ///             
-/// @note           This definition MACRO should be placed in the global or
-///                 alchemy namespace.
+/// @note           All definitions should be placed in the same namespace
+///                 as the included Alchemy.h header file.
+///                 These defined types will appear in their own Hg namespace.
 /// ~~~{.cpp}
-///   // Currently the BIT_SET definitions must occur in the *alchemy* namespace.
-///   namespace Hg
-///   {
 ///
 ///   // Define the message data format
 ///   HG_BEGIN_FORMAT(new_point_t,
@@ -93,7 +91,6 @@
 ///     HG_DATUM (uint8_t,    count)
 ///   )
 ///     
-///   } // namespace Hg
 /// ~~~
 ///             
 #define HG_BEGIN_FORMAT(NAME, ...)  DECLARE_STRUCT_HEADER(NAME, __VA_ARGS__)

@@ -124,9 +124,6 @@ struct Array
 
 
 //  The Hg equivalent definitions of the structures defined above. *************
-namespace Hg
-{
-
 //  ****************************************************************************
 HG_BEGIN_PACKED (uint32_t, SetA)
   HG_BIT_FIELD   (0,   fifteen, 15)
@@ -216,9 +213,6 @@ HG_BEGIN_FORMAT(Complex,
 HG_BEGIN_FORMAT(Array_test,
   HG_ARRAY(uint32_t, alchemy::benchmark::k_array_test_count,   items)
 );
-
-} // namespace Hg
-
 
 
 

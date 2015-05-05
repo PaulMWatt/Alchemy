@@ -32,9 +32,6 @@
 #include <Hg.h>
 #include <algorithm>
 
-namespace Hg
-{
-
 HG_BEGIN_FORMAT(base_format_t,
   HG_DATUM (uint32_t,                 word_0),
   HG_DATUM (uint32_t,                 word_1),
@@ -44,6 +41,8 @@ HG_BEGIN_FORMAT(base_format_t,
   HG_ARRAY (uint32_t, 3,              sequence)
 );
 
+namespace Hg
+{
 
 typedef base_format_t    message_type;
 

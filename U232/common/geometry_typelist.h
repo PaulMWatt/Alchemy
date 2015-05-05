@@ -9,9 +9,6 @@
 #define GEOMETRY_TYPELIST_H_INCLUDED
 #include <alchemy.h>
 
-namespace Hg
-{
-
 //  Simple Types ***************************************************************
 //  ****************************************************************************
 //  Bitset definition to represent 4-channel color value.  
@@ -126,8 +123,5 @@ HG_BEGIN_FORMAT(world_t,
   HG_DATUM    (uint8_t,                   instance_count),
   HG_DYNAMIC  (instance_t, instance_count, instances)
 );
-
-} // namespace Hg
-
 
 #endif

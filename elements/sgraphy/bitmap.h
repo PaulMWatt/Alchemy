@@ -12,10 +12,6 @@
 #include <Hg/static_storage_policy.h>
 #include <string>
 
-
-namespace Hg
-{
-
 //  ****************************************************************************
 HG_BEGIN_FORMAT(bitmap_file_header_t,
   HG_DATUM(uint16_t, type),
@@ -61,9 +57,6 @@ HG_BEGIN_FORMAT(bitmap_info_t,
   HG_DATUM(bitmap_core_header_t, header),
   HG_DYNAMIC(byte_t, header.sizeImage, pixels) 
 )
-
-
-} // namespace Hg
 
 
 

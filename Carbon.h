@@ -28,8 +28,11 @@
 #ifndef CARBON_H_INCLUDED
 #define CARBON_H_INCLUDED
 
+/// This MACRO enables Carbon definitions for C-linkable APIs.
+#define ALCHEMY_CARBONATE 1
+
 //  Includes ******************************************************************
-#include <Hg/msg_def.h>
+#include <C/carbon_def.h>
 
 //  ****************************************************************************
 /// Marks the beginning of a message format.

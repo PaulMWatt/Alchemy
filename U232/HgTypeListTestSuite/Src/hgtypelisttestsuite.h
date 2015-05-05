@@ -37,8 +37,6 @@
 #include <vector>
 
 using namespace Hg;
-namespace Hg
-{
 
 HG_BEGIN_PACKED (uint32_t, mixed_bits)
   HG_BIT_FIELD   (0,   first,   5)
@@ -50,7 +48,8 @@ HG_BEGIN_PACKED (uint32_t, mixed_bits)
   HG_BIT_FIELD   (6,   seventh, 1)
 HG_END_PACKED
 
-
+namespace Hg
+{
 //  ****************************************************************************
 typedef TypeList
 <

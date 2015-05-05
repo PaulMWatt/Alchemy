@@ -1,8 +1,8 @@
-// @file Hg/msg_def.h
+// @file C/carbon_def.h
 // 
-// Internal implementation MACROS for message format definitions.
+// Internal implementation MACROS for C-linkable structs and function calls.
 // 
-// Contains declaration MACROs implementation to define message buffer formats.
+// Contains declaration MACROs implementation to define data structure formats.
 // The implementations are hidden behind a second layer to simplify the 
 // header file the user will interact with.
 // 
@@ -14,83 +14,54 @@
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
-#ifndef MSG_DEF_H_INCLUDED
-#define MSG_DEF_H_INCLUDED
+#ifndef CARBON_DEF_H_INCLUDED
+#define CARBON_DEF_H_INCLUDED
 //  Private Usage Include Guard ************************************************
 //  Only allow this header file to be included through alchemy.h
 #ifndef ALCHEMY_H_INCLUDED
 # error Do not include this file directly. Use <alchemy.h> instead
 #endif
 
+
+// TODO: All of this should go, Only valid C code should appear in this header.
+////  ****************************************************************************
+////  We're potentially using some pretty long type definitions.
+////  For any moderately complex message format, we will almost certainly
+////  trigger this warning with Visual C++.
+//#if defined(_MSC_VER)
+//#pragma warning(disable : 4503) // decorated name length exceeded, name was truncated
+//#endif
+//
+////  Includes *******************************************************************
+//#include <Pb/meta_fwd.h>
+//#include <Pb/auto_index.h>
+//#include <Pb/byte_order.h>
+//#include <Pb/length.h>
+//#include <Pb/offset_of.h>
+//#include <Pb/size_at.h>
+//#include <Pb/size_of.h>
+//#include <Pb/meta_math.h>
+//#include <Pb/dynamic.h>
+//#include <Hg/deduce_msg_type_list.h>
+//#include <Hg/make_Hg_type_list.h>
+//#include <Hg/proxy/deduce_proxy_type.h>
+
+
 //  ****************************************************************************
-//  We're potentially using some pretty long type definitions.
-//  For any moderately complex message format, we will almost certainly
-//  trigger this warning with Visual C++.
-#if defined(_MSC_VER)
-#pragma warning(disable : 4503) // decorated name length exceeded, name was truncated
-#endif
-
-//  Includes *******************************************************************
-#include <Pb/meta_fwd.h>
-#include <Pb/auto_index.h>
-#include <Pb/byte_order.h>
-#include <Pb/length.h>
-#include <Pb/offset_of.h>
-#include <Pb/size_at.h>
-#include <Pb/size_of.h>
-#include <Pb/meta_math.h>
-#include <Pb/dynamic.h>
-#include <Hg/deduce_msg_type_list.h>
-#include <Hg/make_Hg_type_list.h>
-#include <Hg/proxy/deduce_proxy_type.h>
-
-
+//  Utility Constructs For Use With Carbon Types *******************************
 //  ****************************************************************************
-//  Utility Constructs For Use With Hg Message Types ***************************
-//  ****************************************************************************
-
-namespace Hg
-{
-
 //  Typedefs *******************************************************************
 typedef size_t (*pfnGetDatumSize)(const uint8_t*, size_t);
 
 
-//  ****************************************************************************
-/// Indicates the type size the specified message is, static or dynamic.
-///
-/// @paramt T     A TypeList definition.
-///
-/// @return       A typedef called *type* is defined to return the size trait.
-///               - static_size_trait indicates a fixed-size message whose
-///                                   size is completely known at compile-time.
-///               - dynamic_size_trait indicates a dyanmically sized message.
-///                                    At least some part of the message requires
-///                                    runtime processing to determine the size
-///                                    of the message.
-///
-template< typename T >
-struct message_size_trait
-  : std::conditional
-    < has_dynamic<T>::value,
-      dynamic_size_trait,
-      static_size_trait
-    >
-{ };
 
 
-} // namespace Hg
 
 //  ****************************************************************************
 //  Abstracted Message Definition MACROS ***************************************
 //  Simplified user MACROS use these definitions.
 //  These definitions have been abstracted to simplify the user header files.
 //  ****************************************************************************
-
-//  ****************************************************************************
-#define START_NAMESPACE(NS)         namespace NS {
-#define END_NAMESPACE(NS)           }
-
 
 //  ****************************************************************************
 #define DO_REMOVE(...)   __VA_ARGS__
@@ -149,7 +120,6 @@ struct message_size_trait
 //
 //#define DEFINE_HG_STRUCT(F, ...)                                               
 #define DECLARE_STRUCT_HEADER(F, ...)                                          \
-  START_NAMESPACE(Hg)                                                          \
   DEFINE_STRUCT_TYPELIST(F##_tl, __VA_ARGS__)                                  \
   typedef Hg::make_Hg_type_list<F##_tl>::type               F##_Hg;            \
                                                                                \
@@ -195,14 +165,13 @@ struct message_size_trait
       return ftor(buffer->data(), buffer->size());                             \
     }                                                                          \
   };                                                                           \
-  START_NAMESPACE(detail)                                                      \
+  namespace detail {                                                           \
   template <>                                                                  \
   struct field_data_t <F##_Hg>                                                 \
   {                                                                            \
   typedef F                             value_type;                            \
   };                                                                           \
-  END_NAMESPACE(detail)                                                        \
-  END_NAMESPACE(Hg)
+  } // namespace detail
 
 
 
@@ -266,7 +235,6 @@ struct message_size_trait
 //  Bit Fields *****************************************************************
 //  ****************************************************************************
 #define DECLARE_PACKED_HEADER(T,C)                                             \
-  START_NAMESPACE(Hg)                                                          \
   struct C;                                                                    \
   template <>                                                                  \
   struct ContainerSize<C>                                                      \
@@ -318,7 +286,6 @@ struct message_size_trait
 
 // *****************************************************************************
 #define DECLARE_PACKED_FOOTER                                                  \
-  };                                                                           \
-  END_NAMESPACE(Hg)
+  };
 
 #endif

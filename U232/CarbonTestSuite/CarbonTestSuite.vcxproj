@@ -51,7 +51,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>./;Src;\\pandora\all\software\foss\CxxTest\latest\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../../;../common/;../cxxtest/;Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)\vc80.pdb</ProgramDataBaseFileName>
@@ -69,7 +69,7 @@
     <PreBuildEvent>
       <Command>mkdir "./Src/Generated"
 cd "./Src/Generated"
-$(GenCxxTestRunner) --runner=ParenPrinter  -o "CarbonTestSuiteRunner.cpp" "../*.hpp"
+$(GenCxxTestRunner) --runner=ParenPrinter  -o "CarbonTestSuiteRunner.cpp" "../*.h"
 cd "../.."</Command>
       <Message>Generate the test runner...
 Generate the test runner...
@@ -99,7 +99,8 @@ Generate the test runner...
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\CarbonTestSuite.hpp" />
+    <ClInclude Include="..\..\C\carbon_def.h" />
+    <ClInclude Include="Src\CarbonTestSuite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\CarbonTestSuiteRunner.cpp" />
