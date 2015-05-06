@@ -72,6 +72,24 @@ public:
   // TODO: Add a new function for each unique test to be performed in this suite. 
   void TestCase1(void);
 
+  // Collection of functions to test in the Carbon API
+  //Hg_local_endianess
+  //Hg_create
+  //Hg_clone
+  //Hg_destroy
+  //Hg_resize_dynamic
+  //Hg_type
+  //Hg_size
+  //Hg_data_size
+  //Hg_to_network
+  //Hg_to_host
+  //Hg_to_big_end
+  //Hg_to_little_end
+  //Hg_pack
+  //Hg_unpack
+
+
+
 };
 
 //  ******************************************************************************
@@ -82,3 +100,7 @@ void CarbonTestSuite::TestCase1(void)
 }
 
 #endif
+
+
+
+

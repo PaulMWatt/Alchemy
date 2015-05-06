@@ -179,6 +179,9 @@
     <ClInclude Include="..\..\Pb\detail\offset_of.h">
       <Filter>Header Files\Alchemy\Pb\detail</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Pb\detail\endianess.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\PbTestSuiteRunner.cpp">

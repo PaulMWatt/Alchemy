@@ -201,6 +201,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\detail\uses_exceptions.h" />
     <ClInclude Include="..\..\Pb\detail\variadic_templates.h" />
     <ClInclude Include="..\..\Pb\dynamic.h" />
+    <ClInclude Include="..\..\Pb\detail\endianess.h" />
     <ClInclude Include="..\..\Pb\integer_sequence.h" />
     <ClInclude Include="..\..\Pb\length.h" />
     <ClInclude Include="..\..\Pb\meta_error.h" />

@@ -4,7 +4,7 @@
 /// 
 /// The MIT License(MIT)
 /// 
-/// @copyright 2014 Paul M Watt
+/// @copyright 2015 Paul M Watt
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files(the "Software"), to deal
@@ -56,6 +56,11 @@
 extern "C"
 {
 #endif
+
+
+//  Constants ******************************************************************
+#define k_big_endian      ALCHEMY_BIG_ENDIAN
+#define k_little_endian   ALCHEMY_LITTLE_ENDIAN
 
 //  ****************************************************************************
 typedef unsigned char     Hg_msg_t;
@@ -126,7 +131,7 @@ void  Hg_destroy(
 /// @param p_field[inout]
 /// @param len[in]
 ///
-/// return              The number of bytes allocated for the field is returned.
+/// @return             The number of bytes allocated for the field is returned.
 ///                     If no bytes can be allocated, 0 is returned.
 ///
 ALCHEMY_API 
@@ -139,6 +144,9 @@ size_t Hg_resize_dynamic(
 //  ****************************************************************************
 /// Returns the type of the specified message.
 ///
+/// @param p_msg[in]    The message to query.
+///
+/// @return             The enumerated type identifying this message is returned.
 ///
 ALCHEMY_API 
 Hg_type_t Hg_type(
@@ -148,6 +156,10 @@ Hg_type_t Hg_type(
 //  ****************************************************************************
 /// Returns the size of the specified message.
 ///
+/// @param p_msg[in]    The message to query.
+///
+/// @return             The size of the buffer to hold the main message.
+///                     0 is returned if the buffer does not represent a valid msg.
 ///
 ALCHEMY_API 
 size_t Hg_size(
@@ -157,6 +169,11 @@ size_t Hg_size(
 //  ****************************************************************************
 /// Returns the number of bytes that are required to serialize this object.
 ///
+/// @param p_msg[in]    The message to query.
+///
+/// @return             The calculated buffer size required to serialize
+///                     the specified message.
+///                     0 is returned if the buffer does not represent a valid msg.
 ///
 ALCHEMY_API 
 size_t Hg_data_size(
@@ -167,7 +184,11 @@ size_t Hg_data_size(
 /// Converts this object, in-place, to network byte-order.
 /// No actions will be performed if the local platform is big-endian.
 ///
+/// @param p_msg[in]    The message to convert.
 ///
+/// @return             A status code indicating the result.
+///                     0 indicates success
+///                     A negative value indicates an error.
 ///
 ALCHEMY_API 
 int Hg_to_network(
@@ -178,7 +199,11 @@ int Hg_to_network(
 /// Converts this object, in-place, to host byte-order.
 /// No actions will be performed if the local platform is big-endian.
 ///
+/// @param p_msg[in]    The message to convert.
 ///
+/// @return             A status code indicating the result.
+///                     0 indicates success
+///                     A negative value indicates an error.
 ///
 ALCHEMY_API 
 int Hg_to_host(
@@ -189,7 +214,11 @@ int Hg_to_host(
 /// Converts this object, in-place, to big-endian byte-order.
 /// The message will always be converted as requested.
 ///
+/// @param p_msg[in]    The message to convert.
 ///
+/// @return             A status code indicating the result.
+///                     0 indicates success
+///                     A negative value indicates an error.
 ///
 ALCHEMY_API 
 int Hg_to_big_end(
@@ -200,27 +229,26 @@ int Hg_to_big_end(
 /// Converts this object, in-place, to little-endian byte-order.
 /// The message will always be converted as requested.
 ///
+/// @param p_msg[in]    The message to convert.
 ///
+/// @return             A status code indicating the result.
+///                     0 indicates success
+///                     A negative value indicates an error.
 ///
 ALCHEMY_API 
 int Hg_to_little_end(
   Hg_msg_t* p_msg
 );
           
-// TODO: I don't think this one will be useful, too many variables need to match properly. It would just be better to clone.
-//  ****************************************************************************
-/// Copies the contents of one existing message into another message.
-///
-///
-ALCHEMY_API 
-int Hg_copy(
-  Hg_msg_t*       p_dest, 
-  const Hg_msg_t* p_src
-);
-          
 //  ****************************************************************************
 /// Serializes the specified message into a buffer.
 ///
+/// @param p_msg[in]      The message to serialize.
+/// @param p_buffer[out]  The buffer that will be written into.
+/// @param len[in]        The length of the output buffer.
+///
+/// @return               The number of bytes written to the serialized buffer.
+///                       0 indicates an error occurred.
 ///
 ALCHEMY_API 
 size_t Hg_pack(
@@ -232,6 +260,12 @@ size_t Hg_pack(
 //  ****************************************************************************
 /// Deserializes the specified message from a buffer.
 ///
+/// @param p_msg[in]      The message to populate from the serialized buffer.
+/// @param p_buffer[out]  The buffer that will be read from.
+/// @param len[in]        The length of the input buffer.
+///
+/// @return               The number of bytes read from the serialized buffer.
+///                       0 indicates an error occurred.
 ///
 ALCHEMY_API 
 size_t Hg_unpack(

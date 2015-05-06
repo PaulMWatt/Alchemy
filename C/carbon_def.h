@@ -12,7 +12,7 @@
 //                 **<Carbon.h>** instead.
 //           
 /// The MIT License(MIT)
-/// @copyright 2014 Paul M Watt
+/// @copyright 2015 Paul M Watt
 //  ****************************************************************************
 #ifndef CARBON_DEF_H_INCLUDED
 #define CARBON_DEF_H_INCLUDED

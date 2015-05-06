@@ -40,5 +40,8 @@
     <ClInclude Include="..\..\Carbon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\C\carbon_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
