@@ -1,70 +1,75 @@
-/// @file alchemy.h
-/// 
-/// Network Alchemy is a message and structured data processing framework.
-///
-/// Include this file for access to the alchemy message structure framework.
-///
-/// This framework provides the ability to define structured message formats,
-/// which can be used portably across platforms. These structured definitions
-/// will facilitate the population of the data in the memoery buffers for
-/// inter-process communication, file and network transfer as well as 
-/// direct memory access mapping..
-/// 
-/// Byte-alignment processing is completely transparent to application level
-/// users. Conversion utilities are automatically generated for conversion
-/// between host, network, big and little-endian formats for transport developers. 
-/// 
-/// Alchemy is portable across different processor types and platforms. 
-/// Word alignment and memory access issues are also handled transparently by 
-/// the framework. Users interface with Hg message structures in the same way 
-/// structures are accessed. Nested structures are supported.
-///
-/// Message structure definitions are created with the list of MACROs below.
-/// Refer to the appropriate MACROs documentation for details on correct usage:
-/// 
-///   - HG_BEGIN_FORMAT(TYPE_LIST)
-///   - HG_MSG_FIELD(TYPE,NAME)
-///   - HG_END_FORMAT
-///
-/// Hg provides a portable bit-field interface that works by generating the
-/// appropriate shift and mask operations for each field. Use these MACROS
-/// to define a set of bit-fields that are packed into a user-specified integral type.
-/// Hg currently is written to allow up to 32 bit-fields in a single parameter.
-///
-///   - HG_BEGIN_PACKED(TYPE,BITSET)
-///   - HG_END_PACKED
-///   - HG_BIT_FIELD(INDEX,COUNT,NAME)
-/// 
+// @file C/carbon_def.h
+// 
+// Internal implementation MACROS for C-linkable structs and function calls.
+// 
+// @note           This header file must not be included directly and the 
+//                 MACROS defined in this file should not be accessed
+//                 directly. Include and used the definitions from the file
+//                 **<Carbon.h>** instead.
+//           
 /// The MIT License(MIT)
-/// 
 /// @copyright 2014 Paul M Watt
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files(the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions :
-/// 
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-/// 
-//  ***************************************************************************
-#ifndef ALCHEMY_H_INCLUDED
-#define ALCHEMY_H_INCLUDED
+//  ****************************************************************************
+#ifndef CARBONATE_H_INCLUDED
+#define CARBONATE_H_INCLUDED
 
-#if !defined(ALCHEMY_CARBONATE)
+//  Private Usage Include Guard ************************************************
+//  Only allow this header file to be included through Carbon.h
+#ifndef CARBON_H_INCLUDED
+# error Do not include this file directly. Use <Carbon.h> instead
+#endif
+
+//  Includes *******************************************************************
+#include <stdint.h>
+
+
+/// This MACRO enables Carbon definitions for C-linkable APIs.
+#define ALCHEMY_CARBONATE 1
+
+#ifdef ALCHEMY_H_INCLUDED
+
+#ifdef HG_BEGIN_FORMAT
+# undef HG_BEGIN_FORMAT
+#endif
+
+#ifdef HG_DATUM
+# undef HG_DATUM
+#endif
+
+#ifdef HG_ARRAY
+# undef HG_ARRAY
+#endif
+
+#ifdef HG_DYNAMIC
+# undef HG_DYNAMIC
+#endif
+
+#ifdef HG_ALLOCATOR
+# undef HG_ALLOCATOR
+#endif
+
+#ifdef HG_END_FORMAT
+# undef HG_END_FORMAT
+#endif
+
+#ifdef HG_BEGIN_PACKED
+# undef HG_BEGIN_PACKED
+#endif
+
+#ifdef HG_BIT_FIELD
+# undef HG_BIT_FIELD
+#endif
+
+#ifdef HG_END_PACKED
+# undef HG_END_PACKED
+#endif
+
+#endif
 
 //  Includes ******************************************************************
-#include <Hg/msg_def.h>
+#include <Alchemy.h>
+#include <C/carbon_def.h>
+
 
 //  ****************************************************************************
 /// Marks the beginning of a message format.
@@ -75,10 +80,12 @@
 ///             
 /// @param TYPE_LIST         The TypeList used to defined the layout format.
 ///             
-/// @note           All definitions should be placed in the same namespace
-///                 as the included Alchemy.h header file.
-///                 These defined types will appear in their own Hg namespace.
+/// @note           This definition MACRO should be placed in the global or
+///                 alchemy namespace.
 /// ~~~{.cpp}
+///   // Currently the BIT_SET definitions must occur in the *alchemy* namespace.
+///   namespace Hg
+///   {
 ///
 ///   // Define the message data format
 ///   HG_BEGIN_FORMAT(new_point_t,
@@ -93,9 +100,10 @@
 ///     HG_DATUM (uint8_t,    count)
 ///   )
 ///     
+///   } // namespace Hg
 /// ~~~
 ///             
-#define HG_BEGIN_FORMAT(NAME, ...)  DECLARE_STRUCT_HEADER(NAME, __VA_ARGS__)
+#define HG_BEGIN_FORMAT(NAME, ...)  DECLARE_C_STRUCT_HEADER(NAME, __VA_ARGS__)
 
 
 //  ****************************************************************************
@@ -109,7 +117,7 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define HG_DATUM(TYPE,NAME)            D_DATUM(TYPE,NAME)
+#define HG_DATUM(TYPE,NAME)            DECLARE_C_DATUM(TYPE,NAME)
 
 //  ****************************************************************************
 /// Adds a fixed-size array field to the message definition.
@@ -123,7 +131,7 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define HG_ARRAY(TYPE,COUNT,NAME)      DECLARE_ARRAY_ENTRY(TYPE,COUNT,NAME)
+#define HG_ARRAY(TYPE,COUNT,NAME)      DECLARE_C_ARRAY(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size to the message definition.
@@ -148,7 +156,7 @@
 ///
 ///             
 #define HG_DYNAMIC(TYPE,COUNT,NAME)\
-                                        DECLARE_DYNAMIC_ENTRY(TYPE,COUNT,NAME)
+                                        DECLARE_C_DYNAMIC(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size controlled by a user specified allocator.
@@ -176,7 +184,7 @@
 ///
 ///             
 #define HG_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)\
-                                        D_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
+                                        DECLARE_C_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
 
 //  ****************************************************************************
 /// Marks the end of a message format.
@@ -189,7 +197,7 @@
 /// data format definition. A compiler error will be emitted if the number 
 /// of declared HG_MSG_FIELD entries does not match the number expected.
 /// 
-#define HG_END_FORMAT(TYPE_LIST)       DECLARE_STRUCT_FOOTER(TYPE_LIST)
+#define HG_END_FORMAT(TYPE_LIST)       DECLARE_C_STRUCT_FOOTER(TYPE_LIST)
 
 
 //  ****************************************************************************
@@ -232,7 +240,7 @@
 ///                 3) The definition of the BIT_SET struct, which contains
 ///                    all of the named bit-field properties managed by the BIT_SET.
 ///         
-#define HG_BEGIN_PACKED(TYPE,NAME)     DECLARE_PACKED_HEADER(TYPE,NAME)
+#define HG_BEGIN_PACKED(TYPE,NAME)     DECLARE_C_PACKED_HEADER(TYPE,NAME)
 
 
 //  ****************************************************************************
@@ -248,7 +256,7 @@
 /// @param COUNT    The number of bits this Bit-Field occupies.
 ///             
 #define HG_BIT_FIELD(INDEX,NAME,COUNT)\
-                                        DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
+                                        DECLARE_C_BIT_FIELD(INDEX, NAME, COUNT)
 
 
 //  ****************************************************************************
@@ -257,8 +265,7 @@
 /// A type container specialization is declared for this class to facilitate
 /// the proper calculation of the internal buffer size for the container.
 /// 
-#define HG_END_PACKED                   DECLARE_PACKED_FOOTER
+#define HG_END_PACKED                   DECLARE_C_PACKED_FOOTER
 
-#endif // ALCHEMY_CARBONATE
 
 #endif

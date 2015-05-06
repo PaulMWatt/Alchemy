@@ -32,6 +32,10 @@
 
 #include <cxxtest/TestSuite.h>
 
+#include <Carbon.h>
+#include <CarbonTestDefs.h>
+
+
 //  ****************************************************************************
 /// CarbonTestSuite Test Suite class.
 ///

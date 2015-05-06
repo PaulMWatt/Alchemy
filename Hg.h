@@ -30,6 +30,10 @@
 #define HG_H_INCLUDED
 //  Includes *******************************************************************
 #include <alchemy.h>
+
+// Place this guard for all C++ Headers in the Alchemy base directory.
+#ifdef __cplusplus 
+
 #include <Hg/msg_buffer.h>
 #include <Hg/msg_view.h>
 #include <Hg/pack_message.h>
@@ -488,5 +492,7 @@ struct msg_size<T, false>
 //  Includes *******************************************************************
 #include <Hg/message_byte_order.h>
 #include <Hg/message_dynamic.h>
+
+#endif // __cplusplus
 
 #endif

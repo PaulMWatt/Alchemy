@@ -180,6 +180,7 @@ cd "../.."</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Alchemy.h" />
+    <ClInclude Include="..\..\Carbon.h" />
     <ClInclude Include="..\..\Hg.h" />
     <ClInclude Include="..\..\Hg\datum\basic_datum.h" />
     <ClInclude Include="..\..\Hg\datum\datum.h" />

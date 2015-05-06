@@ -20,12 +20,24 @@
     <ClCompile Include="Src\Generated\CarbonTestSuiteRunner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="carbon_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\CarbonTestSuite.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
     <ClInclude Include="..\..\C\carbon_def.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CarbonTestDefs.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\C\carbonate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Carbon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

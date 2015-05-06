@@ -22,6 +22,8 @@
 # error Do not include this file directly. Use <alchemy.h> instead
 #endif
 
+#ifdef __cplusplus 
+
 //  ****************************************************************************
 //  We're potentially using some pretty long type definitions.
 //  For any moderately complex message format, we will almost certainly
@@ -320,5 +322,7 @@ struct message_size_trait
 #define DECLARE_PACKED_FOOTER                                                  \
   };                                                                           \
   END_NAMESPACE(Hg)
+
+#endif // __cplusplus
 
 #endif

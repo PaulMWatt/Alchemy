@@ -27,74 +27,223 @@
 //  ***************************************************************************
 #ifndef CARBON_H_INCLUDED
 #define CARBON_H_INCLUDED
-
-/// This MACRO enables Carbon definitions for C-linkable APIs.
-#define ALCHEMY_CARBONATE 1
-
 //  Includes ******************************************************************
-#include <C/carbon_def.h>
+#include <C/carbonate.h>
+
+
+// TODO: May not be the final location.
+// The definition that indicates these 
+// functions will be publically accessible.
+#if defined(_WIN32)
+
+# if defined(ALCHEMY_EXPORT)
+#   define ALCHEMY_API __declspec(dllexport)
+# else
+#   define ALCHEMY_API __declspec(dllimport)
+# endif
+
+#else
+
+#define ALCHEMY_API
+
+#endif
+
+
+
+// Disable name-mangling for these 
+// functions when compiled with C++.
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 //  ****************************************************************************
-/// Marks the beginning of a message format.
-/// 
-/// A MACRO used to start the definition for a message format interface. 
-/// This definition requires that the parent class derive from the MsgFormat 
-/// base class.
-///             
-/// @param TYPE_LIST         The TypeList used to defined the layout format.
-///             
-/// @note           This definition MACRO should be placed in the global or
-///                 alchemy namespace.
-/// ~~~{.cpp}
-///   // Currently the BIT_SET definitions must occur in the *alchemy* namespace.
-///   namespace Hg
-///   {
+typedef unsigned char     Hg_msg_t;
+typedef unsigned long     Hg_type_t;
+
+//  ****************************************************************************
+/// Reports the type of endianess of the local system.
 ///
-///   // Define the message data format
-///   HG_BEGIN_FORMAT(new_point_t,
-///     HG_DATUM (uint8_t,    msgType),
-///     HG_DATUM (uint8_t,    verNum),
-///     HG_DATUM (uint16_t,   id),
-///     HG_DATUM (uint32_t,   X),
-///     HG_DATUM (uint32_t,   Y),
-///     HG_DATUM (uint32_t,   Z),
-///     HG_DATUM (uint16_t,   flags),
-///     HG_DATUM (uint8_t,    priority),
-///     HG_DATUM (uint8_t,    count)
-///   )
-///     
-///   } // namespace Hg
-/// ~~~
-///             
-#define HG_BEGIN_FORMAT(NAME, ...)  DECLARE_STRUCT_HEADER(NAME, __VA_ARGS__)
-
+/// @return     
+///
+ALCHEMY_API 
+int Hg_local_endianess();
 
 //  ****************************************************************************
-/// Adds a field to the message definition.
-/// 
-/// This MACRO generates code based on the TypeList specified in the 
-/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
-/// name the property associated with this message format field.
-///             
-/// @param TYPE     The type to use for this field
-/// @param NAME     The name to assign this parameter in the message definition.
-///                 NAME will be the name used to access this field directly.
-///             
-#define HG_DATUM(TYPE,NAME)            D_DATUM(TYPE,NAME)
+/// Creates a new Hg message object of the specified type.
+/// The caller must call Hg_destroy when they are done with the returned 
+/// object to return the messages allocated memory.
+///
+/// @param msg_type[in] 
+///
+/// @return             On success, an allocated message pointer is returned.
+///                       This pointer can be cast to the structure that 
+///                       matches the type of requested message.
+///                     0 is returned on failure.
+///
+ALCHEMY_API 
+Hg_msg_t* Hg_create(
+  Hg_type_t msg_type
+);
 
 //  ****************************************************************************
-/// Adds a fixed-size array field to the message definition.
-/// 
-/// This MACRO generates code based on the TypeList specified in the 
-/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
-/// name the property associated with this message format field.
-///             
-/// @param TYPE     The type to use for this field
-/// @param COUNT    The number of elements allocated for the array.
-/// @param NAME     The name to assign this parameter in the message definition.
-///                 NAME will be the name used to access this field directly.
-///             
-#define HG_ARRAY(TYPE,COUNT,NAME)      DECLARE_ARRAY_ENTRY(TYPE,COUNT,NAME)
+/// Creates a complete clone of an existing Hg message object.
+/// The caller must call Hg_destroy when they are done with the returned 
+/// object to return the messages allocated memory.
+///
+/// @param p_src[in]    A valid message object that should be cloned.
+///                     All of the data inside of the message, including
+///                     dynamically allocated space will be initialized to
+///                     match the source message.
+///
+/// @return             On success, an allocated message pointer is returned.
+///                       This pointer can be cast to the structure that 
+///                       matches the type of requested message.
+///                     0 is returned on failure.
+///
+ALCHEMY_API
+Hg_msg_t* Hg_clone(
+  const Hg_msg_t* p_src
+);
 
+//  ****************************************************************************
+/// The specified message is destroyed.
+/// ALL memory is reclaimed, including dynamically allocated space.
+///
+/// @param p_msg[in]    The previously allocated message to be destroyed.
+///                     This message should not be used after it is passed 
+///                     to this function.
+///
+ALCHEMY_API
+void  Hg_destroy(
+  Hg_msg_t* p_msg
+);
+
+//  ****************************************************************************
+/// Resize the buffer for a dynamically allocated field in an existing message.
+///
+/// @param p_msg[inout]
+/// @param p_field[inout]
+/// @param len[in]
+///
+/// return              The number of bytes allocated for the field is returned.
+///                     If no bytes can be allocated, 0 is returned.
+///
+ALCHEMY_API 
+size_t Hg_resize_dynamic(
+  Hg_msg_t* p_msg, 
+  void*     p_field, 
+  size_t    len
+);
+
+//  ****************************************************************************
+/// Returns the type of the specified message.
+///
+///
+ALCHEMY_API 
+Hg_type_t Hg_type(
+  const Hg_msg_t* p_msg
+);
+
+//  ****************************************************************************
+/// Returns the size of the specified message.
+///
+///
+ALCHEMY_API 
+size_t Hg_size(
+  const Hg_msg_t* p_msg
+);
+
+//  ****************************************************************************
+/// Returns the number of bytes that are required to serialize this object.
+///
+///
+ALCHEMY_API 
+size_t Hg_data_size(
+  const Hg_msg_t* p_msg
+);
+
+//  ****************************************************************************
+/// Converts this object, in-place, to network byte-order.
+/// No actions will be performed if the local platform is big-endian.
+///
+///
+///
+ALCHEMY_API 
+int Hg_to_network(
+  Hg_msg_t* p_msg
+);
+
+//  ****************************************************************************
+/// Converts this object, in-place, to host byte-order.
+/// No actions will be performed if the local platform is big-endian.
+///
+///
+///
+ALCHEMY_API 
+int Hg_to_host(
+  Hg_msg_t* p_msg
+);
+
+//  ****************************************************************************
+/// Converts this object, in-place, to big-endian byte-order.
+/// The message will always be converted as requested.
+///
+///
+///
+ALCHEMY_API 
+int Hg_to_big_end(
+  Hg_msg_t* p_msg
+);
+
+//  ****************************************************************************
+/// Converts this object, in-place, to little-endian byte-order.
+/// The message will always be converted as requested.
+///
+///
+///
+ALCHEMY_API 
+int Hg_to_little_end(
+  Hg_msg_t* p_msg
+);
+          
+// TODO: I don't think this one will be useful, too many variables need to match properly. It would just be better to clone.
+//  ****************************************************************************
+/// Copies the contents of one existing message into another message.
+///
+///
+ALCHEMY_API 
+int Hg_copy(
+  Hg_msg_t*       p_dest, 
+  const Hg_msg_t* p_src
+);
+          
+//  ****************************************************************************
+/// Serializes the specified message into a buffer.
+///
+///
+ALCHEMY_API 
+size_t Hg_pack(
+  const Hg_msg_t* p_msg, 
+  void*           p_buffer, 
+  size_t          len
+);
+
+//  ****************************************************************************
+/// Deserializes the specified message from a buffer.
+///
+///
+ALCHEMY_API 
+size_t Hg_unpack(
+  Hg_msg_t*   p_msg, 
+  const void* p_buffer, 
+  size_t      len
+);
+
+
+// End of name-mangling guard.
+#ifdef __cplusplus
+}
+#endif
 
 #endif

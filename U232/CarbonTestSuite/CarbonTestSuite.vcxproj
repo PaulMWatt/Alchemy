@@ -99,10 +99,17 @@ Generate the test runner...
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Carbon.h" />
+    <ClInclude Include="..\..\C\carbonate.h" />
     <ClInclude Include="..\..\C\carbon_def.h" />
+    <ClInclude Include="CarbonTestDefs.h" />
     <ClInclude Include="Src\CarbonTestSuite.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="carbon_test.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+    </ClCompile>
     <ClCompile Include="Src\Generated\CarbonTestSuiteRunner.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

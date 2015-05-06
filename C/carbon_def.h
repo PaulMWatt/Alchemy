@@ -9,7 +9,7 @@
 // @note           This header file must not be included directly and the 
 //                 MACROS defined in this file should not be accessed
 //                 directly. Include and used the definitions from the file
-//                 **<alchemy.h>** instead.
+//                 **<Carbon.h>** instead.
 //           
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
@@ -17,43 +17,37 @@
 #ifndef CARBON_DEF_H_INCLUDED
 #define CARBON_DEF_H_INCLUDED
 //  Private Usage Include Guard ************************************************
-//  Only allow this header file to be included through alchemy.h
-#ifndef ALCHEMY_H_INCLUDED
-# error Do not include this file directly. Use <alchemy.h> instead
+//  Only allow this header file to be included through Carbon.h
+#ifndef CARBON_H_INCLUDED
+# error Do not include this file directly. Use <Carbon.h> instead
 #endif
 
-
-// TODO: All of this should go, Only valid C code should appear in this header.
-////  ****************************************************************************
-////  We're potentially using some pretty long type definitions.
-////  For any moderately complex message format, we will almost certainly
-////  trigger this warning with Visual C++.
-//#if defined(_MSC_VER)
-//#pragma warning(disable : 4503) // decorated name length exceeded, name was truncated
-//#endif
-//
-////  Includes *******************************************************************
-//#include <Pb/meta_fwd.h>
-//#include <Pb/auto_index.h>
-//#include <Pb/byte_order.h>
-//#include <Pb/length.h>
-//#include <Pb/offset_of.h>
-//#include <Pb/size_at.h>
-//#include <Pb/size_of.h>
-//#include <Pb/meta_math.h>
-//#include <Pb/dynamic.h>
-//#include <Hg/deduce_msg_type_list.h>
-//#include <Hg/make_Hg_type_list.h>
-//#include <Hg/proxy/deduce_proxy_type.h>
-
+#include <Pb/meta_macros.h>
 
 //  ****************************************************************************
 //  Utility Constructs For Use With Carbon Types *******************************
 //  ****************************************************************************
 //  Typedefs *******************************************************************
-typedef size_t (*pfnGetDatumSize)(const uint8_t*, size_t);
+
+// TODO: Return with the proper def.
+//typedef size_t (*pfnGetDatumSize)(const uint8_t*, size_t);
 
 
+#define EACH_C_PARAM(r, data, i, x) \
+  BOOST_PP_TUPLE_ELEM(2,0,x) BOOST_PP_TUPLE_ELEM(2,1,x); 
+
+
+#if defined(_MSC_VER)
+
+#define DEFINE_C_STRUCT_PARAMS(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_PARAM, unused, BOOST_PP_VARIADIC_TO_SEQ(S))
+
+#else
+
+#define DEFINE_C_STRUCT_PARAMS(...) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_PARAM, unused, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+#endif
 
 
 
@@ -64,228 +58,73 @@ typedef size_t (*pfnGetDatumSize)(const uint8_t*, size_t);
 //  ****************************************************************************
 
 //  ****************************************************************************
-#define DO_REMOVE(...)   __VA_ARGS__
-#define REMOVE_PARENS(N) DO_REMOVE N
-
-#define BOOST_PP_REMOVE_PARENS(param) \
-    BOOST_PP_IIF \
-      ( \
-      BOOST_PP_IS_BEGIN_PARENS(param), \
-      DO_REMOVE, \
-      BOOST_PP_IDENTITY \
-      ) \
-    (param)() \
-
-//  ****************************************************************************
-#define EACH_TYPE(r, data, i, x) \
-  REMOVE_PARENS(BOOST_PP_TUPLE_ELEM(3,0,x)), 
-
-#define EACH_PARAM(r, data, i, x) \
-  BOOST_PP_TUPLE_ELEM(3,1,x)(BOOST_PP_TUPLE_ELEM(3,2,x)); 
-
-#define DEFINE_TYPELIST(N,...)\
-  typedef TypeList < __VA_ARGS__ > N;
-
-#define DEFINE_PARAMLIST(...)\
-  __VA_ARGS__
-
-
-#if defined(_MSC_VER)
-#define DEFINE_STRUCT_TYPELIST(N, S) \
-  DEFINE_TYPELIST(N, \
-    BOOST_PP_SEQ_FOR_EACH_I(EACH_TYPE, unused, BOOST_PP_VARIADIC_TO_SEQ(S)) Hg::MT)
-
-
-#define DEFINE_STRUCT_PARAMS(S) \
-  BOOST_PP_SEQ_FOR_EACH_I(EACH_PARAM, unused, BOOST_PP_VARIADIC_TO_SEQ(S))
-
-#else
-
-#define DEFINE_STRUCT_TYPELIST(N, ...) \
-  DEFINE_TYPELIST(N, \
-    BOOST_PP_SEQ_FOR_EACH_I(EACH_TYPE, unused, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)) Hg::MT)
-
-
-#define DEFINE_STRUCT_PARAMS(...) \
-  BOOST_PP_SEQ_FOR_EACH_I(EACH_PARAM, unused, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
-
-#endif
-
-// TODO: Temporarily will try to put the source back together the way it is currently 
-//       structured. Then will move the placement of the definitions to 
-//       solve some of the incompatibilities for duplicate types.
-
-//  ****************************************************************************
 //  Defines the outer value container as well as the formatted type-list.
 //
-//#define DEFINE_HG_STRUCT(F, ...)                                               
-#define DECLARE_STRUCT_HEADER(F, ...)                                          \
-  DEFINE_STRUCT_TYPELIST(F##_tl, __VA_ARGS__)                                  \
-  typedef Hg::make_Hg_type_list<F##_tl>::type               F##_Hg;            \
-                                                                               \
-  struct F                                                                     \
-    : nested_trait                                                             \
+#ifdef __cplusplus
+#define DECLARE_C_STRUCT_HEADER(F, ...)                                        \
+  extern "C" typedef struct tag_##F                                            \
   {                                                                            \
-    typedef F                           this_type;                             \
-    typedef F##_tl                      format_type;                           \
-    enum { k_size = SizeOf<format_type>::value };                              \
-    enum { k_length                   = length<format_type>::value };          \
-                                                                               \
-    template< size_t IDX>                                                      \
-    Datum<IDX, format_type>& FieldAt()                                         \
-    {                                                                          \
-      typedef Datum   < IDX,                                                   \
-                        format_type>    datum_type_t;                          \
-      return this_type::FieldAtIndex((datum_type_t*)0);                        \
-    }                                                                          \
-    template< size_t IDX>                                                      \
-    const Datum<IDX, format_type>& const_FieldAt() const                       \
-    {                                                                          \
-      return const_cast<this_type*>(this)->FieldAt<IDX>();                     \
-    }                                                                          \
-    BEGIN_COUNTER                                                              \
-                                                                               \
-    DEFINE_STRUCT_PARAMS(__VA_ARGS__)                                          \
-  DECLARE_STRUCT_FOOTER(F)
-    
+    DEFINE_C_STRUCT_PARAMS(__VA_ARGS__)                                        \
+  DECLARE_C_STRUCT_FOOTER(F)
 
-//  ****************************************************************************
-#define DECLARE_STRUCT_FOOTER(F)                                               \
-  private:                                                                     \
-    template <typename T, typename U>                                          \
-    size_t DatumSize(T value, U*)                                              \
-    {                                                                          \
-      return value;                                                            \
-    }                                                                          \
-                                                                               \
-    template <typename U>                                                      \
-    size_t DatumSize(pfnGetDatumSize ftor, U* buffer)                          \
-    {                                                                          \
-      if (buffer->empty()) { return 0; }                                       \
-      return ftor(buffer->data(), buffer->size());                             \
-    }                                                                          \
-  };                                                                           \
-  namespace detail {                                                           \
-  template <>                                                                  \
-  struct field_data_t <F##_Hg>                                                 \
+#else
+#define DECLARE_C_STRUCT_HEADER(F, ...)                                        \
+  typedef struct tag_##F                                                       \
   {                                                                            \
-  typedef F                             value_type;                            \
-  };                                                                           \
-  } // namespace detail
+    DEFINE_C_STRUCT_PARAMS(__VA_ARGS__)                                        \
+  DECLARE_C_STRUCT_FOOTER(F)
+#endif
 
-
+//  ****************************************************************************
+#define DECLARE_C_STRUCT_FOOTER(F)                                             \
+  } F
 
 
 //  ****************************************************************************
-#define DECLARE_DATUM_ENTRY_IDX(IDX,P)                                         \
-    typedef                                                                    \
-      Hg::detail::DeduceProxyType < IDX,                                       \
-                                    format_type>::type        Proxy##P;        \
-    typedef Proxy##P::datum_type                              datum_##P;       \
-    Proxy##P   P;                                                              \
-                                                                               \
-    datum_##P& FieldAtIndex(const datum_##P*)                                  \
-    { return *static_cast<datum_##P*>(&P); }                                   \
-                                                                               \
-    const char* FieldName(const Proxy##P&)                    { return #P; }   
+#define C_DATUM_X(T,P) (T,P)
 
 //  ****************************************************************************
-#define DECLARE_DATUM_ENTRY_X(P)                                               \
-  INC_COUNTER                                                                  \
-  DECLARE_DATUM_ENTRY_IDX((COUNTER_VALUE), P)
+#define DECLARE_C_DATUM(T,P)                C_DATUM_X(T,P)
 
 //  ****************************************************************************
-#define D_FUNDAMENTAL(...)  DECLARE_DATUM_ENTRY_X __VA_ARGS__ 
-  
-
-#define D_DATUM_X(T,P) (T,D_FUNDAMENTAL,(P))
-#define D_DATUM(T,P) D_DATUM_X((T),P)
+#define DECLARE_C_ARRAY(T, N, P)            C_DATUM_X(T,P[N])
 
 //  ****************************************************************************
-#define DECLARE_ARRAY(T,N)                std::array<T,N>
+#define DECLARE_C_DYNAMIC(T, N, P)          C_DATUM_X(T*, P)
 
 //  ****************************************************************************
-#define DECLARE_VECTOR(T)                 std::vector<T>
-
-//  ****************************************************************************
-#define DECLARE_ALLOCATED_VECTOR(T,A)     std::vector<T,A>
-
-//  ****************************************************************************
-#define D_ARRAY(T, N, P) D_DATUM_X((DECLARE_ARRAY(T,N)), P)
-
-//  ****************************************************************************
-#define D_DYNAMIC(N,P)                                                         \
-    DECLARE_DATUM_ENTRY_X(P)                                                   \
-  public:                                                                      \
-    template <typename U>                                                      \
-    size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
-
-
-#define D_DYNAMIC2(...)  D_DYNAMIC __VA_ARGS__
-#define D_VECTOR(T,N,P) ((DECLARE_VECTOR(T)),D_DYNAMIC2,(N,P))
-
-
-#define DECLARE_ARRAY_ENTRY(T, N, P)        D_ARRAY(T, N, P) 
-#define DECLARE_DYNAMIC_ENTRY(T, N, P)      D_VECTOR(T, N, P)
-#define DECLARE_ALLOCATOR_ENTRY(T, A, N, P) D_VECTOR(DECLARE_ALLOCATED_VECTOR(T,A), N, P)             
-
+#define DECLARE_C_ALLOCATOR(T, A, N, P)     DECLARE_C_DYNAMIC_ENTRY(T, N, P)
 
 
 //  ****************************************************************************
 //  Bit Fields *****************************************************************
 //  ****************************************************************************
-#define DECLARE_PACKED_HEADER(T,C)                                             \
-  struct C;                                                                    \
-  template <>                                                                  \
-  struct ContainerSize<C>                                                      \
-    : std::integral_constant<size_t, sizeof(T)>         { };                   \
-                                                                               \
-  struct C                                                                     \
-    : public PackedBits<T>                                                     \
-  {                                                                            \
-    typedef C                                     this_type;                   \
-    typedef T                                     value_type;                  \
-    typedef PackedBits<T>                         base_type;                   \
-                                                                               \
-    C()                                                                        \
-      : base_type()                                                            \
-    { }                                                                        \
-                                                                               \
-    C(const value_type &data_field)                                            \
-      : base_type()                                                            \
-    { value(data_field); }                                                     \
-                                                                               \
-    C(value_type &data_field)                                                  \
-      : base_type(data_field)                                                  \
-    { }                                                                        \
-                                                                               \
-    C& operator=(const C &rhs)                                                 \
-    { value(rhs.value());                                                      \
-      return *this;                                                            \
-    }                                                                          \
-    C& operator=(const value_type &data_field)                                 \
-    { value(data_field);                                                       \
-      return *this;                                                            \
-    }                                                                          \
-                                                                               \
-    enum { k_offset_0 = 0 };                                                   \
 
+// TODO: Working on a solution for bit-field definitions.
+#ifdef __cplusplus
 
-// *****************************************************************************
-#define DECLARE_BIT_FIELD(IDX,P,N)                                             \
-  typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \
-  struct P##_tag                                                               \
-  { static ptrdiff_t offset()                                                  \
-    { return offsetof(this_type, P); }                                         \
-  };                                                                           \
-                                                                               \
-  typedef BitField  < this_type, P##_tag, k_offset_##IDX, N, value_type > P##_t; \
-  enum { TMP_PASTE(k_offset_, TMP_INC(IDX)) = k_offset_##IDX + N };            \
-                                                                               \
-  P##_t P;                                                                     \
+# define DECLARE_C_PACKED_HEADER(T,C)  extern "C" typedef T C;
+#define DECLARE_C_BIT_FIELD(IDX,P,N)
+#define DECLARE_C_PACKED_FOOTER                            
+ 
+#else
 
-// *****************************************************************************
-#define DECLARE_PACKED_FOOTER                                                  \
-  };
+#define DECLARE_C_PACKED_HEADER(T,C)       typedef T C;
+#define DECLARE_C_BIT_FIELD(IDX,P,N)
+#define DECLARE_C_PACKED_FOOTER                            
+
+#endif 
+//#define DECLARE_C_PACKED_HEADER(T,C)                                           \
+//  typedef struct tag_##C                                                       \
+//  {                                                                            \
+//    
+//// TODO: Need to determine a way to declare the storage type.
+//// *****************************************************************************
+//#define DECLARE_C_BIT_FIELD(IDX,P,N)        unsigned int P : N;
+//
+//// *****************************************************************************
+//#define DECLARE_C_PACKED_FOOTER                                                \
+//  } color4;
+
 
 #endif
