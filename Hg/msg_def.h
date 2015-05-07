@@ -201,10 +201,17 @@ struct message_size_trait
   template <>                                                                  \
   struct field_data_t <F##_Hg>                                                 \
   {                                                                            \
-  typedef F                             value_type;                            \
+    typedef F                           value_type;                            \
   };                                                                           \
   END_NAMESPACE(detail)                                                        \
-  END_NAMESPACE(Hg)
+  END_NAMESPACE(Hg)                                                            \
+  extern "C" const uint32_t                                                    \
+    k_##F##_id = uint32_t(&Hg::SizeOf<Hg::F::format_type>::value);
+
+  //const uint32_t k_##F##_id = __COUNTER__;
+  // TODO: Will need to revisit in order to associate the id with the typelist. Most likely call a registration function after the definition of the message type.
+
+  
 
 
 

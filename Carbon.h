@@ -30,23 +30,24 @@
 //  Includes ******************************************************************
 #include <C/carbonate.h>
 
+#define ALCHEMY_API
 
 // TODO: May not be the final location.
 // The definition that indicates these 
 // functions will be publically accessible.
-#if defined(_WIN32)
-
-# if defined(ALCHEMY_EXPORT)
-#   define ALCHEMY_API __declspec(dllexport)
-# else
-#   define ALCHEMY_API __declspec(dllimport)
-# endif
-
-#else
-
-#define ALCHEMY_API
-
-#endif
+//#if defined(_WIN32)
+//
+//# if defined(ALCHEMY_EXPORT)
+//#   define ALCHEMY_API __declspec(dllexport)
+//# else
+//#   define ALCHEMY_API __declspec(dllimport)
+//# endif
+//
+//#else
+//
+//#define ALCHEMY_API
+//
+//#endif
 
 
 

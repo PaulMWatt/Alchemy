@@ -1,4 +1,4 @@
-//  @file C/carbon_impl.cpp
+//  @file C/carbonate.cpp
 //  
 //  The implementation for the Carbon functions with C-linkage.
 //  
@@ -8,13 +8,6 @@
 //  Includes *******************************************************************
 #include <Carbon.h>
 #include <algorithm>
-
-// Disable name-mangling for these 
-// functions when compiled with C++.
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 namespace C
 {
@@ -107,11 +100,15 @@ Hg_type_t carbon_type(const Hg_msg_t* p_msg)
 
 } // namespace C
 
+// TODO: Will create a final solution once usage is worked out.
+#define ALCHEMY_EXPORT
 
-
+// Disable name-mangling for these 
+// functions when compiled with C++.
+extern "C"
+{
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 int Hg_local_endianess()
 {
@@ -121,7 +118,6 @@ int Hg_local_endianess()
 }
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 Hg_msg_t* Hg_create(
   Hg_type_t msg_type
@@ -132,7 +128,6 @@ Hg_msg_t* Hg_create(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API
 Hg_msg_t* Hg_clone(
   const Hg_msg_t* p_src
@@ -143,7 +138,6 @@ Hg_msg_t* Hg_clone(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API
 void  Hg_destroy(
   Hg_msg_t* p_msg
@@ -162,7 +156,6 @@ void  Hg_destroy(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 size_t Hg_resize_dynamic(
   Hg_msg_t* p_msg, 
@@ -175,7 +168,6 @@ size_t Hg_resize_dynamic(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 Hg_type_t Hg_type(
   const Hg_msg_t* p_msg
@@ -186,7 +178,6 @@ Hg_type_t Hg_type(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 size_t Hg_size(
   const Hg_msg_t* p_msg
@@ -197,7 +188,6 @@ size_t Hg_size(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 size_t Hg_data_size(
   const Hg_msg_t* p_msg
@@ -213,7 +203,6 @@ size_t Hg_data_size(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 int Hg_to_network(
   Hg_msg_t* p_msg
@@ -227,7 +216,6 @@ int Hg_to_network(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 int Hg_to_host(
   Hg_msg_t* p_msg
@@ -239,7 +227,6 @@ int Hg_to_host(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 int Hg_to_big_end(
   Hg_msg_t* p_msg
@@ -251,7 +238,6 @@ int Hg_to_big_end(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 int Hg_to_little_end(
   Hg_msg_t* p_msg
@@ -263,7 +249,6 @@ int Hg_to_little_end(
 
           
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 size_t Hg_pack(
   const Hg_msg_t* p_msg, 
@@ -277,7 +262,6 @@ size_t Hg_pack(
 
 
 //  ****************************************************************************
-inline
 ALCHEMY_API 
 size_t Hg_unpack(
   Hg_msg_t*   p_msg, 
@@ -291,7 +275,5 @@ size_t Hg_unpack(
 
 
 // End of name-mangling guard.
-#ifdef __cplusplus
 }
-#endif
 

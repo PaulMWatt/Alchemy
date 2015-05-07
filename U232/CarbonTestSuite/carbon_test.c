@@ -12,11 +12,17 @@
 
 
 
+void function()
+{
+  int e = Hg_local_endianess();
+
+//  Hg_msg_t* p_msg = Hg_create(k_ray_t_id);
 
 
 
 
 
 
+}
 
 

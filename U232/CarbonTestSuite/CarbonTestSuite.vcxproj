@@ -102,13 +102,16 @@ Generate the test runner...
     <ClInclude Include="..\..\Carbon.h" />
     <ClInclude Include="..\..\C\carbonate.h" />
     <ClInclude Include="..\..\C\carbon_def.h" />
-    <ClInclude Include="..\..\C\carbon_impl.cpp" />
     <ClInclude Include="CarbonTestDefs.h" />
     <ClInclude Include="Src\CarbonTestSuite.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\C\carbonate.cpp" />
+    <ClCompile Include="carbon_data.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="carbon_test.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
     </ClCompile>
     <ClCompile Include="Src\Generated\CarbonTestSuiteRunner.cpp" />
