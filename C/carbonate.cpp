@@ -97,11 +97,8 @@ Hg_type_t carbon_type(const Hg_msg_t* p_msg)
 
 
 
-
 } // namespace C
 
-// TODO: Will create a final solution once usage is worked out.
-#define ALCHEMY_EXPORT
 
 // Disable name-mangling for these 
 // functions when compiled with C++.

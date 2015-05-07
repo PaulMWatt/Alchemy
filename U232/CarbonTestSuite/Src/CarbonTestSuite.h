@@ -34,7 +34,8 @@
 
 #include <Carbon.h>
 #include <CarbonTestDefs.h>
-
+ 
+extern "C" void function();
 
 //  ****************************************************************************
 /// CarbonTestSuite Test Suite class.
@@ -95,8 +96,7 @@ public:
 //  ******************************************************************************
 void CarbonTestSuite::TestCase1(void)
 {
-  // TODO: Implement Single Test Case.
-  // TODO: The implementation can also be placed in a cpp file if desired.
+  function();
 }
 
 #endif

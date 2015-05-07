@@ -30,24 +30,22 @@
 //  Includes ******************************************************************
 #include <C/carbonate.h>
 
-#define ALCHEMY_API
 
-// TODO: May not be the final location.
 // The definition that indicates these 
 // functions will be publically accessible.
-//#if defined(_WIN32)
-//
-//# if defined(ALCHEMY_EXPORT)
-//#   define ALCHEMY_API __declspec(dllexport)
-//# else
-//#   define ALCHEMY_API __declspec(dllimport)
-//# endif
-//
-//#else
-//
-//#define ALCHEMY_API
-//
-//#endif
+#if defined(_WIN32)
+
+# if defined(ALCHEMY_EXPORT)
+#   define ALCHEMY_API __declspec(dllexport) 
+# else
+#   define ALCHEMY_API __declspec(dllimport) 
+# endif
+
+#else
+
+#define ALCHEMY_API
+
+#endif
 
 
 
@@ -274,6 +272,22 @@ size_t Hg_unpack(
   const void* p_buffer, 
   size_t      len
 );
+
+//  ****************************************************************************
+//  Function pointer declarations for dynamically-loading the library.
+//
+typedef int       (*pfn_Hg_local_endianess) ();
+typedef Hg_msg_t* (*pfn_Hg_create)          (Hg_type_t);
+typedef void      (*pfn_Hg_destroy)         (Hg_msg_t*);
+typedef Hg_type_t (*pfn_Hg_type)            (const Hg_msg_t*);
+typedef size_t    (*pfn_Hg_size)            (const Hg_msg_t*);
+typedef size_t    (*pfn_Hg_data_size)       (const Hg_msg_t*);
+typedef int       (*pfn_Hg_to_network)      (Hg_msg_t*);
+typedef int       (*pfn_Hg_to_host)         (Hg_msg_t*);
+typedef int       (*pfn_Hg_to_big_end)      (Hg_msg_t*);
+typedef int       (*pfn_Hg_to_little_end)   (Hg_msg_t*);
+typedef size_t    (*pfn_Hg_pack)            (const Hg_msg_t*, void*, size_t);
+typedef size_t    (*pfn_Hg_unpack)          (Hg_msg_t*, const void*, size_t);
 
 
 // End of name-mangling guard.
