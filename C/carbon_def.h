@@ -67,40 +67,40 @@
 //  Defines the outer value container as well as the formatted type-list.
 //
 #ifdef __cplusplus
-#define DECLARE_C_STRUCT_HEADER(F, ...)                                        \
+#define C_DECLARE_STRUCT_HEADER(F, ...)                                        \
   extern "C" typedef struct tag_##F                                            \
   {                                                                            \
     DEFINE_C_STRUCT_PARAMS(__VA_ARGS__)                                        \
-  DECLARE_C_STRUCT_FOOTER(F)
+  C_DECLARE_STRUCT_FOOTER(F)
 
 #else
-#define DECLARE_C_STRUCT_HEADER(F, ...)                                        \
+#define C_DECLARE_STRUCT_HEADER(F, ...)                                        \
   typedef struct tag_##F                                                       \
   {                                                                            \
     DEFINE_C_STRUCT_PARAMS(__VA_ARGS__)                                        \
-  DECLARE_C_STRUCT_FOOTER(F)
+  C_DECLARE_STRUCT_FOOTER(F)
 #endif
 
 //  ****************************************************************************
-#define DECLARE_C_STRUCT_FOOTER(F)                                             \
+#define C_DECLARE_STRUCT_FOOTER(F)                                             \
   } F;                                                                         \
   extern const uint32_t k_##F##_id
 
 
 //  ****************************************************************************
-#define C_DATUM_X(T,P)                      (T,P)
+#define C_DATUM_X(T,P)                          (T,P)
 
 //  ****************************************************************************
-#define DECLARE_C_DATUM(T,P)                C_DATUM_X(T,P)
+#define C_DECLARE_DATUM(T,P)                    C_DATUM_X(T,P)
 
 //  ****************************************************************************
-#define DECLARE_C_ARRAY(T, N, P)            C_DATUM_X(T,P[N])
+#define C_DECLARE_ARRAY_DATUM(T, N, P)          C_DATUM_X(T,P[N])
 
 //  ****************************************************************************
-#define DECLARE_C_DYNAMIC(T, N, P)          C_DATUM_X(T*, P)
+#define C_DECLARE_VECTOR_DATUM(T, N, P)         C_DATUM_X(T*, P)
 
 //  ****************************************************************************
-#define DECLARE_C_ALLOCATOR(T, A, N, P)     DECLARE_C_DYNAMIC_ENTRY(T, N, P)
+#define C_DECLARE_ALLOCATOR_DATUM(T, A, N, P)   C_DECLARE_ALLOC(T, N, P)
 
 
 //  ****************************************************************************
@@ -110,15 +110,15 @@
 // TODO: Working on a solution for bit-field definitions.
 #ifdef __cplusplus
 
-# define DECLARE_C_PACKED_HEADER(T,C)  extern "C" typedef T C;
-# define DECLARE_C_BIT_FIELD(IDX,P,N)
-# define DECLARE_C_PACKED_FOOTER                            
+# define C_DECLARE_PACKED_HEADER(T,C)       extern "C" typedef T C;
+# define C_DECLARE_BIT_FIELD(IDX,P,N)
+# define C_DECLARE_PACKED_FOOTER                            
  
 #else
 
-# define DECLARE_C_PACKED_HEADER(T,C)       typedef T C;
-# define DECLARE_C_BIT_FIELD(IDX,P,N)
-# define DECLARE_C_PACKED_FOOTER                            
+# define C_DECLARE_PACKED_HEADER(T,C)       typedef T C;
+# define C_DECLARE_BIT_FIELD(IDX,P,N)
+# define C_DECLARE_PACKED_FOOTER                            
 
 #endif 
 //#define DECLARE_C_PACKED_HEADER(T,C)                                           \
@@ -139,18 +139,18 @@
 //  Carbon has not been enabled. 
 //  Define empty code generation MACROS
 //
-# define DECLARE_C_STRUCT_HEADER(F, ...) 
-# define DECLARE_C_STRUCT_FOOTER(F)
+# define C_DECLARE_STRUCT_HEADER(F, ...) 
+# define C_DECLARE_STRUCT_FOOTER(F)
 
 # define C_DATUM_X(T,P)                  
-# define DECLARE_C_DATUM(T,P)            
-# define DECLARE_C_ARRAY(T, N, P)        
-# define DECLARE_C_DYNAMIC(T, N, P)      
-# define DECLARE_C_ALLOCATOR(T, A, N, P) 
+# define C_DECLARE_DATUM(T,P)            
+# define C_DECLARE_ARRAY(T, N, P)        
+# define C_DECLARE_DYNAMIC(T, N, P)      
+# define C_DECLARE_ALLOCATOR(T, A, N, P) 
 
-# define DECLARE_C_PACKED_HEADER(T,C)  
-# define DECLARE_C_BIT_FIELD(IDX,P,N)
-# define DECLARE_C_PACKED_FOOTER                            
+# define C_DECLARE_PACKED_HEADER(T,C)  
+# define C_DECLARE_BIT_FIELD(IDX,P,N)
+# define C_DECLARE_PACKED_FOOTER                            
 
 #endif
 

@@ -22,18 +22,20 @@
 /// Message structure definitions are created with the list of MACROs below.
 /// Refer to the appropriate MACROs documentation for details on correct usage:
 /// 
-///   - HG_BEGIN_FORMAT(TYPE_LIST)
-///   - HG_MSG_FIELD(TYPE,NAME)
-///   - HG_END_FORMAT
+///   - ALCHEMY_STRUCT(TYPE_LIST)
+///   - ALCHEMY_DATUM(TYPE,NAME)
+///   - ALCHEMY_ARRAY(TYPE,COUNT,NAME)
+///   - ALCHEMY_ALLOC(TYPE,COUNT,NAME)
+///   - ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)
 ///
 /// Hg provides a portable bit-field interface that works by generating the
 /// appropriate shift and mask operations for each field. Use these MACROS
 /// to define a set of bit-fields that are packed into a user-specified integral type.
 /// Hg currently is written to allow up to 32 bit-fields in a single parameter.
 ///
-///   - HG_BEGIN_PACKED(TYPE,BITSET)
-///   - HG_END_PACKED
-///   - HG_BIT_FIELD(INDEX,COUNT,NAME)
+///   - ALCHEMY_PACKED(TYPE,BITSET)
+///   - ALCHEMY_END_PACKED
+///   - ALCHEMY_BITS(INDEX,COUNT,NAME)
 /// 
 /// The MIT License(MIT)
 /// 
@@ -62,14 +64,9 @@
 #define ALCHEMY_H_INCLUDED
 
 //  Includes ******************************************************************
-
-#if defined(ALCHEMY_CARBONATE)
-
 #include <C/carbon_def.h>
-#include <C/carbonate.h>
-
-#else
 #include <Hg/msg_def.h>
+
 
 //  ****************************************************************************
 /// Marks the beginning of a message format.
@@ -80,50 +77,51 @@
 ///             
 /// @param TYPE_LIST         The TypeList used to defined the layout format.
 ///             
-/// @note           All definitions should be placed in the same namespace
-///                 as the included Alchemy.h header file.
-///                 These defined types will appear in their own Hg namespace.
+/// @note           This definition MACRO should be placed in the global or
+///                 alchemy namespace.
 /// ~~~{.cpp}
+///   // Currently the BIT_SET definitions must occur in the *alchemy* namespace.
+///   namespace Hg
+///   {
 ///
 ///   // Define the message data format
-///   HG_BEGIN_FORMAT(new_point_t,
-///     HG_DATUM (uint8_t,    msgType),
-///     HG_DATUM (uint8_t,    verNum),
-///     HG_DATUM (uint16_t,   id),
-///     HG_DATUM (uint32_t,   X),
-///     HG_DATUM (uint32_t,   Y),
-///     HG_DATUM (uint32_t,   Z),
-///     HG_DATUM (uint16_t,   flags),
-///     HG_DATUM (uint8_t,    priority),
-///     HG_DATUM (uint8_t,    count)
+///   ALCHEMY_STRUCT(new_point_t,
+///     ALCHEMY_DATUM (uint8_t,    msgType),
+///     ALCHEMY_DATUM (uint8_t,    verNum),
+///     ALCHEMY_DATUM (uint16_t,   id),
+///     ALCHEMY_DATUM (uint32_t,   X),
+///     ALCHEMY_DATUM (uint32_t,   Y),
+///     ALCHEMY_DATUM (uint32_t,   Z),
+///     ALCHEMY_DATUM (uint16_t,   flags),
+///     ALCHEMY_DATUM (uint8_t,    priority),
+///     ALCHEMY_DATUM (uint8_t,    count)
 ///   )
 ///     
+///   } // namespace Hg
 /// ~~~
 ///             
-#define ALCHEMY_STRUCT(NAME, ...)     DECLARE_STRUCT_HEADER(NAME, __VA_ARGS__)
-
-#define HG_BEGIN_FORMAT(NAME, ...)    DECLARE_STRUCT_HEADER(NAME, __VA_ARGS__)
+#define ALCHEMY_STRUCT(NAME, ...)       DECLARE_STRUCT(NAME, C_,  __VA_ARGS__);\
+                                        DECLARE_STRUCT(NAME, Hg_, __VA_ARGS__);
 
 //  ****************************************************************************
 /// Adds a field to the message definition.
 /// 
 /// This MACRO generates code based on the TypeList specified in the 
-/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field.
 ///             
 /// @param TYPE     The type to use for this field
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define ALCHEMY_DATUM(TYPE,NAME)       D_DATUM(TYPE,NAME)
+#define ALCHEMY_DATUM(TYPE,NAME)       DECLARE_DATUM(TYPE,NAME)
 
-#define HG_DATUM(TYPE,NAME)            D_DATUM(TYPE,NAME)
 
 //  ****************************************************************************
 /// Adds a fixed-size array field to the message definition.
 /// 
 /// This MACRO generates code based on the TypeList specified in the 
-/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field.
 ///             
 /// @param TYPE     The type to use for this field
@@ -131,15 +129,14 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define ALCHEMY_ARRAY(TYPE,COUNT,NAME) DECLARE_ARRAY_ENTRY(TYPE,COUNT,NAME)
+#define ALCHEMY_ARRAY(TYPE,COUNT,NAME) DECLARE_ARRAY_DATUM(TYPE,COUNT,NAME)
 
-#define HG_ARRAY(TYPE,COUNT,NAME)      DECLARE_ARRAY_ENTRY(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size to the message definition.
 /// 
 /// This MACRO generates code based on the TypeList specified in the 
-/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field. 
 /// Finally, a field is provided to specify how this datum will know how
 /// large the field should be when reading data on input.
@@ -157,18 +154,18 @@
 ///                 NAME will be the name used to access this field directly.
 ///
 ///             
-#define ALCHEMY_ALLOC(TYPE,COUNT,NAME)  DECLARE_DYNAMIC_ENTRY(TYPE,COUNT,NAME)
+#define ALCHEMY_ALLOC(TYPE,COUNT,NAME)\
+                                        DECLARE_VECTOR_DATUM(TYPE,COUNT,NAME)
 
-#define HG_DYNAMIC(TYPE,COUNT,NAME)     DECLARE_DYNAMIC_ENTRY(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size controlled by a user specified allocator.
 /// 
 /// This MACRO generates code based on the TypeList specified in the 
-/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field. 
 /// A field is provided for the user to indicate how the field can determine
-/// its own size. This MACRO is similar to HG_DYNAMIC, with the exception
+/// its own size. This MACRO is similar to ALCHEMY_ALLOC, with the exception
 /// that a user specified allocator can be used.
 ///             
 /// @param TYPE       The type to use for this field
@@ -187,10 +184,8 @@
 ///
 ///             
 #define ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)\
-                                        D_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
+                                        DECLARE_ALLOCATOR_DATUM(TYPE,ALLOCATOR,COUNT,NAME)
 
-#define HG_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)\
-                                        D_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
 
 //  ****************************************************************************
 /// Marks the end of a message format.
@@ -203,9 +198,8 @@
 /// data format definition. A compiler error will be emitted if the number 
 /// of declared HG_MSG_FIELD entries does not match the number expected.
 /// 
-#define ALCHEMY_END_STRUCT(TYPE_LIST)   DECLARE_STRUCT_FOOTER(TYPE_LIST)
+#define ALCHEMY_END_STRUCT(TYPE_LIST)  DECLARE_STRUCT_FOOTER(TYPE_LIST)
 
-#define HG_END_FORMAT(TYPE_LIST)        DECLARE_STRUCT_FOOTER(TYPE_LIST)
 
 //  ****************************************************************************
 /// Starts the definition for a message field that represents a set of packed bits. 
@@ -227,12 +221,12 @@
 ///   namespace Hg
 ///   {
 ///   
-///   HG_BEGIN_PACKED (uint8_t, flags)
-///     HG_BIT_FIELD   (0, is_visible, 1)
-///     HG_BIT_FIELD   (1, is_light  , 1)
-///     HG_BIT_FIELD   (2, ambient   , 3)
-///     HG_BIT_FIELD   (3, diffuse   , 3)
-///   HG_END_PACKED   (flags)
+///   ALCHEMY_PACKED (uint8_t, flags)
+///     ALCHEMY_BITS   (0, is_visible, 1)
+///     ALCHEMY_BITS   (1, is_light  , 1)
+///     ALCHEMY_BITS   (2, ambient   , 3)
+///     ALCHEMY_BITS   (3, diffuse   , 3)
+///   ALCHEMY_END_PACKED
 ///     
 ///   } // namespace Hg
 /// ~~~     
@@ -249,7 +243,8 @@
 ///         
 #define ALCHEMY_PACKED(TYPE,NAME)       DECLARE_PACKED_HEADER(TYPE,NAME)
 
-#define HG_BEGIN_PACKED(TYPE,NAME)      DECLARE_PACKED_HEADER(TYPE,NAME)
+#define C_BEGIN_PACKED(TYPE,NAME)       C_DECLARE_PACKED_HEADER(TYPE,NAME)
+#define HG_BEGIN_PACKED(TYPE,NAME)      Hg_DECLARE_PACKED_HEADER(TYPE,NAME)
 
 //  ****************************************************************************
 /// Adds a bit-field type parameter to the bit-set.
@@ -266,8 +261,11 @@
 #define ALCHEMY_BITS(INDEX,NAME,COUNT)\
                                         DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
 
+#define C_BIT_FIELD(INDEX,NAME,COUNT)\
+                                        C_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
+
 #define HG_BIT_FIELD(INDEX,NAME,COUNT)\
-                                        DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
+                                        Hg_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
 
 
 //  ****************************************************************************
@@ -278,8 +276,7 @@
 /// 
 #define ALCHEMY_END_PACKED              DECLARE_PACKED_FOOTER
 
-#define HG_END_PACKED                   DECLARE_PACKED_FOOTER
-
-#endif
+#define C_END_PACKED                    C_DECLARE_PACKED_FOOTER
+#define HG_END_PACKED                   Hg_DECLARE_PACKED_FOOTER
 
 #endif

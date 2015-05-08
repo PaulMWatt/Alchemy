@@ -17,6 +17,9 @@
 #include <Pb/detail/endianess.h>
 #include <stdint.h>
 
+#include <Alchemy.h>
+
+#else
 
 /// This MACRO enables Carbon definitions for C-linkable APIs.
 #define ALCHEMY_CARBONATE 1
@@ -66,7 +69,40 @@
 //  Includes ******************************************************************
 //#include <Alchemy.h>
 #include <C/carbon_def.h>
+#include <Hg/msg_def.h>
 
+
+//  ****************************************************************************
+//  TODO: Need to find someplace for these MACROS to live out of sight.
+
+//#if defined(_MSC_VER)
+//
+//#define STRUCT_PARAMS(NAME, EL,S) \
+//  (NAME BOOST_PP_SEQ_FOR_EACH_I(ELEMENTAL_PARAM, EL, S))
+//
+//#else
+//
+//#define DEFINE_STRUCT_PARAMS(...) \
+//  (NAME BOOST_PP_SEQ_FOR_EACH_I(ELEMENTAL_PARAM, EL, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)))
+//
+//#endif
+
+
+////  ****************************************************************************
+//#define ELEMENTAL_PARAM(r, data, i, x) \
+//   , BOOST_PP_CAT(data, x)
+//
+//
+//// TODO: It's possible, GCC may accept this form
+//#define STRUCT_PARAMS(NAME, EL,S) \
+//  (NAME BOOST_PP_SEQ_FOR_EACH_I(ELEMENTAL_PARAM, EL, S))
+//
+//#define DECLARE_STRUCT(NAME, EL, ...)                                          \
+//  EL##DECLARE_STRUCT_HEADER                                                    \
+//    STRUCT_PARAMS(NAME, EL,BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+//
+////  ****************************************************************************
+//
 
 //  ****************************************************************************
 /// Marks the beginning of a message format.
@@ -85,46 +121,46 @@
 ///   {
 ///
 ///   // Define the message data format
-///   HG_BEGIN_FORMAT(new_point_t,
-///     HG_DATUM (uint8_t,    msgType),
-///     HG_DATUM (uint8_t,    verNum),
-///     HG_DATUM (uint16_t,   id),
-///     HG_DATUM (uint32_t,   X),
-///     HG_DATUM (uint32_t,   Y),
-///     HG_DATUM (uint32_t,   Z),
-///     HG_DATUM (uint16_t,   flags),
-///     HG_DATUM (uint8_t,    priority),
-///     HG_DATUM (uint8_t,    count)
+///   ALCHEMY_STRUCT(new_point_t,
+///     ALCHEMY_DATUM (uint8_t,    msgType),
+///     ALCHEMY_DATUM (uint8_t,    verNum),
+///     ALCHEMY_DATUM (uint16_t,   id),
+///     ALCHEMY_DATUM (uint32_t,   X),
+///     ALCHEMY_DATUM (uint32_t,   Y),
+///     ALCHEMY_DATUM (uint32_t,   Z),
+///     ALCHEMY_DATUM (uint16_t,   flags),
+///     ALCHEMY_DATUM (uint8_t,    priority),
+///     ALCHEMY_DATUM (uint8_t,    count)
 ///   )
 ///     
 ///   } // namespace Hg
 /// ~~~
 ///             
-#define ALCHEMY_STRUCT(NAME, ...)        DECLARE_C_STRUCT_HEADER(NAME, __VA_ARGS__)
+#define ALCHEMY_STRUCT(NAME, ...)       DECLARE_STRUCT(NAME, C_,  __VA_ARGS__);\
+                                        DECLARE_STRUCT(NAME, Hg_, __VA_ARGS__);
 
-#define C_STRUCT(NAME, ...)              DECLARE_C_STRUCT_HEADER(NAME, __VA_ARGS__)
+
 
 
 //  ****************************************************************************
 /// Adds a field to the message definition.
 /// 
 /// This MACRO generates code based on the TypeList specified in the 
-/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field.
 ///             
 /// @param TYPE     The type to use for this field
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define ALCHEMY_DATUM(TYPE,NAME)       DECLARE_C_DATUM(TYPE,NAME)
+#define ALCHEMY_DATUM(TYPE,NAME)       DECLARE_DATUM(TYPE,NAME)
 
-#define C_DATUM(TYPE,NAME)             DECLARE_C_DATUM(TYPE,NAME)
 
 //  ****************************************************************************
 /// Adds a fixed-size array field to the message definition.
 /// 
 /// This MACRO generates code based on the TypeList specified in the 
-/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field.
 ///             
 /// @param TYPE     The type to use for this field
@@ -132,15 +168,14 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define ALCHEMY_ARRAY(TYPE,COUNT,NAME) DECLARE_C_ARRAY(TYPE,COUNT,NAME)
+#define ALCHEMY_ARRAY(TYPE,COUNT,NAME) DECLARE_ARRAY_DATUM(TYPE,COUNT,NAME)
 
-#define C_ARRAY(TYPE,COUNT,NAME)       DECLARE_C_ARRAY(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size to the message definition.
 /// 
 /// This MACRO generates code based on the TypeList specified in the 
-/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field. 
 /// Finally, a field is provided to specify how this datum will know how
 /// large the field should be when reading data on input.
@@ -159,19 +194,17 @@
 ///
 ///             
 #define ALCHEMY_ALLOC(TYPE,COUNT,NAME)\
-                                        DECLARE_C_DYNAMIC(TYPE,COUNT,NAME)
+                                        DECLARE_VECTOR_DATUM(TYPE,COUNT,NAME)
 
-#define C_DYNAMIC(TYPE,COUNT,NAME)\
-                                        DECLARE_C_DYNAMIC(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size controlled by a user specified allocator.
 /// 
 /// This MACRO generates code based on the TypeList specified in the 
-/// HG_BEGIN_FORMAT MACRO. This MACRO also provides the user the ability to 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field. 
 /// A field is provided for the user to indicate how the field can determine
-/// its own size. This MACRO is similar to HG_DYNAMIC, with the exception
+/// its own size. This MACRO is similar to ALCHEMY_ALLOC, with the exception
 /// that a user specified allocator can be used.
 ///             
 /// @param TYPE       The type to use for this field
@@ -190,10 +223,8 @@
 ///
 ///             
 #define ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)\
-                                        DECLARE_C_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
+                                        DECLARE_ALLOCATOR_DATUM(TYPE,ALLOCATOR,COUNT,NAME)
 
-#define C_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)\
-                                        DECLARE_C_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
 
 //  ****************************************************************************
 /// Marks the end of a message format.
@@ -206,9 +237,7 @@
 /// data format definition. A compiler error will be emitted if the number 
 /// of declared HG_MSG_FIELD entries does not match the number expected.
 /// 
-#define ALCHEMY_END_STRUCT(TYPE_LIST)  DECLARE_C_STRUCT_FOOTER(TYPE_LIST)
-
-#define C_END_STRUCT(TYPE_LIST)        DECLARE_C_STRUCT_FOOTER(TYPE_LIST)
+#define ALCHEMY_END_STRUCT(TYPE_LIST)  DECLARE_STRUCT_FOOTER(TYPE_LIST)
 
 
 //  ****************************************************************************
@@ -251,9 +280,9 @@
 ///                 3) The definition of the BIT_SET struct, which contains
 ///                    all of the named bit-field properties managed by the BIT_SET.
 ///         
-#define ALCHEMY_PACKED(TYPE,NAME)      DECLARE_C_PACKED_HEADER(TYPE,NAME)
+#define ALCHEMY_PACKED(TYPE,NAME)      C_DECLARE_PACKED_HEADER(TYPE,NAME)
 
-#define C_BEGIN_PACKED(TYPE,NAME)      DECLARE_C_PACKED_HEADER(TYPE,NAME)
+#define C_BEGIN_PACKED(TYPE,NAME)      C_DECLARE_PACKED_HEADER(TYPE,NAME)
 
 
 //  ****************************************************************************
@@ -269,10 +298,10 @@
 /// @param COUNT    The number of bits this Bit-Field occupies.
 ///             
 #define ALCHEMY_BITS(INDEX,NAME,COUNT)\
-                                        DECLARE_C_BIT_FIELD(INDEX, NAME, COUNT)
+                                        C_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
 
 #define C_BIT_FIELD(INDEX,NAME,COUNT)\
-                                        DECLARE_C_BIT_FIELD(INDEX, NAME, COUNT)
+                                        C_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
 
 
 //  ****************************************************************************
@@ -281,9 +310,9 @@
 /// A type container specialization is declared for this class to facilitate
 /// the proper calculation of the internal buffer size for the container.
 /// 
-#define ALCHEMY_END_PACKED              DECLARE_C_PACKED_FOOTER
+#define ALCHEMY_END_PACKED              C_DECLARE_PACKED_FOOTER
 
-#define C_END_PACKED                    DECLARE_C_PACKED_FOOTER
+#define C_END_PACKED                    C_DECLARE_PACKED_FOOTER
 
 
 #endif

@@ -154,64 +154,64 @@ HG_BEGIN_PACKED (uint8_t, SetC)
 HG_END_PACKED
 
 
-HG_BEGIN_FORMAT(NoConversion,
-  HG_DATUM(uint32_t, ch_0),
-  HG_DATUM(uint32_t, ch_1),
-  HG_DATUM(uint32_t, ch_2),
-  HG_DATUM(uint32_t, ch_3),
-  HG_DATUM(uint32_t, ch_4),
-  HG_DATUM(uint32_t, ch_5),
-  HG_DATUM(uint32_t, ch_6),
-  HG_DATUM(uint32_t, ch_7),
-  HG_DATUM(uint32_t, ch_8),
-  HG_DATUM(uint32_t, ch_9),
-  HG_DATUM(uint32_t, ch_10),
-  HG_DATUM(uint32_t, ch_11),
-  HG_DATUM(uint32_t, ch_12),
-  HG_DATUM(uint32_t, ch_13),
-  HG_DATUM(uint32_t, ch_14),
-  HG_DATUM(uint32_t, ch_15)
+ALCHEMY_STRUCT(NoConversion,
+  ALCHEMY_DATUM(uint32_t, ch_0),
+  ALCHEMY_DATUM(uint32_t, ch_1),
+  ALCHEMY_DATUM(uint32_t, ch_2),
+  ALCHEMY_DATUM(uint32_t, ch_3),
+  ALCHEMY_DATUM(uint32_t, ch_4),
+  ALCHEMY_DATUM(uint32_t, ch_5),
+  ALCHEMY_DATUM(uint32_t, ch_6),
+  ALCHEMY_DATUM(uint32_t, ch_7),
+  ALCHEMY_DATUM(uint32_t, ch_8),
+  ALCHEMY_DATUM(uint32_t, ch_9),
+  ALCHEMY_DATUM(uint32_t, ch_10),
+  ALCHEMY_DATUM(uint32_t, ch_11),
+  ALCHEMY_DATUM(uint32_t, ch_12),
+  ALCHEMY_DATUM(uint32_t, ch_13),
+  ALCHEMY_DATUM(uint32_t, ch_14),
+  ALCHEMY_DATUM(uint32_t, ch_15)
 );
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(Basic,
-  HG_DATUM(int32_t,         i32),
-  HG_DATUM(uint32_t,        u32),
-  HG_DATUM(int16_t,         i16),
-  HG_DATUM(uint16_t,        u16),
-  HG_DATUM(char,            ch),
-  HG_DATUM(uint8_t,         u8)
+ALCHEMY_STRUCT(Basic,
+  ALCHEMY_DATUM(int32_t,         i32),
+  ALCHEMY_DATUM(uint32_t,        u32),
+  ALCHEMY_DATUM(int16_t,         i16),
+  ALCHEMY_DATUM(uint16_t,        u16),
+  ALCHEMY_DATUM(char,            ch),
+  ALCHEMY_DATUM(uint8_t,         u8)
 );
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(Packed,
-  HG_DATUM(SetA,            set_a),
-  HG_DATUM(SetB,            set_b),
-  HG_DATUM(SetC,            set_c)
+ALCHEMY_STRUCT(Packed,
+  ALCHEMY_DATUM(SetA,            set_a),
+  ALCHEMY_DATUM(SetB,            set_b),
+  ALCHEMY_DATUM(SetC,            set_c)
 );
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(Unaligned,
-  HG_DATUM(char,            ch),
-  HG_DATUM(uint32_t,        u32_a),
-  HG_DATUM(uint32_t,        u32_b),
-  HG_DATUM(uint32_t,        u32_c),
-  HG_DATUM(int16_t,         i16_a),
-  HG_DATUM(int16_t,         i16_b),
-  HG_DATUM(int16_t,         i16_c)
+ALCHEMY_STRUCT(Unaligned,
+  ALCHEMY_DATUM(char,            ch),
+  ALCHEMY_DATUM(uint32_t,        u32_a),
+  ALCHEMY_DATUM(uint32_t,        u32_b),
+  ALCHEMY_DATUM(uint32_t,        u32_c),
+  ALCHEMY_DATUM(int16_t,         i16_a),
+  ALCHEMY_DATUM(int16_t,         i16_b),
+  ALCHEMY_DATUM(int16_t,         i16_c)
 );
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(Complex,
-  HG_DATUM(uint32_t,                  seq),
-  HG_ARRAY(Basic, alchemy::benchmark::k_complex_basic_count, basic),
-  HG_DATUM(Packed,                    bits),
-  HG_DATUM(Unaligned,                 unaligned)
+ALCHEMY_STRUCT(Complex,
+  ALCHEMY_DATUM(uint32_t,                  seq),
+  ALCHEMY_ARRAY(Basic, alchemy::benchmark::k_complex_basic_count, basic),
+  ALCHEMY_DATUM(Packed,                    bits),
+  ALCHEMY_DATUM(Unaligned,                 unaligned)
 );
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(Array_test,
-  HG_ARRAY(uint32_t, alchemy::benchmark::k_array_test_count,   items)
+ALCHEMY_STRUCT(Array_test,
+  ALCHEMY_ARRAY(uint32_t, alchemy::benchmark::k_array_test_count,   items)
 );
 
 

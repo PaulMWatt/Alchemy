@@ -245,8 +245,8 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_bitsets(void)
 
 //  ****************************************************************************
 
-HG_BEGIN_FORMAT(points_t,
-  HG_ARRAY (pt3d_t, 3, pts)
+ALCHEMY_STRUCT(points_t,
+  ALCHEMY_ARRAY (pt3d_t, 3, pts)
 );
 
 
@@ -358,9 +358,9 @@ void TestFocusedDynamicMessageSuite::Test_read_array_of_arrays(void)
 //  ****************************************************************************
 //  ****************************************************************************
 
-HG_BEGIN_FORMAT(vstr_t,
-  HG_DATUM   (uint8_t,  len),
-  HG_DYNAMIC (char,     len, str)
+ALCHEMY_STRUCT(vstr_t,
+  ALCHEMY_DATUM   (uint8_t,  len),
+  ALCHEMY_ALLOC (char,     len, str)
 );
 
 //  Nested-Fixed sub-fields ****************************************************
@@ -457,9 +457,9 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_fundamental(void)
 
 //  Nested-Fixed sub-fields ****************************************************
 
-HG_BEGIN_FORMAT(vpoints_t,
-  HG_DATUM   (uint16_t, count),
-  HG_DYNAMIC (pt3d_t,   count, pts)
+ALCHEMY_STRUCT(vpoints_t,
+  ALCHEMY_DATUM   (uint16_t, count),
+  ALCHEMY_ALLOC (pt3d_t,   count, pts)
 );
 
 
@@ -575,9 +575,9 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_fixed_size(voi
 
 
 //  Dynamic Nested-Dynamic sub-fields ******************************************
-HG_BEGIN_FORMAT(vinst_t,
-  HG_DATUM   (uint16_t, count),
-  HG_DYNAMIC (instance_t, count, inst)
+ALCHEMY_STRUCT(vinst_t,
+  ALCHEMY_DATUM   (uint16_t, count),
+  ALCHEMY_ALLOC (instance_t, count, inst)
 );
 
 
@@ -766,9 +766,9 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_dynamic_size(v
 //  Dynamically Sized Color Table
 //  This type represents a fixed-size array of bit-fields.
 // 
-HG_BEGIN_FORMAT(color_table_t,
-  HG_DATUM   (size_t, count),
-  HG_DYNAMIC (color4, count, table)
+ALCHEMY_STRUCT(color_table_t,
+  ALCHEMY_DATUM   (size_t, count),
+  ALCHEMY_ALLOC (color4, count, table)
 );
 
 namespace test
@@ -906,9 +906,9 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_of_bitsets(void)
 //  ****************************************************************************
 typedef std::array<uint32_t, 5>     u32_array_t;
 
-HG_BEGIN_FORMAT(vec_array_t,
-  HG_DATUM   (uint16_t,    count),
-  HG_DYNAMIC (u32_array_t, count, items)
+ALCHEMY_STRUCT(vec_array_t,
+  ALCHEMY_DATUM   (uint16_t,    count),
+  ALCHEMY_ALLOC (u32_array_t, count, items)
 );
 
 //  Vector of Arrays ***********************************************************
@@ -1103,8 +1103,8 @@ size_t StringCount(const uint8_t* pBuffer, size_t length)
 
 
 // Message definition
-HG_BEGIN_FORMAT(string_vec_t,
-  HG_DYNAMIC (char_str, &StringCount, items)
+ALCHEMY_STRUCT(string_vec_t,
+  ALCHEMY_ALLOC (char_str, &StringCount, items)
 );
 
 //  Vector of vectors **********************************************************

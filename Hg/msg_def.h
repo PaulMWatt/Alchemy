@@ -148,8 +148,7 @@ struct message_size_trait
 //  ****************************************************************************
 //  Defines the outer value container as well as the formatted type-list.
 //
-//#define DEFINE_HG_STRUCT(F, ...)                                               
-#define DECLARE_STRUCT_HEADER(F, ...)                                          \
+#define Hg_DECLARE_STRUCT_HEADER(F, ...)                                       \
   START_NAMESPACE(Hg)                                                          \
   DEFINE_STRUCT_TYPELIST(F##_tl, __VA_ARGS__)                                  \
   typedef Hg::make_Hg_type_list<F##_tl>::type               F##_Hg;            \
@@ -177,11 +176,11 @@ struct message_size_trait
     BEGIN_COUNTER                                                              \
                                                                                \
     DEFINE_STRUCT_PARAMS(__VA_ARGS__)                                          \
-  DECLARE_STRUCT_FOOTER(F)
+  Hg_DECLARE_STRUCT_FOOTER(F)
     
 
 //  ****************************************************************************
-#define DECLARE_STRUCT_FOOTER(F)                                               \
+#define Hg_DECLARE_STRUCT_FOOTER(F)                                            \
   private:                                                                     \
     template <typename T, typename U>                                          \
     size_t DatumSize(T value, U*)                                              \
@@ -225,23 +224,20 @@ struct message_size_trait
   DECLARE_DATUM_ENTRY_IDX((COUNTER_VALUE), P)
 
 //  ****************************************************************************
-#define D_FUNDAMENTAL(...)  DECLARE_DATUM_ENTRY_X __VA_ARGS__ 
-  
-
-#define D_DATUM_X(T,P) (T,D_FUNDAMENTAL,(P))
-#define D_DATUM(T,P) D_DATUM_X((T),P)
+#define D_FUNDAMENTAL(...)              DECLARE_DATUM_ENTRY_X __VA_ARGS__ 
+#define D_DATUM_X(T,P)                  (T,D_FUNDAMENTAL,(P))
 
 //  ****************************************************************************
-#define DECLARE_ARRAY(T,N)                std::array<T,N>
+#define DECLARE_ARRAY(T,N)              std::array<T,N>
 
 //  ****************************************************************************
-#define DECLARE_VECTOR(T)                 std::vector<T>
+#define DECLARE_VECTOR(T)               std::vector<T>
 
 //  ****************************************************************************
-#define DECLARE_ALLOCATED_VECTOR(T,A)     std::vector<T,A>
+#define DECLARE_VECTOR_ALLOCATED(T,A)   std::vector<T,A>
 
 //  ****************************************************************************
-#define D_ARRAY(T, N, P) D_DATUM_X((DECLARE_ARRAY(T,N)), P)
+#define D_ARRAY(T, N, P)                D_DATUM_X((DECLARE_ARRAY(T,N)), P)
 
 //  ****************************************************************************
 #define D_DYNAMIC(N,P)                                                         \
@@ -255,16 +251,18 @@ struct message_size_trait
 #define D_VECTOR(T,N,P) ((DECLARE_VECTOR(T)),D_DYNAMIC2,(N,P))
 
 
-#define DECLARE_ARRAY_ENTRY(T, N, P)        D_ARRAY(T, N, P) 
-#define DECLARE_DYNAMIC_ENTRY(T, N, P)      D_VECTOR(T, N, P)
-#define DECLARE_ALLOCATOR_ENTRY(T, A, N, P) D_VECTOR(DECLARE_ALLOCATED_VECTOR(T,A), N, P)             
+//  ****************************************************************************
+#define Hg_DECLARE_DATUM(T,P)                  D_DATUM_X((T),P)
+#define Hg_DECLARE_ARRAY_DATUM(T, N, P)        D_ARRAY(T, N, P) 
+#define Hg_DECLARE_VECTOR_DATUM(T, N, P)       D_VECTOR(T, N, P)
+#define Hg_DECLARE_ALLOCATOR_DATUM(T, A, N, P) D_VECTOR(DECLARE_VECTOR_ALLOCATED(T,A), N, P)
 
 
 
 //  ****************************************************************************
 //  Bit Fields *****************************************************************
 //  ****************************************************************************
-#define DECLARE_PACKED_HEADER(T,C)                                             \
+#define Hg_DECLARE_PACKED_HEADER(T,C)                                          \
   START_NAMESPACE(Hg)                                                          \
   struct C;                                                                    \
   template <>                                                                  \
@@ -303,7 +301,7 @@ struct message_size_trait
 
 
 // *****************************************************************************
-#define DECLARE_BIT_FIELD(IDX,P,N)                                             \
+#define Hg_DECLARE_BIT_FIELD(IDX,P,N)                                          \
   typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \
   struct P##_tag                                                               \
   { static ptrdiff_t offset()                                                  \
@@ -316,26 +314,42 @@ struct message_size_trait
   P##_t P;                                                                     \
 
 // *****************************************************************************
-#define DECLARE_PACKED_FOOTER                                                  \
+#define Hg_DECLARE_PACKED_FOOTER                                               \
   };                                                                           \
   END_NAMESPACE(Hg)
 
 #else
 
 //  ****************************************************************************
-//  Declare empty ALCHEMY MACROS for non-C++ builds.
+//  Declare empty Hg MACROS for non-C++ builds.
 //
-DECLARE_STRUCT_HEADER(NAME, __VA_ARGS__)
-D_DATUM(TYPE,NAME)
-DECLARE_ARRAY_ENTRY(TYPE,COUNT,NAME)
-DECLARE_DYNAMIC_ENTRY(TYPE,COUNT,NAME)
-D_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
-DECLARE_STRUCT_FOOTER(TYPE_LIST)
+#define Hg_DECLARE_STRUCT_HEADER(NAME, ...)
+#define Hg_DECLARE_DATUM(TYPE,NAME)
+#define Hg_DECLARE_ARRAY_DATUM(TYPE,COUNT,NAME)
+#define Hg_DECLARE_VECTOR_DATUM(TYPE,COUNT,NAME)
+#define Hg_DECLARE_ALLOCATOR_DATUM(TYPE,ALLOCATOR,COUNT,NAME)
+#define Hg_DECLARE_STRUCT_FOOTER(TYPE_LIST)
 
-DECLARE_PACKED_HEADER(TYPE,NAME)
-DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
-DECLARE_PACKED_FOOTER
+#define Hg_DECLARE_PACKED_HEADER(TYPE,NAME)
+#define Hg_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
+#define Hg_DECLARE_PACKED_FOOTER
 
 #endif // __cplusplus
+
+//  ****************************************************************************
+#define ELEMENTAL_PARAM(r, data, i, x) \
+   , BOOST_PP_CAT(data, x)
+
+
+// TODO: It's possible, GCC may accept this form
+#define STRUCT_PARAMS(NAME, EL,S) \
+  (NAME BOOST_PP_SEQ_FOR_EACH_I(ELEMENTAL_PARAM, EL, S))
+
+#define DECLARE_STRUCT(NAME, EL, ...)                                          \
+  EL##DECLARE_STRUCT_HEADER                                                    \
+    STRUCT_PARAMS(NAME, EL,BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+//  ****************************************************************************
+
 
 #endif

@@ -44,13 +44,13 @@
 /// A type array that contains 32-bit word aligned data structures.
 ///
 
-HG_BEGIN_FORMAT(aligned_int_t,
-  HG_DATUM   (int32_t,  l32),
-  HG_DATUM   (uint32_t, ul32),
-  HG_DATUM   (int16_t, s16),
-  HG_DATUM   (uint16_t, us16),
-  HG_DATUM   (int8_t, c8),
-  HG_DATUM   (uint8_t, uc8)
+ALCHEMY_STRUCT(aligned_int_t,
+  ALCHEMY_DATUM   (int32_t,  l32),
+  ALCHEMY_DATUM   (uint32_t, ul32),
+  ALCHEMY_DATUM   (int16_t, s16),
+  ALCHEMY_DATUM   (uint16_t, us16),
+  ALCHEMY_DATUM   (int8_t, c8),
+  ALCHEMY_DATUM   (uint8_t, uc8)
 );
 
 //  ****************************************************************************
@@ -58,13 +58,13 @@ HG_BEGIN_FORMAT(aligned_int_t,
 /// This type is important to verify the the memory read 
 /// operations.
 ///
-HG_BEGIN_FORMAT(maligned_int_t,
-  HG_DATUM   (int8_t,   c8),
-  HG_DATUM   (int16_t,  s16),
-  HG_DATUM   (int32_t,  l32),
-  HG_DATUM   (uint16_t, us16),
-  HG_DATUM   (uint32_t, ul32),
-  HG_DATUM   (uint8_t, uc8)
+ALCHEMY_STRUCT(maligned_int_t,
+  ALCHEMY_DATUM   (int8_t,   c8),
+  ALCHEMY_DATUM   (int16_t,  s16),
+  ALCHEMY_DATUM   (int32_t,  l32),
+  ALCHEMY_DATUM   (uint16_t, us16),
+  ALCHEMY_DATUM   (uint32_t, ul32),
+  ALCHEMY_DATUM   (uint8_t, uc8)
 );
 
 // Constants used for endian or testing.

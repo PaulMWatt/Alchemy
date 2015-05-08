@@ -25,18 +25,18 @@ HG_END_PACKED
 //  Indexed Color Table
 //  This type represents a fixed-size array of bit-fields.
 // 
-HG_BEGIN_FORMAT(color_map_t,
-  HG_ARRAY (color4, 16, table)
+ALCHEMY_STRUCT(color_map_t,
+  ALCHEMY_ARRAY (color4, 16, table)
 );
 
 //  ****************************************************************************
 //  Type definition that represents a 3-dimensional point.
 //  This type is a nested type with simple sub-types.
 // 
-HG_BEGIN_FORMAT(pt3d_t,
-  HG_DATUM (int32_t, X),
-  HG_DATUM (int32_t, Y),
-  HG_DATUM (int32_t, Z)
+ALCHEMY_STRUCT(pt3d_t,
+  ALCHEMY_DATUM (int32_t, X),
+  ALCHEMY_DATUM (int32_t, Y),
+  ALCHEMY_DATUM (int32_t, Z)
 );
 
 //  ****************************************************************************
@@ -44,18 +44,18 @@ HG_BEGIN_FORMAT(pt3d_t,
 //  A starting point and a magnitude.
 //  This format covers a nested type with nested sub-types.
 // 
-HG_BEGIN_FORMAT(ray_t,
-  HG_DATUM (pt3d_t, start),
-  HG_DATUM (pt3d_t, magnitude)
+ALCHEMY_STRUCT(ray_t,
+  ALCHEMY_DATUM (pt3d_t, start),
+  ALCHEMY_DATUM (pt3d_t, magnitude)
 );
 
 //  ****************************************************************************
 //  A single point with with a specified color.
 //  This format covers a nested type that contains a nested type and a bit-list.
 // 
-HG_BEGIN_FORMAT(vertex_t,
-  HG_DATUM (pt3d_t, pt),
-  HG_DATUM (color4, color)
+ALCHEMY_STRUCT(vertex_t,
+  ALCHEMY_DATUM (pt3d_t, pt),
+  ALCHEMY_DATUM (color4, color)
 );
 
 //  ****************************************************************************
@@ -63,9 +63,9 @@ HG_BEGIN_FORMAT(vertex_t,
 //  This format represents a nested type with an array sub-type.
 //  The array sub-type only holds simple types.
 // 
-HG_BEGIN_FORMAT(triangle_t,
-  HG_ARRAY (uint16_t, 3,  pts),
-  HG_DATUM (ray_t,        normal)
+ALCHEMY_STRUCT(triangle_t,
+  ALCHEMY_ARRAY (uint16_t, 3,  pts),
+  ALCHEMY_DATUM (ray_t,        normal)
 );
 
 //  ****************************************************************************
@@ -73,10 +73,10 @@ HG_BEGIN_FORMAT(triangle_t,
 //  This gives three points required to create the eye vector with 
 //  scene orientation.
 // 
-HG_BEGIN_FORMAT(camera_t,
-  HG_DATUM      (pt3d_t, eye),
-  HG_DATUM      (pt3d_t, at),
-  HG_DATUM      (pt3d_t, up)
+ALCHEMY_STRUCT(camera_t,
+  ALCHEMY_DATUM      (pt3d_t, eye),
+  ALCHEMY_DATUM      (pt3d_t, at),
+  ALCHEMY_DATUM      (pt3d_t, up)
 );
 
 //  ****************************************************************************
@@ -84,9 +84,9 @@ HG_BEGIN_FORMAT(camera_t,
 //  This type represents a nested type with a vector sub-type.
 //  The vector sub-type holds a nested sub-type;
 // 
-HG_BEGIN_FORMAT(object_t,
-  HG_DATUM    (uint32_t,          count),
-  HG_DYNAMIC  (triangle_t, count, surfaces)
+ALCHEMY_STRUCT(object_t,
+  ALCHEMY_DATUM    (uint32_t,          count),
+  ALCHEMY_ALLOC  (triangle_t, count, surfaces)
 );
 
 //  ****************************************************************************
@@ -98,10 +98,10 @@ typedef std::array<row_t,   3>          matrix_t;
 //  ****************************************************************************
 //  
 // 
-HG_BEGIN_FORMAT(instance_t,
-  HG_DATUM      (uint8_t,   object_index),
-  HG_DATUM      (pt3d_t,    location),
-  HG_DATUM      (matrix_t,  transform)
+ALCHEMY_STRUCT(instance_t,
+  ALCHEMY_DATUM      (uint8_t,   object_index),
+  ALCHEMY_DATUM      (pt3d_t,    location),
+  ALCHEMY_DATUM      (matrix_t,  transform)
 );
 
 
@@ -111,17 +111,17 @@ HG_BEGIN_FORMAT(instance_t,
 //  that contain nested sub-types that contain arrays or vectors, as well
 //  as simple-types and bit-sets.
 //
-HG_BEGIN_FORMAT(world_t,
-  HG_DATUM    (uint16_t,                  width),
-  HG_DATUM    (uint16_t,                  height),
-  HG_DATUM    (camera_t,                  camera),
-  HG_DATUM    (uint16_t,                  fov),
-  HG_DATUM    (color4,                    ambient),
-  HG_DATUM    (vertex_t,                  light),
-  HG_DATUM    (uint8_t,                   object_count),
-  HG_DYNAMIC  (object_t, object_count,    objects),
-  HG_DATUM    (uint8_t,                   instance_count),
-  HG_DYNAMIC  (instance_t, instance_count, instances)
+ALCHEMY_STRUCT(world_t,
+  ALCHEMY_DATUM    (uint16_t,                  width),
+  ALCHEMY_DATUM    (uint16_t,                  height),
+  ALCHEMY_DATUM    (camera_t,                  camera),
+  ALCHEMY_DATUM    (uint16_t,                  fov),
+  ALCHEMY_DATUM    (color4,                    ambient),
+  ALCHEMY_DATUM    (vertex_t,                  light),
+  ALCHEMY_DATUM    (uint8_t,                   object_count),
+  ALCHEMY_ALLOC  (object_t, object_count,    objects),
+  ALCHEMY_DATUM    (uint8_t,                   instance_count),
+  ALCHEMY_ALLOC  (instance_t, instance_count, instances)
 );
 
 #endif

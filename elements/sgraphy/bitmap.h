@@ -13,49 +13,49 @@
 #include <string>
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(bitmap_file_header_t,
-  HG_DATUM(uint16_t, type),
-  HG_DATUM(uint32_t, length),
-  HG_DATUM(uint16_t, reserved_1),
-  HG_DATUM(uint16_t, reserved_2),
-  HG_DATUM(uint32_t, offset) 
+ALCHEMY_STRUCT(bitmap_file_header_t,
+  ALCHEMY_DATUM(uint16_t, type),
+  ALCHEMY_DATUM(uint32_t, length),
+  ALCHEMY_DATUM(uint16_t, reserved_1),
+  ALCHEMY_DATUM(uint16_t, reserved_2),
+  ALCHEMY_DATUM(uint32_t, offset) 
 )
 
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(bitmap_core_header_t,
-  HG_DATUM(uint32_t, size),
-  HG_DATUM(uint16_t, width),
-  HG_DATUM(uint16_t, height),
-  HG_DATUM(uint16_t, planes),
-  HG_DATUM(uint16_t, bit_depth) 
+ALCHEMY_STRUCT(bitmap_core_header_t,
+  ALCHEMY_DATUM(uint32_t, size),
+  ALCHEMY_DATUM(uint16_t, width),
+  ALCHEMY_DATUM(uint16_t, height),
+  ALCHEMY_DATUM(uint16_t, planes),
+  ALCHEMY_DATUM(uint16_t, bit_depth) 
 )
 
 //  ****************************************************************************
-HG_BEGIN_FORMAT(bitmap_info_header_t,
-  HG_DATUM(uint32_t, size),
-  HG_DATUM(int32_t,  width),
-  HG_DATUM(int32_t,  height),
-  HG_DATUM(uint16_t, planes),
-  HG_DATUM(uint16_t, bit_depth),
-  HG_DATUM(uint32_t, compression),
-  HG_DATUM(uint32_t, sizeImage),
-  HG_DATUM(int32_t,  x_pixels_per_meter),
-  HG_DATUM(int32_t,  y_pixels_per_meter),
-  HG_DATUM(uint32_t, color_count),
-  HG_DATUM(uint32_t, important_color) 
+ALCHEMY_STRUCT(bitmap_info_header_t,
+  ALCHEMY_DATUM(uint32_t, size),
+  ALCHEMY_DATUM(int32_t,  width),
+  ALCHEMY_DATUM(int32_t,  height),
+  ALCHEMY_DATUM(uint16_t, planes),
+  ALCHEMY_DATUM(uint16_t, bit_depth),
+  ALCHEMY_DATUM(uint32_t, compression),
+  ALCHEMY_DATUM(uint32_t, sizeImage),
+  ALCHEMY_DATUM(int32_t,  x_pixels_per_meter),
+  ALCHEMY_DATUM(int32_t,  y_pixels_per_meter),
+  ALCHEMY_DATUM(uint32_t, color_count),
+  ALCHEMY_DATUM(uint32_t, important_color) 
 )
 
-HG_BEGIN_FORMAT(rgba_t,
-  HG_DATUM(byte_t, blue),
-  HG_DATUM(byte_t, green),
-  HG_DATUM(byte_t, red),
-  HG_DATUM(byte_t, alpha) 
+ALCHEMY_STRUCT(rgba_t,
+  ALCHEMY_DATUM(byte_t, blue),
+  ALCHEMY_DATUM(byte_t, green),
+  ALCHEMY_DATUM(byte_t, red),
+  ALCHEMY_DATUM(byte_t, alpha) 
 )
 
-HG_BEGIN_FORMAT(bitmap_info_t,
-  HG_DATUM(bitmap_core_header_t, header),
-  HG_DYNAMIC(byte_t, header.sizeImage, pixels) 
+ALCHEMY_STRUCT(bitmap_info_t,
+  ALCHEMY_DATUM(bitmap_core_header_t, header),
+  ALCHEMY_ALLOC(byte_t, header.sizeImage, pixels) 
 )
 
 

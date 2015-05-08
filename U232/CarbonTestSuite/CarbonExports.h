@@ -12,13 +12,13 @@
 #include <Pb/type_list.h>
 #include <Pb/size_at.h>
 
-typedef Hg::TypeList
-<
-  color_map_t,
-  pt3d_t,
-  ray_t,
-  vertex_t
-> exported_types;
+//typedef Hg::TypeList
+//<
+//  color_map_t,
+//  pt3d_t,
+//  ray_t,
+//  vertex_t
+//> exported_types;
 
 
 #define k_color_map 0
@@ -30,17 +30,17 @@ typedef Hg::TypeList
 size_t GetTheSize(int v)
 {
 
-switch (v)
-{
-case k_color_map:
-  return Hg::SizeAt<k_color_map , exported_types>::value;
-case k_pt3d:
-  return Hg::SizeAt<k_pt3d, exported_types>::value;
-case k_ray:
-  return Hg::SizeAt<k_ray, exported_types>::value;
-case k_vertex:
-  return Hg::SizeAt<k_vertex, exported_types>::value;
-}
+//switch (v)
+//{
+//case k_color_map:
+//  return Hg::SizeAt<k_color_map , exported_types>::value;
+//case k_pt3d:
+//  return Hg::SizeAt<k_pt3d, exported_types>::value;
+//case k_ray:
+//  return Hg::SizeAt<k_ray, exported_types>::value;
+//case k_vertex:
+//  return Hg::SizeAt<k_vertex, exported_types>::value;
+//}
 
 return 0;
 }

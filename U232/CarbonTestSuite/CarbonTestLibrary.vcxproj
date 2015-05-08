@@ -88,7 +88,9 @@
     <ClInclude Include="CarbonExports.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\C\carbonate.cpp" />
+    <ClCompile Include="..\..\C\carbonate.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

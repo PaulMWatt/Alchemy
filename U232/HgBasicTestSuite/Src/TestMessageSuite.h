@@ -32,13 +32,13 @@
 #include <Hg.h>
 #include <algorithm>
 
-HG_BEGIN_FORMAT(base_format_t,
-  HG_DATUM (uint32_t,                 word_0),
-  HG_DATUM (uint32_t,                 word_1),
-  HG_DATUM (uint32_t,                 word_2),
-  HG_DATUM (uint8_t,                  val),
-  HG_DATUM (nested_format_t,          nested),
-  HG_ARRAY (uint32_t, 3,              sequence)
+ALCHEMY_STRUCT(base_format_t,
+  ALCHEMY_DATUM (uint32_t,                 word_0),
+  ALCHEMY_DATUM (uint32_t,                 word_1),
+  ALCHEMY_DATUM (uint32_t,                 word_2),
+  ALCHEMY_DATUM (uint8_t,                  val),
+  ALCHEMY_DATUM (nested_format_t,          nested),
+  ALCHEMY_ARRAY (uint32_t, 3,              sequence)
 );
 
 namespace Hg
