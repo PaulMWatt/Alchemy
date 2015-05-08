@@ -7,7 +7,11 @@
 //  ****************************************************************************
 //  Includes *******************************************************************
 #include <Carbon.h>
+#include <C/carbonate.h>
+
 #include <algorithm>
+
+#include <CarbonExports.h>
 
 namespace C
 {
@@ -26,11 +30,12 @@ typedef unsigned char     carbon_t;
 ///               The remainder of the structure starts here.
 ///               Therefore, all allocations will be 8-bytes larger than requested.
 ///
-const int       k_base_offset = -8;
-const int       k_type_offset = 4;
-const uint32_t  k_carbon_id   = 0xA9;       
+const int       k_carbon_footprint  = -8;
+const int       k_base_offset       = -k_carbon_footprint;
+const int       k_type_offset       = 4;
+const uint32_t  k_carbon_id         = 0xA9;       
 
-const uint32_t  k_size_mask   = 0x00FFFFFF; 
+const uint32_t  k_size_mask         = 0x00FFFFFF; 
 
 
 
@@ -120,7 +125,17 @@ Hg_msg_t* Hg_create(
   Hg_type_t msg_type
 )
 {
-  return 0;
+  size_t size = GetTheSize(msg_type);
+  if (0 == size)
+    return 0;
+
+  C::carbon_t* p_msg = new C::carbon_t[size + C::k_carbon_footprint];
+  uint32_t base = C::k_carbon_id | (size << 8);
+  
+  ::memcpy(p_msg, &base, 4);
+  ::memcpy(p_msg + C::k_type_offset, &msg_type, 4);
+
+  return p_msg;
 }
 
 
@@ -273,4 +288,5 @@ size_t Hg_unpack(
 
 // End of name-mangling guard.
 }
+
 

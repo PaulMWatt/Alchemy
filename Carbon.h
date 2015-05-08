@@ -28,7 +28,8 @@
 #ifndef CARBON_H_INCLUDED
 #define CARBON_H_INCLUDED
 //  Includes ******************************************************************
-#include <C/carbonate.h>
+#include <Pb/detail/endianess.h>
+#include <stdint.h>
 
 
 // The definition that indicates these 
@@ -55,11 +56,6 @@
 extern "C"
 {
 #endif
-
-
-//  Constants ******************************************************************
-#define k_big_endian      ALCHEMY_BIG_ENDIAN
-#define k_little_endian   ALCHEMY_LITTLE_ENDIAN
 
 //  ****************************************************************************
 typedef unsigned char     Hg_msg_t;

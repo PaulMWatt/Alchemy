@@ -47,4 +47,22 @@
 #  define ALCHEMY_ENDIANESS ALCHEMY_BIG_ENDIAN
 #endif
 
+
+//  Constants ******************************************************************
+/// This set contains constant definitions for each type of endian processor
+/// supported by these conversion functions. 
+/// 
+#ifdef __cplusplus
+enum Endianess
+{
+  k_big_endian    = ALCHEMY_BIG_ENDIAN,      ///< Indicates Big-Endian byte-order
+  k_little_endian = ALCHEMY_LITTLE_ENDIAN    ///< Indicates Little-Endian byte-order
+};
+
+#else 
+# define k_big_endian      ALCHEMY_BIG_ENDIAN
+# define k_little_endian   ALCHEMY_LITTLE_ENDIAN
+
+#endif
+
 #endif 

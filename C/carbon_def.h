@@ -17,10 +17,16 @@
 #ifndef CARBON_DEF_H_INCLUDED
 #define CARBON_DEF_H_INCLUDED
 //  Private Usage Include Guard ************************************************
-//  Only allow this header file to be included through Carbon.h
-#ifndef CARBON_H_INCLUDED
-# error Do not include this file directly. Use <Carbon.h> instead
+//  Only allow this header file to be included through Alchemy.h
+#ifndef ALCHEMY_H_INCLUDED
+# error Do not include this file directly. Use <Alchemy.h> instead
 #endif
+
+
+//  ****************************************************************************
+//  If carbon is enabled, generate the extra C-types that are required.
+//  
+#if defined(ALCHEMY_CARBONATE)
 
 #include <Pb/meta_macros.h>
 
@@ -82,7 +88,7 @@
 
 
 //  ****************************************************************************
-#define C_DATUM_X(T,P) (T,P)
+#define C_DATUM_X(T,P)                      (T,P)
 
 //  ****************************************************************************
 #define DECLARE_C_DATUM(T,P)                C_DATUM_X(T,P)
@@ -105,14 +111,14 @@
 #ifdef __cplusplus
 
 # define DECLARE_C_PACKED_HEADER(T,C)  extern "C" typedef T C;
-#define DECLARE_C_BIT_FIELD(IDX,P,N)
-#define DECLARE_C_PACKED_FOOTER                            
+# define DECLARE_C_BIT_FIELD(IDX,P,N)
+# define DECLARE_C_PACKED_FOOTER                            
  
 #else
 
-#define DECLARE_C_PACKED_HEADER(T,C)       typedef T C;
-#define DECLARE_C_BIT_FIELD(IDX,P,N)
-#define DECLARE_C_PACKED_FOOTER                            
+# define DECLARE_C_PACKED_HEADER(T,C)       typedef T C;
+# define DECLARE_C_BIT_FIELD(IDX,P,N)
+# define DECLARE_C_PACKED_FOOTER                            
 
 #endif 
 //#define DECLARE_C_PACKED_HEADER(T,C)                                           \
@@ -126,6 +132,27 @@
 //// *****************************************************************************
 //#define DECLARE_C_PACKED_FOOTER                                                \
 //  } color4;
+
+#else
+
+//  ****************************************************************************
+//  Carbon has not been enabled. 
+//  Define empty code generation MACROS
+//
+# define DECLARE_C_STRUCT_HEADER(F, ...) 
+# define DECLARE_C_STRUCT_FOOTER(F)
+
+# define C_DATUM_X(T,P)                  
+# define DECLARE_C_DATUM(T,P)            
+# define DECLARE_C_ARRAY(T, N, P)        
+# define DECLARE_C_DYNAMIC(T, N, P)      
+# define DECLARE_C_ALLOCATOR(T, A, N, P) 
+
+# define DECLARE_C_PACKED_HEADER(T,C)  
+# define DECLARE_C_BIT_FIELD(IDX,P,N)
+# define DECLARE_C_PACKED_FOOTER                            
+
+#endif
 
 
 #endif

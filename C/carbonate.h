@@ -13,12 +13,6 @@
 #ifndef CARBONATE_H_INCLUDED
 #define CARBONATE_H_INCLUDED
 
-//  Private Usage Include Guard ************************************************
-//  Only allow this header file to be included through Carbon.h
-#ifndef CARBON_H_INCLUDED
-# error Do not include this file directly. Use <Carbon.h> instead
-#endif
-
 //  Includes *******************************************************************
 #include <Pb/detail/endianess.h>
 #include <stdint.h>
@@ -27,48 +21,50 @@
 /// This MACRO enables Carbon definitions for C-linkable APIs.
 #define ALCHEMY_CARBONATE 1
 
-#ifdef ALCHEMY_H_INCLUDED
+// TODO: Cleanup final Carbon/Alchemy header organization.
+#define ALCHEMY_H_INCLUDED
+//#ifdef ALCHEMY_H_INCLUDED
 
-#ifdef HG_BEGIN_FORMAT
-# undef HG_BEGIN_FORMAT
+#ifdef ALCHEMY_STRUCT
+# undef ALCHEMY_STRUCT
 #endif
 
-#ifdef HG_DATUM
-# undef HG_DATUM
+#ifdef ALCHEMY_DATUM
+# undef ALCHEMY_DATUM
 #endif
 
-#ifdef HG_ARRAY
-# undef HG_ARRAY
+#ifdef ALCHEMY_ARRAY
+# undef ALCHEMY_ARRAY
 #endif
 
-#ifdef HG_DYNAMIC
-# undef HG_DYNAMIC
+#ifdef ALCHEMY_ALLOC
+# undef ALCHEMY_ALLOC
 #endif
 
-#ifdef HG_ALLOCATOR
-# undef HG_ALLOCATOR
+#ifdef ALCHEMY_ALLOC_EX
+# undef ALCHEMY_ALLOC_EX
 #endif
 
-#ifdef HG_END_FORMAT
-# undef HG_END_FORMAT
+#ifdef ALCHEMY_END_STRUCT
+# undef ALCHEMY_END_STRUCT
 #endif
 
-#ifdef HG_BEGIN_PACKED
-# undef HG_BEGIN_PACKED
+#ifdef ALCHEMY_PACKED
+# undef ALCHEMY_PACKED
 #endif
 
-#ifdef HG_BIT_FIELD
-# undef HG_BIT_FIELD
+#ifdef ALCHEMY_BITS
+# undef ALCHEMY_BITS
 #endif
 
-#ifdef HG_END_PACKED
-# undef HG_END_PACKED
+#ifdef ALCHEMY_END_PACKED
+# undef ALCHEMY_END_PACKED
 #endif
 
-#endif
+//#endif
 
 //  Includes ******************************************************************
-#include <Alchemy.h>
+//#include <Alchemy.h>
 #include <C/carbon_def.h>
 
 
@@ -104,7 +100,9 @@
 ///   } // namespace Hg
 /// ~~~
 ///             
-#define HG_BEGIN_FORMAT(NAME, ...)  DECLARE_C_STRUCT_HEADER(NAME, __VA_ARGS__)
+#define ALCHEMY_STRUCT(NAME, ...)        DECLARE_C_STRUCT_HEADER(NAME, __VA_ARGS__)
+
+#define C_STRUCT(NAME, ...)              DECLARE_C_STRUCT_HEADER(NAME, __VA_ARGS__)
 
 
 //  ****************************************************************************
@@ -118,7 +116,9 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define HG_DATUM(TYPE,NAME)            DECLARE_C_DATUM(TYPE,NAME)
+#define ALCHEMY_DATUM(TYPE,NAME)       DECLARE_C_DATUM(TYPE,NAME)
+
+#define C_DATUM(TYPE,NAME)             DECLARE_C_DATUM(TYPE,NAME)
 
 //  ****************************************************************************
 /// Adds a fixed-size array field to the message definition.
@@ -132,7 +132,9 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
-#define HG_ARRAY(TYPE,COUNT,NAME)      DECLARE_C_ARRAY(TYPE,COUNT,NAME)
+#define ALCHEMY_ARRAY(TYPE,COUNT,NAME) DECLARE_C_ARRAY(TYPE,COUNT,NAME)
+
+#define C_ARRAY(TYPE,COUNT,NAME)       DECLARE_C_ARRAY(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size to the message definition.
@@ -156,7 +158,10 @@
 ///                 NAME will be the name used to access this field directly.
 ///
 ///             
-#define HG_DYNAMIC(TYPE,COUNT,NAME)\
+#define ALCHEMY_ALLOC(TYPE,COUNT,NAME)\
+                                        DECLARE_C_DYNAMIC(TYPE,COUNT,NAME)
+
+#define C_DYNAMIC(TYPE,COUNT,NAME)\
                                         DECLARE_C_DYNAMIC(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
@@ -184,7 +189,10 @@
 ///                   NAME will be the name used to access this field directly.
 ///
 ///             
-#define HG_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)\
+#define ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)\
+                                        DECLARE_C_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
+
+#define C_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)\
                                         DECLARE_C_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
 
 //  ****************************************************************************
@@ -198,7 +206,9 @@
 /// data format definition. A compiler error will be emitted if the number 
 /// of declared HG_MSG_FIELD entries does not match the number expected.
 /// 
-#define HG_END_FORMAT(TYPE_LIST)       DECLARE_C_STRUCT_FOOTER(TYPE_LIST)
+#define ALCHEMY_END_STRUCT(TYPE_LIST)  DECLARE_C_STRUCT_FOOTER(TYPE_LIST)
+
+#define C_END_STRUCT(TYPE_LIST)        DECLARE_C_STRUCT_FOOTER(TYPE_LIST)
 
 
 //  ****************************************************************************
@@ -241,7 +251,9 @@
 ///                 3) The definition of the BIT_SET struct, which contains
 ///                    all of the named bit-field properties managed by the BIT_SET.
 ///         
-#define HG_BEGIN_PACKED(TYPE,NAME)     DECLARE_C_PACKED_HEADER(TYPE,NAME)
+#define ALCHEMY_PACKED(TYPE,NAME)      DECLARE_C_PACKED_HEADER(TYPE,NAME)
+
+#define C_BEGIN_PACKED(TYPE,NAME)      DECLARE_C_PACKED_HEADER(TYPE,NAME)
 
 
 //  ****************************************************************************
@@ -256,7 +268,10 @@
 ///                 NAME will be the name used to access this bit-field directly.
 /// @param COUNT    The number of bits this Bit-Field occupies.
 ///             
-#define HG_BIT_FIELD(INDEX,NAME,COUNT)\
+#define ALCHEMY_BITS(INDEX,NAME,COUNT)\
+                                        DECLARE_C_BIT_FIELD(INDEX, NAME, COUNT)
+
+#define C_BIT_FIELD(INDEX,NAME,COUNT)\
                                         DECLARE_C_BIT_FIELD(INDEX, NAME, COUNT)
 
 
@@ -266,7 +281,9 @@
 /// A type container specialization is declared for this class to facilitate
 /// the proper calculation of the internal buffer size for the container.
 /// 
-#define HG_END_PACKED                   DECLARE_C_PACKED_FOOTER
+#define ALCHEMY_END_PACKED              DECLARE_C_PACKED_FOOTER
+
+#define C_END_PACKED                    DECLARE_C_PACKED_FOOTER
 
 
 #endif

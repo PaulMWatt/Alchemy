@@ -7,11 +7,14 @@
  *  @copyright 2014 Paul M Watt
  *  
  */
-#include <Carbon.h>
-#include <CarbonTestDefs.h>
+#define ALCHEMY_CARBONATE 1
 
 #define LEAN_AND_MEAN
 #include <Windows.h>
+
+#include <Carbon.h>
+#include <CarbonTestDefs.h>
+
 
 
 

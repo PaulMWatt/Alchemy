@@ -42,20 +42,10 @@
 #ifndef BYTE_ORDER_H_INCLUDED
 #define BYTE_ORDER_H_INCLUDED
 //  Includes *******************************************************************
-#include <Pb/compiler.h>
+#include <Pb/detail/endianess.h>
 
 namespace Hg
 {
-
-//  Constants ******************************************************************
-/// This enumeration set contains definitions for each type of endian processor
-/// supported by these conversion functions. 
-/// 
-enum Endianess
-{
-  k_big_endian    = ALCHEMY_BIG_ENDIAN,      ///< Indicates Big-Endian byte-order
-  k_little_endian = ALCHEMY_LITTLE_ENDIAN    ///< Indicates Little-Endian byte-order
-};
 
 ///< Constant indicates machine endianess.
 const Endianess k_endianess = Endianess(ALCHEMY_ENDIANESS); 

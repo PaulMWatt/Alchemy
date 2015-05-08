@@ -61,9 +61,14 @@
 #ifndef ALCHEMY_H_INCLUDED
 #define ALCHEMY_H_INCLUDED
 
-#if !defined(ALCHEMY_CARBONATE)
-
 //  Includes ******************************************************************
+
+#if defined(ALCHEMY_CARBONATE)
+
+#include <C/carbon_def.h>
+#include <C/carbonate.h>
+
+#else
 #include <Hg/msg_def.h>
 
 //  ****************************************************************************
@@ -95,8 +100,9 @@
 ///     
 /// ~~~
 ///             
-#define HG_BEGIN_FORMAT(NAME, ...)  DECLARE_STRUCT_HEADER(NAME, __VA_ARGS__)
+#define ALCHEMY_STRUCT(NAME, ...)     DECLARE_STRUCT_HEADER(NAME, __VA_ARGS__)
 
+#define HG_BEGIN_FORMAT(NAME, ...)    DECLARE_STRUCT_HEADER(NAME, __VA_ARGS__)
 
 //  ****************************************************************************
 /// Adds a field to the message definition.
@@ -109,6 +115,8 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
+#define ALCHEMY_DATUM(TYPE,NAME)       D_DATUM(TYPE,NAME)
+
 #define HG_DATUM(TYPE,NAME)            D_DATUM(TYPE,NAME)
 
 //  ****************************************************************************
@@ -123,6 +131,8 @@
 /// @param NAME     The name to assign this parameter in the message definition.
 ///                 NAME will be the name used to access this field directly.
 ///             
+#define ALCHEMY_ARRAY(TYPE,COUNT,NAME) DECLARE_ARRAY_ENTRY(TYPE,COUNT,NAME)
+
 #define HG_ARRAY(TYPE,COUNT,NAME)      DECLARE_ARRAY_ENTRY(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
@@ -147,8 +157,9 @@
 ///                 NAME will be the name used to access this field directly.
 ///
 ///             
-#define HG_DYNAMIC(TYPE,COUNT,NAME)\
-                                        DECLARE_DYNAMIC_ENTRY(TYPE,COUNT,NAME)
+#define ALCHEMY_ALLOC(TYPE,COUNT,NAME)  DECLARE_DYNAMIC_ENTRY(TYPE,COUNT,NAME)
+
+#define HG_DYNAMIC(TYPE,COUNT,NAME)     DECLARE_DYNAMIC_ENTRY(TYPE,COUNT,NAME)
 
 //  ****************************************************************************
 /// Adds a field with a dynamic size controlled by a user specified allocator.
@@ -175,6 +186,9 @@
 ///                   NAME will be the name used to access this field directly.
 ///
 ///             
+#define ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)\
+                                        D_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
+
 #define HG_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)\
                                         D_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
 
@@ -189,8 +203,9 @@
 /// data format definition. A compiler error will be emitted if the number 
 /// of declared HG_MSG_FIELD entries does not match the number expected.
 /// 
-#define HG_END_FORMAT(TYPE_LIST)       DECLARE_STRUCT_FOOTER(TYPE_LIST)
+#define ALCHEMY_END_STRUCT(TYPE_LIST)   DECLARE_STRUCT_FOOTER(TYPE_LIST)
 
+#define HG_END_FORMAT(TYPE_LIST)        DECLARE_STRUCT_FOOTER(TYPE_LIST)
 
 //  ****************************************************************************
 /// Starts the definition for a message field that represents a set of packed bits. 
@@ -232,8 +247,9 @@
 ///                 3) The definition of the BIT_SET struct, which contains
 ///                    all of the named bit-field properties managed by the BIT_SET.
 ///         
-#define HG_BEGIN_PACKED(TYPE,NAME)     DECLARE_PACKED_HEADER(TYPE,NAME)
+#define ALCHEMY_PACKED(TYPE,NAME)       DECLARE_PACKED_HEADER(TYPE,NAME)
 
+#define HG_BEGIN_PACKED(TYPE,NAME)      DECLARE_PACKED_HEADER(TYPE,NAME)
 
 //  ****************************************************************************
 /// Adds a bit-field type parameter to the bit-set.
@@ -247,6 +263,9 @@
 ///                 NAME will be the name used to access this bit-field directly.
 /// @param COUNT    The number of bits this Bit-Field occupies.
 ///             
+#define ALCHEMY_BITS(INDEX,NAME,COUNT)\
+                                        DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
+
 #define HG_BIT_FIELD(INDEX,NAME,COUNT)\
                                         DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
 
@@ -257,8 +276,10 @@
 /// A type container specialization is declared for this class to facilitate
 /// the proper calculation of the internal buffer size for the container.
 /// 
+#define ALCHEMY_END_PACKED              DECLARE_PACKED_FOOTER
+
 #define HG_END_PACKED                   DECLARE_PACKED_FOOTER
 
-#endif // ALCHEMY_CARBONATE
+#endif
 
 #endif
