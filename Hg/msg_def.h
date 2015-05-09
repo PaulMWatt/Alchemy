@@ -378,8 +378,6 @@ struct message_size_trait
   };                                                                           \
   END_NAMESPACE(Hg)
 
-//    Hg_DEFINE_PACKED_FIELDS(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))             \/
-
 // *****************************************************************************
 #define Eval_Hg_DECLARE_BIT_FIELD(IDX,P,N)                                      \
   typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \

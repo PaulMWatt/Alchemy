@@ -20,10 +20,10 @@
     <ClCompile Include="Src\Generated\CarbonTestSuiteRunner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="carbon_test.c">
+    <ClCompile Include="carbon_data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="carbon_data.cpp">
+    <ClCompile Include="c_usage.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,6 +41,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Carbon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_usage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

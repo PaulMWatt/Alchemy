@@ -28,9 +28,8 @@
 #ifndef CARBON_H_INCLUDED
 #define CARBON_H_INCLUDED
 //  Includes ******************************************************************
-#include <Pb/detail/endianess.h>
-#include <stdint.h>
-
+#define ALCHEMY_CARBONATE
+#include <Alchemy.h>
 
 // The definition that indicates these 
 // functions will be publically accessible.

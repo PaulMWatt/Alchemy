@@ -85,7 +85,6 @@
     <ClInclude Include="..\..\Carbon.h" />
     <ClInclude Include="..\..\C\carbonate.h" />
     <ClInclude Include="..\..\C\carbon_def.h" />
-    <ClInclude Include="CarbonExports.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\C\carbonate.cpp">

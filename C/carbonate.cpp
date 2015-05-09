@@ -6,103 +6,9 @@
 //  @copyright 2015 Paul M Watt
 //  ****************************************************************************
 //  Includes *******************************************************************
-#include <Carbon.h>
 #include <C/carbonate.h>
-
 #include <algorithm>
 
-#include <CarbonExports.h>
-
-namespace C
-{
-//  Typedefs *******************************************************************
-typedef unsigned char     carbon_t;
-
-
-
-//  ****************************************************************************
-/// Opaque type representation of memory buffers returned for Carbon.
-///
-/// Byte [0]:     Carbon ID
-/// Bytes[1,3]:   Size of the buffer, 3-bytes, 16 MB max
-/// Bytes[4,7]:   Type Id mapping the C-struct to a C++ Hg::Message format.  
-/// Byte [8]:     The pointer returned to the caller.
-///               The remainder of the structure starts here.
-///               Therefore, all allocations will be 8-bytes larger than requested.
-///
-const int       k_carbon_footprint  = -8;
-const int       k_base_offset       = -k_carbon_footprint;
-const int       k_type_offset       = 4;
-const uint32_t  k_carbon_id         = 0xA9;       
-
-const uint32_t  k_size_mask         = 0x00FFFFFF; 
-
-
-
-//  ****************************************************************************
-/// Given the users msg address, the actual allocated based address is returned.
-///
-inline
-carbon_t* carbon_ptr(Hg_msg_t* p_msg)
-{
-  if (!p_msg)
-    return 0;
-
-  // Offset the user supplied pointer to the 
-  // calculated position of the allocation base address.
-  carbon_t* p_base = static_cast<carbon_t*>(p_msg);
-  std::advance(p_base, k_base_offset);
-
-  // Verify the Carbon ID before returning the pointer.
-  if ( !p_base
-    || p_base[0] != k_carbon_id)
-    return 0;
-
-  return p_base;
-}
-
-//  ****************************************************************************
-inline
-carbon_t* carbon_ptr(const Hg_msg_t* p_msg)
-{
-  return carbon_ptr(const_cast<Hg_msg_t*>(p_msg));
-}
-
-//  ****************************************************************************
-/// Returns the size of the allocated buffer.
-///
-inline
-size_t carbon_size(const Hg_msg_t* p_msg)
-{
-  carbon_t* p_base = carbon_ptr(p_msg);
-  if (!p_base)
-    return 0;
-
-  uint32_t size = 0;
-  memcpy(&size, p_base, 4);
-
-  return size & k_size_mask;
-}
-
-//  ****************************************************************************
-/// Returns the type of message for which the buffer is allocated.
-///
-inline
-Hg_type_t carbon_type(const Hg_msg_t* p_msg)
-{
-  carbon_t* p_base = carbon_ptr(p_msg);
-  if (!p_base)
-    return 0;
-
-  Hg_type_t type = 0;
-  memcpy(&type, p_base + k_type_offset, 4);
-
-  return type;
-}
-
-
-
-} // namespace C
 
 
 // Disable name-mangling for these 
@@ -125,7 +31,7 @@ Hg_msg_t* Hg_create(
   Hg_type_t msg_type
 )
 {
-  size_t size = GetTheSize(msg_type);
+  size_t size = GetTypeSize(msg_type);
   if (0 == size)
     return 0;
 
@@ -145,6 +51,8 @@ Hg_msg_t* Hg_clone(
   const Hg_msg_t* p_src
 )
 {
+  GetTotalSize(const_cast<Hg_msg_t*>(p_src));
+
   return 0;
 }
 

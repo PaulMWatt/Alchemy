@@ -28,17 +28,12 @@
 //  
 #if defined(ALCHEMY_CARBONATE)
 
+#include <Pb/detail/int_defs.h>
 #include <Pb/meta_macros.h>
 
 //  ****************************************************************************
 //  Utility Constructs For Use With Carbon Types *******************************
 //  ****************************************************************************
-//  Typedefs *******************************************************************
-
-// TODO: Return with the proper def.
-//typedef size_t (*pfnGetDatumSize)(const uint8_t*, size_t);
-
-
 #define EACH_C_PARAM(r, data, i, x) \
   BOOST_PP_TUPLE_ELEM(2,0,x) BOOST_PP_TUPLE_ELEM(2,1,x); 
 
@@ -124,12 +119,9 @@
 
 #endif
 
-// TODO: Working on a solution for bit-field definitions.
-//# define C_DECLARE_PACKED_HEADER(T,C)       typedef T C;
-
 #ifdef __cplusplus
 
-// *****************************************************************************
+//  ****************************************************************************
 # define C_DECLARE_PACKED_HEADER(T,P, ...)                                     \
   extern "C" typedef struct tag_##P                                            \
   {                                                                            \
@@ -138,7 +130,7 @@
 
 #else
 
-// *****************************************************************************
+//  ****************************************************************************
 # define C_DECLARE_PACKED_HEADER(T,P, ...)                                     \
   typedef struct tag_##P                                                       \
   {                                                                            \
@@ -146,22 +138,60 @@
   } P;
 #endif 
 
-// *****************************************************************************
+//  ****************************************************************************
 # define C_DECLARE_BIT_FIELD(IDX,P,N)                                          \
   unsigned int      P:N;
 
 
-//#define DECLARE_C_PACKED_HEADER(T,C)                                           \
-//  typedef struct tag_##C                                                       \
-//  {                                                                            \
-//    
-//// TODO: Need to determine a way to declare the storage type.
-//// *****************************************************************************
-//#define DECLARE_C_BIT_FIELD(IDX,P,N)        unsigned int P : N;
+
+//  Exclusive to C++ ***********************************************************
+//  This section contains MACRO Functions specific to C++ builds.
+//  These create conversion and dispatch functions for the exported types.
 //
-//// *****************************************************************************
-//#define DECLARE_C_PACKED_FOOTER                                                \
-//  } color4;
+#ifdef __cplusplus
+
+namespace C 
+{
+
+//  Forward Declarations *******************************************************
+template< typename T, typename U >
+U& struct_to_msg(const T& src, U& dest);
+
+template< typename T, typename U >
+U& msg_to_struct(const T& src, U& dest);
+
+} // namespace C
+
+// TODO: DEFINE A macro that extracts all of the names and for each field calls struct_to_msg with the name of the field.
+
+//  ****************************************************************************
+//  Assigns the values of each field to the message.
+//
+#define C_DECLARE_STRUCT_TO_MSG(NAME, ...)                                     \
+  namespace C {                                                                \
+  template< typename S, typename M >                                           \
+  Hg::##NAME& struct_to_msg(const C::##NAME& src, Hg::##NAME& dest)            \
+  {                                                                            \
+  }                                                                            \
+  } // namespace C
+
+//  ****************************************************************************
+//  Assigns the values of each field to the struct.
+//
+#define C_DECLARE_MSG_TO_STRUCT(NAME, ...)                                     \
+  namespace C {                                                                \
+  template< >                                                                  \
+  C::##NAME& msg_to_struct(const Hg::##NAME& src, C::##NAME& dest)             \
+  {                                                                            \
+  }                                                                            \
+  } // namespace C
+
+
+
+#endif
+
+
+
 
 #else
 

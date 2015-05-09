@@ -34,9 +34,9 @@
 
 #include <Carbon.h>
 #include <CarbonTestDefs.h>
- 
-extern "C" void function();
 
+#include <c_usage.h>
+ 
 //  ****************************************************************************
 /// CarbonTestSuite Test Suite class.
 ///
@@ -45,6 +45,7 @@ class CarbonTestSuite : public CxxTest::TestSuite
 public:
 
   CarbonTestSuite()
+    : m_hLib(0)
   {
     // TODO: Construct Test Suite Object
   }
@@ -53,17 +54,18 @@ public:
   // setUp will be called before each test case in order to setup common fixtures.
   virtual void setUp()
   {
-    // TODO: Add common fixture setup code if any exists.
+    m_hLib = setup_library();
   }
  
   // tearDown will be called after each test case to clean up common resources.
   virtual void tearDown()
   {
-    // TODO: Add common fixture teardown code if any exists.
+    teardown_library(m_hLib);
   }
 
 protected:
   // Test Suite Data **********************************************************
+  HMODULE m_hLib;
 
   // Creator Methods **********************************************************
   // TODO: Use creator methods to reduce redundant setup code in test cases.
@@ -96,6 +98,13 @@ public:
 //  ******************************************************************************
 void CarbonTestSuite::TestCase1(void)
 {
+  vertex_t v;
+
+  v.pt.X = 10;
+  v.pt.Y = 5;
+  v.pt.Z = -2;
+
+
   function();
 }
 

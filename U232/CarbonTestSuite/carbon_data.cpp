@@ -4,7 +4,7 @@
  *  
  *  The MIT License(MIT)
  *  
- *  @copyright 2014 Paul M Watt
+ *  @copyright 2015 Paul M Watt
  *  
  */
 #include <Alchemy.h>
