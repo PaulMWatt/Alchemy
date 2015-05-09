@@ -11,15 +11,17 @@
 //  Test Types *****************************************************************
 // A current limitation for the Hg definitions are they must be defined in 
 // the Hg namespace.
-HG_BEGIN_PACKED (uint32_t, mixed_bits)
-  HG_BIT_FIELD   (0,   first,   5)
-  HG_BIT_FIELD   (1,   second,  4)
-  HG_BIT_FIELD   (2,   third,   3)
-  HG_BIT_FIELD   (3,   fourth,  2)
-  HG_BIT_FIELD   (4,   fifth,   1)
-  HG_BIT_FIELD   (5,   sixth,   1)
-  HG_BIT_FIELD   (6,   seventh, 1)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint32_t, 
+  mixed_bits,
+  ALCHEMY_BITS   (0,   first,   5),
+  ALCHEMY_BITS   (1,   second,  4),
+  ALCHEMY_BITS   (2,   third,   3),
+  ALCHEMY_BITS   (3,   fourth,  2),
+  ALCHEMY_BITS   (4,   fifth,   1),
+  ALCHEMY_BITS   (5,   sixth,   1),
+  ALCHEMY_BITS   (6,   seventh, 1)
+);
 
 //  ****************************************************************************
 //  A type array used to create the nested message field.
@@ -49,9 +51,11 @@ ALCHEMY_STRUCT(single_nested_t,
 //  ****************************************************************************
 //  Bitlist with a single entry 
 // the Hg namespace.
-HG_BEGIN_PACKED (uint8_t, single_bit)
-  HG_BIT_FIELD   (0, lonely, 1)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint8_t, 
+  single_bit,
+  ALCHEMY_BITS   (0, lonely, 1)
+);
 
 
 ALCHEMY_STRUCT(single_bit_t,

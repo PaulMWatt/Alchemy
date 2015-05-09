@@ -35,37 +35,45 @@
 #include <vector>
 
 //  Test Types *****************************************************************
-HG_BEGIN_PACKED (uint8_t, byte_1x8)
-  HG_BIT_FIELD   (0,   first, 8)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint8_t, 
+  byte_1x8,
+  ALCHEMY_BITS   (0,   first, 8)
+);
 
-HG_BEGIN_PACKED (uint8_t, byte_4x2)
-  HG_BIT_FIELD   (0,   first,   2)
-  HG_BIT_FIELD   (1,   second,  2)
-  HG_BIT_FIELD   (2,   third,   2)
-  HG_BIT_FIELD   (3,   fourth,  2)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint8_t, 
+  byte_4x2,
+  ALCHEMY_BITS   (0,   first,   2),
+  ALCHEMY_BITS   (1,   second,  2),
+  ALCHEMY_BITS   (2,   third,   2),
+  ALCHEMY_BITS   (3,   fourth,  2)
+);
 
-HG_BEGIN_PACKED (uint8_t, byte_8x1)
-  HG_BIT_FIELD   (0,   first,   1)
-  HG_BIT_FIELD   (1,   second,  1)
-  HG_BIT_FIELD   (2,   third,   1)
-  HG_BIT_FIELD   (3,   fourth,  1)
-  HG_BIT_FIELD   (4,   fifth,   1)
-  HG_BIT_FIELD   (5,   sixth,   1)
-  HG_BIT_FIELD   (6,   seventh, 1)
-  HG_BIT_FIELD   (7,   eighth,  1)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint8_t, 
+  byte_8x1,
+  ALCHEMY_BITS   (0,   first,   1),
+  ALCHEMY_BITS   (1,   second,  1),
+  ALCHEMY_BITS   (2,   third,   1),
+  ALCHEMY_BITS   (3,   fourth,  1),
+  ALCHEMY_BITS   (4,   fifth,   1),
+  ALCHEMY_BITS   (5,   sixth,   1),
+  ALCHEMY_BITS   (6,   seventh, 1),
+  ALCHEMY_BITS   (7,   eighth,  1)
+);
 
-HG_BEGIN_PACKED (uint32_t, mixed_set)
-  HG_BIT_FIELD   (0,   first,   5)
-  HG_BIT_FIELD   (1,   second,  4)
-  HG_BIT_FIELD   (2,   third,   3)
-  HG_BIT_FIELD   (3,   fourth,  2)
-  HG_BIT_FIELD   (4,   fifth,   1)
-  HG_BIT_FIELD   (5,   sixth,   16)
-  HG_BIT_FIELD   (6,   seventh, 1)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint32_t, 
+  mixed_set,
+  ALCHEMY_BITS   (0,   first,   5),
+  ALCHEMY_BITS   (1,   second,  4),
+  ALCHEMY_BITS   (2,   third,   3),
+  ALCHEMY_BITS   (3,   fourth,  2),
+  ALCHEMY_BITS   (4,   fifth,   1),
+  ALCHEMY_BITS   (5,   sixth,   16),
+  ALCHEMY_BITS   (6,   seventh, 1)
+);
 
 namespace Hg
 {

@@ -77,15 +77,14 @@
 ///             
 /// @param TYPE_LIST         The TypeList used to defined the layout format.
 ///             
-/// @note           This definition MACRO should be placed in the global or
-///                 alchemy namespace.
+/// @note           This definition MACRO should be placed in the global namespace.
+///                 C++ objects will be placed in a namespace that corresponds
+///                 with the elemental name of its library, such as Hg.
 /// ~~~{.cpp}
-///   // Currently the BIT_SET definitions must occur in the *alchemy* namespace.
-///   namespace Hg
-///   {
 ///
 ///   // Define the message data format
-///   ALCHEMY_STRUCT(new_point_t,
+///   ALCHEMY_STRUCT
+///   ( new_point_t,
 ///     ALCHEMY_DATUM (uint8_t,    msgType),
 ///     ALCHEMY_DATUM (uint8_t,    verNum),
 ///     ALCHEMY_DATUM (uint16_t,   id),
@@ -97,7 +96,6 @@
 ///     ALCHEMY_DATUM (uint8_t,    count)
 ///   )
 ///     
-///   } // namespace Hg
 /// ~~~
 ///             
 #define ALCHEMY_STRUCT(NAME, ...)       DECLARE_STRUCT(NAME, C_,  __VA_ARGS__);\
@@ -217,21 +215,19 @@
 ///           
 /// usage:
 /// ~~~{.cpp}
-///   // The BIT_SET definitions must occur in the *Hg* namespace.
-///   namespace Hg
-///   {
 ///   
-///   ALCHEMY_PACKED (uint8_t, flags)
-///     ALCHEMY_BITS   (0, is_visible, 1)
-///     ALCHEMY_BITS   (1, is_light  , 1)
-///     ALCHEMY_BITS   (2, ambient   , 3)
+///   ALCHEMY_PACKED 
+///   ( uint8_t, 
+///     flags,
+///     ALCHEMY_BITS   (0, is_visible, 1),
+///     ALCHEMY_BITS   (1, is_light  , 1),
+///     ALCHEMY_BITS   (2, ambient   , 3),
 ///     ALCHEMY_BITS   (3, diffuse   , 3)
-///   ALCHEMY_END_PACKED
-///     
-///   } // namespace Hg
+///   );
+///
 /// ~~~     
 ///         
-/// @remarks        There are three constructs that are created by the definition
+/// @remarks        There are a number of constructs that are created by the definition
 ///                 of this MACRO:
 ///                 1) ContainerSize<> specialization to properly return the
 ///                    size of the data buffer required for the bitset.
@@ -240,11 +236,12 @@
 ///                    value_type and a data cache for the message field.
 ///                 3) The definition of the BIT_SET struct, which contains
 ///                    all of the named bit-field properties managed by the BIT_SET.
+///                 4) If ALCHEMY_CARBONATE is defined before the Alchemy.h, 
+///                    a set of C-linkable structs and utility functions will be
+///                    generated and exported for use in a library.
 ///         
-#define ALCHEMY_PACKED(TYPE,NAME)       DECLARE_PACKED_HEADER(TYPE,NAME)
-
-#define C_BEGIN_PACKED(TYPE,NAME)       C_DECLARE_PACKED_HEADER(TYPE,NAME)
-#define HG_BEGIN_PACKED(TYPE,NAME)      Hg_DECLARE_PACKED_HEADER(TYPE,NAME)
+#define ALCHEMY_PACKED(TYPE, NAME, ...) DECLARE_PACKED(TYPE, NAME, C_,  __VA_ARGS__);\
+                                        DECLARE_PACKED(TYPE, NAME, Hg_, __VA_ARGS__);
 
 //  ****************************************************************************
 /// Adds a bit-field type parameter to the bit-set.
@@ -261,12 +258,6 @@
 #define ALCHEMY_BITS(INDEX,NAME,COUNT)\
                                         DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
 
-#define C_BIT_FIELD(INDEX,NAME,COUNT)\
-                                        C_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
-
-#define HG_BIT_FIELD(INDEX,NAME,COUNT)\
-                                        Hg_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
-
 
 //  ****************************************************************************
 /// Ends the definition for a message field that represents a set of packed bits.
@@ -276,7 +267,18 @@
 /// 
 #define ALCHEMY_END_PACKED              DECLARE_PACKED_FOOTER
 
-#define C_END_PACKED                    C_DECLARE_PACKED_FOOTER
-#define HG_END_PACKED                   Hg_DECLARE_PACKED_FOOTER
+
+//#define ALCHEMY_PACKED(TYPE,NAME)       DECLARE_PACKED_HEADER(TYPE,NAME)
+//#define C_BEGIN_PACKED(TYPE,NAME)       C_DECLARE_PACKED_HEADER(TYPE,NAME)
+//#define ALCHEMY_PACKED(TYPE,NAME)      Hg_DECLARE_PACKED_HEADER(TYPE,NAME)
+
+//#define C_BIT_FIELD(INDEX,NAME,COUNT)\
+//                                        C_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
+//
+//#define ALCHEMY_BITS(INDEX,NAME,COUNT)\
+//                                        Hg_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
+
+//#define C_END_PACKED                    C_DECLARE_PACKED_FOOTER
+//#define );                   Hg_DECLARE_PACKED_FOOTER
 
 #endif

@@ -22,8 +22,6 @@
 # error Do not include this file directly. Use <alchemy.h> instead
 #endif
 
-#ifdef __cplusplus 
-
 //  ****************************************************************************
 //  We're potentially using some pretty long type definitions.
 //  For any moderately complex message format, we will almost certainly
@@ -31,6 +29,67 @@
 #if defined(_MSC_VER)
 #pragma warning(disable : 4503) // decorated name length exceeded, name was truncated
 #endif
+
+
+//  ****************************************************************************
+//  Declaration MACROs used for converting from the generic Alchemy definition.
+//  ****************************************************************************
+
+//  ****************************************************************************
+//  Helps convert generic ALCHEMY datum declarations to elemental declarations.  
+//
+#define ELEMENTAL_PARAM(r, data, i, x) \
+   , BOOST_PP_CAT(data, x)
+
+// TODO: It's possible, GCC may accept this form. If not, refer to the EACH_PARAM MACRO below.
+
+//  ****************************************************************************
+//  Iterates through each parameter declared in an Alchemy struct declaration.
+//  This for-loop uses the ELEMENTAL_PARAM MACRO above to prepend the 
+//  supplied element prefix to the parameter declaration.
+//
+#define STRUCT_PARAMS(NAME, EL,S) \
+  (NAME BOOST_PP_SEQ_FOR_EACH_I(ELEMENTAL_PARAM, EL, S))
+
+//  ****************************************************************************
+//  The generic Alchemy struct definition.
+//  This definition can be converted into any elemental type definition 
+//  that is defined for Alchemy.
+//
+#define DECLARE_STRUCT(NAME, EL, ...)                                          \
+  EL##DECLARE_STRUCT_HEADER                                                    \
+    STRUCT_PARAMS(NAME, EL, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+
+
+//  ****************************************************************************
+//  Helps convert generic ALCHEMY datum declarations to elemental declarations.  
+//
+#define ELEMENTAL_BITS(r, data, i, x) \
+    , BOOST_PP_CAT(data, x)
+
+//  ****************************************************************************
+//  Iterates through each parameter declared in an Alchemy struct declaration.
+//  This for-loop uses the ELEMENTAL_PARAM MACRO above to prepend the 
+//  supplied element prefix to the parameter declaration.
+//
+#define PACKED_PARAMS(TYPE, NAME, EL,S)                                        \
+  (TYPE, NAME BOOST_PP_SEQ_FOR_EACH_I(ELEMENTAL_BITS, EL, S))
+
+//  ****************************************************************************
+//  The generic Alchemy struct definition.
+//  This definition can be converted into any elemental type definition 
+//  that is defined for Alchemy.
+//
+#define DECLARE_PACKED(TYPE, NAME, EL, ...)                                    \
+  EL##DECLARE_PACKED_HEADER                                                    \
+    PACKED_PARAMS(TYPE, NAME, EL,BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+
+//  ****************************************************************************
+//  The version of MACROs defined below are dependent upon the language.
+//
+#ifdef __cplusplus 
 
 //  Includes *******************************************************************
 #include <Pb/meta_fwd.h>
@@ -115,9 +174,6 @@ struct message_size_trait
 
 #define DEFINE_TYPELIST(N,...)\
   typedef TypeList < __VA_ARGS__ > N;
-
-#define DEFINE_PARAMLIST(...)\
-  __VA_ARGS__
 
 
 #if defined(_MSC_VER)
@@ -260,9 +316,29 @@ struct message_size_trait
 
 
 //  ****************************************************************************
-//  Bit Fields *****************************************************************
+//  Packed Bit Fields **********************************************************
 //  ****************************************************************************
-#define Hg_DECLARE_PACKED_HEADER(T,C)                                          \
+#define Eval_Hg(x) x
+#define Hg_EACH_BIT_FIELD(r, data, i, x) \
+  BOOST_PP_CAT(data, x)
+  
+
+#if defined(_MSC_VER)
+
+#define Hg_DEFINE_PACKED_FIELDS(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(Hg_EACH_BIT_FIELD, Eval_, BOOST_PP_VARIADIC_TO_SEQ(S))
+//  BOOST_PP_SEQ_FOR_EACH_I(Hg_EACH_BIT_FIELD, unused, S)
+
+#else
+
+#define Hg_DEFINE_PACKED_FIELDS(...) \
+  BOOST_PP_SEQ_FOR_EACH_I(C_EACH_BIT_FIELD, unused, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+#endif
+
+
+//  ****************************************************************************
+#define Hg_DECLARE_PACKED_HEADER(T,C,...)                                      \
   START_NAMESPACE(Hg)                                                          \
   struct C;                                                                    \
   template <>                                                                  \
@@ -298,10 +374,14 @@ struct message_size_trait
     }                                                                          \
                                                                                \
     enum { k_offset_0 = 0 };                                                   \
+    Hg_DEFINE_PACKED_FIELDS(__VA_ARGS__)                                       \
+  };                                                                           \
+  END_NAMESPACE(Hg)
 
+//    Hg_DEFINE_PACKED_FIELDS(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))             \/
 
 // *****************************************************************************
-#define Hg_DECLARE_BIT_FIELD(IDX,P,N)                                          \
+#define Eval_Hg_DECLARE_BIT_FIELD(IDX,P,N)                                      \
   typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \
   struct P##_tag                                                               \
   { static ptrdiff_t offset()                                                  \
@@ -311,12 +391,8 @@ struct message_size_trait
   typedef BitField  < this_type, P##_tag, k_offset_##IDX, N, value_type > P##_t; \
   enum { TMP_PASTE(k_offset_, TMP_INC(IDX)) = k_offset_##IDX + N };            \
                                                                                \
-  P##_t P;                                                                     \
+  P##_t P;
 
-// *****************************************************************************
-#define Hg_DECLARE_PACKED_FOOTER                                               \
-  };                                                                           \
-  END_NAMESPACE(Hg)
 
 #else
 
@@ -330,26 +406,10 @@ struct message_size_trait
 #define Hg_DECLARE_ALLOCATOR_DATUM(TYPE,ALLOCATOR,COUNT,NAME)
 #define Hg_DECLARE_STRUCT_FOOTER(TYPE_LIST)
 
-#define Hg_DECLARE_PACKED_HEADER(TYPE,NAME)
+#define Hg_DECLARE_PACKED_HEADER(TYPE,NAME, ...)
 #define Hg_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
 #define Hg_DECLARE_PACKED_FOOTER
 
 #endif // __cplusplus
-
-//  ****************************************************************************
-#define ELEMENTAL_PARAM(r, data, i, x) \
-   , BOOST_PP_CAT(data, x)
-
-
-// TODO: It's possible, GCC may accept this form
-#define STRUCT_PARAMS(NAME, EL,S) \
-  (NAME BOOST_PP_SEQ_FOR_EACH_I(ELEMENTAL_PARAM, EL, S))
-
-#define DECLARE_STRUCT(NAME, EL, ...)                                          \
-  EL##DECLARE_STRUCT_HEADER                                                    \
-    STRUCT_PARAMS(NAME, EL,BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
-
-//  ****************************************************************************
-
 
 #endif

@@ -13,12 +13,14 @@
 //  ****************************************************************************
 //  Bitset definition to represent 4-channel color value.  
 // 
-HG_BEGIN_PACKED (uint32_t, color4)
-  HG_BIT_FIELD   (0,   R, 8)
-  HG_BIT_FIELD   (1,   G, 8)
-  HG_BIT_FIELD   (2,   B, 8)
-  HG_BIT_FIELD   (3,   A, 8)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint32_t, 
+  color4,
+  ALCHEMY_BITS   (0,   R, 8),
+  ALCHEMY_BITS   (1,   G, 8),
+  ALCHEMY_BITS   (2,   B, 8),
+  ALCHEMY_BITS   (3,   A, 8)
+);
 
 
 //  ****************************************************************************

@@ -229,7 +229,9 @@ cd "../.."</Command>
     <ClInclude Include="Src\TestMeta.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\Generated\PbTestSuiteRunner.cpp" />
+    <ClCompile Include="Src\Generated\PbTestSuiteRunner.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

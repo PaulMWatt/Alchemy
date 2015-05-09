@@ -3,7 +3,7 @@
 //  Development header working through the details for defining a Carbon Library.
 // 
 //  The MIT License(MIT)
-//  @copyright 2014 Paul M Watt
+//  @copyright 2015 Paul M Watt
 //  ****************************************************************************
 #ifndef CARBONEXPORTS_H_INCLUDED
 #define CARBONEXPORTS_H_INCLUDED

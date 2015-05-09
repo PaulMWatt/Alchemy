@@ -3,7 +3,7 @@
 //  The implementation for the Carbon functions with C-linkage.
 //  
 //  The MIT License(MIT)
-//  @copyright 2014 Paul M Watt
+//  @copyright 2015 Paul M Watt
 //  ****************************************************************************
 //  Includes *******************************************************************
 #include <Carbon.h>

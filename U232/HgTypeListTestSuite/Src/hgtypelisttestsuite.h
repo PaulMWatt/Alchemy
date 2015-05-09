@@ -38,15 +38,17 @@
 
 using namespace Hg;
 
-HG_BEGIN_PACKED (uint32_t, mixed_bits)
-  HG_BIT_FIELD   (0,   first,   5)
-  HG_BIT_FIELD   (1,   second,  4)
-  HG_BIT_FIELD   (2,   third,   3)
-  HG_BIT_FIELD   (3,   fourth,  2)
-  HG_BIT_FIELD   (4,   fifth,   1)
-  HG_BIT_FIELD   (5,   sixth,   1)
-  HG_BIT_FIELD   (6,   seventh, 1)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint32_t, 
+  mixed_bits,
+  ALCHEMY_BITS   (0,   first,   5),
+  ALCHEMY_BITS   (1,   second,  4),
+  ALCHEMY_BITS   (2,   third,   3),
+  ALCHEMY_BITS   (3,   fourth,  2),
+  ALCHEMY_BITS   (4,   fifth,   1),
+  ALCHEMY_BITS   (5,   sixth,   1),
+  ALCHEMY_BITS   (6,   seventh, 1)
+);
 
 namespace Hg
 {

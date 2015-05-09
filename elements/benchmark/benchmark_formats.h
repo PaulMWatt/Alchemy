@@ -125,33 +125,39 @@ struct Array
 
 //  The Hg equivalent definitions of the structures defined above. *************
 //  ****************************************************************************
-HG_BEGIN_PACKED (uint32_t, SetA)
-  HG_BIT_FIELD   (0,   fifteen, 15)
-  HG_BIT_FIELD   (1,   two,     2)
-  HG_BIT_FIELD   (2,   five,    5)
-  HG_BIT_FIELD   (3,   eight,   8)
-  HG_BIT_FIELD   (4,   one,     1)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint32_t, 
+  SetA,
+  ALCHEMY_BITS   (0,   fifteen, 15),
+  ALCHEMY_BITS   (1,   two,     2),
+  ALCHEMY_BITS   (2,   five,    5),
+  ALCHEMY_BITS   (3,   eight,   8),
+  ALCHEMY_BITS   (4,   one,     1)
+);
 
 //  ****************************************************************************
-HG_BEGIN_PACKED (uint16_t, SetB)
-  HG_BIT_FIELD   (0,   first,   4)
-  HG_BIT_FIELD   (1,   second,  4)
-  HG_BIT_FIELD   (2,   third,   4)
-  HG_BIT_FIELD   (3,   fourth,  4)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint16_t, 
+  SetB,
+  ALCHEMY_BITS   (0,   first,   4),
+  ALCHEMY_BITS   (1,   second,  4),
+  ALCHEMY_BITS   (2,   third,   4),
+  ALCHEMY_BITS   (3,   fourth,  4)
+);
 
 //  ****************************************************************************
-HG_BEGIN_PACKED (uint8_t, SetC)
-  HG_BIT_FIELD   (0,   a, 1)
-  HG_BIT_FIELD   (1,   b, 1)
-  HG_BIT_FIELD   (2,   c, 1)
-  HG_BIT_FIELD   (3,   d, 1)
-  HG_BIT_FIELD   (4,   e, 1)
-  HG_BIT_FIELD   (5,   f, 1)
-  HG_BIT_FIELD   (6,   g, 1)
-  HG_BIT_FIELD   (7,   h, 1)
-HG_END_PACKED
+ALCHEMY_PACKED 
+( uint8_t, 
+  SetC,
+  ALCHEMY_BITS   (0,   a, 1),
+  ALCHEMY_BITS   (1,   b, 1),
+  ALCHEMY_BITS   (2,   c, 1),
+  ALCHEMY_BITS   (3,   d, 1),
+  ALCHEMY_BITS   (4,   e, 1),
+  ALCHEMY_BITS   (5,   f, 1),
+  ALCHEMY_BITS   (6,   g, 1),
+  ALCHEMY_BITS   (7,   h, 1)
+);
 
 
 ALCHEMY_STRUCT(NoConversion,

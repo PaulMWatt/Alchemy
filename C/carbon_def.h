@@ -107,20 +107,50 @@
 //  Bit Fields *****************************************************************
 //  ****************************************************************************
 
-// TODO: Working on a solution for bit-field definitions.
-#ifdef __cplusplus
+#define C_EACH_BIT_FIELD(r, data, i, x) \
+  x
+//  BOOST_PP_TUPLE_ELEM(2,1,x) BOOST_PP_TUPLE_ELEM(2,2,x); 
 
-# define C_DECLARE_PACKED_HEADER(T,C)       extern "C" typedef T C;
-# define C_DECLARE_BIT_FIELD(IDX,P,N)
-# define C_DECLARE_PACKED_FOOTER                            
- 
+
+#if defined(_MSC_VER)
+
+#define C_DEFINE_PACKED_FIELDS(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(C_EACH_BIT_FIELD, unused, BOOST_PP_VARIADIC_TO_SEQ(S))
+
 #else
 
-# define C_DECLARE_PACKED_HEADER(T,C)       typedef T C;
-# define C_DECLARE_BIT_FIELD(IDX,P,N)
-# define C_DECLARE_PACKED_FOOTER                            
+#define C_DEFINE_PACKED_FIELDS(...) \
+  BOOST_PP_SEQ_FOR_EACH_I(C_EACH_BIT_FIELD, unused, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
 
+#endif
+
+// TODO: Working on a solution for bit-field definitions.
+//# define C_DECLARE_PACKED_HEADER(T,C)       typedef T C;
+
+#ifdef __cplusplus
+
+// *****************************************************************************
+# define C_DECLARE_PACKED_HEADER(T,P, ...)                                     \
+  extern "C" typedef struct tag_##P                                            \
+  {                                                                            \
+    C_DEFINE_PACKED_FIELDS(__VA_ARGS__)                                        \
+  } P;
+
+#else
+
+// *****************************************************************************
+# define C_DECLARE_PACKED_HEADER(T,P, ...)                                     \
+  typedef struct tag_##P                                                       \
+  {                                                                            \
+    C_DEFINE_PACKED_FIELDS(__VA_ARGS__)                                        \
+  } P;
 #endif 
+
+// *****************************************************************************
+# define C_DECLARE_BIT_FIELD(IDX,P,N)                                          \
+  unsigned int      P:N;
+
+
 //#define DECLARE_C_PACKED_HEADER(T,C)                                           \
 //  typedef struct tag_##C                                                       \
 //  {                                                                            \
@@ -148,7 +178,7 @@
 # define C_DECLARE_DYNAMIC(T, N, P)      
 # define C_DECLARE_ALLOCATOR(T, A, N, P) 
 
-# define C_DECLARE_PACKED_HEADER(T,C)  
+# define C_DECLARE_PACKED_HEADER(T,C, ...)  
 # define C_DECLARE_BIT_FIELD(IDX,P,N)
 # define C_DECLARE_PACKED_FOOTER                            
 
