@@ -1,4 +1,4 @@
-/// @file alchemy.h
+/// @file Alchemy.h
 /// 
 /// Network Alchemy is a message and structured data processing framework.
 ///
@@ -98,8 +98,8 @@
 ///     
 /// ~~~
 ///             
-#define ALCHEMY_STRUCT(NAME, ...)       DECLARE_STRUCT(NAME, C_,  __VA_ARGS__);\
-                                        DECLARE_STRUCT(NAME, Hg_, __VA_ARGS__);
+#define ALCHEMY_STRUCT(NAME, ...)       DECLARE_STRUCT(NAME, Hg_, __VA_ARGS__);\
+                                        DECLARE_STRUCT(NAME, C_,  __VA_ARGS__);
 
 //  ****************************************************************************
 /// Adds a field to the message definition.

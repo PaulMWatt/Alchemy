@@ -74,6 +74,34 @@ ALCHEMY_STRUCT
   ALCHEMY_DATUM (color4, color)
 );
 
+//extern "C" 
+//typedef struct tag_vertex_t 
+//{ 
+//  pt3d_t pt; 
+//  color4 color;   
+//} vertex_t; 
+//extern const uint32_t k_vertex_t_id; 
+namespace C 
+{ 
+  template< > 
+  Hg::vertex_t& struct_to_msg(vertex_t& src, Hg::vertex_t& dest) 
+  { 
+    using namespace Hg; 
+    C::struct_to_msg(src.pt, dest.pt); 
+    C::struct_to_msg(src.color, dest.color);   
+  } 
+} 
+
+namespace C 
+{ 
+  template< > 
+  vertex_t& msg_to_struct(Hg::vertex_t& src, vertex_t& dest) 
+  { 
+    using namespace Hg; 
+    C::msg_to_struct(src.pt, dest.pt); 
+    C::msg_to_struct(src.color, dest.color);   
+  } 
+}
 
 #endif
 

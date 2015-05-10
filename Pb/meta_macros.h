@@ -27,6 +27,10 @@
 #include <Pb/detail/boost_preprocessor.h>
 
 //  ****************************************************************************
+#define BEGIN_NAMESPACE(NS)         namespace NS {
+#define END_NAMESPACE(NS)           }
+
+//  ****************************************************************************
 // Evaluates the two input expressions, 
 // then uses the token paste operator to fuse them together.
 #define TMP_PASTE(A,B)    TMP_PASTE_DO(A,B)

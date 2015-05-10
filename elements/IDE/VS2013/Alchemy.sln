@@ -36,7 +36,6 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FD674306-0785-43B5-85CA-53710B155A0E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{FD674306-0785-43B5-85CA-53710B155A0E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{FD674306-0785-43B5-85CA-53710B155A0E}.Debug|Win32.Build.0 = Debug|Win32
 		{FD674306-0785-43B5-85CA-53710B155A0E}.Debug|x64.ActiveCfg = Debug|Win32
 		{FD674306-0785-43B5-85CA-53710B155A0E}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{FD674306-0785-43B5-85CA-53710B155A0E}.Release|Win32.ActiveCfg = Release|Win32
@@ -114,7 +113,6 @@ Global
 		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Release|Win32.ActiveCfg = Release|Win32
-		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Release|Win32.Build.0 = Release|Win32
 		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Release|x64.ActiveCfg = Release|Win32
 		{274A541B-2BE9-492A-AE17-051641CBA5E6}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{274A541B-2BE9-492A-AE17-051641CBA5E6}.Debug|Mixed Platforms.Build.0 = Debug|Win32
@@ -124,7 +122,6 @@ Global
 		{274A541B-2BE9-492A-AE17-051641CBA5E6}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{274A541B-2BE9-492A-AE17-051641CBA5E6}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{274A541B-2BE9-492A-AE17-051641CBA5E6}.Release|Win32.ActiveCfg = Release|Win32
-		{274A541B-2BE9-492A-AE17-051641CBA5E6}.Release|Win32.Build.0 = Release|Win32
 		{274A541B-2BE9-492A-AE17-051641CBA5E6}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

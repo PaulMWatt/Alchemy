@@ -1,11 +1,10 @@
-/** @file c_usage.h
- * 
- *  C-source file for demonstrating Carbon API usage.
- *  
- *  The MIT License(MIT)
- *  
- *  @copyright 2015 Paul M Watt
- *  
+/*  @file c_usage.h
+  
+    C-source file for demonstrating Carbon API usage.
+   
+    The MIT License(MIT)
+    
+    @copyright 2015 Paul M Watt  
  */
 #ifndef C_USAGE_H_INCLUDED
 #define C_USAGE_H_INCLUDED

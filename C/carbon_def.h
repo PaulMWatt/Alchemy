@@ -1,18 +1,18 @@
-// @file C/carbon_def.h
+//  @file C/carbon_def.h
 // 
-// Internal implementation MACROS for C-linkable structs and function calls.
+//  Internal implementation MACROS for C-linkable structs and function calls.
 // 
-// Contains declaration MACROs implementation to define data structure formats.
-// The implementations are hidden behind a second layer to simplify the 
-// header file the user will interact with.
+//  Contains declaration MACROs implementation to define data structure formats.
+//  The implementations are hidden behind a second layer to simplify the 
+//  header file the user will interact with.
 // 
-// @note           This header file must not be included directly and the 
-//                 MACROS defined in this file should not be accessed
-//                 directly. Include and used the definitions from the file
-//                 **<Carbon.h>** instead.
+//  @note           This header file must not be included directly and the 
+//                  MACROS defined in this file should not be accessed
+//                  directly. Include and used the definitions from the file
+//                  **<Carbon.h>** instead.
 //           
-/// The MIT License(MIT)
-/// @copyright 2015 Paul M Watt
+//  The MIT License(MIT)
+//  @copyright 2015 Paul M Watt
 //  ****************************************************************************
 #ifndef CARBON_DEF_H_INCLUDED
 #define CARBON_DEF_H_INCLUDED
@@ -50,8 +50,6 @@
 
 #endif
 
-
-
 //  ****************************************************************************
 //  Abstracted Message Definition MACROS ***************************************
 //  Simplified user MACROS use these definitions.
@@ -66,7 +64,9 @@
   extern "C" typedef struct tag_##F                                            \
   {                                                                            \
     DEFINE_C_STRUCT_PARAMS(__VA_ARGS__)                                        \
-  C_DECLARE_STRUCT_FOOTER(F)
+  C_DECLARE_STRUCT_FOOTER(F)                                                   
+  //C_DECLARE_STRUCT_TO_MSG(F,__VA_ARGS__)                                       \/
+  //C_DECLARE_MSG_TO_STRUCT(F,__VA_ARGS__)
 
 #else
 #define C_DECLARE_STRUCT_HEADER(F, ...)                                        \
@@ -79,7 +79,7 @@
 //  ****************************************************************************
 #define C_DECLARE_STRUCT_FOOTER(F)                                             \
   } F;                                                                         \
-  extern const uint32_t k_##F##_id
+  extern const uint32_t k_##F##_id;
 
 
 //  ****************************************************************************
@@ -104,8 +104,6 @@
 
 #define C_EACH_BIT_FIELD(r, data, i, x) \
   x
-//  BOOST_PP_TUPLE_ELEM(2,1,x) BOOST_PP_TUPLE_ELEM(2,2,x); 
-
 
 #if defined(_MSC_VER)
 
@@ -150,48 +148,65 @@
 //
 #ifdef __cplusplus
 
-namespace C 
-{
+BEGIN_NAMESPACE(C)
 
 //  Forward Declarations *******************************************************
 template< typename T, typename U >
-U& struct_to_msg(const T& src, U& dest);
+U& struct_to_msg(T& src, U& dest);
 
 template< typename T, typename U >
-U& msg_to_struct(const T& src, U& dest);
+U& msg_to_struct(T& src, U& dest);
 
-} // namespace C
+END_NAMESPACE(C)
 
-// TODO: DEFINE A macro that extracts all of the names and for each field calls struct_to_msg with the name of the field.
+#define EACH_C_VALUE(r, xlate, i, x) \
+  C::xlate(src.##BOOST_PP_TUPLE_ELEM(2,1,x), dest.##BOOST_PP_TUPLE_ELEM(2,1,x));
+
+
+#if defined(_MSC_VER)
+
+#define DEFINE_C_TYPE_TRANSLATION(XLATE,S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_VALUE, XLATE, BOOST_PP_VARIADIC_TO_SEQ(S))
+
+#else
+
+#define DEFINE_C_TYPE_TRANSLATION(XLATE,...) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_VALUE, XLATE, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+#endif
 
 //  ****************************************************************************
 //  Assigns the values of each field to the message.
 //
 #define C_DECLARE_STRUCT_TO_MSG(NAME, ...)                                     \
-  namespace C {                                                                \
-  template< typename S, typename M >                                           \
-  Hg::##NAME& struct_to_msg(const C::##NAME& src, Hg::##NAME& dest)            \
-  {                                                                            \
+  BEGIN_NAMESPACE(C)                                                           \
+  template< >                                                                  \
+  Hg::##NAME& struct_to_msg(NAME& src, Hg::##NAME& dest)                       \
+  { using namespace Hg;                                                        \
+    DEFINE_C_TYPE_TRANSLATION(struct_to_msg, __VA_ARGS__)                      \
   }                                                                            \
-  } // namespace C
+  END_NAMESPACE(C)
 
 //  ****************************************************************************
 //  Assigns the values of each field to the struct.
 //
 #define C_DECLARE_MSG_TO_STRUCT(NAME, ...)                                     \
-  namespace C {                                                                \
+  BEGIN_NAMESPACE(C)                                                           \
   template< >                                                                  \
-  C::##NAME& msg_to_struct(const Hg::##NAME& src, C::##NAME& dest)             \
-  {                                                                            \
+  NAME& msg_to_struct(Hg::##NAME& src, NAME& dest)                             \
+  { using namespace Hg;                                                        \
+    DEFINE_C_TYPE_TRANSLATION(msg_to_struct, __VA_ARGS__)                      \
   }                                                                            \
-  } // namespace C
+  END_NAMESPACE(C)
 
+#else
+// These functions used overloading 
+// and are not compatible with C.
+#define C_DECLARE_STRUCT_TO_MSG(NAME, ...)
+#define C_DECLARE_MSG_TO_STRUCT(NAME, ...)
 
 
 #endif
-
-
-
 
 #else
 

@@ -1,4 +1,4 @@
-/// @file detail/data_proxy.h
+/// @file Hg/proxy/data_proxy.h
 /// 
 /// The declaration and definition of the DataProxy.
 ///           

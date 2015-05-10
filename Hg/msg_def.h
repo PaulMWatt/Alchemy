@@ -148,11 +148,6 @@ struct message_size_trait
 //  ****************************************************************************
 
 //  ****************************************************************************
-#define START_NAMESPACE(NS)         namespace NS {
-#define END_NAMESPACE(NS)           }
-
-
-//  ****************************************************************************
 #define DO_REMOVE(...)   __VA_ARGS__
 #define REMOVE_PARENS(N) DO_REMOVE N
 
@@ -205,7 +200,7 @@ struct message_size_trait
 //  Defines the outer value container as well as the formatted type-list.
 //
 #define Hg_DECLARE_STRUCT_HEADER(F, ...)                                       \
-  START_NAMESPACE(Hg)                                                          \
+  BEGIN_NAMESPACE(Hg)                                                          \
   DEFINE_STRUCT_TYPELIST(F##_tl, __VA_ARGS__)                                  \
   typedef Hg::make_Hg_type_list<F##_tl>::type               F##_Hg;            \
                                                                                \
@@ -251,7 +246,7 @@ struct message_size_trait
       return ftor(buffer->data(), buffer->size());                             \
     }                                                                          \
   };                                                                           \
-  START_NAMESPACE(detail)                                                      \
+  BEGIN_NAMESPACE(detail)                                                      \
   template <>                                                                  \
   struct field_data_t <F##_Hg>                                                 \
   {                                                                            \
@@ -339,7 +334,7 @@ struct message_size_trait
 
 //  ****************************************************************************
 #define Hg_DECLARE_PACKED_HEADER(T,C,...)                                      \
-  START_NAMESPACE(Hg)                                                          \
+  BEGIN_NAMESPACE(Hg)                                                          \
   struct C;                                                                    \
   template <>                                                                  \
   struct ContainerSize<C>                                                      \

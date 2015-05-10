@@ -1,19 +1,20 @@
-// @file C/carbonate.h
+//  @file C/carbonate.h
 // 
-// Internal implementation MACROS for C-linkable structs and function calls.
+//  Internal implementation MACROS for C-linkable structs and function calls.
 // 
-// @note           This header file must not be included directly and the 
-//                 MACROS defined in this file should not be accessed
-//                 directly. Include and used the definitions from the file
-//                 **<Carbon.h>** instead.
+//  @note           This header file must not be included directly and the 
+//                  MACROS defined in this file should not be accessed
+//                  directly. Include and used the definitions from the file
+//                  **<Carbon.h>** instead.
 //           
-/// The MIT License(MIT)
-/// @copyright 2015 Paul M Watt
+//  The MIT License(MIT)
+//  @copyright 2015 Paul M Watt
 //  ****************************************************************************
 #ifndef CARBONATE_H_INCLUDED
 #define CARBONATE_H_INCLUDED
 //  Includes *******************************************************************
 #include <Carbon.h>
+#include <Hg/proxy/data_proxy.h>
 
 namespace C
 {
@@ -43,7 +44,7 @@ const uint32_t  k_size_mask         = 0x00FFFFFF;
 //  Assigns the value of a C-struct to a Hg Message.
 //
 template< typename T, typename U >
-U& struct_to_msg(const T& src, U& dest)
+U& struct_to_msg(T& src, U& dest)
 {
   return dest = src;
 }
@@ -52,7 +53,25 @@ U& struct_to_msg(const T& src, U& dest)
 //  Assigns the values of a Hg Message to a C-struct.
 //
 template< typename T, typename U >
-U& msg_to_struct(const T& src, U& dest)
+U& msg_to_struct(T& src, U& dest)
+{
+  return dest = src;
+}
+
+//  ****************************************************************************
+//  Assigns the value of a C-struct to a Hg Message.
+//
+template< typename T, typename U >
+U& struct_to_msg(T& src, Hg::detail::DataProxy<Hg::nested_trait,U& dest)
+{
+  return dest = src;
+}
+
+//  ****************************************************************************
+//  Assigns the values of a Hg Message to a C-struct.
+//
+template< typename T, typename U >
+U& msg_to_struct(T& src, U& dest)
 {
   return dest = src;
 }
