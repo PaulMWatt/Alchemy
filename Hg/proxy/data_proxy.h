@@ -79,35 +79,6 @@ struct DataProxy
     : datum_type(datum)
   { }
 
-#ifdef ALCHEMY_RVALUE_REF_SUPPORTED
-
-  //  **************************************************************************
-  /// Move Constructor
-  ///
-  /// Moves the current instance from one proxy to another.
-  ///
-  /// @param proxy           A rvalue  reference to the another instance of a DataProxy.
-  /// 
-  DataProxy(DataProxy&& proxy)
-  {
-    *this = std::move(proxy);
-  }
-
-  //  **************************************************************************
-  /// Move Assignment operator
-  ///
-  /// Moves the current instance from one proxy to another.
-  ///
-  /// @param proxy           A rvalue  reference to the another instance of a DataProxy.
-  /// 
-  DataProxy& operator=(DataProxy&& proxy)
-  {
-    this->set(proxy.get());
-    return *this;
-  }
-
-#endif
-
   //  **************************************************************************
   /// Value assignment
   ///

@@ -10,10 +10,15 @@
 #include <Alchemy.h>
 
 ALCHEMY_STRUCT  
-( basic_t,
-  ALCHEMY_DATUM (int,  val),
-  ALCHEMY_DATUM (long, ium),
-  ALCHEMY_DATUM (short, calm)
+( fundamentals_t,
+  ALCHEMY_DATUM (char,  ch),
+  ALCHEMY_DATUM (short, s),
+  ALCHEMY_DATUM (long,  l),
+  ALCHEMY_DATUM (int,   i),
+  ALCHEMY_DATUM (unsigned char,  uch),
+  ALCHEMY_DATUM (unsigned short, us),
+  ALCHEMY_DATUM (unsigned long,  ul),
+  ALCHEMY_DATUM (unsigned int,   ui)
 );
 
 
@@ -74,34 +79,34 @@ ALCHEMY_STRUCT
   ALCHEMY_DATUM (color4, color)
 );
 
-//extern "C" 
-//typedef struct tag_vertex_t 
+////extern "C" 
+////typedef struct tag_vertex_t 
+////{ 
+////  pt3d_t pt; 
+////  color4 color;   
+////} vertex_t; 
+////extern const uint32_t k_vertex_t_id; 
+//namespace C 
 //{ 
-//  pt3d_t pt; 
-//  color4 color;   
-//} vertex_t; 
-//extern const uint32_t k_vertex_t_id; 
-namespace C 
-{ 
-  template< > 
-  Hg::vertex_t& struct_to_msg(vertex_t& src, Hg::vertex_t& dest) 
-  { 
-    using namespace Hg; 
-    C::struct_to_msg(src.pt, dest.pt); 
-    C::struct_to_msg(src.color, dest.color);   
-  } 
-} 
-
-namespace C 
-{ 
-  template< > 
-  vertex_t& msg_to_struct(Hg::vertex_t& src, vertex_t& dest) 
-  { 
-    using namespace Hg; 
-    C::msg_to_struct(src.pt, dest.pt); 
-    C::msg_to_struct(src.color, dest.color);   
-  } 
-}
+//  template< > 
+//  Hg::vertex_t& struct_to_msg(vertex_t& src, Hg::vertex_t& dest) 
+//  { 
+//    using namespace Hg; 
+//    C::struct_to_msg(src.pt, dest.pt); 
+//    C::struct_to_msg(src.color, dest.color);   
+//  } 
+//} 
+//
+//namespace C 
+//{ 
+//  template< > 
+//  vertex_t& msg_to_struct(Hg::vertex_t& src, vertex_t& dest) 
+//  { 
+//    using namespace Hg; 
+//    C::msg_to_struct(src.pt, dest.pt); 
+//    C::msg_to_struct(src.color, dest.color);   
+//  } 
+//}
 
 #endif
 

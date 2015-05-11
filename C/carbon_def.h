@@ -64,9 +64,9 @@
   extern "C" typedef struct tag_##F                                            \
   {                                                                            \
     DEFINE_C_STRUCT_PARAMS(__VA_ARGS__)                                        \
-  C_DECLARE_STRUCT_FOOTER(F)                                                   
-  //C_DECLARE_STRUCT_TO_MSG(F,__VA_ARGS__)                                       \/
-  //C_DECLARE_MSG_TO_STRUCT(F,__VA_ARGS__)
+  C_DECLARE_STRUCT_FOOTER(F)                                                   \
+  C_DECLARE_STRUCT_TO_MSG(F,__VA_ARGS__)                                       \
+  C_DECLARE_MSG_TO_STRUCT(F,__VA_ARGS__)
 
 #else
 #define C_DECLARE_STRUCT_HEADER(F, ...)                                        \
@@ -148,16 +148,16 @@
 //
 #ifdef __cplusplus
 
-BEGIN_NAMESPACE(C)
-
-//  Forward Declarations *******************************************************
-template< typename T, typename U >
-U& struct_to_msg(T& src, U& dest);
-
-template< typename T, typename U >
-U& msg_to_struct(T& src, U& dest);
-
-END_NAMESPACE(C)
+//BEGIN_NAMESPACE(C)
+//
+////  Forward Declarations *******************************************************
+//template< typename T, typename U >
+//U& struct_to_msg(T& src, U& dest);
+//
+//template< typename T, typename U >
+//U& msg_to_struct(T& src, U& dest);
+//
+//END_NAMESPACE(C)
 
 #define EACH_C_VALUE(r, xlate, i, x) \
   C::xlate(src.##BOOST_PP_TUPLE_ELEM(2,1,x), dest.##BOOST_PP_TUPLE_ELEM(2,1,x));
@@ -180,10 +180,10 @@ END_NAMESPACE(C)
 //
 #define C_DECLARE_STRUCT_TO_MSG(NAME, ...)                                     \
   BEGIN_NAMESPACE(C)                                                           \
-  template< >                                                                  \
   Hg::##NAME& struct_to_msg(NAME& src, Hg::##NAME& dest)                       \
   { using namespace Hg;                                                        \
     DEFINE_C_TYPE_TRANSLATION(struct_to_msg, __VA_ARGS__)                      \
+    return dest;                                                               \
   }                                                                            \
   END_NAMESPACE(C)
 
@@ -192,10 +192,10 @@ END_NAMESPACE(C)
 //
 #define C_DECLARE_MSG_TO_STRUCT(NAME, ...)                                     \
   BEGIN_NAMESPACE(C)                                                           \
-  template< >                                                                  \
   NAME& msg_to_struct(Hg::##NAME& src, NAME& dest)                             \
   { using namespace Hg;                                                        \
     DEFINE_C_TYPE_TRANSLATION(msg_to_struct, __VA_ARGS__)                      \
+    return dest;                                                               \
   }                                                                            \
   END_NAMESPACE(C)
 

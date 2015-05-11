@@ -322,7 +322,6 @@ struct message_size_trait
 
 #define Hg_DEFINE_PACKED_FIELDS(S) \
   BOOST_PP_SEQ_FOR_EACH_I(Hg_EACH_BIT_FIELD, Eval_, BOOST_PP_VARIADIC_TO_SEQ(S))
-//  BOOST_PP_SEQ_FOR_EACH_I(Hg_EACH_BIT_FIELD, unused, S)
 
 #else
 
