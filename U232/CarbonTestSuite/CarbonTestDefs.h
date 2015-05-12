@@ -79,34 +79,23 @@ ALCHEMY_STRUCT
   ALCHEMY_DATUM (color4, color)
 );
 
-////extern "C" 
-////typedef struct tag_vertex_t 
-////{ 
-////  pt3d_t pt; 
-////  color4 color;   
-////} vertex_t; 
-////extern const uint32_t k_vertex_t_id; 
-//namespace C 
-//{ 
-//  template< > 
-//  Hg::vertex_t& struct_to_msg(vertex_t& src, Hg::vertex_t& dest) 
-//  { 
-//    using namespace Hg; 
-//    C::struct_to_msg(src.pt, dest.pt); 
-//    C::struct_to_msg(src.color, dest.color);   
-//  } 
-//} 
-//
-//namespace C 
-//{ 
-//  template< > 
-//  vertex_t& msg_to_struct(Hg::vertex_t& src, vertex_t& dest) 
-//  { 
-//    using namespace Hg; 
-//    C::msg_to_struct(src.pt, dest.pt); 
-//    C::msg_to_struct(src.color, dest.color);   
-//  } 
-//}
+//ALCHEMY_STRUCT(triangle_t,
+//  ALCHEMY_ARRAY (uint16_t, 3,  pts),
+//  ALCHEMY_DATUM (ray_t,        normal)
+//);
+
+
+ALCHEMY_STRUCT(camera_t,
+  ALCHEMY_DATUM      (pt3d_t, eye),
+  ALCHEMY_DATUM      (pt3d_t, at),
+  ALCHEMY_DATUM      (pt3d_t, up)
+);
+
+
+//ALCHEMY_STRUCT(object_t,
+//  ALCHEMY_DATUM  (uint32_t,          count),
+//  ALCHEMY_ALLOC  (triangle_t, count, surfaces)
+//);
 
 #endif
 

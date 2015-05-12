@@ -14,7 +14,7 @@
 #define CARBONATE_H_INCLUDED
 //  Includes *******************************************************************
 #include <Carbon.h>
-#include <Hg/proxy/data_proxy.h>
+#include <C/conversion.h>
 
 namespace C
 {
@@ -38,130 +38,6 @@ const uint32_t  k_carbon_id         = 0xA9;
 
 const uint32_t  k_size_mask         = 0x00FFFFFF; 
 
-
-//  ****************************************************************************
-/// Facilitates translating values from C-structs to Hg::Message formats.
-///
-template< typename T, 
-          typename U,
-          bool     IsNestedT = Hg::nested_value<U>::value
-        >
-struct translate_from_C
-{
-  static 
-  U& assign(T& src, U& dest)
-  {
-    // This version of the template handles fundamental types and bit-fields.
-    // The values will fit, they just need a lot of coercing.
-    return dest = *(U::value_type*)&src;
-  }
-};
-
-
-//  ****************************************************************************
-/// Specialization for nested value types.
-///
-template< typename T, typename U >
-struct translate_from_C<T,U,true>
-{
-  static 
-  U& assign(T& src, U& dest)
-  {
-    // TODO: Make this version extract the value from it's proxy type.
-
-    return dest;
-  }
-};
-
-
-//  ****************************************************************************
-/// Facilitates translating values from C-structs to Hg::Message formats.
-///
-template< typename T, 
-          typename U,
-          bool     IsNestedT = Hg::nested_value<T>::value
-        >
-struct translate_to_C
-{
-  static 
-  U& assign(T& src, U& dest)
-  {
-    // This version of the template handles fundamental types and bit-fields.
-    // The values will fit, they just need a lot of coercing.
-    ::memcpy((T::value_type*)&dest, &src, sizeof(T::value_type));
-    return dest;
-  }
-};
-
-
-//  ****************************************************************************
-/// Specialization for nested value types.
-///
-template< typename T, typename U >
-struct translate_to_C<T,U,true>
-{
-  static 
-  U& assign(T& src, U& dest)
-  {
-    // TODO: Make this version extract the value from it's proxy type.
-
-    return dest;
-  }
-};
-
-
-//  ****************************************************************************
-//  Assigns the value of a C-struct to a Hg Message.
-//
-template< typename T, typename U>
-U& struct_to_msg(T& src, U& dest)
-{
-  return translate_from_C<T,U>::assign(src, dest);
-}
-
-//  ****************************************************************************
-//  Assigns the values of a Hg Message to a C-struct.
-//
-template< typename T, typename U>
-U& msg_to_struct(T& src, U& dest)
-{
-  return translate_to_C<T,U>::assign(src, dest);
-}
-
-// TODO: Add specializations for arrays and vectors.
-
-
-//  ****************************************************************************
-//  Assigns the value of a C-struct to a Hg Message.
-//
-//template< typename T, 
-//          typename U,
-//          size_t   kt_idx
-//        >
-//U& struct_to_msg(
-//  T& src, 
-//  typename Hg::detail::DeduceProxyType< kt_idx, 
-//                                        typename U::format_type>::type& dest
-//)
-//{
-//  return dest = src;
-//}
-//
-////  ****************************************************************************
-////  Assigns the values of a Hg Message to a C-struct.
-////
-//template< typename T, 
-//          typename U,
-//          size_t   kt_idx
-//        >
-//U& msg_to_struct(
-//  typename Hg::detail::DeduceProxyType< kt_idx, 
-//                                        typename T::format_type>::type& src,
-//  U& dest
-//)
-//{
-//  return dest = src;
-//}
 
 //  ****************************************************************************
 /// Given the users msg address, the actual allocated based address is returned.

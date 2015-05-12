@@ -27,6 +27,9 @@
     <ClInclude Include="..\..\C\carbonate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\C\conversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\C\carbonate.cpp">

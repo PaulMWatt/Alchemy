@@ -107,6 +107,7 @@ Generate the test runner...
     <ClInclude Include="..\..\Carbon.h" />
     <ClInclude Include="..\..\C\carbonate.h" />
     <ClInclude Include="..\..\C\carbon_def.h" />
+    <ClInclude Include="..\..\C\conversion.h" />
     <ClInclude Include="CarbonTestDefs.h" />
     <ClInclude Include="c_usage.h" />
     <ClInclude Include="Src\CarbonTestSuite.h" />
