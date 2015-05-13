@@ -273,15 +273,15 @@ void CarbonTestSuite::Test_struct_to_msg_array(void)
 
   // TODO: Need to correct the copy of arrays. it is pasting array[size] in the copy code. Therefore, it tries to dereference one passed the end.
   // SUT
-  //C::struct_to_msg(c, hg_c);
-  //
-  //for (size_t index = 0; index < 16; ++index)
-  //{
-  //  TS_ASSERT_EQUALS(c.table[index].R, hg_c.table[index].R);
-  //  TS_ASSERT_EQUALS(c.table[index].G, hg_c.table[index].G);
-  //  TS_ASSERT_EQUALS(c.table[index].B, hg_c.table[index].B);
-  //  TS_ASSERT_EQUALS(c.table[index].A, hg_c.table[index].A);
-  //}
+  C::struct_to_msg(c, hg_c);
+  
+  for (size_t index = 0; index < 16; ++index)
+  {
+    TS_ASSERT_EQUALS(c.table[index].R, hg_c.table[index].R);
+    TS_ASSERT_EQUALS(c.table[index].G, hg_c.table[index].G);
+    TS_ASSERT_EQUALS(c.table[index].B, hg_c.table[index].B);
+    TS_ASSERT_EQUALS(c.table[index].A, hg_c.table[index].A);
+  }
 }
 
 //  ******************************************************************************
@@ -300,15 +300,15 @@ void CarbonTestSuite::Test_msg_to_struct_array(void)
   color_map_t c;
 
   // SUT
-  //C::msg_to_struct(hg_c, c);
-  //
-  //for (size_t index = 0; index < 16; ++index)
-  //{
-  //  TS_ASSERT_EQUALS(c.table[index].R, hg_c.table[index].R);
-  //  TS_ASSERT_EQUALS(c.table[index].G, hg_c.table[index].G);
-  //  TS_ASSERT_EQUALS(c.table[index].B, hg_c.table[index].B);
-  //  TS_ASSERT_EQUALS(c.table[index].A, hg_c.table[index].A);
-  //}
+  C::msg_to_struct(hg_c, c);
+  
+  for (size_t index = 0; index < 16; ++index)
+  {
+    TS_ASSERT_EQUALS(c.table[index].R, hg_c.table[index].R);
+    TS_ASSERT_EQUALS(c.table[index].G, hg_c.table[index].G);
+    TS_ASSERT_EQUALS(c.table[index].B, hg_c.table[index].B);
+    TS_ASSERT_EQUALS(c.table[index].A, hg_c.table[index].A);
+  }
 }
 
 

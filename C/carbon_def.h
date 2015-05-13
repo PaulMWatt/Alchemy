@@ -83,16 +83,16 @@
 
 
 //  ****************************************************************************
-#define C_DATUM_X(T,P)                          (T,P)
+#define C_DATUM_X(T,P,X)                        (T,P,X)
 
 //  ****************************************************************************
-#define C_DECLARE_DATUM(T,P)                    C_DATUM_X(T,P)
+#define C_DECLARE_DATUM(T,P)                    C_DATUM_X(T,P,P)
 
 //  ****************************************************************************
-#define C_DECLARE_ARRAY_DATUM(T, N, P)          C_DATUM_X(T,P[N])
+#define C_DECLARE_ARRAY_DATUM(T, N, P)          C_DATUM_X(T,P[N],P)
 
 //  ****************************************************************************
-#define C_DECLARE_VECTOR_DATUM(T, N, P)         C_DATUM_X(T*, P)
+#define C_DECLARE_VECTOR_DATUM(T, N, P)         C_DATUM_X(T*, P, P)
 
 //  ****************************************************************************
 #define C_DECLARE_ALLOCATOR_DATUM(T, A, N, P)   C_DECLARE_ALLOC(T, N, P)
@@ -148,20 +148,8 @@
 //
 #ifdef __cplusplus
 
-//BEGIN_NAMESPACE(C)
-//
-////  Forward Declarations *******************************************************
-//template< typename T, typename U >
-//U& struct_to_msg(T& src, U& dest);
-//
-//template< typename T, typename U >
-//U& msg_to_struct(T& src, U& dest);
-//
-//END_NAMESPACE(C)
-
 #define EACH_C_VALUE(r, xlate, i, x) \
-  C::xlate(src.##BOOST_PP_TUPLE_ELEM(2,1,x), dest.##BOOST_PP_TUPLE_ELEM(2,1,x));
-
+  C::xlate(src.##BOOST_PP_TUPLE_ELEM(3,2,x), dest.##BOOST_PP_TUPLE_ELEM(3,2,x));
 
 #if defined(_MSC_VER)
 
