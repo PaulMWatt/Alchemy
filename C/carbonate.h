@@ -32,12 +32,12 @@ typedef unsigned char     carbon_t;
 ///               The remainder of the structure starts here.
 ///               Therefore, all allocations will be 8-bytes larger than requested.
 ///
-const int       k_carbon_footprint  = -8;
-const int       k_base_offset       = -k_carbon_footprint;
+const int       k_carbon_footprint  = 8;
+const int       k_base_offset       = k_carbon_footprint;
 const int       k_type_offset       = 4;
 const uint32_t  k_carbon_id         = 0xA9;       
 
-const uint32_t  k_size_mask         = 0x00FFFFFF; 
+const char      k_size_shift        = 8; 
 
 
 //  ****************************************************************************
@@ -52,7 +52,7 @@ carbon_t* carbon_ptr(Hg_msg_t* p_msg)
   // Offset the user supplied pointer to the 
   // calculated position of the allocation base address.
   carbon_t* p_base = static_cast<carbon_t*>(p_msg);
-  std::advance(p_base, k_base_offset);
+  std::advance(p_base, -k_carbon_footprint);
 
   // Verify the Carbon ID before returning the pointer.
   if ( !p_base
@@ -70,7 +70,7 @@ carbon_t* carbon_ptr(const Hg_msg_t* p_msg)
 }
 
 //  ****************************************************************************
-/// Returns the size of the allocated buffer.
+/// Returns the size of the allocated buffer that is usable by the user.
 ///
 inline
 size_t carbon_size(const Hg_msg_t* p_msg)
@@ -82,7 +82,7 @@ size_t carbon_size(const Hg_msg_t* p_msg)
   uint32_t size = 0;
   memcpy(&size, p_base, 4);
 
-  return size & k_size_mask;
+  return size >> k_size_shift;
 }
 
 //  ****************************************************************************
@@ -93,7 +93,7 @@ Hg_type_t carbon_type(const Hg_msg_t* p_msg)
 {
   carbon_t* p_base = carbon_ptr(p_msg);
   if (!p_base)
-    return 0;
+    return k_invalid_type;
 
   Hg_type_t type = 0;
   memcpy(&type, p_base + k_type_offset, 4);
@@ -122,10 +122,10 @@ typedef Hg::TypeList
 > exported_types;
 
 
-#define k_color_map 0
-#define k_pt3d      1
-#define k_ray       2
-#define k_vertex    3
+#define k_color_map     0
+#define k_pt3d          1
+#define k_ray           2
+#define k_vertex        3
 
 
 template< Hg_type_t IdT,      
@@ -213,77 +213,6 @@ size_t GetTotalSize(Hg_msg_t* p_src)
 
   return 0;
 }
-
-
-//  ****************************************************************************
-//int CarbonToNetwork(Hg_msg_t* p_src)
-//{
-//  using namespace C::detail;
-//
-//  if (!p_src)
-//    return 0;
-//
-//  Hg_type_t id = C::carbon_type(p_src);
-//
-//
-//  switch (id)
-//  {
-//  case k_color_map:
-//    {
-//      return ConvertToNetworkOrder<Hg::color_map_t, color_map_t>(p_src);
-//    }
-//  case k_pt3d:
-//    {
-//      return ConvertToNetworkOrder<Hg::pt3d_t, pt3d_t>(p_src);
-//    }
-//  case k_ray:
-//    {
-//      return ConvertToNetworkOrder<Hg::ray_t, ray_t>(p_src);
-//    }
-//  case k_vertex:
-//    {
-//      return ConvertToNetworkOrder<Hg::vertex_t, vertex_t>(p_src);
-//    }
-//  }
-//
-//  return 0;
-//}
-//
-//
-////  ****************************************************************************
-//int CarbonToBigEndian(Hg_msg_t* p_src)
-//{
-//  using namespace C::detail;
-//
-//  if (!p_src)
-//    return 0;
-//
-//  Hg_type_t id = C::carbon_type(p_src);
-//
-//
-//  switch (id)
-//  {
-//  case k_color_map:
-//    {
-//      return ConvertToBigEndian<Hg::color_map_t, color_map_t>(p_src);
-//    }
-//  case k_pt3d:
-//    {
-//      return ConvertToBigEndian<Hg::pt3d_t, pt3d_t>(p_src);
-//    }
-//  case k_ray:
-//    {
-//      return ConvertToBigEndian<Hg::ray_t, ray_t>(p_src);
-//    }
-//  case k_vertex:
-//    {
-//      return ConvertToBigEndian<Hg::vertex_t, vertex_t>(p_src);
-//    }
-//  }
-//
-//  return 0;
-//}
-
 
 
 #endif

@@ -179,12 +179,12 @@ Hg_msg_t* Hg_create(
     return 0;
 
   C::carbon_t* p_msg = new C::carbon_t[size + C::k_carbon_footprint];
-  uint32_t base = C::k_carbon_id | (size << 8);
+  uint32_t base = C::k_carbon_id | (size << C::k_size_shift);
   
   ::memcpy(p_msg, &base, 4);
   ::memcpy(p_msg + C::k_type_offset, &msg_type, 4);
 
-  return p_msg;
+  return p_msg + C::k_base_offset;
 }
 
 

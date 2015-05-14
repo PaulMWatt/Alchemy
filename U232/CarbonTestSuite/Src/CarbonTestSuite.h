@@ -30,6 +30,8 @@
 #ifndef CarbonTestSuite_H_INCLUDED
 #define CarbonTestSuite_H_INCLUDED
 
+#pragma comment(lib, "CarbonTestLibrary")
+
 #include <iostream>
 using namespace std;
 
@@ -39,7 +41,7 @@ using namespace std;
 #include <C/carbonate.h>
 #include <CarbonTestDefs.h>
 
-#include <c_usage.h>
+//#include <c_usage.h>
  
 //  ****************************************************************************
 /// CarbonTestSuite Test Suite class.
@@ -49,7 +51,6 @@ class CarbonTestSuite : public CxxTest::TestSuite
 public:
 
   CarbonTestSuite()
-    : m_hLib(0)
   {
     // TODO: Construct Test Suite Object
   }
@@ -57,60 +58,106 @@ public:
   // Fixture Management *******************************************************
   // setUp will be called before each test case in order to setup common fixtures.
   virtual void setUp()
-  {
-    m_hLib = setup_library();
+  { 
+    m_pSut = 0;
   }
  
   // tearDown will be called after each test case to clean up common resources.
   virtual void tearDown()
-  {
-    teardown_library(m_hLib);
+  { 
+    if (m_pSut)
+    {
+      delete[] (m_pSut - C::k_carbon_footprint);
+    }
   }
 
 protected:
+
+  // Typedefs *****************************************************************
+  typedef exported_types        test_types;
+
   // Test Suite Data **********************************************************
-  HMODULE m_hLib;
+  Hg_msg_t    *m_pSut;
 
   // Creator Methods **********************************************************
+  //  **************************************************************************
+  Hg_msg_t* GetSUT(Hg_type_t type)
+  {
+    if (!m_pSut)
+    {
+      m_pSut = Hg_create(type);
+    }
+
+    return m_pSut;
+  }
+
+  //  **************************************************************************
+  int GetInvalidType()
+  {
+    return k_invalid_type;
+  }
 
 public:
   // Test Cases ***************************************************************
   // Utility Functions used to implement the API.
-  void Test_struct_to_msg_fundamentals(void);
-  void Test_msg_to_struct_fundamentals(void);
+  void Test_struct_to_msg_fundamentals();
+  void Test_msg_to_struct_fundamentals();
 
-  void Test_struct_to_msg_packed(void);
-  void Test_msg_to_struct_packed(void);
+  void Test_struct_to_msg_packed();
+  void Test_msg_to_struct_packed();
 
-  void Test_struct_to_msg_nested(void);
-  void Test_msg_to_struct_nested(void);
+  void Test_struct_to_msg_nested();
+  void Test_msg_to_struct_nested();
 
-  void Test_struct_to_msg_array(void);
-  void Test_msg_to_struct_array(void);
+  void Test_struct_to_msg_array();
+  void Test_msg_to_struct_array();
 
 
   // Collection of functions to test in the Carbon API
-  //Hg_local_endianess
-  //Hg_create
+  void Test_Hg_local_endianess();
+  void Test_Hg_create();
+  void Test_Hg_create_Invalid_type();
+
   //Hg_clone
-  //Hg_destroy
+  void Test_Hg_destroy();
+
   //Hg_resize_dynamic
-  //Hg_type
-  //Hg_size
-  //Hg_data_size
-  //Hg_to_network
-  //Hg_to_host
-  //Hg_to_big_end
-  //Hg_to_little_end
-  //Hg_pack
-  //Hg_unpack
+  
+  void Test_Hg_type();
+  void Test_Hg_type_Uninitialized();
 
+  void Test_Hg_size();
+  void Test_Hg_size_Uninitialized();
+  
+  void Test_Hg_data_size();
+  void Test_Hg_data_size_Uninitialized();
 
+  void Test_Hg_to_network();
+  void Test_Hg_to_network_Uninitialized();
+
+  void Test_Hg_to_host();
+  void Test_Hg_to_host_Uninitialized();
+
+  void Test_Hg_to_big_end();
+  void Test_Hg_to_big_end_Uninitialized();
+
+  void Test_Hg_to_little_end();
+  void Test_Hg_to_little_end_Uninitialized();
+
+  void Test_Hg_pack();
+  void Test_Hg_pack_invalid_msg();
+  void Test_Hg_pack_invalid_buffer();
+  void Test_Hg_pack_invalid_len();
+
+  void Test_Hg_unpack();
+  void Test_Hg_unpack_invalid_msg();
+  void Test_Hg_unpack_invalid_buffer();
+  void Test_Hg_unpack_invalid_len();
 
 };
 
 //  ******************************************************************************
-void CarbonTestSuite::Test_struct_to_msg_fundamentals(void)
+void CarbonTestSuite::Test_struct_to_msg_fundamentals()
 {
   fundamentals_t  c;
   c.ch = 'A';
@@ -137,7 +184,7 @@ void CarbonTestSuite::Test_struct_to_msg_fundamentals(void)
 }
 
 //  ******************************************************************************
-void CarbonTestSuite::Test_msg_to_struct_fundamentals(void)
+void CarbonTestSuite::Test_msg_to_struct_fundamentals()
 {
   Hg::fundamentals_t hg;
   hg.ch = 'A';
@@ -164,7 +211,7 @@ void CarbonTestSuite::Test_msg_to_struct_fundamentals(void)
 }
 
 //  ******************************************************************************
-void CarbonTestSuite::Test_struct_to_msg_packed(void)
+void CarbonTestSuite::Test_struct_to_msg_packed()
 {
   color4 pixel;
   pixel.R = 3;
@@ -183,7 +230,7 @@ void CarbonTestSuite::Test_struct_to_msg_packed(void)
 }
 
 //  ******************************************************************************
-void CarbonTestSuite::Test_msg_to_struct_packed(void)
+void CarbonTestSuite::Test_msg_to_struct_packed()
 {
   Hg::color4 hg_pixel;
   hg_pixel.R = 231;
@@ -202,7 +249,7 @@ void CarbonTestSuite::Test_msg_to_struct_packed(void)
 }
 
 //  ******************************************************************************
-void CarbonTestSuite::Test_struct_to_msg_nested(void)
+void CarbonTestSuite::Test_struct_to_msg_nested()
 {
   vertex_t v;
   v.pt.X = 10;
@@ -230,7 +277,7 @@ void CarbonTestSuite::Test_struct_to_msg_nested(void)
 }
 
 //  ******************************************************************************
-void CarbonTestSuite::Test_msg_to_struct_nested(void)
+void CarbonTestSuite::Test_msg_to_struct_nested()
 {
   Hg::vertex_t hg_v;
   hg_v.pt.X = 10;
@@ -258,7 +305,7 @@ void CarbonTestSuite::Test_msg_to_struct_nested(void)
 }
 
 //  ******************************************************************************
-void CarbonTestSuite::Test_struct_to_msg_array(void)
+void CarbonTestSuite::Test_struct_to_msg_array()
 {
   color_map_t c;
   for (size_t index = 0; index < 16; ++index)
@@ -285,7 +332,7 @@ void CarbonTestSuite::Test_struct_to_msg_array(void)
 }
 
 //  ******************************************************************************
-void CarbonTestSuite::Test_msg_to_struct_array(void)
+void CarbonTestSuite::Test_msg_to_struct_array()
 {
   Hg::color_map_t hg_c;
 
@@ -311,8 +358,203 @@ void CarbonTestSuite::Test_msg_to_struct_array(void)
   }
 }
 
+//  ******************************************************************************
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_local_endianess()
+{
+  int endian = Hg_local_endianess();
 
+  TS_ASSERT_EQUALS(ALCHEMY_ENDIANESS, endian);
+}
 
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_create()
+{
+  Hg_msg_t *sut = Hg_create(k_color_map);
+
+  // SUT
+  Hg_destroy(sut);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_create_Invalid_type()
+{
+  // SUT
+  Hg_msg_t* p_msg = Hg_create(k_invalid_type);
+
+  TS_ASSERT(!p_msg);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_destroy()
+{
+  Hg_msg_t *sut = Hg_create(k_vertex);
+
+  // SUT
+  Hg_destroy(0);
+  Hg_destroy(sut);
+
+  // Nothing to verify, except that it does not crash.
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_type()
+{
+  const Hg_type_t k_control = k_ray;
+  Hg_msg_t *sut = GetSUT(k_control);
+
+  // SUT
+  Hg_type_t type = Hg_type(sut);
+
+  TS_ASSERT_EQUALS(k_control, type);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_type_Uninitialized()
+{
+  // SUT
+  Hg_type_t type = Hg_type(0);
+
+  TS_ASSERT_EQUALS(k_invalid_type, type);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_size()
+{
+  const size_t k_control = Hg::SizeOf<Hg::ray_t>::value;
+  Hg_msg_t *p_msg = GetSUT(k_ray);
+
+  // SUT
+  size_t len = Hg_size(p_msg);
+
+  TS_ASSERT_EQUALS(k_control, len);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_size_Uninitialized()
+{
+  // SUT
+  size_t len = Hg_size(0);
+
+  TS_ASSERT_EQUALS(0, len);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_data_size()
+{
+  //const size_t k_control = Hg::SizeOf<test_types>::value;
+  //Hg_msg_t *p_msg = GetSUT(k_ray);
+
+  //// SUT
+  //size_t len = Hg_data_size(p_msg);
+
+  //TS_ASSERT_EQUALS(k_control, len);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_data_size_Uninitialized()
+{
+  // SUT
+  size_t len = Hg_data_size(0);
+
+  TS_ASSERT_EQUALS(0, len);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_to_network()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_to_network_Uninitialized()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_to_host()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_to_host_Uninitialized()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_to_big_end()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_to_big_end_Uninitialized()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_to_little_end()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_to_little_end_Uninitialized()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_pack()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_pack_invalid_msg()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_pack_invalid_buffer()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_pack_invalid_len()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_unpack()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_unpack_invalid_msg()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_unpack_invalid_buffer()
+{
+
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_unpack_invalid_len()
+{
+
+}
 
 #endif
 
