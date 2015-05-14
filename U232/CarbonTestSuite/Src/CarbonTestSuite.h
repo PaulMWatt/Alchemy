@@ -313,32 +313,6 @@ void CarbonTestSuite::Test_msg_to_struct_array(void)
 
 
 
-//  ******************************************************************************
-//void CarbonTestSuite::TestCase1(void)
-//{
-//  vertex_t v;
-//
-//  v.pt.X = 10;
-//  v.pt.Y = 5;
-//  v.pt.Z = -2;
-//
-//
-//  color4 pixel;
-//  pixel.R = 3;
-//  pixel.G = 234;
-//  pixel.B = 109;
-//  pixel.A = 127;
-//
-//  Hg::color4 hg_pixel;
-//
-//  C::struct_to_msg(pixel, hg_pixel);
-//  cout << " R:" << hg_pixel.R
-//       << " G:" << hg_pixel.G
-//       << " B:" << hg_pixel.B
-//       << " A:" << hg_pixel.A << "\n";
-//
-//  function();
-//}
 
 #endif
 

@@ -6,15 +6,158 @@
 //  @copyright 2015 Paul M Watt
 //  ****************************************************************************
 //  Includes *******************************************************************
-#include <C/carbonate.h>
-#include <algorithm>
 
+#include <Carbon.h>
+#include <C/carbonate.h>
+#include <CarbonTestDefs.h>
+
+
+int CarbonToNetwork(Hg_msg_t* p_src)
+{
+  using namespace C::detail;
+
+  if (!p_src)
+    return 0;
+
+  Hg_type_t id = C::carbon_type(p_src);
+
+
+  switch (id)
+  {
+  case k_color_map:
+    {
+      return ConvertToNetworkOrder<Hg::color_map_t, color_map_t>(p_src);
+    }
+  case k_pt3d:
+    {
+      return ConvertToNetworkOrder<Hg::pt3d_t, pt3d_t>(p_src);
+    }
+  case k_ray:
+    {
+      return ConvertToNetworkOrder<Hg::ray_t, ray_t>(p_src);
+    }
+  case k_vertex:
+    {
+      return ConvertToNetworkOrder<Hg::vertex_t, vertex_t>(p_src);
+    }
+  }
+
+  return 0;
+}
+
+
+//  ****************************************************************************
+int CarbonToBigEndian(Hg_msg_t* p_src)
+{
+  using namespace C::detail;
+
+  if (!p_src)
+    return 0;
+
+  Hg_type_t id = C::carbon_type(p_src);
+
+
+  switch (id)
+  {
+  case k_color_map:
+    {
+      return ConvertToBigEndian<Hg::color_map_t, color_map_t>(p_src);
+    }
+  case k_pt3d:
+    {
+      return ConvertToBigEndian<Hg::pt3d_t, pt3d_t>(p_src);
+    }
+  case k_ray:
+    {
+      return ConvertToBigEndian<Hg::ray_t, ray_t>(p_src);
+    }
+  case k_vertex:
+    {
+      return ConvertToBigEndian<Hg::vertex_t, vertex_t>(p_src);
+    }
+  }
+
+  return 0;
+}
+
+//  ****************************************************************************
+size_t CarbonPackMessage( const Hg_msg_t  *p_src,   
+                          unsigned char   *p_buffer, 
+                          size_t          len)
+{
+  using namespace C::detail;
+
+  if (!p_src)
+    return 0;
+
+  Hg_type_t id = C::carbon_type(p_src);
+
+
+  switch (id)
+  {
+  case k_color_map:
+    {
+      return PackMessage<Hg::color_map_t, color_map_t>(p_src, p_buffer, len);
+    }
+  case k_pt3d:
+    {
+      return PackMessage<Hg::pt3d_t, pt3d_t>(p_src, p_buffer, len);
+    }
+  case k_ray:
+    {
+      return PackMessage<Hg::ray_t, ray_t>(p_src, p_buffer, len);
+    }
+  case k_vertex:
+    {
+      return PackMessage<Hg::vertex_t, vertex_t>(p_src, p_buffer, len);
+    }
+  }
+
+  return 0;
+}
+
+//  ****************************************************************************
+size_t CarbonUnpackMessage( Hg_msg_t            *p_src,   
+                            const unsigned char *p_buffer, 
+                            size_t              len)
+{
+  using namespace C::detail;
+
+  if (!p_src)
+    return 0;
+
+  Hg_type_t id = C::carbon_type(p_src);
+
+
+  switch (id)
+  {
+  case k_color_map:
+    {
+      return UnpackMessage<Hg::color_map_t, color_map_t>(p_src, p_buffer, len);
+    }
+  case k_pt3d:
+    {
+      return UnpackMessage<Hg::pt3d_t, pt3d_t>(p_src, p_buffer, len);
+    }
+  case k_ray:
+    {
+      return UnpackMessage<Hg::ray_t, ray_t>(p_src, p_buffer, len);
+    }
+  case k_vertex:
+    {
+      return UnpackMessage<Hg::vertex_t, vertex_t>(p_src, p_buffer, len);
+    }
+  }
+
+  return 0;
+}
 
 
 // Disable name-mangling for these 
 // functions when compiled with C++.
 extern "C"
 {
+
 
 //  ****************************************************************************
 ALCHEMY_API 
@@ -113,10 +256,7 @@ size_t Hg_data_size(
   const Hg_msg_t* p_msg
 )
 {
-  // TODO: 
-  // Use the type information to calculate
-  // the size of the output buffer.
-
+  return GetTotalSize(const_cast<Hg_msg_t*>(p_msg));
 
   return 0;
 }
@@ -128,10 +268,13 @@ int Hg_to_network(
   Hg_msg_t* p_msg
 )
 {
-  // TODO: Dispatch to the correct type converter.
+  // Exit if the local platform is big-endian.
+  if (k_big_endian == Hg_local_endianess())
+  {
+    return 0;
+  }
 
-
-  return 0;
+  return CarbonToNetwork(p_msg);
 }
 
 
@@ -140,9 +283,8 @@ ALCHEMY_API
 int Hg_to_host(
   Hg_msg_t* p_msg
 )
-{
-  // TODO: Dispatch to the correct type converter.
-  return 0;
+{  
+  return Hg_to_network(p_msg);
 }
 
 
@@ -152,8 +294,7 @@ int Hg_to_big_end(
   Hg_msg_t* p_msg
 )
 {
-  // TODO: Dispatch to the correct type converter.
-  return 0;
+  return CarbonToBigEndian(p_msg);
 }
 
 
@@ -163,38 +304,50 @@ int Hg_to_little_end(
   Hg_msg_t* p_msg
 )
 {
-  // TODO: Dispatch to the correct type converter.
-  return 0;
+  return Hg_to_big_end(p_msg);
 }
 
           
 //  ****************************************************************************
 ALCHEMY_API 
 size_t Hg_pack(
-  const Hg_msg_t* p_msg, 
-  void*           p_buffer, 
+  const Hg_msg_t  *p_msg, 
+  unsigned char   *p_buffer, 
   size_t          len
 )
 {
-  // TODO: Dispatch to the correct serializer.
-  return 0;
+  if ( !p_msg
+    || !p_buffer
+    || 0 == len)
+  {
+    return 0;
+  }
+
+  return CarbonPackMessage(p_msg, p_buffer, len);
 }
 
 
 //  ****************************************************************************
 ALCHEMY_API 
 size_t Hg_unpack(
-  Hg_msg_t*   p_msg, 
-  const void* p_buffer, 
-  size_t      len
+  Hg_msg_t            *p_msg, 
+  const unsigned char *p_buffer, 
+  size_t              len
 )
 {
-  // TODO: Dispatch to the correct deserializer.
-  return 0;
+  if ( !p_msg
+    || !p_buffer
+    || 0 == len)
+  {
+    return 0;
+  }
+
+  return CarbonUnpackMessage(p_msg, p_buffer, len);
 }
 
 
 // End of name-mangling guard.
 }
+
 
 

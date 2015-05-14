@@ -14,8 +14,8 @@
 #define CONVERSION_H_INCLUDED
 //  Includes *******************************************************************
 #include <Carbon.h>
-#include <Hg/proxy/data_proxy.h>
-#include <Hg/deduce_type_trait.h>
+#include <Hg.h>
+
 
 namespace C
 {
@@ -166,6 +166,86 @@ U& msg_to_struct(T& src, U& dest)
   return translate_to_C<T,U>::assign(src, dest);
 }
 
+
+//  ****************************************************************************
+//  ****************************************************************************
+namespace detail
+{
+
+//  ****************************************************************************
+//
+//
+template< typename HgT, 
+          typename CT
+        >
+int ConvertToNetworkOrder(Hg_msg_t *p_msg)
+{
+  Hg::basic_msg<HgT>::host_t hg_msg;
+  C::struct_to_msg(*(CT*)p_msg, hg_msg.values());
+
+  Hg::basic_msg<HgT>::net_t hg_net_msg = Hg::to_network(hg_msg);
+
+  C::msg_to_struct(hg_net_msg.values(), *(CT*)p_msg);
+
+  return 0;
+}
+
+//  ****************************************************************************
+//
+//
+template< typename HgT, 
+          typename CT
+        >
+int ConvertToBigEndian(Hg_msg_t *p_msg)
+{
+  Hg::basic_msg<HgT>::little_t hg_msg;
+  C::struct_to_msg(*(CT*)p_msg, hg_msg.values());
+
+  Hg::basic_msg<HgT>::big_t hg_big_msg = Hg::to_big_endian(hg_msg);
+
+  C::msg_to_struct(hg_big_msg.values(), *(CT*)p_msg);
+
+  return 0;
+}
+
+//  ****************************************************************************
+//
+//
+template< typename HgT, 
+          typename CT
+        >
+size_t PackMessage( const Hg_msg_t  *p_msg,   
+                    unsigned char   *p_buffer, 
+                    size_t          len)
+{
+  Hg::basic_msg<HgT> hg_msg;
+  C::struct_to_msg(*(CT*)p_msg, hg_msg.values());
+
+  hg_msg.data((unsigned char*)p_buffer, len);
+
+  return 0;
+}
+
+//  ****************************************************************************
+//
+//
+template< typename HgT, 
+          typename CT
+        >
+size_t UnpackMessage( Hg_msg_t            *p_msg,   
+                      const unsigned char *p_buffer, 
+                      size_t              len)
+{
+  Hg::basic_msg<HgT> hg_msg((unsigned char*)p_buffer, len);
+
+  C::msg_to_struct(hg_msg.values(), *(CT*)p_msg);
+  return 0;
+}
+
+} // namespace detail
+
+
 } // namespace C
+
 
 #endif

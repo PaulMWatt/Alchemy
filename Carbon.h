@@ -246,8 +246,8 @@ int Hg_to_little_end(
 ///
 ALCHEMY_API 
 size_t Hg_pack(
-  const Hg_msg_t* p_msg, 
-  void*           p_buffer, 
+  const Hg_msg_t  *p_msg, 
+  unsigned char   *p_buffer, 
   size_t          len
 );
 
@@ -263,9 +263,9 @@ size_t Hg_pack(
 ///
 ALCHEMY_API 
 size_t Hg_unpack(
-  Hg_msg_t*   p_msg, 
-  const void* p_buffer, 
-  size_t      len
+  Hg_msg_t            *p_msg, 
+  const unsigned char *p_buffer, 
+  size_t              len
 );
 
 //  ****************************************************************************

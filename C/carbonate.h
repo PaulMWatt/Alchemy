@@ -16,6 +16,7 @@
 #include <Carbon.h>
 #include <C/conversion.h>
 
+
 namespace C
 {
 //  Typedefs *******************************************************************
@@ -214,9 +215,74 @@ size_t GetTotalSize(Hg_msg_t* p_src)
 }
 
 
-
-
-
+//  ****************************************************************************
+//int CarbonToNetwork(Hg_msg_t* p_src)
+//{
+//  using namespace C::detail;
+//
+//  if (!p_src)
+//    return 0;
+//
+//  Hg_type_t id = C::carbon_type(p_src);
+//
+//
+//  switch (id)
+//  {
+//  case k_color_map:
+//    {
+//      return ConvertToNetworkOrder<Hg::color_map_t, color_map_t>(p_src);
+//    }
+//  case k_pt3d:
+//    {
+//      return ConvertToNetworkOrder<Hg::pt3d_t, pt3d_t>(p_src);
+//    }
+//  case k_ray:
+//    {
+//      return ConvertToNetworkOrder<Hg::ray_t, ray_t>(p_src);
+//    }
+//  case k_vertex:
+//    {
+//      return ConvertToNetworkOrder<Hg::vertex_t, vertex_t>(p_src);
+//    }
+//  }
+//
+//  return 0;
+//}
+//
+//
+////  ****************************************************************************
+//int CarbonToBigEndian(Hg_msg_t* p_src)
+//{
+//  using namespace C::detail;
+//
+//  if (!p_src)
+//    return 0;
+//
+//  Hg_type_t id = C::carbon_type(p_src);
+//
+//
+//  switch (id)
+//  {
+//  case k_color_map:
+//    {
+//      return ConvertToBigEndian<Hg::color_map_t, color_map_t>(p_src);
+//    }
+//  case k_pt3d:
+//    {
+//      return ConvertToBigEndian<Hg::pt3d_t, pt3d_t>(p_src);
+//    }
+//  case k_ray:
+//    {
+//      return ConvertToBigEndian<Hg::ray_t, ray_t>(p_src);
+//    }
+//  case k_vertex:
+//    {
+//      return ConvertToBigEndian<Hg::vertex_t, vertex_t>(p_src);
+//    }
+//  }
+//
+//  return 0;
+//}
 
 
 
