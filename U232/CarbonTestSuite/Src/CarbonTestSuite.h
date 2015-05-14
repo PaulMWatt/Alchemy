@@ -41,8 +41,7 @@ using namespace std;
 #include <C/carbonate.h>
 #include <CarbonTestDefs.h>
 
-//#include <c_usage.h>
- 
+
 //  ****************************************************************************
 /// CarbonTestSuite Test Suite class.
 ///
@@ -76,6 +75,11 @@ protected:
   // Typedefs *****************************************************************
   typedef exported_types        test_types;
 
+  static const 
+    Hg_type_t k_test_msg_type = k_vertex;
+  static const 
+    size_t k_msg_buffer_len = Hg::SizeOf<Hg::vertex_t>::value;
+
   // Test Suite Data **********************************************************
   Hg_msg_t    *m_pSut;
 
@@ -95,6 +99,76 @@ protected:
   int GetInvalidType()
   {
     return k_invalid_type;
+  }
+
+  //  **************************************************************************
+  void PopulateTestHostMsg(vertex_t* p_vertex)
+  {
+    p_vertex->pt.X = 0x01234567;
+    p_vertex->pt.Y = 0xABCDEF00;
+    p_vertex->pt.Z = 0x9A8B7C6D;
+
+    p_vertex->color.R = 0xFF;
+    p_vertex->color.G = 0xC0;
+    p_vertex->color.B = 0x7F;
+    p_vertex->color.A = 0x40;
+  }
+
+  //  **************************************************************************
+  void PopulateTestNetMsg(vertex_t* p_vertex)
+  {
+    p_vertex->pt.X = 0x67452301;
+    p_vertex->pt.Y = 0x00EFCDAB;
+    p_vertex->pt.Z = 0x6D7C8B9A;
+
+    p_vertex->color.R = 0x40;
+    p_vertex->color.G = 0x7F;
+    p_vertex->color.B = 0xC0;
+    p_vertex->color.A = 0xFF;
+  }
+
+  //  **************************************************************************
+  void PopulateHostOrder(unsigned char *pBuffer, size_t len)
+  {
+    uint32_t X    = 0x01234567;
+    uint32_t Y    = 0xABCDEF00;
+    uint32_t Z    = 0x9A8B7C6D;
+    uint32_t RGBA = 0xFFC07F40;
+
+    unsigned char* pCur = pBuffer;
+    ::memcpy(pCur, &X, sizeof(X));
+    pCur += sizeof(X);
+
+    ::memcpy(pCur, &Y, sizeof(Y));
+    pCur += sizeof(Y);
+
+    ::memcpy(pCur, &Z, sizeof(Z));
+    pCur += sizeof(Z);
+
+    ::memcpy(pCur, &RGBA, sizeof(RGBA));
+    pCur += sizeof(RGBA);
+  }
+
+  //  **************************************************************************
+  void PopulateNetOrder(unsigned char *pBuffer, size_t len)
+  {
+    uint32_t X    = 0x67452301;
+    uint32_t Y    = 0x00EFCDAB;
+    uint32_t Z    = 0x6D7C8B9A;
+    uint32_t RGBA = 0x407FC0FF;
+
+    unsigned char* pCur = pBuffer;
+    ::memcpy(pCur, &X, sizeof(X));
+    pCur += sizeof(X);
+
+    ::memcpy(pCur, &Y, sizeof(Y));
+    pCur += sizeof(Y);
+
+    ::memcpy(pCur, &Z, sizeof(Z));
+    pCur += sizeof(Z);
+
+    ::memcpy(pCur, &RGBA, sizeof(RGBA));
+    pCur += sizeof(RGBA);
   }
 
 public:
@@ -463,97 +537,223 @@ void CarbonTestSuite::Test_Hg_data_size_Uninitialized()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_network()
 {
+  Hg_msg_t *control  = Hg_create(k_vertex);
+#if (ALCHEMY_ENDIANESS == ALCHEMY_BIG_ENDIAN)
+  // No conversion will occur if the local system is big endian.
+  PopulateTestHostMsg((vertex_t*)sut);
+#else
+  PopulateTestNetMsg((vertex_t*)control);
+#endif
 
+  Hg_msg_t      *sut = GetSUT(k_vertex);
+  PopulateTestHostMsg((vertex_t*)sut);
+
+  // SUT
+  int result = Hg_to_network(sut);
+
+  TS_ASSERT_EQUALS(0, result);
+  TS_ASSERT_SAME_DATA(control, sut, sizeof(vertex_t));
+
+  Hg_destroy(control);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_network_Uninitialized()
 {
+  // SUT
+  int result = Hg_to_network(0);
 
+  TS_ASSERT_EQUALS(0, result);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_host()
 {
+  Hg_msg_t *control  = Hg_create(k_vertex);
+#if (ALCHEMY_ENDIANESS == ALCHEMY_BIG_ENDIAN)
+  // No conversion will occur if the local system is big endian.
+  PopulateTestNetMsg((vertex_t*)control);
+#else
+  PopulateTestHostMsg((vertex_t*)control);
+#endif
 
+  Hg_msg_t      *sut = GetSUT(k_vertex);
+  PopulateTestNetMsg((vertex_t*)sut);
+
+  // SUT
+  int result = Hg_to_network(sut);
+
+  TS_ASSERT_EQUALS(0, result);
+  TS_ASSERT_SAME_DATA(control, sut, sizeof(vertex_t));
+
+  Hg_destroy(control);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_host_Uninitialized()
 {
+  // SUT
+  int result = Hg_to_host(0);
 
+  TS_ASSERT_EQUALS(0, result);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_big_end()
 {
+  Hg_msg_t *control  = Hg_create(k_vertex);
+  PopulateTestNetMsg((vertex_t*)control);
 
+  Hg_msg_t      *sut = GetSUT(k_vertex);
+  PopulateTestHostMsg((vertex_t*)sut);
+
+  // SUT
+  int result = Hg_to_network(sut);
+
+  TS_ASSERT_EQUALS(0, result);
+  TS_ASSERT_SAME_DATA(control, sut, sizeof(vertex_t));
+
+  Hg_destroy(control);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_big_end_Uninitialized()
 {
+  // SUT
+  int result = Hg_to_big_end(0);
 
+  TS_ASSERT_EQUALS(0, result);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_little_end()
 {
+  Hg_msg_t *control  = Hg_create(k_vertex);
+  PopulateTestNetMsg((vertex_t*)control);
 
+  Hg_msg_t      *sut = GetSUT(k_vertex);
+  PopulateTestHostMsg((vertex_t*)sut);
+
+  // SUT
+  int result = Hg_to_network(sut);
+
+  TS_ASSERT_EQUALS(0, result);
+  TS_ASSERT_SAME_DATA(control, sut, sizeof(vertex_t));
+
+  Hg_destroy(control);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_little_end_Uninitialized()
 {
+  // SUT
+  int result = Hg_to_little_end(0);
 
+  TS_ASSERT_EQUALS(0, result);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_pack()
 {
+  unsigned char control[k_msg_buffer_len];
+  PopulateNetOrder(control, k_msg_buffer_len);
 
+  Hg_msg_t *sut = GetSUT(k_vertex);
+  PopulateTestHostMsg((vertex_t*)sut);
+
+  unsigned char result_buffer[k_msg_buffer_len] = {0};
+
+  // SUT
+  int result = Hg_pack(sut, result_buffer, k_msg_buffer_len);
+
+  TS_ASSERT_SAME_DATA(control, result_buffer, sizeof(vertex_t));
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_pack_invalid_msg()
 {
+  unsigned char buffer[k_msg_buffer_len];
 
+  // SUT
+  int result = Hg_pack(0, buffer, k_msg_buffer_len);
+
+  TS_ASSERT_EQUALS(0, result);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_pack_invalid_buffer()
 {
+  Hg_msg_t *sut = GetSUT(k_test_msg_type);
 
+  // SUT
+  int result = Hg_pack(sut, 0, k_msg_buffer_len);
+
+  TS_ASSERT_EQUALS(0, result);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_pack_invalid_len()
 {
+  Hg_msg_t      *sut = GetSUT(k_test_msg_type);
+  unsigned char  buffer[k_msg_buffer_len];
 
+  // SUT
+  int result = Hg_pack(sut, buffer, 0);
+
+  TS_ASSERT_EQUALS(0, result);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_unpack()
 {
+  Hg_msg_t *control = Hg_create(k_vertex);
+  PopulateTestHostMsg((vertex_t*)control);
 
+  Hg_msg_t      *sut        = GetSUT(k_vertex);
+  unsigned char buffer[k_msg_buffer_len];
+
+  PopulateHostOrder(buffer, k_msg_buffer_len);
+
+  // SUT
+  int result = Hg_unpack(sut, buffer, k_msg_buffer_len);
+
+  TS_ASSERT_SAME_DATA(control, sut, sizeof(vertex_t));
+
+  Hg_destroy(control);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_unpack_invalid_msg()
 {
+  unsigned char buffer[k_msg_buffer_len];
 
+  // SUT
+  int result = Hg_unpack(0, buffer, k_msg_buffer_len);
+
+  TS_ASSERT_EQUALS(0, result);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_unpack_invalid_buffer()
 {
+  Hg_msg_t *sut = GetSUT(k_test_msg_type);
 
+  // SUT
+  int result = Hg_unpack(sut, 0, k_msg_buffer_len);
+
+  TS_ASSERT_EQUALS(0, result);
 }
 
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_unpack_invalid_len()
 {
+  Hg_msg_t      *sut = GetSUT(k_test_msg_type);
+  unsigned char  buffer[k_msg_buffer_len];
 
+  // SUT
+  int result = Hg_unpack(sut, buffer, 0);
+
+  TS_ASSERT_EQUALS(0, result);
 }
 
 #endif
