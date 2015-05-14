@@ -133,7 +133,7 @@ protected:
     uint32_t X    = 0x01234567;
     uint32_t Y    = 0xABCDEF00;
     uint32_t Z    = 0x9A8B7C6D;
-    uint32_t RGBA = 0xFFC07F40;
+    uint32_t RGBA = 0x407FC0FF;
 
     unsigned char* pCur = pBuffer;
     ::memcpy(pCur, &X, sizeof(X));
@@ -155,7 +155,7 @@ protected:
     uint32_t X    = 0x67452301;
     uint32_t Y    = 0x00EFCDAB;
     uint32_t Z    = 0x6D7C8B9A;
-    uint32_t RGBA = 0x407FC0FF;
+    uint32_t RGBA = 0xFFC07F40;
 
     unsigned char* pCur = pBuffer;
     ::memcpy(pCur, &X, sizeof(X));
@@ -656,7 +656,7 @@ void CarbonTestSuite::Test_Hg_to_little_end_Uninitialized()
 void CarbonTestSuite::Test_Hg_pack()
 {
   unsigned char control[k_msg_buffer_len];
-  PopulateNetOrder(control, k_msg_buffer_len);
+  PopulateHostOrder(control, k_msg_buffer_len);
 
   Hg_msg_t *sut = GetSUT(k_vertex);
   PopulateTestHostMsg((vertex_t*)sut);

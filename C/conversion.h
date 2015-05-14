@@ -15,6 +15,7 @@
 //  Includes *******************************************************************
 #include <Carbon.h>
 #include <Hg.h>
+#include <Hg/static_storage_policy.h>
 
 
 namespace C
@@ -95,7 +96,8 @@ struct translate_to_C
   {
     // This version of the template handles fundamental types and bit-fields.
     // The values will fit, they just need a lot of coercing.
-    ::memcpy((T::value_type*)&dest, &src, sizeof(T::value_type));
+    T::value_type value = src;
+    ::memcpy(&dest, &value, sizeof(T::value_type));
     return dest;
   }
 };
@@ -218,7 +220,7 @@ size_t PackMessage( const Hg_msg_t  *p_msg,
                     unsigned char   *p_buffer, 
                     size_t          len)
 {
-  Hg::basic_msg<HgT> hg_msg;
+  Hg::basic_msg<HgT, Hg::BufferedStaticStoragePolicy> hg_msg;
   C::struct_to_msg(*(CT*)p_msg, hg_msg.values());
 
   hg_msg.data((unsigned char*)p_buffer, len);
