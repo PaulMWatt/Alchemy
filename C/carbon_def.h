@@ -150,6 +150,7 @@
 //
 #ifdef __cplusplus
 
+//  ****************************************************************************
 #define EACH_C_VALUE(r, xlate, i, x) \
   C::xlate(src.##BOOST_PP_TUPLE_ELEM(3,2,x), dest.##BOOST_PP_TUPLE_ELEM(3,2,x));
 
@@ -189,11 +190,181 @@
   }                                                                            \
   END_NAMESPACE(C)
 
+
+//  ****************************************************************************
+//  ****************************************************************************
+//  Carbon exported type enumerations
+//  ****************************************************************************
+#define EACH_C_ENUM(r, data, i, x) \
+  extern const size_t BOOST_PP_CAT(data, x) = i;
+
+#define DEFINE_C_TYPE_ENUMS(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_ENUM, k_, S)
+
+//  ****************************************************************************
+#define CARBON_EXPORT_ENUM(S)     DEFINE_C_TYPE_ENUMS(S)
+
+
+//  ****************************************************************************
+//  Carbon type size function
+//  ****************************************************************************
+#define EACH_C_SIZE(r, data, i, x) \
+  case BOOST_PP_CAT(data, x):   return Hg::SizeAt<BOOST_PP_CAT(data, x) , Hg::exported_types>::value;
+
+#define DEFINE_C_TYPE_SIZE(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_SIZE, k_, S)
+
+//  ****************************************************************************
+#define CARBON_TYPE_SIZE(S)                                                    \
+  size_t GetTypeSize(int v)                                                    \
+  {                                                                            \
+    switch (v)                                                                 \
+    {                                                                          \
+    DEFINE_C_TYPE_SIZE(S)                                                      \
+    }                                                                          \
+    return 0;                                                                  \
+  }
+
+
+//  ****************************************************************************
+//  Carbon type data size function
+//  ****************************************************************************
+//  TODO: ("This MACRO still needs the appropriate implementation")
+#define EACH_C_DATA_SIZE(r, data, i, x) \
+  case BOOST_PP_CAT(data, x):   return Hg::SizeAt<BOOST_PP_CAT(data, x) , Hg::exported_types>::value;
+
+#define DEFINE_C_DATA_SIZE(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_DATA_SIZE, k_, S)
+
+//  ****************************************************************************
+#define CARBON_TYPE_DATA_SIZE(S)                                               \
+  size_t GetTypeDataSize(Hg_msg_t* p_src)                                      \
+  {                                                                            \
+    if (!p_src)                                                                \
+      return 0;                                                                \
+                                                                               \
+    Hg_type_t id = C::carbon_type(p_src);                                      \
+                                                                               \
+    switch (id)                                                                \
+    {                                                                          \
+    DEFINE_C_DATA_SIZE(S)                                                      \
+    }                                                                          \
+    return 0;                                                                  \
+  }
+
+
+//  ****************************************************************************
+//  Carbon type byte-order conversion function
+//  ****************************************************************************
+#define EACH_C_BYTE_ORDER(r, data, i, x) \
+  case BOOST_PP_CAT(data, x):   return ConvertByteOrder<Hg::##x, ##x>(p_src);
+
+#define DEFINE_C_BYTE_ORDER_CONVERSION(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_BYTE_ORDER, k_, S)
+
+//  ****************************************************************************
+#define CARBON_BYTE_ORDER_CONVERSION(S)                                        \
+int CarbonSwapByteOrder(Hg_msg_t* p_src)                                       \
+{                                                                              \
+  using namespace C::detail;                                                   \
+                                                                               \
+  if (!p_src)                                                                  \
+    return 0;                                                                  \
+                                                                               \
+  Hg_type_t id = C::carbon_type(p_src);                                        \
+                                                                               \
+  switch (id)                                                                  \
+  {                                                                            \
+    DEFINE_C_BYTE_ORDER_CONVERSION(S)                                          \
+  }                                                                            \
+  return 0;                                                                    \
+}
+
+
+//  ****************************************************************************
+//  Carbon type pack function
+//  ****************************************************************************
+#define EACH_C_TYPE_PACK(r, data, i, x) \
+  case BOOST_PP_CAT(data, x):   return PackMessage<Hg::##x, ##x>(p_src, p_buffer, len);
+
+#define DEFINE_C_MSG_PACK(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_TYPE_PACK, k_, S)
+
+//  ****************************************************************************
+#define CARBON_MSG_PACK(S)                                                     \
+size_t CarbonPackMessage( const Hg_msg_t  *p_src,                              \
+                          unsigned char   *p_buffer,                           \
+                          size_t           len)                                \
+{                                                                              \
+  using namespace C::detail;                                                   \
+                                                                               \
+  if (!p_src)                                                                  \
+    return 0;                                                                  \
+                                                                               \
+  Hg_type_t id = C::carbon_type(p_src);                                        \
+  switch (id)                                                                  \
+  {                                                                            \
+    DEFINE_C_MSG_PACK(S)                                                       \
+  }                                                                            \
+  return 0;                                                                    \
+}
+
+
+//  ****************************************************************************
+//  Carbon type unpack function
+//  ****************************************************************************
+#define EACH_C_TYPE_UNPACK(r, data, i, x) \
+  case BOOST_PP_CAT(data, x):   return UnpackMessage<Hg::##x, ##x>(p_src, p_buffer, len);
+
+#define DEFINE_C_MSG_UNPACK(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_TYPE_UNPACK, k_, S)
+
+//  ****************************************************************************
+#define CARBON_MSG_UNPACK(S)                                                   \
+size_t CarbonUnpackMessage( Hg_msg_t            *p_src,                        \
+                            const unsigned char *p_buffer,                     \
+                            size_t              len)                           \
+{                                                                              \
+  using namespace C::detail;                                                   \
+                                                                               \
+  if (!p_src)                                                                  \
+    return 0;                                                                  \
+                                                                               \
+  Hg_type_t id = C::carbon_type(p_src);                                        \
+  switch (id)                                                                  \
+  {                                                                            \
+    DEFINE_C_MSG_UNPACK(S)                                                     \
+  }                                                                            \
+  return 0;                                                                    \
+}
+
+
+//  ****************************************************************************
+/// Defines a typelist for all of the exported structs.
+/// This MACRO also defines a collection of constants that map to the types,
+/// and dispatch functions to complete the implementation of Carbon.
+///
+#define C_EXPORTED_TYPES_IMPL(S)                                               \
+  CARBON_EXPORT_ENUM(S);                                                       \
+  CARBON_TYPE_SIZE(S);                                                         \
+  CARBON_TYPE_DATA_SIZE(S);                                                    \
+  CARBON_BYTE_ORDER_CONVERSION(S);                                             \
+  CARBON_MSG_PACK(S);                                                          \
+  CARBON_MSG_UNPACK(S);    
+
+//  ****************************************************************************
+#define C_DECLARE_EXPORTED_TYPES(...)                                          \
+  BEGIN_NAMESPACE(Hg);                                                         \
+    DEFINE_TYPELIST(exported_types, __VA_ARGS__);                              \
+  END_NAMESPACE(Hg);                                                           \
+  C_EXPORTED_TYPES_IMPL(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
 #else
 // These functions used overloading 
 // and are not compatible with C.
 #define C_DECLARE_STRUCT_TO_MSG(NAME, ...)
 #define C_DECLARE_MSG_TO_STRUCT(NAME, ...)
+#define C_DECLARE_EXPORTED_TYPES(...)
 
 
 #endif

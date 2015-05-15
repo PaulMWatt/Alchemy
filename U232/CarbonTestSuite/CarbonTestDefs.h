@@ -97,5 +97,20 @@ ALCHEMY_STRUCT(camera_t,
 //  ALCHEMY_ALLOC  (triangle_t, count, surfaces)
 //);
 
+
+//  ****************************************************************************
+//  A MACRO declaration like this is required for every Carbon library.
+//  This informs Carbon which struct types to generate and export conversions.
+//
+C_DECLARE_EXPORTED_TYPES
+(
+  color_map_t,
+  pt3d_t,
+  ray_t,
+  vertex_t
+);
+
+
+
 #endif
 

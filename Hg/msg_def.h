@@ -61,6 +61,12 @@
     STRUCT_PARAMS(NAME, EL, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
 
 
+//  ****************************************************************************
+//  Creates a declaration for a new TypeList typedef.  
+//
+#define DEFINE_TYPELIST(N,...)\
+  typedef TypeList < __VA_ARGS__ > N;
+
 
 //  ****************************************************************************
 //  Helps convert generic ALCHEMY datum declarations to elemental declarations.  
@@ -166,10 +172,6 @@ struct message_size_trait
 
 #define EACH_PARAM(r, data, i, x) \
   BOOST_PP_TUPLE_ELEM(3,1,x)(BOOST_PP_TUPLE_ELEM(3,2,x)); 
-
-#define DEFINE_TYPELIST(N,...)\
-  typedef TypeList < __VA_ARGS__ > N;
-
 
 #if defined(_MSC_VER)
 #define DEFINE_STRUCT_TYPELIST(N, S) \

@@ -30,7 +30,12 @@
 #ifndef CarbonTestSuite_H_INCLUDED
 #define CarbonTestSuite_H_INCLUDED
 
+#if defined(_MSC_VER)
+
+// Library import directive for Microsoft compiler.
 #pragma comment(lib, "CarbonTestLibrary")
+
+#endif
 
 #include <iostream>
 using namespace std;
@@ -73,10 +78,10 @@ public:
 protected:
 
   // Typedefs *****************************************************************
-  typedef exported_types        test_types;
+  typedef Hg::exported_types        test_types;
 
   static const 
-    Hg_type_t k_test_msg_type = k_vertex;
+    Hg_type_t k_test_msg_type = k_vertex_t;
   static const 
     size_t k_msg_buffer_len = Hg::SizeOf<Hg::vertex_t>::value;
 
@@ -444,7 +449,7 @@ void CarbonTestSuite::Test_Hg_local_endianess()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_create()
 {
-  Hg_msg_t *sut = Hg_create(k_color_map);
+  Hg_msg_t *sut = Hg_create(k_color_map_t);
 
   // SUT
   Hg_destroy(sut);
@@ -462,7 +467,7 @@ void CarbonTestSuite::Test_Hg_create_Invalid_type()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_destroy()
 {
-  Hg_msg_t *sut = Hg_create(k_vertex);
+  Hg_msg_t *sut = Hg_create(k_vertex_t);
 
   // SUT
   Hg_destroy(0);
@@ -474,7 +479,7 @@ void CarbonTestSuite::Test_Hg_destroy()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_type()
 {
-  const Hg_type_t k_control = k_ray;
+  const Hg_type_t k_control = k_ray_t;
   Hg_msg_t *sut = GetSUT(k_control);
 
   // SUT
@@ -496,7 +501,7 @@ void CarbonTestSuite::Test_Hg_type_Uninitialized()
 void CarbonTestSuite::Test_Hg_size()
 {
   const size_t k_control = Hg::SizeOf<Hg::ray_t>::value;
-  Hg_msg_t *p_msg = GetSUT(k_ray);
+  Hg_msg_t *p_msg = GetSUT(k_ray_t);
 
   // SUT
   size_t len = Hg_size(p_msg);
@@ -517,7 +522,7 @@ void CarbonTestSuite::Test_Hg_size_Uninitialized()
 void CarbonTestSuite::Test_Hg_data_size()
 {
   //const size_t k_control = Hg::SizeOf<test_types>::value;
-  //Hg_msg_t *p_msg = GetSUT(k_ray);
+  //Hg_msg_t *p_msg = GetSUT(k_ray_t);
 
   //// SUT
   //size_t len = Hg_data_size(p_msg);
@@ -537,7 +542,7 @@ void CarbonTestSuite::Test_Hg_data_size_Uninitialized()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_network()
 {
-  Hg_msg_t *control  = Hg_create(k_vertex);
+  Hg_msg_t *control  = Hg_create(k_vertex_t);
 #if (ALCHEMY_ENDIANESS == ALCHEMY_BIG_ENDIAN)
   // No conversion will occur if the local system is big endian.
   PopulateTestHostMsg((vertex_t*)sut);
@@ -545,7 +550,7 @@ void CarbonTestSuite::Test_Hg_to_network()
   PopulateTestNetMsg((vertex_t*)control);
 #endif
 
-  Hg_msg_t      *sut = GetSUT(k_vertex);
+  Hg_msg_t      *sut = GetSUT(k_vertex_t);
   PopulateTestHostMsg((vertex_t*)sut);
 
   // SUT
@@ -569,7 +574,7 @@ void CarbonTestSuite::Test_Hg_to_network_Uninitialized()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_host()
 {
-  Hg_msg_t *control  = Hg_create(k_vertex);
+  Hg_msg_t *control  = Hg_create(k_vertex_t);
 #if (ALCHEMY_ENDIANESS == ALCHEMY_BIG_ENDIAN)
   // No conversion will occur if the local system is big endian.
   PopulateTestNetMsg((vertex_t*)control);
@@ -577,7 +582,7 @@ void CarbonTestSuite::Test_Hg_to_host()
   PopulateTestHostMsg((vertex_t*)control);
 #endif
 
-  Hg_msg_t      *sut = GetSUT(k_vertex);
+  Hg_msg_t      *sut = GetSUT(k_vertex_t);
   PopulateTestNetMsg((vertex_t*)sut);
 
   // SUT
@@ -601,10 +606,10 @@ void CarbonTestSuite::Test_Hg_to_host_Uninitialized()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_big_end()
 {
-  Hg_msg_t *control  = Hg_create(k_vertex);
+  Hg_msg_t *control  = Hg_create(k_vertex_t);
   PopulateTestNetMsg((vertex_t*)control);
 
-  Hg_msg_t      *sut = GetSUT(k_vertex);
+  Hg_msg_t      *sut = GetSUT(k_vertex_t);
   PopulateTestHostMsg((vertex_t*)sut);
 
   // SUT
@@ -628,10 +633,10 @@ void CarbonTestSuite::Test_Hg_to_big_end_Uninitialized()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_to_little_end()
 {
-  Hg_msg_t *control  = Hg_create(k_vertex);
+  Hg_msg_t *control  = Hg_create(k_vertex_t);
   PopulateTestNetMsg((vertex_t*)control);
 
-  Hg_msg_t      *sut = GetSUT(k_vertex);
+  Hg_msg_t      *sut = GetSUT(k_vertex_t);
   PopulateTestHostMsg((vertex_t*)sut);
 
   // SUT
@@ -658,7 +663,7 @@ void CarbonTestSuite::Test_Hg_pack()
   unsigned char control[k_msg_buffer_len];
   PopulateHostOrder(control, k_msg_buffer_len);
 
-  Hg_msg_t *sut = GetSUT(k_vertex);
+  Hg_msg_t *sut = GetSUT(k_vertex_t);
   PopulateTestHostMsg((vertex_t*)sut);
 
   unsigned char result_buffer[k_msg_buffer_len] = {0};
@@ -706,10 +711,10 @@ void CarbonTestSuite::Test_Hg_pack_invalid_len()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_unpack()
 {
-  Hg_msg_t *control = Hg_create(k_vertex);
+  Hg_msg_t *control = Hg_create(k_vertex_t);
   PopulateTestHostMsg((vertex_t*)control);
 
-  Hg_msg_t      *sut        = GetSUT(k_vertex);
+  Hg_msg_t      *sut        = GetSUT(k_vertex_t);
   unsigned char buffer[k_msg_buffer_len];
 
   PopulateHostOrder(buffer, k_msg_buffer_len);

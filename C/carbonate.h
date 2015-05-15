@@ -16,7 +16,6 @@
 #include <Carbon.h>
 #include <C/conversion.h>
 
-
 namespace C
 {
 //  Typedefs *******************************************************************
@@ -105,114 +104,8 @@ Hg_type_t carbon_type(const Hg_msg_t* p_msg)
 
 
 
-// TODO: For now, hand-writing the implementation. These functions will eventually all be generated.
-
-
+// TODO: Need to move this header declaration to some place convenient for the user.
 #include <CarbonTestDefs.h>
-//  ****************************************************************************
-#include <Pb/type_list.h>
-#include <Pb/size_at.h>
-
-typedef Hg::TypeList
-<
-  color_map_t,
-  pt3d_t,
-  ray_t,
-  vertex_t
-> exported_types;
-
-
-#define k_color_map     0
-#define k_pt3d          1
-#define k_ray           2
-#define k_vertex        3
-
-
-template< Hg_type_t IdT,      
-          typename  T
-        >
-T* Hg_msg_cast(C::carbon_t* p_msg);//, T*);
-
-template <>
-Hg::color_map_t* Hg_msg_cast<k_color_map, Hg::color_map_t>(C::carbon_t* p_msg)//, Hg::color_map_t* = 0)
-{
-  return reinterpret_cast<Hg::color_map_t*>(p_msg);
-}
-
-template <>
-Hg::pt3d_t* Hg_msg_cast<k_pt3d, Hg::pt3d_t>(C::carbon_t* p_msg)//, Hg::pt3d_t* = 0)
-{
-  return reinterpret_cast<Hg::pt3d_t*>(p_msg);
-}
-
-template <>
-Hg::ray_t* Hg_msg_cast<k_ray, Hg::ray_t>(C::carbon_t* p_msg)//, Hg::ray_t* = 0)
-{
-  return reinterpret_cast<Hg::ray_t*>(p_msg);
-}
-
-template <>
-Hg::vertex_t* Hg_msg_cast<k_vertex, Hg::vertex_t>(C::carbon_t* p_msg)//, Hg::vertex_t* = 0)
-{
-  return reinterpret_cast<Hg::vertex_t*>(p_msg);
-}
-
-//  ****************************************************************************
-size_t GetTypeSize(int v)
-{
-  switch (v)
-  {
-  case k_color_map:
-    return Hg::SizeAt<k_color_map , exported_types>::value;
-  case k_pt3d:
-    return Hg::SizeAt<k_pt3d, exported_types>::value;
-  case k_ray:
-    return Hg::SizeAt<k_ray, exported_types>::value;
-  case k_vertex:
-    return Hg::SizeAt<k_vertex, exported_types>::value;
-  }
-
-  return 0;
-}
-
-
-
-//  ****************************************************************************
-size_t GetTotalSize(Hg_msg_t* p_src)
-{
-  if (!p_src)
-    return 0;
-
-  Hg_type_t id = C::carbon_type(p_src);
-
-
-  switch (id)
-  {
-  case k_color_map:
-    {
-      Hg::color_map_t* m = Hg_msg_cast<k_color_map, Hg::color_map_t>(p_src);
-      return 0;
-    }
-  case k_pt3d:
-    {
-      Hg::pt3d_t* m = Hg_msg_cast<k_pt3d, Hg::pt3d_t>(p_src);
-      return 0;
-    }
-  case k_ray:
-    {
-      Hg::ray_t* m = Hg_msg_cast<k_ray, Hg::ray_t>(p_src);
-      return 0;
-    }
-  case k_vertex:
-    {
-      Hg::vertex_t* m = Hg_msg_cast<k_vertex, Hg::vertex_t>(p_src);
-      return 0;
-    }
-  }
-
-
-  return 0;
-}
 
 
 #endif

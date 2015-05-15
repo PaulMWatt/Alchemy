@@ -12,146 +12,6 @@
 #include <CarbonTestDefs.h>
 
 
-int CarbonToNetwork(Hg_msg_t* p_src)
-{
-  using namespace C::detail;
-
-  if (!p_src)
-    return 0;
-
-  Hg_type_t id = C::carbon_type(p_src);
-
-
-  switch (id)
-  {
-  case k_color_map:
-    {
-      return ConvertToNetworkOrder<Hg::color_map_t, color_map_t>(p_src);
-    }
-  case k_pt3d:
-    {
-      return ConvertToNetworkOrder<Hg::pt3d_t, pt3d_t>(p_src);
-    }
-  case k_ray:
-    {
-      return ConvertToNetworkOrder<Hg::ray_t, ray_t>(p_src);
-    }
-  case k_vertex:
-    {
-      return ConvertToNetworkOrder<Hg::vertex_t, vertex_t>(p_src);
-    }
-  }
-
-  return 0;
-}
-
-
-//  ****************************************************************************
-int CarbonToBigEndian(Hg_msg_t* p_src)
-{
-  using namespace C::detail;
-
-  if (!p_src)
-    return 0;
-
-  Hg_type_t id = C::carbon_type(p_src);
-
-
-  switch (id)
-  {
-  case k_color_map:
-    {
-      return ConvertToBigEndian<Hg::color_map_t, color_map_t>(p_src);
-    }
-  case k_pt3d:
-    {
-      return ConvertToBigEndian<Hg::pt3d_t, pt3d_t>(p_src);
-    }
-  case k_ray:
-    {
-      return ConvertToBigEndian<Hg::ray_t, ray_t>(p_src);
-    }
-  case k_vertex:
-    {
-      return ConvertToBigEndian<Hg::vertex_t, vertex_t>(p_src);
-    }
-  }
-
-  return 0;
-}
-
-//  ****************************************************************************
-size_t CarbonPackMessage( const Hg_msg_t  *p_src,   
-                          unsigned char   *p_buffer, 
-                          size_t          len)
-{
-  using namespace C::detail;
-
-  if (!p_src)
-    return 0;
-
-  Hg_type_t id = C::carbon_type(p_src);
-
-
-  switch (id)
-  {
-  case k_color_map:
-    {
-      return PackMessage<Hg::color_map_t, color_map_t>(p_src, p_buffer, len);
-    }
-  case k_pt3d:
-    {
-      return PackMessage<Hg::pt3d_t, pt3d_t>(p_src, p_buffer, len);
-    }
-  case k_ray:
-    {
-      return PackMessage<Hg::ray_t, ray_t>(p_src, p_buffer, len);
-    }
-  case k_vertex:
-    {
-      return PackMessage<Hg::vertex_t, vertex_t>(p_src, p_buffer, len);
-    }
-  }
-
-  return 0;
-}
-
-//  ****************************************************************************
-size_t CarbonUnpackMessage( Hg_msg_t            *p_src,   
-                            const unsigned char *p_buffer, 
-                            size_t              len)
-{
-  using namespace C::detail;
-
-  if (!p_src)
-    return 0;
-
-  Hg_type_t id = C::carbon_type(p_src);
-
-
-  switch (id)
-  {
-  case k_color_map:
-    {
-      return UnpackMessage<Hg::color_map_t, color_map_t>(p_src, p_buffer, len);
-    }
-  case k_pt3d:
-    {
-      return UnpackMessage<Hg::pt3d_t, pt3d_t>(p_src, p_buffer, len);
-    }
-  case k_ray:
-    {
-      return UnpackMessage<Hg::ray_t, ray_t>(p_src, p_buffer, len);
-    }
-  case k_vertex:
-    {
-      return UnpackMessage<Hg::vertex_t, vertex_t>(p_src, p_buffer, len);
-    }
-  }
-
-  return 0;
-}
-
 
 // Disable name-mangling for these 
 // functions when compiled with C++.
@@ -194,7 +54,7 @@ Hg_msg_t* Hg_clone(
   const Hg_msg_t* p_src
 )
 {
-  GetTotalSize(const_cast<Hg_msg_t*>(p_src));
+  GetTypeDataSize(const_cast<Hg_msg_t*>(p_src));
 
   return 0;
 }
@@ -256,9 +116,7 @@ size_t Hg_data_size(
   const Hg_msg_t* p_msg
 )
 {
-  return GetTotalSize(const_cast<Hg_msg_t*>(p_msg));
-
-  return 0;
+  return GetTypeDataSize(const_cast<Hg_msg_t*>(p_msg));
 }
 
 
@@ -274,7 +132,7 @@ int Hg_to_network(
     return 0;
   }
 
-  return CarbonToNetwork(p_msg);
+  return CarbonSwapByteOrder(p_msg);
 }
 
 
@@ -294,7 +152,7 @@ int Hg_to_big_end(
   Hg_msg_t* p_msg
 )
 {
-  return CarbonToBigEndian(p_msg);
+  return CarbonSwapByteOrder(p_msg);
 }
 
 

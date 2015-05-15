@@ -47,6 +47,18 @@
 
 #endif
 
+//  ****************************************************************************
+/// Defines a typelist for all of the exported structs.
+///
+/// One instance of this MACRO must be defined for each library that exports
+/// carbon structure definitions. This declaration provides the map to allow
+/// the specified types to be converted between C and Hg formats.
+///
+/// Ex.  CARBON_EXPORTED_TYPES(color_map_t, ray_t, vertex_t);
+///
+///
+#define CARBON_EXPORTED_TYPES(...)  \
+          C_DECLARE_EXPORTED_TYPES(__VA_ARGS__)
 
 
 // Disable name-mangling for these 

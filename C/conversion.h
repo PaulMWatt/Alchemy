@@ -174,31 +174,14 @@ U& msg_to_struct(T& src, U& dest)
 namespace detail
 {
 
+
 //  ****************************************************************************
-//
+//  Converts a message from its current byte-order into the opposite order.
 //
 template< typename HgT, 
           typename CT
         >
-int ConvertToNetworkOrder(Hg_msg_t *p_msg)
-{
-  Hg::basic_msg<HgT>::host_t hg_msg;
-  C::struct_to_msg(*(CT*)p_msg, hg_msg.values());
-
-  Hg::basic_msg<HgT>::net_t hg_net_msg = Hg::to_network(hg_msg);
-
-  C::msg_to_struct(hg_net_msg.values(), *(CT*)p_msg);
-
-  return 0;
-}
-
-//  ****************************************************************************
-//
-//
-template< typename HgT, 
-          typename CT
-        >
-int ConvertToBigEndian(Hg_msg_t *p_msg)
+int ConvertByteOrder(Hg_msg_t *p_msg)
 {
   Hg::basic_msg<HgT>::little_t hg_msg;
   C::struct_to_msg(*(CT*)p_msg, hg_msg.values());
@@ -211,7 +194,7 @@ int ConvertToBigEndian(Hg_msg_t *p_msg)
 }
 
 //  ****************************************************************************
-//
+//  Packs an existing C-struct message into a data buffer.
 //
 template< typename HgT, 
           typename CT
@@ -229,7 +212,7 @@ size_t PackMessage( const Hg_msg_t  *p_msg,
 }
 
 //  ****************************************************************************
-//
+//  Unpacks a data buffer into a C-struct.
 //
 template< typename HgT, 
           typename CT
