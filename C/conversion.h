@@ -82,6 +82,40 @@ struct translate_from_C<T,U,Hg::array_trait>
   }
 };
 
+// TODO: Still unsure how a vector will be structured in C.
+//  ****************************************************************************
+/// Specialization for vector value types (variable-length arrays).
+///
+//template< typename T, typename U >
+//struct translate_from_C<T,U,Hg::vector_trait>
+//{
+//  static 
+//  U& assign(T &src, U &dest)
+//  {
+//    typedef U::value_type  value_type;
+//    if (Hg::vector_value<value_type::value_type>::value)
+//    {
+//      for (size_t index = 0; index < dest.size(); ++index)
+//      {
+//        struct_to_msg(src[index], dest[index]);
+//      }
+//    }
+//    else if (Hg::array_value<value_type::value_type>::value)
+//    {
+//      for (size_t index = 0; index < dest.size(); ++index)
+//      {
+//        struct_to_msg(src[index], dest[index]);
+//      }
+//    }
+//    else
+//    {
+//      memcpy(&dest, &src, sizeof(dest));
+//    }
+//
+//    return dest;
+//  }
+//};
+
 //  ****************************************************************************
 /// Facilitates translating values from C-structs to Hg::Message formats.
 ///
@@ -166,6 +200,88 @@ template< typename T, typename U>
 U& msg_to_struct(T& src, U& dest)
 {
   return translate_to_C<T,U>::assign(src, dest);
+}
+
+//  ****************************************************************************
+//  Frees memory for each datum in the most appropriate way.
+//  The default case does not require any special processing.
+//
+template< typename T, 
+          bool IsDynamicT
+        >
+struct DestroyDatum
+{
+  static
+  void destroy(const T datum) 
+  { }
+};
+
+//  ****************************************************************************
+//  // Destroy the sub-buffer maintained by this element.
+//
+template< typename T>
+struct DestroyDatum<T,true>
+{
+  static
+  void destroy(const T datum) 
+  { 
+    Hg_destroy((Hg_msg_t*)datum);
+  }
+};
+
+//  ****************************************************************************
+//  Frees the memory allocated to this datum in the most appropriate way.
+//  The pointer HgT is for type deduction.
+//  When called, it should be a NULL pointer cast to type HgT.
+//
+template< typename T, typename HgT>
+void destroy_datum(T datum, const HgT*)
+{
+  DestroyDatum<T, Hg::vector_value<HgT>::value>::destroy(datum);
+}
+
+
+//  ****************************************************************************
+//  Calculates the size appropriately for the type of field supplied.
+//  The default case simply returns the value from sizeof.
+//
+template< typename T, 
+          bool IsDynamicT
+        >
+struct GetDatumSize
+{
+  static
+  size_t get_data_size(const T) 
+  { 
+    return sizeof(T);
+  }
+};
+
+//  ****************************************************************************
+//  Calculate the size of the dynamic buffer.
+//
+template< typename T>
+struct GetDatumSize<T,true>
+{
+  static
+  size_t get_data_size(const T datum) 
+  { 
+    return Hg_size((Hg_msg_t*)datum);
+  }
+};
+
+
+//  ****************************************************************************
+//  Returns the calculated size for this data element.
+//  This is primarily required for dynamiclly sized elements.
+//
+//  The pointer HgT is for type deduction.
+//  When called, it should be a NULL pointer cast to type HgT.
+//
+template< typename T, typename HgT>
+size_t get_datum_size(const T datum, const HgT*)
+{
+  return GetDatumSize<T, Hg::vector_value<HgT>::value>::get_data_size(datum);
 }
 
 

@@ -35,6 +35,7 @@ ALCHEMY_PACKED
   ALCHEMY_BITS   (3,   A, 8)
 );
 
+
 //  ****************************************************************************
 //  Indexed Color Table
 //  This type represents a fixed-size array of bit-fields.

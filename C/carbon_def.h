@@ -66,7 +66,9 @@
     DEFINE_C_STRUCT_PARAMS(__VA_ARGS__)                                        \
   C_DECLARE_STRUCT_FOOTER(F)                                                   \
   C_DECLARE_STRUCT_TO_MSG(F,__VA_ARGS__)                                       \
-  C_DECLARE_MSG_TO_STRUCT(F,__VA_ARGS__)
+  C_DECLARE_MSG_TO_STRUCT(F,__VA_ARGS__)                                       \
+  C_DECLARE_DESTROY_DATUM(F,__VA_ARGS__)                                       \
+  C_DECLARE_GET_ACTIVE_SIZE(F,__VA_ARGS__)
 
 #else
 #define C_DECLARE_STRUCT_HEADER(F, ...)                                        \
@@ -190,6 +192,66 @@
   }                                                                            \
   END_NAMESPACE(C)
 
+//  ****************************************************************************
+#define EACH_C_DESTROY(r, typelist, i, x)                                      \
+  C::destroy_datum(                                                            \
+    src.##BOOST_PP_TUPLE_ELEM(3,2,x),                                          \
+    (Hg::TypeAt<i, Hg::##typelist##_tl>::type*)0);       
+
+#if defined(_MSC_VER)
+
+#define DEFINE_C_TYPE_DESTRUCTION(TYPELIST, S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_DESTROY, TYPELIST, BOOST_PP_VARIADIC_TO_SEQ(S))
+
+#else
+
+#define DEFINE_C_TYPE_DESTRUCTION(TYPELIST, ...) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_DESTROY, TYPELIST, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+#endif
+
+//  ****************************************************************************
+//  Assigns the values of each field to the struct.
+//
+#define C_DECLARE_DESTROY_DATUM(NAME, ...)                                     \
+  BEGIN_NAMESPACE(C)                                                           \
+  void destroy_datum(NAME& src)                                                \
+  { using namespace Hg;                                                        \
+    DEFINE_C_TYPE_DESTRUCTION(NAME, __VA_ARGS__)                               \
+  }                                                                            \
+  END_NAMESPACE(C)
+
+//  ****************************************************************************
+#define EACH_C_ACTIVE_SIZE(r, typelist, i, x)                                  \
+  total_size += C::get_datum_size(                                             \
+      src.##BOOST_PP_TUPLE_ELEM(3,2,x),                                        \
+      (Hg::TypeAt<i, Hg::##typelist##_tl>::type*)0);       
+
+#if defined(_MSC_VER)
+
+#define DEFINE_C_GET_ACTIVE_SIZE(TYPELIST, S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_ACTIVE_SIZE, TYPELIST, BOOST_PP_VARIADIC_TO_SEQ(S))
+
+#else
+
+#define DEFINE_C_GET_ACTIVE_SIZE(TYPELIST, ...) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_ACTIVE_SIZE, TYPELIST, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
+
+#endif
+
+//  ****************************************************************************
+//  Assigns the values of each field to the struct.
+//
+#define C_DECLARE_GET_ACTIVE_SIZE(NAME, ...)                                   \
+  BEGIN_NAMESPACE(C)                                                           \
+  size_t get_active_size(const NAME& src)                                      \
+  { using namespace Hg;                                                        \
+    size_t total_size = 0;                                                     \
+    DEFINE_C_GET_ACTIVE_SIZE(NAME, __VA_ARGS__)                                \
+    return total_size;                                                         \
+  }                                                                            \
+  END_NAMESPACE(C)
+
 
 //  ****************************************************************************
 //  ****************************************************************************
@@ -203,6 +265,33 @@
 
 //  ****************************************************************************
 #define CARBON_EXPORT_ENUM(S)     DEFINE_C_TYPE_ENUMS(S)
+
+
+//  ****************************************************************************
+//  Carbon structure destroy function
+//  ****************************************************************************
+#define EACH_C_TYPE_DESTROY(r, data, i, x) \
+  case BOOST_PP_CAT(data, x):   C::destroy_datum(*(##x*)p_src); 
+
+#define DEFINE_C_TYPE_DESTROY(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_TYPE_DESTROY, k_, S)
+
+//  ****************************************************************************
+#define CARBON_TYPE_DESTROY(S)                                                 \
+  void CarbonDestroy(Hg_msg_t* p_src)                                          \
+  {                                                                            \
+    if (!p_src)                                                                \
+      return;                                                                  \
+                                                                               \
+    Hg_type_t id = C::carbon_type(p_src);                                      \
+                                                                               \
+    switch (id)                                                                \
+    {                                                                          \
+    DEFINE_C_TYPE_DESTROY(S)                                                   \
+    }                                                                          \
+    return;                                                                    \
+  }
+
 
 
 //  ****************************************************************************
@@ -229,9 +318,8 @@
 //  ****************************************************************************
 //  Carbon type data size function
 //  ****************************************************************************
-//  TODO: ("This MACRO still needs the appropriate implementation")
 #define EACH_C_DATA_SIZE(r, data, i, x) \
-  case BOOST_PP_CAT(data, x):   return Hg::SizeAt<BOOST_PP_CAT(data, x) , Hg::exported_types>::value;
+  case BOOST_PP_CAT(data, x):   return C::get_active_size(*(##x*)p_src); 
 
 #define DEFINE_C_DATA_SIZE(S) \
   BOOST_PP_SEQ_FOR_EACH_I(EACH_C_DATA_SIZE, k_, S)
@@ -346,6 +434,7 @@ size_t CarbonUnpackMessage( Hg_msg_t            *p_src,                        \
 ///
 #define C_EXPORTED_TYPES_IMPL(S)                                               \
   CARBON_EXPORT_ENUM(S);                                                       \
+  CARBON_TYPE_DESTROY(S);                                                      \
   CARBON_TYPE_SIZE(S);                                                         \
   CARBON_TYPE_DATA_SIZE(S);                                                    \
   CARBON_BYTE_ORDER_CONVERSION(S);                                             \

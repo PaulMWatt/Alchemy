@@ -27,6 +27,7 @@ typedef unsigned char     carbon_t;
 /// Byte [0]:     Carbon ID
 /// Bytes[1,3]:   Size of the buffer, 3-bytes, 16 MB max
 /// Bytes[4,7]:   Type Id mapping the C-struct to a C++ Hg::Message format.  
+///               This may also identify a carbon field of dynamic size.
 /// Byte [8]:     The pointer returned to the caller.
 ///               The remainder of the structure starts here.
 ///               Therefore, all allocations will be 8-bytes larger than requested.
@@ -35,6 +36,7 @@ const int       k_carbon_footprint  = 8;
 const int       k_base_offset       = k_carbon_footprint;
 const int       k_type_offset       = 4;
 const uint32_t  k_carbon_id         = 0xA9;       
+const uint32_t  k_carbon_field_id   = 0xC4;       
 
 const char      k_size_shift        = 8; 
 
@@ -55,7 +57,8 @@ carbon_t* carbon_ptr(Hg_msg_t* p_msg)
 
   // Verify the Carbon ID before returning the pointer.
   if ( !p_base
-    || p_base[0] != k_carbon_id)
+    || ( p_base[0] != k_carbon_id
+      && p_base[0] != k_carbon_field_id))
     return 0;
 
   return p_base;

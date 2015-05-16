@@ -70,9 +70,7 @@ void  Hg_destroy(
   if (!p_base)
     return;
 
-  // TODO: Handle dynamic buffers.
-  // Use the type information to 
-  // destroy any dynamic buffers.
+  CarbonDestroy(p_msg);
 
   delete[] p_base;
 }
