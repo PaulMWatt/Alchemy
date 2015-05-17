@@ -88,7 +88,7 @@ struct DynamicFieldSequence<MT, SeqT, IdxT>
 template <typename T, bool IsHaveDynamicT = false >
 struct DynamicFields_Impl
 { 
-  typedef MT       type;
+  typedef MT    type;
 };
 
 // HasDynamic implementation for type_containers *******************************
@@ -120,6 +120,16 @@ struct has_dynamic
 template <typename T>
 struct dynamic_fields
   : detail::DynamicFields_Impl<T, has_dynamic<T>::value>
+{ };
+
+//  ****************************************************************************
+/// Extracts the number of fields that are dynamically sized in the message.
+/// 
+template <typename T>
+struct dynamic_field_count
+  : std::integral_constant< size_t,
+                            Size<typename dynamic_fields<T>::type>::value
+                          >
 { };
 
 } // namespace Hg

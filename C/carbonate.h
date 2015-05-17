@@ -85,7 +85,7 @@ Hg_msg_t* carbon_alloc(size_t size, uint32_t buffer_id, uint32_t msg_type)
   
   ::memcpy(p_msg, &base, 4);
   ::memcpy(p_msg + C::k_type_offset, &msg_type, 4);
-  ::memset(p_msg + C::k_base_offset, 0, size - C::k_base_offset);
+  ::memset(p_msg + C::k_base_offset, 0, size);
 
   return p_msg + C::k_base_offset;
 }

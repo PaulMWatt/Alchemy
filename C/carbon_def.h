@@ -196,7 +196,7 @@
 #define EACH_C_DESTROY(r, typelist, i, x)                                      \
   C::destroy_datum(                                                            \
     src.##BOOST_PP_TUPLE_ELEM(3,2,x),                                          \
-    (Hg::TypeAt<i, Hg::##typelist##_tl>::type*)0);       
+    (Hg::TypeAt<i, Hg::##typelist##_tl>::type*)0);
 
 #if defined(_MSC_VER)
 
@@ -271,7 +271,7 @@
 //  Carbon structure destroy function
 //  ****************************************************************************
 #define EACH_C_TYPE_DESTROY(r, data, i, x) \
-  case BOOST_PP_CAT(data, x):   C::destroy_datum(*(##x*)p_src); 
+  case BOOST_PP_CAT(data, x):   C::destroy_datum(*(##x*)p_src); break;
 
 #define DEFINE_C_TYPE_DESTROY(S) \
   BOOST_PP_SEQ_FOR_EACH_I(EACH_C_TYPE_DESTROY, k_, S)
@@ -293,12 +293,19 @@
   }
 
 
-
 //  ****************************************************************************
 //  Carbon type size function
+//  This function starts with the total of the statically sized fields,
+//  then adds the size of a pointer for each dynamically sized field.
 //  ****************************************************************************
-#define EACH_C_SIZE(r, data, i, x) \
-  case BOOST_PP_CAT(data, x):   return Hg::SizeAt<BOOST_PP_CAT(data, x) , Hg::exported_types>::value;
+#define EACH_C_SIZE(r, data, i, x)                                             \
+  case BOOST_PP_CAT(data, x): {                                                \
+    typedef Hg::TypeAt<BOOST_PP_CAT(data, x) , Hg::exported_types>::type TypeX;\
+    size_t static_size  = Hg::SizeOf<TypeX>::value;                            \
+    size_t count = Hg::dynamic_field_count<TypeX::format_type>::value;         \
+    size_t dynamic_size = count * sizeof(void*);                               \
+    return static_size + dynamic_size;                                         \
+  }
 
 #define DEFINE_C_TYPE_SIZE(S) \
   BOOST_PP_SEQ_FOR_EACH_I(EACH_C_SIZE, k_, S)
@@ -440,6 +447,7 @@ size_t CarbonUnpackMessage( Hg_msg_t            *p_src,                        \
   CARBON_BYTE_ORDER_CONVERSION(S);                                             \
   CARBON_MSG_PACK(S);                                                          \
   CARBON_MSG_UNPACK(S);    
+
 
 //  ****************************************************************************
 #define C_DECLARE_EXPORTED_TYPES(...)                                          \

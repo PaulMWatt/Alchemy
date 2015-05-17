@@ -538,13 +538,13 @@ void CarbonTestSuite::Test_Hg_size_Uninitialized()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_data_size()
 {
-  //const size_t k_control = Hg::SizeOf<test_types>::value;
-  //Hg_msg_t *p_msg = GetSUT(k_ray_t);
+  const size_t k_control = Hg::SizeOf<Hg::object_t>::value;
+  Hg_msg_t *p_msg = GetSUT(k_object_t);
 
-  //// SUT
-  //size_t len = Hg_data_size(p_msg);
+  // SUT
+  size_t len = Hg_data_size(p_msg);
 
-  //TS_ASSERT_EQUALS(k_control, len);
+  TS_ASSERT_EQUALS(k_control, len);
 }
 
 //  ******************************************************************************
