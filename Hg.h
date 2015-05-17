@@ -375,9 +375,9 @@ public:
   //  **************************************************************************
   /// Copies the data from this object 
   ///
-  void data(pointer pBuffer, size_t n)
+  bool data(pointer pBuffer, size_t n)
   {
-    pack_data(pBuffer, n);
+    return pack_data(pBuffer, n);
   }
 
 
@@ -396,15 +396,17 @@ private:
 
 
   //  **************************************************************************
-  void pack_data(pointer pBuffer, size_t n)
+  bool pack_data(pointer pBuffer, size_t n)
   {
-    buffer_type msg_buffer;
+    typedef MsgBuffer<BufferedStaticStoragePolicy>          static_buffer_type;
+
+
+    static_buffer_type msg_buffer;
     msg_buffer.assign(pBuffer, n);
 
-    pack_message< message_type, 
-                  buffer_type,
-                  size_trait
-                >(values(), msg_buffer);
+    return pack_message < message_type, 
+                          static_buffer_type
+                        >(values(), msg_buffer);
   }
 
   // Give friendship to message instantiations of other types for conversion.

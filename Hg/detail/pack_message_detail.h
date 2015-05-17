@@ -171,9 +171,8 @@ template< typename MsgT,
           typename BufferT
         >
 bool
-  pack_fixed_size_message(MsgT& msg_values,
-                          BufferT & fixed_buffer,
-                          const static_size_trait&)
+  pack_message_pre_allocated( MsgT& msg_values,
+                              BufferT & fixed_buffer)
 {
   if (fixed_buffer.size() < Hg::SizeOf<typename MsgT::format_type>::value)
   {
@@ -210,7 +209,7 @@ BufferT&
   pack_message( MsgT& msg_values, 
                 size_t    size,
                 BufferT & buffer,
-                const static_size_trait&)
+                const static_size_trait*)
 {
   // Resize the buffer.
   buffer.resize(Hg::SizeOf<typename MsgT::format_type>::value);
@@ -242,7 +241,7 @@ template< typename MsgT,
 size_t pack_message(MsgT  &msg_values,
                     BufferT   &buffer,
                     size_t     offset, 
-                    const static_size_trait&)
+                    const static_size_trait*)
 {
   // Calculate the number of bytes that is expected to be written.
   size_t length = Hg::SizeOf<typename MsgT::format_type>::value;
@@ -289,7 +288,7 @@ BufferT &
   pack_message( MsgT  &msg_values, 
                 size_t     size,
                 BufferT   & buffer,
-                const dynamic_size_trait&)
+                const dynamic_size_trait*)
 {
   // Resize the buffer.
    buffer.resize(size);
@@ -324,7 +323,7 @@ template< typename MsgT,
 size_t pack_message(MsgT  &msg_values,
                     BufferT   &buffer,
                     size_t    offset,
-                    const dynamic_size_trait&)
+                    const dynamic_size_trait*)
 {
   // Calculate the number of bytes that is expected to be written.
   size_t length = Hg::SizeOf<typename MsgT::format_type>::value;

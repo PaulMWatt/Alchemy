@@ -8,7 +8,7 @@
 #ifndef PACK_MESSAGE_H_INCLUDED
 #define PACK_MESSAGE_H_INCLUDED
 //  Includes *******************************************************************
-#include <Hg/msg_fwd.h>
+//#include <Hg/msg_fwd.h>
 #include <Hg/detail/pack_message_detail.h>
 #include <Hg/detail/pack_array.h>
 #include <Hg/detail/pack_nested.h>
@@ -43,7 +43,7 @@ BufferT&
                        >(msg_values, 
                          size, 
                          buffer, 
-                         SizeTraitT());
+                         (SizeTraitT*)0);
   return  buffer;
 }
 
@@ -73,7 +73,7 @@ size_t pack_message(MsgT &msg_values,
                               >(msg_values, 
                                 buffer,
                                 offset,
-                                SizeTraitT());
+                                (SizeTraitT*)0);
 }
 
 
@@ -88,16 +88,14 @@ size_t pack_message(MsgT &msg_values,
 ///                           message.
 ///
 template< typename MsgT,
-          typename BufferT,
-          typename SizeTraitT
+          typename BufferT
         >
 bool
   pack_message( MsgT& msg_values,
                 BufferT & fixed_buffer)
 {
-  return   detail::pack_fixed_size_message( msg_values,
-                                            fixed_buffer,
-                                            SizeTraitT());
+  return   detail::pack_message_pre_allocated(msg_values,
+                                              fixed_buffer);
 }
 
 

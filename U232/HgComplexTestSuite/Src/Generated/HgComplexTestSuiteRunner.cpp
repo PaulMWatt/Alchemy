@@ -396,11 +396,11 @@ public:
  void runTest() { suite_TestDynTypePermsSuite.TestClear(); }
 } testDescription_suite_TestDynTypePermsSuite_TestClear;
 
-static class TestDescription_suite_TestDynTypePermsSuite_Testdata : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestDynTypePermsSuite_Testdata_static : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestDynTypePermsSuite_Testdata() : CxxTest::RealTestDescription( Tests_TestDynTypePermsSuite, suiteDescription_TestDynTypePermsSuite, 252, "Testdata" ) {}
- void runTest() { suite_TestDynTypePermsSuite.Testdata(); }
-} testDescription_suite_TestDynTypePermsSuite_Testdata;
+ TestDescription_suite_TestDynTypePermsSuite_Testdata_static() : CxxTest::RealTestDescription( Tests_TestDynTypePermsSuite, suiteDescription_TestDynTypePermsSuite, 252, "Testdata_static" ) {}
+ void runTest() { suite_TestDynTypePermsSuite.Testdata_static(); }
+} testDescription_suite_TestDynTypePermsSuite_Testdata_static;
 
 static class TestDescription_suite_TestDynTypePermsSuite_Testto_host : public CxxTest::RealTestDescription {
 public:

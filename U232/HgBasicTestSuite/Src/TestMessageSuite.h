@@ -158,34 +158,34 @@ protected:
 
 public:
   // Test Cases ****************************************************************
-  void TestHasDynamic_false(void);
-  void TestDefaultCtor(void);
-  void TestCopyCtor(void);
-  void TestValueCtor(void);
-  void TestAssignmentOperator(void);
-  void Testempty(void);
-  void Testempty_false(void);
-  void TestSize(void);
-  void Testis_host_order(void);
-  void Testis_host_order_false(void);
-  void TestAssign(void);
-  void TestClear(void);
-  void Testdata(void);
+  void TestHasDynamic_false();
+  void TestDefaultCtor();
+  void TestCopyCtor();
+  void TestValueCtor();
+  void TestAssignmentOperator();
+  void Testempty();
+  void Testempty_false();
+  void TestSize();
+  void Testis_host_order();
+  void Testis_host_order_false();
+  void TestAssign();
+  void TestClear();
+  void Testdata();
 
   // Special cases
-  void TestSingleFieldMsg_Basic(void);
-  void TestSingleFieldMsg_Nested(void);
-  void TestSingleFieldMsg_Bitlist(void);
+  void TestSingleFieldMsg_Basic();
+  void TestSingleFieldMsg_Nested();
+  void TestSingleFieldMsg_Bitlist();
 
   //  Worker Functions *********************************************************
-  void Testto_host(void);
-  void Testto_network(void);
-  void Testto_big_endian(void);
-  void Testto_little_endian(void);
+  void Testto_host();
+  void Testto_network();
+  void Testto_big_endian();
+  void Testto_little_endian();
 };
 
 //  ****************************************************************************
-void TestMessageSuite::TestHasDynamic_false(void)
+void TestMessageSuite::TestHasDynamic_false()
 {
   // SUT
   bool result = Hg::has_dynamic<msg_type::format_type>::value;
@@ -195,7 +195,7 @@ void TestMessageSuite::TestHasDynamic_false(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestDefaultCtor(void)
+void TestMessageSuite::TestDefaultCtor()
 {
   // SUT
   SUT sut;
@@ -205,7 +205,7 @@ void TestMessageSuite::TestDefaultCtor(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestCopyCtor(void)
+void TestMessageSuite::TestCopyCtor()
 {
   SUT                 rhs;
   PopulateBaseValues (rhs);
@@ -216,7 +216,7 @@ void TestMessageSuite::TestCopyCtor(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestValueCtor(void)
+void TestMessageSuite::TestValueCtor()
 {
   SUT                 rhs;
   PopulateBaseValues (rhs);
@@ -226,7 +226,7 @@ void TestMessageSuite::TestValueCtor(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestAssignmentOperator(void)
+void TestMessageSuite::TestAssignmentOperator()
 {
   SUT                rhs;
   PopulateBaseValues(rhs);
@@ -238,7 +238,7 @@ void TestMessageSuite::TestAssignmentOperator(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::Testempty(void)
+void TestMessageSuite::Testempty()
 {
   // SUT
   SUT sut;
@@ -246,7 +246,7 @@ void TestMessageSuite::Testempty(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::Testempty_false(void)
+void TestMessageSuite::Testempty_false()
 {
   // SUT
   SUT sut(get_buffer().get(), get_length());
@@ -254,7 +254,7 @@ void TestMessageSuite::Testempty_false(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestSize(void)
+void TestMessageSuite::TestSize()
 {
   // SUT
   SUT sut(get_buffer().get(), Hg::SizeOf<SUT::format_type>::value);
@@ -262,7 +262,7 @@ void TestMessageSuite::TestSize(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::Testis_host_order(void)
+void TestMessageSuite::Testis_host_order()
 {
   // SUT: Host order is defined within the type itself.
   //      Look at the typedef for details
@@ -271,7 +271,7 @@ void TestMessageSuite::Testis_host_order(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::Testis_host_order_false(void)
+void TestMessageSuite::Testis_host_order_false()
 {
   // SUT: Net order is defined within the type itself. 
   //      Look at the typedef for details
@@ -280,7 +280,7 @@ void TestMessageSuite::Testis_host_order_false(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestAssign(void)
+void TestMessageSuite::TestAssign()
 {
   SUT expected;
   PopulateBaseValues(expected);
@@ -295,7 +295,7 @@ void TestMessageSuite::TestAssign(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestClear(void)
+void TestMessageSuite::TestClear()
 {
   SUT sut(get_buffer().get(), get_length());
   TS_ASSERT(!sut.empty());
@@ -307,7 +307,7 @@ void TestMessageSuite::TestClear(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::Testdata(void)
+void TestMessageSuite::Testdata()
 {
   // TODO: Add code to test that values are set to the interface, and can be read out of the data call.
 
@@ -327,7 +327,7 @@ void TestMessageSuite::Testdata(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestSingleFieldMsg_Basic(void)
+void TestMessageSuite::TestSingleFieldMsg_Basic()
 {
   typedef Hg::single_t SingleMsg;
 
@@ -338,7 +338,7 @@ void TestMessageSuite::TestSingleFieldMsg_Basic(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestSingleFieldMsg_Nested(void)
+void TestMessageSuite::TestSingleFieldMsg_Nested()
 {
   typedef Hg::single_nested_t SingleMsg;
 
@@ -349,7 +349,7 @@ void TestMessageSuite::TestSingleFieldMsg_Nested(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::TestSingleFieldMsg_Bitlist(void)
+void TestMessageSuite::TestSingleFieldMsg_Bitlist()
 {
   typedef Hg::single_bit_t SingleMsg;
 
@@ -360,7 +360,7 @@ void TestMessageSuite::TestSingleFieldMsg_Bitlist(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::Testto_host(void)
+void TestMessageSuite::Testto_host()
 {
   // Populate the expected results.
   SUT_net expected;
@@ -384,7 +384,7 @@ void TestMessageSuite::Testto_host(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::Testto_network(void)
+void TestMessageSuite::Testto_network()
 {
   // Populate the expected results.
   SUT expected;
@@ -408,7 +408,7 @@ void TestMessageSuite::Testto_network(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::Testto_big_endian(void)
+void TestMessageSuite::Testto_big_endian()
 {
   // Populate the expected results.
   SUT expected;
@@ -432,7 +432,7 @@ void TestMessageSuite::Testto_big_endian(void)
 }
 
 //  ****************************************************************************
-void TestMessageSuite::Testto_little_endian(void)
+void TestMessageSuite::Testto_little_endian()
 {
   // Populate the expected results.
   SUT expected;

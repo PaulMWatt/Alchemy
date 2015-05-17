@@ -141,26 +141,26 @@ protected:
 
 public:
   // Test Cases **************************************************************
-  void TestNoSubstitution(void);
-  void TestArrayNoSub(void);
+  void TestNoSubstitution();
+  void TestArrayNoSub();
 #ifdef ENABLE_BITFIELD_SEQUENCE
-//  void TestArraySubBitFields(void);
-//  void TestArraySubNested(void);
+//  void TestArraySubBitFields();
+//  void TestArraySubNested();
 #endif
-  void TestArrayArrayNoSub(void);
-  void TestArrayArrayBitSet(void);
-  void TestVectorNoSub(void);
+  void TestArrayArrayNoSub();
+  void TestArrayArrayBitSet();
+  void TestVectorNoSub();
 #ifdef ENABLE_BITFIELD_SEQUENCE
-//  void TestVectorSubBitFields(void);
-//  void TestVectorSubNested(void);
+//  void TestVectorSubBitFields();
+//  void TestVectorSubNested();
 #endif
-  void TestVectorArrayNoSub(void);
-  void TestVectorArrayBitSet(void);
+  void TestVectorArrayNoSub();
+  void TestVectorArrayBitSet();
 
 };
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestNoSubstitution(void)
+void HgTypeListTestSuite::TestNoSubstitution()
 {
   // Verify a Typelist that does not perform any substitution for
   // any of the types used in the Typelist.
@@ -180,7 +180,7 @@ void HgTypeListTestSuite::TestNoSubstitution(void)
 }
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestArrayNoSub(void)
+void HgTypeListTestSuite::TestArrayNoSub()
 {
   typedef TypeList
   <
@@ -198,7 +198,7 @@ void HgTypeListTestSuite::TestArrayNoSub(void)
 
 #ifdef ENABLE_BITFIELD_SEQUENCE
 //  ****************************************************************************
-void HgTypeListTestSuite::TestArraySubBitFields(void)
+void HgTypeListTestSuite::TestArraySubBitFields()
 {
   typedef TypeList
   <
@@ -211,7 +211,7 @@ void HgTypeListTestSuite::TestArraySubBitFields(void)
 }
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestArraySubNested(void)
+void HgTypeListTestSuite::TestArraySubNested()
 {
   typedef Hg::Hg_nested_sub                 SUT;
   typedef make_Hg_type_list<SUT>::type      result_type;
@@ -222,7 +222,7 @@ void HgTypeListTestSuite::TestArraySubNested(void)
 #endif
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestArrayArrayNoSub(void)
+void HgTypeListTestSuite::TestArrayArrayNoSub()
 {
   typedef TypeList
   <
@@ -235,7 +235,7 @@ void HgTypeListTestSuite::TestArrayArrayNoSub(void)
 }
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestArrayArrayBitSet(void)
+void HgTypeListTestSuite::TestArrayArrayBitSet()
 {
   typedef TypeList
   <
@@ -253,7 +253,7 @@ void HgTypeListTestSuite::TestArrayArrayBitSet(void)
 }
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestVectorNoSub(void)
+void HgTypeListTestSuite::TestVectorNoSub()
 {
   typedef TypeList
   <
@@ -272,7 +272,7 @@ void HgTypeListTestSuite::TestVectorNoSub(void)
 
 #ifdef ENABLE_BITFIELD_SEQUENCE
 //  ****************************************************************************
-void HgTypeListTestSuite::TestVectorSubBitFields(void)
+void HgTypeListTestSuite::TestVectorSubBitFields()
 {
   typedef TypeList
   <
@@ -286,7 +286,7 @@ void HgTypeListTestSuite::TestVectorSubBitFields(void)
 }
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestVectorSubNested(void)
+void HgTypeListTestSuite::TestVectorSubNested()
 {
   typedef TypeList
   <
@@ -305,7 +305,7 @@ void HgTypeListTestSuite::TestVectorSubNested(void)
 #endif
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestVectorArrayNoSub(void)
+void HgTypeListTestSuite::TestVectorArrayNoSub()
 {
   typedef TypeList
   <
@@ -318,7 +318,7 @@ void HgTypeListTestSuite::TestVectorArrayNoSub(void)
 }
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestVectorArrayBitSet(void)
+void HgTypeListTestSuite::TestVectorArrayBitSet()
 {
   typedef TypeList
   <

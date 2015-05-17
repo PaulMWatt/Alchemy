@@ -353,35 +353,35 @@ protected:
 public:
   // Test Cases ****************************************************************
   // Initial Tests for the dynamic type support functions
-  void TestHasDynamic_true(void);
-  void TestDynamicFields_none(void);
-  void TestDynamicFields_basic(void);
-  void TestDynamicFields_message(void);
+  void TestHasDynamic_true();
+  void TestDynamicFields_none();
+  void TestDynamicFields_basic();
+  void TestDynamicFields_message();
 
   // Dynamic Message Tests
-  void TestDefaultCtor(void);
-  void TestCopyCtor(void);
-  void TestValueCtor(void);
-  void TestAssignmentOperator(void);
-  void Testempty(void);
-  void Testempty_false(void);
-  void TestSize(void);
-  void Testis_host_order(void);
-  void Testis_host_order_false(void);
-  void TestAssign(void);
-  void TestClear(void);
-  void Testdata(void);
+  void TestDefaultCtor();
+  void TestCopyCtor();
+  void TestValueCtor();
+  void TestAssignmentOperator();
+  void Testempty();
+  void Testempty_false();
+  void TestSize();
+  void Testis_host_order();
+  void Testis_host_order_false();
+  void TestAssign();
+  void TestClear();
+  void Testdata();
 
   //  Worker Functions *********************************************************
-  void Testto_host(void);
-  void Testto_network(void);
-  void Testto_big_endian(void);
-  void Testto_little_endian(void);
+  void Testto_host();
+  void Testto_network();
+  void Testto_big_endian();
+  void Testto_little_endian();
 
 };
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestHasDynamic_true(void)
+void TestDynamicMessageSuite::TestHasDynamic_true()
 {
   // SUT
   bool result = Hg::has_dynamic<msg_type::format_type>::value;
@@ -390,7 +390,7 @@ void TestDynamicMessageSuite::TestHasDynamic_true(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestDynamicFields_none(void)
+void TestDynamicMessageSuite::TestDynamicFields_none()
 {
   bool result_no    = Hg::has_dynamic<Hg::no_dyn_type::format_type>::value;
   TS_ASSERT(!result_no);
@@ -404,7 +404,7 @@ void TestDynamicMessageSuite::TestDynamicFields_none(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestDynamicFields_basic(void)
+void TestDynamicMessageSuite::TestDynamicFields_basic()
 {
   bool result_basic = Hg::has_dynamic<Hg::dyn_basic_type::format_type>::value;
   TS_ASSERT(result_basic);
@@ -418,7 +418,7 @@ void TestDynamicMessageSuite::TestDynamicFields_basic(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestDynamicFields_message(void)
+void TestDynamicMessageSuite::TestDynamicFields_message()
 {
   bool result_msg   = Hg::has_dynamic<Hg::dyn_message_type::format_type>::value;
   TS_ASSERT(result_msg);
@@ -433,7 +433,7 @@ void TestDynamicMessageSuite::TestDynamicFields_message(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestDefaultCtor(void)
+void TestDynamicMessageSuite::TestDefaultCtor()
 {
   // SUT
   SUT sut;
@@ -443,7 +443,7 @@ void TestDynamicMessageSuite::TestDefaultCtor(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestCopyCtor(void)
+void TestDynamicMessageSuite::TestCopyCtor()
 {
   SUT                 rhs;
   PopulateBaseValues (rhs);
@@ -454,7 +454,7 @@ void TestDynamicMessageSuite::TestCopyCtor(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestValueCtor(void)
+void TestDynamicMessageSuite::TestValueCtor()
 {
   SUT                 rhs;
   PopulateBaseValues (rhs);
@@ -464,7 +464,7 @@ void TestDynamicMessageSuite::TestValueCtor(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestAssignmentOperator(void)
+void TestDynamicMessageSuite::TestAssignmentOperator()
 {
   SUT                rhs;
   PopulateBaseValues(rhs);
@@ -476,7 +476,7 @@ void TestDynamicMessageSuite::TestAssignmentOperator(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::Testempty(void)
+void TestDynamicMessageSuite::Testempty()
 {
   // SUT
   SUT sut;
@@ -484,7 +484,7 @@ void TestDynamicMessageSuite::Testempty(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::Testempty_false(void)
+void TestDynamicMessageSuite::Testempty_false()
 {
   // SUT
   SUT sut(get_buffer().get(), get_length());
@@ -492,7 +492,7 @@ void TestDynamicMessageSuite::Testempty_false(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestSize(void)
+void TestDynamicMessageSuite::TestSize()
 {
   // SUT
   SUT sut;
@@ -501,7 +501,7 @@ void TestDynamicMessageSuite::TestSize(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::Testis_host_order(void)
+void TestDynamicMessageSuite::Testis_host_order()
 {
   // SUT: Host order is defined within the type itself.
   //      Look at the typedef for details
@@ -510,7 +510,7 @@ void TestDynamicMessageSuite::Testis_host_order(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::Testis_host_order_false(void)
+void TestDynamicMessageSuite::Testis_host_order_false()
 {
   // SUT: Net order is defined within the type itself. 
   //      Look at the typedef for details
@@ -519,7 +519,7 @@ void TestDynamicMessageSuite::Testis_host_order_false(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestAssign(void)
+void TestDynamicMessageSuite::TestAssign()
 {
   SUT expected;
   PopulateBaseValues(expected);
@@ -533,7 +533,7 @@ void TestDynamicMessageSuite::TestAssign(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::TestClear(void)
+void TestDynamicMessageSuite::TestClear()
 {
   SUT sut(get_buffer().get(), get_length());
   TS_ASSERT(!sut.empty());
@@ -545,7 +545,7 @@ void TestDynamicMessageSuite::TestClear(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::Testdata(void)
+void TestDynamicMessageSuite::Testdata()
 {
   SUT sut;
   sut.size_8       = k_count_seq_8;
@@ -587,7 +587,7 @@ void TestDynamicMessageSuite::Testdata(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::Testto_host(void)
+void TestDynamicMessageSuite::Testto_host()
 {
   // Populate the expected results.
   SUT_net expected;
@@ -611,7 +611,7 @@ void TestDynamicMessageSuite::Testto_host(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::Testto_network(void)
+void TestDynamicMessageSuite::Testto_network()
 {
   // Populate the expected results.
   SUT expected;
@@ -635,7 +635,7 @@ void TestDynamicMessageSuite::Testto_network(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::Testto_big_endian(void)
+void TestDynamicMessageSuite::Testto_big_endian()
 {
   // Populate the expected results.
   SUT expected;
@@ -659,7 +659,7 @@ void TestDynamicMessageSuite::Testto_big_endian(void)
 }
 
 //  ****************************************************************************
-void TestDynamicMessageSuite::Testto_little_endian(void)
+void TestDynamicMessageSuite::Testto_little_endian()
 {
   // Populate the expected results.
   SUT expected;

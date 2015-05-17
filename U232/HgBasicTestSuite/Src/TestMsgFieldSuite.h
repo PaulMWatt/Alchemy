@@ -98,39 +98,39 @@ protected:
 public:
   //  Test Cases ***************************************************************
   //  Test the basic function set with a u32 ***********************************
-  void TestDtor(void);
-  void TestCopyConstructor(void);
-  void TestAssignment(void);
-  void TestValueAssignment(void);
+  void TestDtor();
+  void TestCopyConstructor();
+  void TestAssignment();
+  void TestValueAssignment();
 
   // Comparison Operators
-  void TestOpEquals(void);
-  void TestOpEquals_false(void);
-  void TestOpNotEquals(void);
-  void TestOpNotEquals_false(void);
-  void TestOpLessThan(void);
-  void TestOpLessThan_false(void);
-  void TestOpLessThanOrEqual(void);
-  void TestOpLessThanOrEqual_false(void);
-  void TestOpGreaterThan(void);
-  void TestOpGreaterThan_false(void);
-  void TestOpGreaterThanOrEqual(void);
-  void TestOpGreaterThanOrEqual_false(void);
+  void TestOpEquals();
+  void TestOpEquals_false();
+  void TestOpNotEquals();
+  void TestOpNotEquals_false();
+  void TestOpLessThan();
+  void TestOpLessThan_false();
+  void TestOpLessThanOrEqual();
+  void TestOpLessThanOrEqual_false();
+  void TestOpGreaterThan();
+  void TestOpGreaterThan_false();
+  void TestOpGreaterThanOrEqual();
+  void TestOpGreaterThanOrEqual_false();
 
   // Status and Methods
-  void TestClear(void);
-  void TestClear_Empty(void);
+  void TestClear();
+  void TestClear_Empty();
 
   // Accessors
-  void TestGet_Const(void);
-  void TestGet(void);
+  void TestGet_Const();
+  void TestGet();
 
-  void TestSet(void);
+  void TestSet();
 
 };
 
 //  ****************************************************************************
-void TestDatumSuite::TestDtor(void)
+void TestDatumSuite::TestDtor()
 {
   field_uint32_t sut;
 
@@ -149,7 +149,7 @@ void TestDatumSuite::TestDtor(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestCopyConstructor(void)
+void TestDatumSuite::TestCopyConstructor()
 {
   field_uint32_t    existing;
   const uint32_t    k_control = 0xBA5EBA11;
@@ -168,7 +168,7 @@ void TestDatumSuite::TestCopyConstructor(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestAssignment(void)
+void TestDatumSuite::TestAssignment()
 {
   field_uint32_t    existing;
 
@@ -187,7 +187,7 @@ void TestDatumSuite::TestAssignment(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestValueAssignment(void)
+void TestDatumSuite::TestValueAssignment()
 {
   const uint32_t k_control = 0xB16BEAD5;
   // SUT
@@ -200,7 +200,7 @@ void TestDatumSuite::TestValueAssignment(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpEquals(void)
+void TestDatumSuite::TestOpEquals()
 {
   const uint32_t k_control = 0xA110BA5E;
   field_uint32_t sut;
@@ -215,7 +215,7 @@ void TestDatumSuite::TestOpEquals(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpEquals_false(void)
+void TestDatumSuite::TestOpEquals_false()
 {
   const uint32_t k_control = 0xA110BA5E;
   field_uint32_t sut;
@@ -230,7 +230,7 @@ void TestDatumSuite::TestOpEquals_false(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpNotEquals(void)
+void TestDatumSuite::TestOpNotEquals()
 {
   const uint32_t k_control = 0xFEEDC0DE;
   field_uint32_t sut;
@@ -245,7 +245,7 @@ void TestDatumSuite::TestOpNotEquals(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpNotEquals_false(void)
+void TestDatumSuite::TestOpNotEquals_false()
 {
   const uint32_t k_control = 0xFEEDC0DE;
   field_uint32_t sut;
@@ -260,7 +260,7 @@ void TestDatumSuite::TestOpNotEquals_false(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpLessThan(void)
+void TestDatumSuite::TestOpLessThan()
 {
   const uint32_t k_control = 0xFEEDC0DE;
   field_uint32_t sut;
@@ -276,7 +276,7 @@ void TestDatumSuite::TestOpLessThan(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpLessThan_false(void)
+void TestDatumSuite::TestOpLessThan_false()
 {
   const uint32_t k_control = 0xFEEDC0DE;
   field_uint32_t sut;
@@ -293,7 +293,7 @@ void TestDatumSuite::TestOpLessThan_false(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpLessThanOrEqual(void)
+void TestDatumSuite::TestOpLessThanOrEqual()
 {
   const uint32_t k_control = 0xFEEDC0DE;
   field_uint32_t sut;
@@ -315,7 +315,7 @@ void TestDatumSuite::TestOpLessThanOrEqual(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpLessThanOrEqual_false(void)
+void TestDatumSuite::TestOpLessThanOrEqual_false()
 {
   const uint32_t k_control = 0xFEEDC0DE;
   field_uint32_t sut;
@@ -332,7 +332,7 @@ void TestDatumSuite::TestOpLessThanOrEqual_false(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpGreaterThan(void)
+void TestDatumSuite::TestOpGreaterThan()
 {
   const uint32_t k_control = 0xFEEDC0DE;
   field_uint32_t sut;
@@ -348,7 +348,7 @@ void TestDatumSuite::TestOpGreaterThan(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpGreaterThan_false(void)
+void TestDatumSuite::TestOpGreaterThan_false()
 {
   const uint32_t k_control = 0xFEEDC0DE;
   field_uint32_t sut;
@@ -365,7 +365,7 @@ void TestDatumSuite::TestOpGreaterThan_false(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpGreaterThanOrEqual(void)
+void TestDatumSuite::TestOpGreaterThanOrEqual()
 {
   const uint32_t k_control = 0xFEEDC0DE;
   field_uint32_t sut;
@@ -387,7 +387,7 @@ void TestDatumSuite::TestOpGreaterThanOrEqual(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestOpGreaterThanOrEqual_false(void)
+void TestDatumSuite::TestOpGreaterThanOrEqual_false()
 {
   const uint32_t k_control = 0xFEEDC0DE;
 
@@ -405,7 +405,7 @@ void TestDatumSuite::TestOpGreaterThanOrEqual_false(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestClear(void)
+void TestDatumSuite::TestClear()
 {
   const uint32_t k_control = 0x600DF00D;
   field_uint32_t sut;
@@ -418,7 +418,7 @@ void TestDatumSuite::TestClear(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestClear_Empty(void)
+void TestDatumSuite::TestClear_Empty()
 {
   // Initialize without a buffer.
   const uint32_t k_control = 0xFA57F00D;
@@ -432,7 +432,7 @@ void TestDatumSuite::TestClear_Empty(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestGet_Const(void)
+void TestDatumSuite::TestGet_Const()
 {
   // Verify Get() reads the value from the buffer,
   // the shadow copy should remain intact.
@@ -457,7 +457,7 @@ void TestDatumSuite::TestGet_Const(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestGet(void)
+void TestDatumSuite::TestGet()
 {
   // Verify Get() reads the value from the buffer and updates the shadow copy.
   const uint32_t k_control = 0x7E57C0DE;
@@ -471,7 +471,7 @@ void TestDatumSuite::TestGet(void)
 }
 
 //  ****************************************************************************
-void TestDatumSuite::TestSet(void)
+void TestDatumSuite::TestSet()
 {
   // Verify Set() writes the value to the buffer and the shadow copy.
   const uint32_t k_initial = 0xBEEFBEEF;

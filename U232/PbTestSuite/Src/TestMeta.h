@@ -79,82 +79,82 @@ protected:
 public:
   //  Test Cases ***************************************************************
   //  Test Meta-conditional constructs *****************************************
-  void Test_value_if_true(void);
-  void Test_value_if_false(void);
-  void Test_one_or_zero_1(void);
-  void Test_one_or_zero_0(void);
+  void Test_value_if_true();
+  void Test_value_if_false();
+  void Test_one_or_zero_1();
+  void Test_one_or_zero_0();
 
   //  Test Compile-time checks *************************************************
-  void Test_type_check(void);
+  void Test_type_check();
 
   //  Boolean Operations *******************************************************
-  void Test_not_true(void);
-  void Test_not_false(void);
-  void Test_and_true(void);
-  void Test_and_false(void);
-  void Test_or_true(void);
-  void Test_or_false(void);
+  void Test_not_true();
+  void Test_not_false();
+  void Test_and_true();
+  void Test_and_false();
+  void Test_or_true();
+  void Test_or_false();
 
   //  Test type_container ******************************************************
   //  Parameterized version
-  void Test_type_container_T(void);
+  void Test_type_container_T();
 
   // Specializations
-  void Test_type_container_empty(void);
-  void Test_type_container_TypeList(void);
-  void Test_type_container_traits(void);
+  void Test_type_container_empty();
+  void Test_type_container_TypeList();
+  void Test_type_container_traits();
 
   // Test ContainerSize ********************************************************
-  void TestContainerSize(void);
+  void TestContainerSize();
 
   // Test length, TypeContainer item count *************************************
-//  void Test_length(void);
+//  void Test_length();
 
   // TypeAt Template Tests *****************************************************
-  void TestTypeAt_1_to_max(void);
+  void TestTypeAt_1_to_max();
 
   // SizeOf Template Tests *****************************************************
   // Verify the intrinsic types
-  void TestSizeOf_char(void);
-  void TestSizeOf_uchar(void);
-  void TestSizeOf_short(void);
-  void TestSizeOf_ushort(void);
-  void TestSizeOf_long(void);
-  void TestSizeOf_ulong(void);
-  void TestSizeOf_float(void);
-  void TestSizeOf_double(void);
+  void TestSizeOf_char();
+  void TestSizeOf_uchar();
+  void TestSizeOf_short();
+  void TestSizeOf_ushort();
+  void TestSizeOf_long();
+  void TestSizeOf_ulong();
+  void TestSizeOf_float();
+  void TestSizeOf_double();
 
   // Verify the type_containers
-  void TestSizeOf_empty(void);
-  void TestSizeOf_TypeList(void);
-  void TestSizeOf_NestedNestedTypeList(void);
-  void TestSizeOf_BitSet(void);
-  void TestSizeOf_DynamicValue(void);
-  void TestSizeOf_NestedArray(void);
+  void TestSizeOf_empty();
+  void TestSizeOf_TypeList();
+  void TestSizeOf_NestedNestedTypeList();
+  void TestSizeOf_BitSet();
+  void TestSizeOf_DynamicValue();
+  void TestSizeOf_NestedArray();
 
   // SizeAt Template Tests *****************************************************
-  void TestSizeAt_1_to_max(void);
+  void TestSizeAt_1_to_max();
 
   // OffsetOf Template Tests ***************************************************
-  void TestOffsetOf_basic(void);
-  void TestOffsetOf_bitset(void);
-  void TestOffsetOf_nested(void);
+  void TestOffsetOf_basic();
+  void TestOffsetOf_bitset();
+  void TestOffsetOf_nested();
 
   //  BitSet Body Tests ********************************************************
-  void TestBitSet_constructor(void);
-  void TestBitSet_conversion(void);
-  void TestBitSet_assignment_BitSet(void);
-  void TestBitSet_assignment_value_type(void);
-  void TestBitSet_size(void);
+  void TestBitSet_constructor();
+  void TestBitSet_conversion();
+  void TestBitSet_assignment_BitSet();
+  void TestBitSet_assignment_value_type();
+  void TestBitSet_size();
 
   //  Static ForEach Tests *****************************************************
-  void TestForEach(void);
+  void TestForEach();
 
 };
 
 //  ****************************************************************************
 //  ****************************************************************************
-void TestMeta::Test_value_if_true(void)
+void TestMeta::Test_value_if_true()
 {
   // Choose the first value listed:
   const size_t k_control = 1024;
@@ -166,7 +166,7 @@ void TestMeta::Test_value_if_true(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_value_if_false(void)
+void TestMeta::Test_value_if_false()
 {
   // Choose the second value listed:
   const size_t k_control = 1024;
@@ -178,21 +178,21 @@ void TestMeta::Test_value_if_false(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_one_or_zero_1(void)
+void TestMeta::Test_one_or_zero_1()
 {
   const int k_control = 1;
   TS_ASSERT_EQUALS(k_control, (Hg::one_or_zero<true>::value));
 }
 
 //  ****************************************************************************
-void TestMeta::Test_one_or_zero_0(void)
+void TestMeta::Test_one_or_zero_0()
 {
   const int k_control = 0;
   TS_ASSERT_EQUALS(k_control, (Hg::one_or_zero<false>::value));
 }  
 
 //  ****************************************************************************
-void TestMeta::Test_type_check(void)
+void TestMeta::Test_type_check()
 {
   // This is a static compilation test.
   // If the unit-test program successfully compiles, this test is a success.
@@ -203,7 +203,7 @@ void TestMeta::Test_type_check(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_not_true(void)
+void TestMeta::Test_not_true()
 {
   // SUT
   bool result = Hg::Not<std::false_type>::value;
@@ -211,7 +211,7 @@ void TestMeta::Test_not_true(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_not_false(void)
+void TestMeta::Test_not_false()
 {
   // SUT
   bool result = Hg::Not<std::true_type>::value;
@@ -219,7 +219,7 @@ void TestMeta::Test_not_false(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_and_true(void)
+void TestMeta::Test_and_true()
 {
   // SUT
   bool result = Hg::And<std::true_type,
@@ -228,7 +228,7 @@ void TestMeta::Test_and_true(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_and_false(void)
+void TestMeta::Test_and_false()
 {
   bool result;
   // SUT 1
@@ -248,7 +248,7 @@ void TestMeta::Test_and_false(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_or_true(void)
+void TestMeta::Test_or_true()
 {
   bool result;
   // SUT 1
@@ -268,7 +268,7 @@ void TestMeta::Test_or_true(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_or_false(void)
+void TestMeta::Test_or_false()
 {
   // SUT
   bool result = Hg::Or <std::false_type,
@@ -277,7 +277,7 @@ void TestMeta::Test_or_false(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_type_container_T(void)
+void TestMeta::Test_type_container_T()
 {
   // Verify all intrinsic types, all forms must report false;
   TS_ASSERT_EQUALS(false, Hg::type_container<char>::value);
@@ -300,14 +300,14 @@ void TestMeta::Test_type_container_T(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_type_container_empty(void)
+void TestMeta::Test_type_container_empty()
 {
   typedef Hg::MT sut_t;
   TS_ASSERT_EQUALS(false, Hg::type_container<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::Test_type_container_TypeList(void)
+void TestMeta::Test_type_container_TypeList()
 {
   // The type array requires an instantiated template type.
   typedef Hg::TypeList<int>                     sut1_t;
@@ -320,14 +320,14 @@ void TestMeta::Test_type_container_TypeList(void)
 }
 
 //  ****************************************************************************
-void TestMeta::Test_type_container_traits(void)
+void TestMeta::Test_type_container_traits()
 {
   TS_ASSERT(Hg::type_container<TypeA>::value);
   TS_ASSERT(Hg::type_container<TypeB>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestContainerSize(void)
+void TestMeta::TestContainerSize()
 {
   // Use the pre-declared types for this test.
   // Basic_format
@@ -357,7 +357,7 @@ void TestMeta::TestContainerSize(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestTypeAt_1_to_max(void)
+void TestMeta::TestTypeAt_1_to_max()
 {
   // This test declares a TypeList with a unique type for each potential
   // index in the array up to the max elements.
@@ -415,70 +415,70 @@ void TestMeta::TestTypeAt_1_to_max(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_char(void)
+void TestMeta::TestSizeOf_char()
 {
   typedef char sut_t;
   TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_uchar(void)
+void TestMeta::TestSizeOf_uchar()
 {
   typedef unsigned char sut_t;
   TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_short(void)
+void TestMeta::TestSizeOf_short()
 {
   typedef short sut_t;
   TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_ushort(void)
+void TestMeta::TestSizeOf_ushort()
 {
   typedef unsigned short sut_t;
   TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_long(void)
+void TestMeta::TestSizeOf_long()
 {
   typedef long sut_t;
   TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_ulong(void)
+void TestMeta::TestSizeOf_ulong()
 {
   typedef unsigned long sut_t;
   TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_float(void)
+void TestMeta::TestSizeOf_float()
 {
   typedef float sut_t;
   TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_double(void)
+void TestMeta::TestSizeOf_double()
 {
   typedef double sut_t;
   TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_empty(void)
+void TestMeta::TestSizeOf_empty()
 {
   typedef Hg::MT sut_t;
   TS_ASSERT_EQUALS(1, Hg::SizeOf<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_TypeList(void)
+void TestMeta::TestSizeOf_TypeList()
 {
   typedef Hg::TypeList<int, double, ptrdiff_t> sut_t;
   const size_t k_control  = sizeof(int)
@@ -491,7 +491,7 @@ void TestMeta::TestSizeOf_TypeList(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_NestedNestedTypeList(void)
+void TestMeta::TestSizeOf_NestedNestedTypeList()
 {
   const size_t k_control_pt      = sizeof(int32_t) * 3;
   const size_t k_control_camera  = k_control_pt * 3;
@@ -513,7 +513,7 @@ void TestMeta::TestSizeOf_NestedNestedTypeList(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_BitSet(void)
+void TestMeta::TestSizeOf_BitSet()
 {
   typedef Hg::Bits_type_a sut_t;
   const size_t k_control  = sizeof(Hg::Bits_type_a::value_type);
@@ -525,7 +525,7 @@ void TestMeta::TestSizeOf_BitSet(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_DynamicValue(void)
+void TestMeta::TestSizeOf_DynamicValue()
 {
   typedef std::vector<char>                     char_vec;
   typedef std::vector<double>                   double_vec;
@@ -544,7 +544,7 @@ void TestMeta::TestSizeOf_DynamicValue(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_NestedArray(void)
+void TestMeta::TestSizeOf_NestedArray()
 {
   typedef Hg::TypeList
   <
@@ -564,7 +564,7 @@ void TestMeta::TestSizeOf_NestedArray(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeAt_1_to_max(void)
+void TestMeta::TestSizeAt_1_to_max()
 {
   // This test declares a TypeList with a unique type for each potential
   // index in the array up to the max elements.
@@ -654,7 +654,7 @@ void TestMeta::TestSizeAt_1_to_max(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestOffsetOf_basic(void)
+void TestMeta::TestOffsetOf_basic()
 {
   typedef Hg::Basic_format fmt;
 
@@ -678,7 +678,7 @@ void TestMeta::TestOffsetOf_basic(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestOffsetOf_bitset(void)
+void TestMeta::TestOffsetOf_bitset()
 {
   typedef Hg::Bitset_format fmt;
 
@@ -698,7 +698,7 @@ void TestMeta::TestOffsetOf_bitset(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestOffsetOf_nested(void)
+void TestMeta::TestOffsetOf_nested()
 {
   typedef Hg::Nested_format fmt;
 
@@ -727,7 +727,7 @@ void TestMeta::TestOffsetOf_nested(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestBitSet_constructor(void)
+void TestMeta::TestBitSet_constructor()
 {
   // Test two types
   // Type A uses a single 8-bit value
@@ -742,7 +742,7 @@ void TestMeta::TestBitSet_constructor(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestBitSet_conversion(void)
+void TestMeta::TestBitSet_conversion()
 {
   value_type_a A_val = 0;
   TypeA sut(A_val);
@@ -752,7 +752,7 @@ void TestMeta::TestBitSet_conversion(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestBitSet_assignment_BitSet(void)
+void TestMeta::TestBitSet_assignment_BitSet()
 {
   value_type_a        sut_val   = 0;
   TypeA               sut   (sut_val);
@@ -770,7 +770,7 @@ void TestMeta::TestBitSet_assignment_BitSet(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestBitSet_assignment_value_type(void)
+void TestMeta::TestBitSet_assignment_value_type()
 {
   const value_type_a  k_control = 192;
   value_type_a        A_val     = 0;
@@ -782,7 +782,7 @@ void TestMeta::TestBitSet_assignment_value_type(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestBitSet_size(void)
+void TestMeta::TestBitSet_size()
 {
   // Type A is based on a 1-byte value
   TS_ASSERT_EQUALS(sizeof(uint8_t),  TypeA::size());
@@ -791,7 +791,7 @@ void TestMeta::TestBitSet_size(void)
 }
 
 //  ****************************************************************************
-void TestMeta::TestForEach(void)
+void TestMeta::TestForEach()
 {
   // TODO: Revisit to implement a test that iterates over a TypeList
 }

@@ -73,28 +73,28 @@ protected:
 
 public:
   // Test Cases ****************************************************************
-  void Test_write_array_of_bitsets(void);
-  void Test_read_array_of_bitsets(void);
+  void Test_write_array_of_bitsets();
+  void Test_read_array_of_bitsets();
 
-  void Test_write_array_of_arrays(void);
-  void Test_read_array_of_arrays(void);
+  void Test_write_array_of_arrays();
+  void Test_read_array_of_arrays();
 
-  void Test_write_vector_fundamental(void);
-  void Test_read_vector_fundamental(void);
+  void Test_write_vector_fundamental();
+  void Test_read_vector_fundamental();
 
-  void Test_write_vector_with_nested_fixed_size(void);
-  void Test_read_vector_with_nested_fixed_size(void);
+  void Test_write_vector_with_nested_fixed_size();
+  void Test_read_vector_with_nested_fixed_size();
 
-  void Test_write_vector_with_nested_dynamic_size(void);
-  void Test_read_vector_with_nested_dynamic_size(void);
+  void Test_write_vector_with_nested_dynamic_size();
+  void Test_read_vector_with_nested_dynamic_size();
 
-  void Test_write_vector_of_bitsets(void);
-  void Test_read_vector_of_bitsets(void);
+  void Test_write_vector_of_bitsets();
+  void Test_read_vector_of_bitsets();
 
-  void Test_write_vector_of_arrays(void);
-  void Test_read_vector_of_arrays(void);
+  void Test_write_vector_of_arrays();
+  void Test_read_vector_of_arrays();
 
-  void Test_write_vector_of_vectors(void);
+  void Test_write_vector_of_vectors();
 
 };
 
@@ -186,7 +186,7 @@ void populate_msg(SUT &msg)
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_array_of_bitsets(void)
+void TestFocusedDynamicMessageSuite::Test_write_array_of_bitsets()
 {
   //using namespace test::fixed_array::bit_list;
 
@@ -206,7 +206,7 @@ void TestFocusedDynamicMessageSuite::Test_write_array_of_bitsets(void)
 }
 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_array_of_bitsets(void)
+void TestFocusedDynamicMessageSuite::Test_read_array_of_bitsets()
 {
   //using namespace test::fixed_array::bit_list;
   //using namespace test::data;
@@ -297,7 +297,7 @@ void populate_msg(SUT &msg)
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_array_of_arrays(void)
+void TestFocusedDynamicMessageSuite::Test_write_array_of_arrays()
 {
   using namespace test::nested::fixed;
 
@@ -317,7 +317,7 @@ void TestFocusedDynamicMessageSuite::Test_write_array_of_arrays(void)
 }
 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_array_of_arrays(void)
+void TestFocusedDynamicMessageSuite::Test_read_array_of_arrays()
 {
   using namespace test::nested::fixed;
   using namespace test::data;
@@ -410,7 +410,7 @@ void populate_msg(SUT &msg)
 
 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_vector_fundamental(void)
+void TestFocusedDynamicMessageSuite::Test_write_vector_fundamental()
 {
   using namespace test::dynamic::fundamental;
   using namespace test;
@@ -431,7 +431,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_fundamental(void)
 }
 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_vector_fundamental(void)
+void TestFocusedDynamicMessageSuite::Test_read_vector_fundamental()
 {
   using namespace test::dynamic::fundamental;
   using namespace test;
@@ -521,7 +521,7 @@ void populate_msg(SUT &msg)
 
 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_fixed_size(void)
+void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_fixed_size()
 {
   using namespace test::dynamic::nested::fixed;
 
@@ -541,7 +541,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_fixed_size(vo
 }
 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_fixed_size(void)
+void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_fixed_size()
 {
   using namespace test::dynamic::nested::fixed;
   using namespace test::data;
@@ -688,7 +688,7 @@ void populate_msg(SUT &msg)
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_dynamic_size(void)
+void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_dynamic_size()
 {
   using namespace test::dynamic::nested::dynamic;
 
@@ -708,7 +708,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_dynamic_size(
 }
 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_dynamic_size(void)
+void TestFocusedDynamicMessageSuite::Test_read_vector_with_nested_dynamic_size()
 {
   using namespace test::dynamic::nested::dynamic;
   using namespace test::data;
@@ -844,7 +844,7 @@ void populate_msg(SUT &msg)
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_vector_of_bitsets(void)
+void TestFocusedDynamicMessageSuite::Test_write_vector_of_bitsets()
 {
 //  // Reuse the data defined for the bit_list array tests
 //  using namespace test::dynamic::bit_list;
@@ -867,7 +867,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_of_bitsets(void)
 }
 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_vector_of_bitsets(void)
+void TestFocusedDynamicMessageSuite::Test_read_vector_of_bitsets()
 {
   //using namespace test::dynamic::bit_list;
   //using namespace test::data;
@@ -1001,7 +1001,7 @@ void populate_msg(SUT &msg)
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_vector_of_arrays(void)
+void TestFocusedDynamicMessageSuite::Test_write_vector_of_arrays()
 {
   using namespace test::vector::fixed_array;
 
@@ -1022,7 +1022,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_of_arrays(void)
 }
 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_read_vector_of_arrays(void)
+void TestFocusedDynamicMessageSuite::Test_read_vector_of_arrays()
 {
   using namespace test::vector::fixed_array;
   using namespace test::data;
@@ -1194,7 +1194,7 @@ void populate_msg(SUT &msg)
 //  ****************************************************************************
 //  Tests 
 //  ****************************************************************************
-void TestFocusedDynamicMessageSuite::Test_write_vector_of_vectors(void)
+void TestFocusedDynamicMessageSuite::Test_write_vector_of_vectors()
 {
   using namespace test::vec::vec;
   using namespace test::data;
