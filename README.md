@@ -4,12 +4,12 @@ Optimizations continue to improve the speed of Alchemy each week. This is a summ
 
 Test | % Faster
 ----------- |:------------
-Basic: |  **19.1005%**
-Packed: | **11.5171%**
-Unaligned: | **1.85696%**
-Complex: | **3.78353%**
-Array: | **72.2728%**
-Total: | **19.9351%**
+Basic: |  **20.5059%**
+Packed: | **13.9461%**
+Unaligned: | **1.81528%**
+Complex: | **4.25552%**
+Array: | **73.3624%**
+Total: | **21.0723%**
 
 Arrays appear to out-perform the basic hand-written equivalent by a considerable margin.
 
@@ -128,6 +128,15 @@ Machine:
 *16 GB RAM 
 *Windows 8.1 
 
+These benchmarks were compiled by Visual Studio 2013 with these compiler settings:  
+*Maximixe Speed: /O2  
+*Enable Intrinsic (Yes): /Oi  
+*Favor Speed: /Ot  
+*Omit Frame Pointers (Yes): /Oy
+*Whole Program Optimization (Yes): /GL  
+  
+Omitting the frame pointers gave the largest boost in performance. Most probably due to the recursive implementation for many of the algorithms that process the Hg messages.
+
 Benchmark output:
 -----------------
 Loading test data:  
@@ -153,12 +162,12 @@ percent: Value indicates **Hg** performance (+ is better)
     
 Test | control | Hg | diff | percent
 ----------- |:---------- |:--------- |:---------- |:------------
-Basic: |  0.612162  s | 0.495236  s | -0.116926 | **19.1005%**
-Packed: | 0.691659  s | 0.612     s | -0.0796588 | **11.5171%**
-Unaligned: | 0.571058  s | 0.560454  s | -0.0106043 | **1.85696%**
-Complex: | 0.806906  s | 0.776377  s | -0.0305296 | **3.78353%**
-Array: | 0.567276  s | 0.15729   s | -0.409986 | **72.2728%**
-Total: | 3.24906   s | 2.60136   s | -0.647704 | **19.9351%**
+Basic: |  0.620346  s | 0.493183  s | -0.127208 | **20.5059%**
+Packed: | 0.710566  s | 0.61147     s | -0.0990963 | **13.9461%**
+Unaligned: | 0.577596  s | 0.567111  s | -0.010485 | **1.81528%**
+Complex: | 0.813253  s | 0.778645  s | -0.0346081 | **4.25552%**
+Array: | 0.577873  s | 0.153931   s | -0.423941 | **73.3624%**
+Total: | 3.29963  s | 2.60429   s | -0.695338 | **31.0732%**
 
 These scenarios are trivial to write by hand,  
 and are currently outside of Alchemy's capabilities.  
@@ -166,7 +175,7 @@ Therefore, Alchemy woefully underperforms in these scenarios.
   
 Scenario | control | Hg | diff | percent
 ----------- |:---------- |:--------- |:---------- |:------------
-NoConversion: |  0.361389  s | 0.577049  s | 0.215659 | **-59.6751%**
+NoConversion: |  0.380360  s | 0.509006  s | 0.128643 | **-33.8212%**
   
 These are the basic benchmark tests that have been written:
 
@@ -193,11 +202,11 @@ These are the basic benchmark tests that have been written:
 Active and Planned Improvements:
 
 Currently in progress:
+ * Nearly complete with development for Carbon (C). This is an auxiallary library that will allow you to generate a C-linkable library of your Hg definitions to import into any type of environment that is capable of loading and linking to C-based DLLS.
  * Cross-compiler support and cross-platform integration with auto-tools. Currently the projects are Visual Studio Solutions.
  * Adding support for Clang.
  * Clean up TODO: tags left in the code. 
 
 Soon to follow:
  * Message converters, to simplify the task of receiving a message and translating it to another format before forwarding it on to the stage of processing.
- * Add the automatic generation of C-linkable functions and structures that internally make use of Alchemy. This will allow Alchemy to be integrated with other languages, such as C, C#, JAVA, FORTRAN and any others capable of importing functions from C libraries.
  
