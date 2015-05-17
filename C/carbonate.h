@@ -72,6 +72,25 @@ carbon_t* carbon_ptr(const Hg_msg_t* p_msg)
 }
 
 //  ****************************************************************************
+/// Allocates a carbon buffer to act as an abstract buffer of memory in C.
+///
+inline
+Hg_msg_t* carbon_alloc(size_t size, uint32_t buffer_id, uint32_t msg_type)
+{
+  if (0 == size)
+    return 0;
+
+  C::carbon_t* p_msg = new C::carbon_t[size + C::k_carbon_footprint];
+  uint32_t base = buffer_id | (size << C::k_size_shift);
+  
+  ::memcpy(p_msg, &base, 4);
+  ::memcpy(p_msg + C::k_type_offset, &msg_type, 4);
+  ::memset(p_msg + C::k_base_offset, 0, size - C::k_base_offset);
+
+  return p_msg + C::k_base_offset;
+}
+
+//  ****************************************************************************
 /// Returns the size of the allocated buffer that is usable by the user.
 ///
 inline

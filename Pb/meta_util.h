@@ -271,7 +271,6 @@ struct opaque_array_trait
 { };
 
 
-
 //  BitField Message Field Discriminators *************************************
 //  Objects derived from the packed_trait are considered bitlist containers.
 template <typename T>
@@ -294,6 +293,14 @@ struct type_container
 template<>
 struct type_container<MT>
   : std::integral_constant<bool, false>
+{  };
+
+
+//  Fundamental field type discriminators *************************************
+template <typename T>
+struct fundamental_value
+  : std::integral_constant< bool,
+                            !type_container<T>::value>
 {  };
 
 

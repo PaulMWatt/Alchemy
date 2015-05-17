@@ -21,188 +21,7 @@
 namespace C
 {
 
-//  ****************************************************************************
-/// Facilitates translating values from C-structs to Hg::Message formats.
-///
-template< typename T, 
-          typename U,
-          typename trait_t = Hg::detail::DeduceTypeTrait<U::value_type>::type
-        >
-struct translate_from_C
-{
-  static 
-  U& assign(T& src, U& dest)
-  {
-    // This version of the template handles fundamental types and bit-fields.
-    // The values will fit, they just need a lot of coercing.
-    return dest = *(U::value_type*)&src;
-  }
-};
-
-
-//  ****************************************************************************
-/// Specialization for nested value types.
-///
-template< typename T, typename U >
-struct translate_from_C<T,U,Hg::nested_trait>
-{
-  static 
-  U& assign(T& src, U& dest)
-  {
-    U::value_type &value = dest;
-    struct_to_msg(src, value);
-
-    return dest;
-  }
-};
-
-//  ****************************************************************************
-/// Specialization for array value types.
-///
-template< typename T, typename U >
-struct translate_from_C<T,U,Hg::array_trait>
-{
-  static 
-  U& assign(T &src, U &dest)
-  {
-    typedef U::value_type  value_type;
-    if (Hg::array_value<value_type::value_type>::value)
-    {
-      for (size_t index = 0; index < dest.size(); ++index)
-      {
-        struct_to_msg(src[index], dest[index]);
-      }
-    }
-    else
-    {
-      memcpy(&dest, &src, sizeof(dest));
-    }
-
-    return dest;
-  }
-};
-
-// TODO: Still unsure how a vector will be structured in C.
-//  ****************************************************************************
-/// Specialization for vector value types (variable-length arrays).
-///
-//template< typename T, typename U >
-//struct translate_from_C<T,U,Hg::vector_trait>
-//{
-//  static 
-//  U& assign(T &src, U &dest)
-//  {
-//    typedef U::value_type  value_type;
-//    if (Hg::vector_value<value_type::value_type>::value)
-//    {
-//      for (size_t index = 0; index < dest.size(); ++index)
-//      {
-//        struct_to_msg(src[index], dest[index]);
-//      }
-//    }
-//    else if (Hg::array_value<value_type::value_type>::value)
-//    {
-//      for (size_t index = 0; index < dest.size(); ++index)
-//      {
-//        struct_to_msg(src[index], dest[index]);
-//      }
-//    }
-//    else
-//    {
-//      memcpy(&dest, &src, sizeof(dest));
-//    }
-//
-//    return dest;
-//  }
-//};
-
-//  ****************************************************************************
-/// Facilitates translating values from C-structs to Hg::Message formats.
-///
-template< typename T, 
-          typename U,
-          typename trait_t = Hg::detail::DeduceTypeTrait<T::value_type>::type
-        >
-struct translate_to_C
-{
-  static 
-  U& assign(T& src, U& dest)
-  {
-    // This version of the template handles fundamental types and bit-fields.
-    // The values will fit, they just need a lot of coercing.
-    T::value_type value = src;
-    ::memcpy(&dest, &value, sizeof(T::value_type));
-    return dest;
-  }
-};
-
-
-//  ****************************************************************************
-/// Specialization for nested value types.
-///
-template< typename T, typename U >
-struct translate_to_C<T,U,Hg::nested_trait>
-{
-  typedef typename T::value_type    value_type;
-
-  static 
-  U& assign(T& src, U& dest)
-  {
-    value_type &value = src;
-    msg_to_struct(value, dest);
-
-    return dest;
-  }
-};
-
-
-//  ****************************************************************************
-/// Specialization for array value types.
-///
-template< typename T, typename U >
-struct translate_to_C<T,U,Hg::array_trait>
-{
-  static 
-  U& assign(T &src, U &dest)
-  {
-    typedef T::value_type  value_type;
-    if (Hg::array_value<value_type::value_type>::value)
-    {
-      for (size_t index = 0; index < src.size(); ++index)
-      {
-        msg_to_struct(src[index], dest[index]);
-      }
-    }
-    else
-    {
-      memcpy(&dest, &src, sizeof(dest));
-    }
-
-    return dest;
-  }
-
-};
-
-
-//  ****************************************************************************
-//  Assigns the value of a C-struct to a Hg Message.
-//
-template< typename T, typename U>
-U& struct_to_msg(T& src, U& dest)
-{
-  return translate_from_C<T,U>::assign(src, dest);
-}
-
-//  ****************************************************************************
-//  Assigns the values of a Hg Message to a C-struct.
-//
-template< typename T, typename U>
-U& msg_to_struct(T& src, U& dest)
-{
-  return translate_to_C<T,U>::assign(src, dest);
-}
-
-//  ****************************************************************************
+  //  ****************************************************************************
 //  Frees memory for each datum in the most appropriate way.
 //  The default case does not require any special processing.
 //
@@ -283,6 +102,251 @@ size_t get_datum_size(const T datum, const HgT*)
 {
   return GetDatumSize<T, Hg::vector_value<HgT>::value>::get_data_size(datum);
 }
+
+
+//  ****************************************************************************
+/// Facilitates translating values from C-structs to Hg::Message formats.
+///
+template< typename T, 
+          typename U,
+          typename trait_t = Hg::detail::DeduceTypeTrait<U::value_type>::type
+        >
+struct translate_from_C
+{
+  static 
+  U& assign(T& src, U& dest)
+  {
+    // This version of the template handles fundamental types and bit-fields.
+    // The values will fit, they just need a lot of coercing.
+    return dest = *(U::value_type*)&src;
+  }
+};
+
+
+//  ****************************************************************************
+/// Specialization for nested value types.
+///
+template< typename T, typename U >
+struct translate_from_C<T,U,Hg::nested_trait>
+{
+  static 
+  U& assign(T& src, U& dest)
+  {
+    U::value_type &value = dest;
+    struct_to_msg(src, value);
+
+    return dest;
+  }
+};
+
+//  ****************************************************************************
+/// Specialization for array value types.
+///
+template< typename T, typename U >
+struct translate_from_C<T,U,Hg::array_trait>
+{
+  template< bool IsArrayT>
+  struct copy_t
+  {
+    static 
+    void copy(T &src, U &dest)
+    {
+      for (size_t index = 0; index < dest.size(); ++index)
+      {
+        struct_to_msg(src[index], dest[index]);
+      }
+    }
+  };
+
+  template< >
+  struct copy_t<false>
+  {
+    static 
+    void copy(T &src, U &dest)
+    {
+      memcpy(&dest, &src, sizeof(dest));
+    }
+  };
+          
+  static 
+  U& assign(T &src, U &dest)
+  {
+    typedef typename 
+      U::value_type::value_type                   value_type;
+    typedef typename 
+      copy_t<Hg::array_value<value_type>::value>  copy_type;
+    
+    copy_type::copy(src, dest);
+    return dest;
+  }
+};
+
+//  ****************************************************************************
+/// Specialization for vector value types (variable-length arrays).
+///
+template< typename T, typename U >
+struct translate_from_C<T,U,Hg::vector_trait>
+{
+  static 
+  U& assign(T &src, U &dest)
+  {
+    typedef U::value_type  value_type;
+
+    // Get the size of the vector from the C-structure
+    // and allocate space in the Hg message.
+    //template< typename T, typename HgT>
+    //get_datum_size<T, (const T datum, const HgT*)
+
+    size_t len = get_datum_size<T>(src, (U*)0);
+    dest.resize(len);
+
+    if (0 == len)
+      return dest;
+
+    if ( Hg::array_value<value_type::value_type>::value
+      || Hg::nested_value<value_type::value_type>::value)
+    {
+      size_t count = len / sizeof(value_type);
+      for (size_t index = 0; index < count; ++index)
+      {
+        struct_to_msg(src[index], dest[index]);
+      }
+    }
+    else
+    {
+      memcpy(&dest, &src, len);
+    }
+
+    return dest;
+  }
+};
+
+//  ****************************************************************************
+/// Facilitates translating values from C-structs to Hg::Message formats.
+///
+template< typename T, 
+          typename U,
+          typename trait_t = Hg::detail::DeduceTypeTrait<T::value_type>::type
+        >
+struct translate_to_C
+{
+  static 
+  U& assign(T& src, U& dest)
+  {
+    // This version of the template handles fundamental types and bit-fields.
+    // The values will fit, they just need a lot of coercing.
+    T::value_type value = src;
+    ::memcpy(&dest, &value, sizeof(T::value_type));
+    return dest;
+  }
+};
+
+
+//  ****************************************************************************
+/// Specialization for nested value types.
+///
+template< typename T, typename U >
+struct translate_to_C<T,U,Hg::nested_trait>
+{
+  typedef typename T::value_type    value_type;
+
+  static 
+  U& assign(T& src, U& dest)
+  {
+    value_type &value = src;
+    msg_to_struct(value, dest);
+
+    return dest;
+  }
+};
+
+
+//  ****************************************************************************
+/// Specialization for array value types.
+///
+template< typename T, typename U >
+struct translate_to_C<T,U,Hg::array_trait>
+{
+  static 
+  U& assign(T &src, U &dest)
+  {
+    typedef T::value_type  value_type;
+    if ( Hg::array_value<value_type::value_type>::value
+      || Hg::nested_value<value_type::value_type>::value)
+    {
+      for (size_t index = 0; index < src.size(); ++index)
+      {
+//        msg_to_struct(src[index], dest[index]);
+      }
+    }
+    else
+    {
+      memcpy(&dest, &src, sizeof(dest));
+    }
+
+    return dest;
+  }
+
+};
+
+//  ****************************************************************************
+/// Specialization for vector value types (variable-length arrays).
+///
+template< typename T, typename U >
+struct translate_to_C<T,U,Hg::vector_trait>
+{
+  static 
+  U& assign(T &src, U &dest)
+  {
+    typedef T::value_type  value_type;
+
+    // Allocate a buffer in the C-structure 
+    // to accept the data stored in the Hg message.
+    size_t len = src.size() * sizeof(value_type);
+    if (0 == len)
+    {
+      dest = 0;
+      return dest;
+    }
+
+    dest = *(U*)C::carbon_alloc(len, C::k_carbon_field_id, 0);
+
+    if ( Hg::array_value<value_type::value_type>::value
+      || Hg::nested_value<value_type::value_type>::value)
+    {
+      for (size_t index = 0; index < src.size(); ++index)
+      {
+        msg_to_struct(src[index], dest[index]);
+      }
+    }
+    else
+    {
+      memcpy(&dest, &src, len);
+    }
+
+    return dest;
+  }
+};
+
+
+//  ****************************************************************************
+//  Assigns the value of a C-struct to a Hg Message.
+//
+template< typename T, typename U>
+U& struct_to_msg(T& src, U& dest)
+{
+  return translate_from_C<T,U>::assign(src, dest);
+}
+
+//  ****************************************************************************
+//  Assigns the values of a Hg Message to a C-struct.
+//
+template< typename T, typename U>
+U& msg_to_struct(T& src, U& dest)
+{
+  return translate_to_C<T,U>::assign(src, dest);
+}
+
 
 
 //  ****************************************************************************

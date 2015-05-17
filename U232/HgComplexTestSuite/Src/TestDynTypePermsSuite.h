@@ -98,6 +98,7 @@ protected:
   //  These typedefs allow the creation of the different msg field types
   //  with a simplified syntax for readability in the unit-tests.
   typedef Hg::BufferedStoragePolicy                               storage_type;
+  typedef Hg::BufferedStaticStoragePolicy                         static_storage_type;
   typedef Hg::world_message_type                                  msg_type;
   typedef Hg::basic_msg<msg_type>                                 SUT;
   typedef Hg::basic_msg<msg_type>::net_t                          SUT_net;
@@ -376,7 +377,19 @@ void TestDynTypePermsSuite::TestClear(void)
 //  ****************************************************************************
 void TestDynTypePermsSuite::Testdata(void)
 {
+  //typedef Hg::BufferedStaticStoragePolicy                         static_storage_type;
+  //typedef Hg::world_message_type                                  msg_type;
+  //typedef Hg::basic_msg<msg_type>                                 SUT;
 
+
+  SUT host;
+  PopulateBaseValues(host);
+
+  // SUT
+  host.data();
+
+  Hg::byte_t buffer[8096];
+  host.data(buffer, 8096);
 
 }
 

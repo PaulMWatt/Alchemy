@@ -65,7 +65,8 @@ void teardown_library(HMODULE hLib)
 
 void function()
 {
-
+  //uint32_t a = k_camera_t;
+  //uint32_t b = k_ray_t;
 
   int e = g_pfnHg_local_endianess();
 

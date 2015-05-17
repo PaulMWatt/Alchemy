@@ -200,7 +200,7 @@ public:
   //Hg_clone
   void Test_Hg_destroy();
 
-  //Hg_resize_dynamic
+  void Test_Hg_field_alloc();
   
   void Test_Hg_type();
   void Test_Hg_type_Uninitialized();
@@ -474,6 +474,23 @@ void CarbonTestSuite::Test_Hg_destroy()
   Hg_destroy(sut);
 
   // Nothing to verify, except that it does not crash.
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_field_alloc()
+{
+  const size_t k_control = Hg::SizeOf<Hg::triangle_t>::value;
+  Hg_msg_t *p_msg = GetSUT(k_triangle_t);
+
+  // SUT
+
+  triangle_t &p = *(triangle_t*)p_msg;
+  Hg::triangle_t hg;
+  C::struct_to_msg(p, hg);
+  //Hg_to_network(p_msg);
+
+  size_t result = Hg_size(p_msg);
+  TS_ASSERT_EQUALS(k_control, result);
 }
 
 //  ******************************************************************************

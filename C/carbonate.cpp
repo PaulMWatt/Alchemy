@@ -35,16 +35,8 @@ Hg_msg_t* Hg_create(
 )
 {
   size_t size = GetTypeSize(msg_type);
-  if (0 == size)
-    return 0;
 
-  C::carbon_t* p_msg = new C::carbon_t[size + C::k_carbon_footprint];
-  uint32_t base = C::k_carbon_id | (size << C::k_size_shift);
-  
-  ::memcpy(p_msg, &base, 4);
-  ::memcpy(p_msg + C::k_type_offset, &msg_type, 4);
-
-  return p_msg + C::k_base_offset;
+  return C::carbon_alloc(size, C::k_carbon_id, msg_type);
 }
 
 
@@ -77,14 +69,33 @@ void  Hg_destroy(
 
 
 //  ****************************************************************************
+// TODO: Consider attempting to verify the association between p_field and p_msg.
 ALCHEMY_API 
-size_t Hg_resize_dynamic(
+size_t Hg_field_alloc(
   Hg_msg_t* p_msg, 
-  void*     p_field, 
+  void**    p_field, 
   size_t    len
 )
 {
-  return 0;
+  if ( !p_msg
+    || !p_field)
+  {
+    return 0;
+  }
+
+  // Inspect the incoming field pointer. 
+  // If it has an existing buffer, it must be destroyed.
+  if (*p_field)
+  {
+    Hg_destroy((Hg_msg_t*)*p_field);
+  }
+
+  Hg_msg_t* p_buffer = C::carbon_alloc(len, C::k_carbon_field_id, 0);
+  *p_field = p_buffer;
+
+  return  ( 0 == p_buffer )
+          ? 0
+          : len;
 }
 
 

@@ -64,11 +64,11 @@
   extern "C" typedef struct tag_##F                                            \
   {                                                                            \
     DEFINE_C_STRUCT_PARAMS(__VA_ARGS__)                                        \
-  C_DECLARE_STRUCT_FOOTER(F)                                                   \
-  C_DECLARE_STRUCT_TO_MSG(F,__VA_ARGS__)                                       \
-  C_DECLARE_MSG_TO_STRUCT(F,__VA_ARGS__)                                       \
-  C_DECLARE_DESTROY_DATUM(F,__VA_ARGS__)                                       \
-  C_DECLARE_GET_ACTIVE_SIZE(F,__VA_ARGS__)
+    C_DECLARE_STRUCT_FOOTER(F)                                                 \
+    C_DECLARE_STRUCT_TO_MSG(F,__VA_ARGS__)                                     \
+    C_DECLARE_MSG_TO_STRUCT(F,__VA_ARGS__)                                     \
+    C_DECLARE_DESTROY_DATUM(F,__VA_ARGS__)                                     \
+    C_DECLARE_GET_ACTIVE_SIZE(F,__VA_ARGS__)
 
 #else
 #define C_DECLARE_STRUCT_HEADER(F, ...)                                        \
@@ -81,7 +81,7 @@
 //  ****************************************************************************
 #define C_DECLARE_STRUCT_FOOTER(F)                                             \
   } F;                                                                         \
-  extern const uint32_t k_##F##_id;
+  extern const uint32_t k_##F##;
 
 
 //  ****************************************************************************

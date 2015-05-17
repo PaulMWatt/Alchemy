@@ -137,17 +137,21 @@ void  Hg_destroy(
 //  ****************************************************************************
 /// Resize the buffer for a dynamically allocated field in an existing message.
 ///
-/// @param p_msg[inout]
-/// @param p_field[inout]
-/// @param len[in]
+/// @param p_msg[inout]   The parent message associated with this field.
+/// @param p_field[inout] A pointer to the address of the field to allocate.
+///                       If the function is successful, this field will be
+///                       assigned the allocated buffer.
+///                       The buffer will automatically be managed by the parent
+///                       message associated with this field.
+/// @param len[in]        The number of bytes to allocate in the buffer.
 ///
 /// @return             The number of bytes allocated for the field is returned.
 ///                     If no bytes can be allocated, 0 is returned.
 ///
 ALCHEMY_API 
-size_t Hg_resize_dynamic(
+size_t Hg_field_alloc(
   Hg_msg_t* p_msg, 
-  void*     p_field, 
+  void**    p_field, 
   size_t    len
 );
 
