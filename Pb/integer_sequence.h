@@ -194,6 +194,27 @@ struct PopFront <MT>
 };
 
 //  ***************************************************************************
+/// Calculates the number of nodes in the sequence.
+///
+template <typename SeqT>
+struct Size
+  : std::integral_constant
+    < size_t, 
+      1 + Hg::value_if< std::is_same<MT, typename PopFront<SeqT>::type>::value,
+                        size_t,
+                        0,
+                        Size< typename PopFront<SeqT>::type>::value 
+                      >::value
+    >                       
+{ };
+
+template < >
+struct Size<MT>
+  : std::integral_constant<size_t, 0>
+{ };
+
+
+//  ***************************************************************************
 /// Safely extracts the last value in an integral sequence.
 ///
 template <typename SeqT>
