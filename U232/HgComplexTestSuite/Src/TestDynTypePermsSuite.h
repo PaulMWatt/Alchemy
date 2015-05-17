@@ -237,28 +237,28 @@ public:
   // Test Cases ****************************************************************
 
   // Dynamic Message Tests
-  void TestDefaultCtor(void);
-  void TestCopyCtor(void);
-  void TestValueCtor(void);
-  void TestAssignmentOperator(void);
-  void Testempty(void);
-  void Testempty_false(void);
-  void TestSize(void);
-  void Testis_host_order(void);
-  void Testis_host_order_false(void);
-  void TestAssign(void);
-  void TestClear(void);
-  void Testdata(void);
+  void TestDefaultCtor();
+  void TestCopyCtor();
+  void TestValueCtor();
+  void TestAssignmentOperator();
+  void Testempty();
+  void Testempty_false();
+  void TestSize();
+  void Testis_host_order();
+  void Testis_host_order_false();
+  void TestAssign();
+  void TestClear();
+  void Testdata_static();
 
   //  Worker Functions *********************************************************
-  void Testto_host(void);
-  void Testto_network(void);
-  void Testto_big_endian(void);
-  void Testto_little_endian(void);
+  void Testto_host();
+  void Testto_network();
+  void Testto_big_endian();
+  void Testto_little_endian();
 };
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::TestDefaultCtor(void)
+void TestDynTypePermsSuite::TestDefaultCtor()
 {
   // SUT
   SUT sut;
@@ -268,7 +268,7 @@ void TestDynTypePermsSuite::TestDefaultCtor(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::TestCopyCtor(void)
+void TestDynTypePermsSuite::TestCopyCtor()
 {
   SUT                 rhs;
   PopulateBaseValues (rhs);
@@ -280,7 +280,7 @@ void TestDynTypePermsSuite::TestCopyCtor(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::TestValueCtor(void)
+void TestDynTypePermsSuite::TestValueCtor()
 {
   SUT                 rhs;
   PopulateBaseValues (rhs);
@@ -291,7 +291,7 @@ void TestDynTypePermsSuite::TestValueCtor(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::TestAssignmentOperator(void)
+void TestDynTypePermsSuite::TestAssignmentOperator()
 {
   SUT                rhs;
   PopulateBaseValues(rhs);
@@ -303,7 +303,7 @@ void TestDynTypePermsSuite::TestAssignmentOperator(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::Testempty(void)
+void TestDynTypePermsSuite::Testempty()
 {
   // SUT
   SUT sut;
@@ -311,7 +311,7 @@ void TestDynTypePermsSuite::Testempty(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::Testempty_false(void)
+void TestDynTypePermsSuite::Testempty_false()
 {
   // SUT
   SUT sut;
@@ -320,7 +320,7 @@ void TestDynTypePermsSuite::Testempty_false(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::TestSize(void)
+void TestDynTypePermsSuite::TestSize()
 {
   // SUT
   SUT sut;
@@ -329,7 +329,7 @@ void TestDynTypePermsSuite::TestSize(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::Testis_host_order(void)
+void TestDynTypePermsSuite::Testis_host_order()
 {
   // SUT: Host order is defined within the type itself.
   //      Look at the typedef for details
@@ -338,7 +338,7 @@ void TestDynTypePermsSuite::Testis_host_order(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::Testis_host_order_false(void)
+void TestDynTypePermsSuite::Testis_host_order_false()
 {
   // SUT: Net order is defined within the type itself. 
   //      Look at the typedef for details
@@ -347,7 +347,7 @@ void TestDynTypePermsSuite::Testis_host_order_false(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::TestAssign(void)
+void TestDynTypePermsSuite::TestAssign()
 {
   SUT expected;
   PopulateBaseValues(expected);
@@ -361,7 +361,7 @@ void TestDynTypePermsSuite::TestAssign(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::TestClear(void)
+void TestDynTypePermsSuite::TestClear()
 {
   SUT sut;
   sut.data();
@@ -374,14 +374,25 @@ void TestDynTypePermsSuite::TestClear(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::Testdata(void)
+void TestDynTypePermsSuite::Testdata_static()
 {
+  SUT expected;
+  PopulateBaseValues(expected);
 
+  SUT sut;
+  PopulateBaseValues(sut);
 
+  // SUT
+  std::vector<Hg::byte_t> buffer(sut.size()); 
+  bool result = sut.data(&buffer[0], buffer.size());
+
+  TS_ASSERT(result);
+  TS_ASSERT_EQUALS(buffer.size(), sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), sut.size());
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::Testto_host(void)
+void TestDynTypePermsSuite::Testto_host()
 {
   // Populate the expected results.
   SUT_net expected;
@@ -405,7 +416,7 @@ void TestDynTypePermsSuite::Testto_host(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::Testto_network(void)
+void TestDynTypePermsSuite::Testto_network()
 {
   // Populate the expected results.
   SUT::host_t expected;
@@ -429,7 +440,7 @@ void TestDynTypePermsSuite::Testto_network(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::Testto_big_endian(void)
+void TestDynTypePermsSuite::Testto_big_endian()
 {
   // Populate the expected results.
   SUT_big expected;
@@ -453,7 +464,7 @@ void TestDynTypePermsSuite::Testto_big_endian(void)
 }
 
 //  ****************************************************************************
-void TestDynTypePermsSuite::Testto_little_endian(void)
+void TestDynTypePermsSuite::Testto_little_endian()
 {
   // Populate the expected results.
   SUT_little expected;

@@ -141,46 +141,46 @@ protected:
 public:
   // Test Cases ****************************************************************
   //  Test the basic function set with a u32 ***********************************
-  void TestCopyConstructor(void);
-  void TestAssignment(void);
-  void TestValueAssignment(void);
+  void TestCopyConstructor();
+  void TestAssignment();
+  void TestValueAssignment();
 
   // Comparison Operators
-  void TestOpEquals(void);
-  void TestOpEquals_false(void);
-  void TestOpNotEquals(void);
-  void TestOpNotEquals_false(void);
-  void TestOpLessThan(void);
-  void TestOpLessThan_false(void);
-  void TestOpLessThanOrEqual(void);
-  void TestOpLessThanOrEqual_false(void);
-  void TestOpGreaterThan(void);
-  void TestOpGreaterThan_false(void);
-  void TestOpGreaterThanOrEqual(void);
-  void TestOpGreaterThanOrEqual_false(void);
+  void TestOpEquals();
+  void TestOpEquals_false();
+  void TestOpNotEquals();
+  void TestOpNotEquals_false();
+  void TestOpLessThan();
+  void TestOpLessThan_false();
+  void TestOpLessThanOrEqual();
+  void TestOpLessThanOrEqual_false();
+  void TestOpGreaterThan();
+  void TestOpGreaterThan_false();
+  void TestOpGreaterThanOrEqual();
+  void TestOpGreaterThanOrEqual_false();
 
   // Status and Methods
-  void TestClear(void);
-  void TestClear_Empty(void);
+  void TestClear();
+  void TestClear_Empty();
 
   // Accessors
-  void TestGet_Const(void);
-  void TestGet(void);
-  void TestSet(void);
+  void TestGet_Const();
+  void TestGet();
+  void TestSet();
 
   //  Bitset Specific Tests ****************************************************
   //  Access the bit-fields
-  void TestBitField_Ctor(void);
-  void TestBitField_Assignment(void);
-  void TestBitField_Assignment_Truncate(void);
-  void TestBitField_Conversion(void);
-  void TestBitField_Conversion_Empty(void);
-  void TestBitField_Attach(void);
+  void TestBitField_Ctor();
+  void TestBitField_Assignment();
+  void TestBitField_Assignment_Truncate();
+  void TestBitField_Conversion();
+  void TestBitField_Conversion_Empty();
+  void TestBitField_Attach();
   
 };
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestCopyConstructor(void)
+void TestBitSetFieldSuite::TestCopyConstructor()
 {
   field_mixed existing;
 
@@ -194,7 +194,7 @@ void TestBitSetFieldSuite::TestCopyConstructor(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestAssignment(void)
+void TestBitSetFieldSuite::TestAssignment()
 {
   field_mixed existing;
 
@@ -213,7 +213,7 @@ void TestBitSetFieldSuite::TestAssignment(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestValueAssignment(void)
+void TestBitSetFieldSuite::TestValueAssignment()
 {
   const value_mixed k_control = 0xB16BEAD5;
   // SUT
@@ -226,7 +226,7 @@ void TestBitSetFieldSuite::TestValueAssignment(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpEquals(void)
+void TestBitSetFieldSuite::TestOpEquals()
 {
   const value_mixed k_control = 0xA110BA5E;
 
@@ -243,7 +243,7 @@ void TestBitSetFieldSuite::TestOpEquals(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpEquals_false(void)
+void TestBitSetFieldSuite::TestOpEquals_false()
 {
   const value_mixed k_control = 0xA110BA5E;
 
@@ -260,7 +260,7 @@ void TestBitSetFieldSuite::TestOpEquals_false(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpNotEquals(void)
+void TestBitSetFieldSuite::TestOpNotEquals()
 {
   const value_mixed k_control = 0xFEEDC0DE;
   field_mixed sut;
@@ -276,7 +276,7 @@ void TestBitSetFieldSuite::TestOpNotEquals(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpNotEquals_false(void)
+void TestBitSetFieldSuite::TestOpNotEquals_false()
 {
   const value_mixed k_control = 0xFEEDC0DE;
   field_mixed sut;
@@ -292,7 +292,7 @@ void TestBitSetFieldSuite::TestOpNotEquals_false(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpLessThan(void)
+void TestBitSetFieldSuite::TestOpLessThan()
 {
   const value_mixed k_control = 0xFEEDC0DE;
   field_mixed sut;
@@ -308,7 +308,7 @@ void TestBitSetFieldSuite::TestOpLessThan(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpLessThan_false(void)
+void TestBitSetFieldSuite::TestOpLessThan_false()
 {
   const value_mixed k_control = 0xFEEDC0DE;
   field_mixed sut;
@@ -325,7 +325,7 @@ void TestBitSetFieldSuite::TestOpLessThan_false(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpLessThanOrEqual(void)
+void TestBitSetFieldSuite::TestOpLessThanOrEqual()
 {
   const value_mixed k_control = 0xFEEDC0DE;
   field_mixed sut;
@@ -346,7 +346,7 @@ void TestBitSetFieldSuite::TestOpLessThanOrEqual(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpLessThanOrEqual_false(void)
+void TestBitSetFieldSuite::TestOpLessThanOrEqual_false()
 {
   const value_mixed k_control = 0xFEEDC0DE;
   field_mixed sut;
@@ -363,7 +363,7 @@ void TestBitSetFieldSuite::TestOpLessThanOrEqual_false(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpGreaterThan(void)
+void TestBitSetFieldSuite::TestOpGreaterThan()
 {
   const value_mixed k_control = 0xFEEDC0DE;
   field_mixed sut;
@@ -379,7 +379,7 @@ void TestBitSetFieldSuite::TestOpGreaterThan(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpGreaterThan_false(void)
+void TestBitSetFieldSuite::TestOpGreaterThan_false()
 {
   const value_mixed k_control = 0xFEEDC0DE;
   field_mixed sut;
@@ -396,7 +396,7 @@ void TestBitSetFieldSuite::TestOpGreaterThan_false(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpGreaterThanOrEqual(void)
+void TestBitSetFieldSuite::TestOpGreaterThanOrEqual()
 {
   const value_mixed k_control = 0xFEEDC0DE;
   field_mixed sut;
@@ -417,7 +417,7 @@ void TestBitSetFieldSuite::TestOpGreaterThanOrEqual(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestOpGreaterThanOrEqual_false(void)
+void TestBitSetFieldSuite::TestOpGreaterThanOrEqual_false()
 {
   const value_mixed k_control = 0xFEEDC0DE;
   field_mixed sut;
@@ -434,7 +434,7 @@ void TestBitSetFieldSuite::TestOpGreaterThanOrEqual_false(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestClear(void)
+void TestBitSetFieldSuite::TestClear()
 {
   const value_mixed k_control = 0x600DF00D;
   field_mixed sut;
@@ -447,7 +447,7 @@ void TestBitSetFieldSuite::TestClear(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestClear_Empty(void)
+void TestBitSetFieldSuite::TestClear_Empty()
 {
   // Initialize without a buffer.
   const value_mixed k_control = 0xFA57F00D;
@@ -461,7 +461,7 @@ void TestBitSetFieldSuite::TestClear_Empty(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestGet_Const(void)
+void TestBitSetFieldSuite::TestGet_Const()
 {
   // Verify Get() reads the value from the buffer,
   // the shadow copy should remain intact.
@@ -485,7 +485,7 @@ void TestBitSetFieldSuite::TestGet_Const(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestGet(void)
+void TestBitSetFieldSuite::TestGet()
 {
   // Verify Get() reads the value from the buffer and updates the shadow copy.
   const value_mixed k_control = 0x7E57C0DE;
@@ -499,7 +499,7 @@ void TestBitSetFieldSuite::TestGet(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestSet(void)
+void TestBitSetFieldSuite::TestSet()
 {
   // Verify Set() writes the value to the buffer and the shadow copy.
   const uint32_t k_initial = 0xBEEFBEEF;
@@ -515,7 +515,7 @@ void TestBitSetFieldSuite::TestSet(void)
 
 //  ****************************************************************************
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestBitField_Ctor(void)
+void TestBitSetFieldSuite::TestBitField_Ctor()
 {
   const value_mixed k_control = 0xAAAAAAAA; // This creates the bit pattern 1010
   field_mixed sut;
@@ -549,7 +549,7 @@ void TestBitSetFieldSuite::TestBitField_Ctor(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestBitField_Assignment(void)
+void TestBitSetFieldSuite::TestBitField_Assignment()
 {
   // Verify the assignment for each of the bitfields individually.
 
@@ -595,7 +595,7 @@ void TestBitSetFieldSuite::TestBitField_Assignment(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestBitField_Assignment_Truncate(void)
+void TestBitSetFieldSuite::TestBitField_Assignment_Truncate()
 {
   // Verify only the bits in the bitset data field are modified
   // when a bit-field is assigned a value that will be truncated.
@@ -660,7 +660,7 @@ void TestBitSetFieldSuite::TestBitField_Assignment_Truncate(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestBitField_Conversion(void)
+void TestBitSetFieldSuite::TestBitField_Conversion()
 {
   //const uint8_t k_control = 0xAA;
   //uint8_t       sut_value = k_control;
@@ -676,7 +676,7 @@ void TestBitSetFieldSuite::TestBitField_Conversion(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestBitField_Conversion_Empty(void)
+void TestBitSetFieldSuite::TestBitField_Conversion_Empty()
 {
   //// Verify 0 is returned when a buffer has not been attached to a bit-field.
   //Hg::BitField<3,4,uint8_t> sut;
@@ -688,7 +688,7 @@ void TestBitSetFieldSuite::TestBitField_Conversion_Empty(void)
 }
 
 //  ****************************************************************************
-void TestBitSetFieldSuite::TestBitField_Attach(void)
+void TestBitSetFieldSuite::TestBitField_Attach()
 {
   //Hg::BitField<3,4,uint8_t> sut;
 

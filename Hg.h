@@ -331,42 +331,6 @@ public:
     }
   }
 
-#ifdef ALCHEMY_RVALUE_REF_SUPPORTED
-// TODO: Opportunity, add move assignment to populate the message. 
-//       Return and complete this if possible. Try to focus on iterator logic.
-//  //  **************************************************************************
-//  /// Assigns the contents of an incoming raw memory buffer to the message.
-//  /// 
-//  /// @param pBuffer         A memory buffer whose contents will be assigned to
-//  ///                        this message object. The values of the buffer are 
-//  ///                        copied into the message.
-//  /// @param n               The number of bytes held in p_buffer.
-//  ///
-//  void assign(const_pointer pBuffer, size_t n)
-//  {
-//    if ( pBuffer
-//      && n > 0)
-//    {
-//      m_msgBuffer.assign(pBuffer, n);
-//
-//      // Casting this object to the base object MsgT.
-//      // This pointer will accept the data read in from the buffer.
-//      basic_msg &refThis = *static_cast<Message*>(this);
-//      refThis = unpack_message< message_type, 
-//                                buffer_type,
-//                                size_trait
-//                              >(*this, m_msgBuffer);
-//    }
-//    else
-//    {
-//#if ALCHEMY_HAS_EXCEPTIONS
-//      throw std::invalid_argument("Hg::basic_msg<>::assign() - pBuffer is invalid or length n is 0");
-//#endif
-//    }
-//  }
-#endif
-
-
   //  **************************************************************************
   /// Releases any reference to internal memory buffers.
   /// The message will be MT after this call.
@@ -407,9 +371,9 @@ public:
   //  **************************************************************************
   /// Copies the data from this object 
   ///
-  void data(pointer pBuffer, size_t n)
+  bool data(pointer pBuffer, size_t n)
   {
-    pack_data(pBuffer, n);
+    return pack_data(pBuffer, n);
   }
 
 
@@ -428,15 +392,17 @@ private:
 
 
   //  **************************************************************************
-  void pack_data(pointer pBuffer, size_t n)
+  bool pack_data(pointer pBuffer, size_t n)
   {
-    buffer_type msg_buffer;
+    typedef MsgBuffer<BufferedStaticStoragePolicy>          static_buffer_type;
+
+
+    static_buffer_type msg_buffer;
     msg_buffer.assign(pBuffer, n);
 
-    pack_message< message_type, 
-                  buffer_type,
-                  size_trait
-                >(values(), msg_buffer);
+    return pack_message < message_type, 
+                          static_buffer_type
+                        >(values(), msg_buffer);
   }
 
   // Give friendship to message instantiations of other types for conversion.

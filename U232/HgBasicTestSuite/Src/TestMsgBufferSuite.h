@@ -275,33 +275,33 @@ protected:
 public:
   // Test Cases ****************************************************************
   //  MsgBuffer Class Tests *************************************************
-  void TestDefaultCtor(void);
-  void TestCopyCtor(void);
-  void TestDtor(void);
-  void TestOpAssignment(void);
-  void TestOpAssignment_ToSelf(void);
-  void Testempty(void);
-  void Testempty_NotEmpty(void);
-  void TestSize(void);
-  void Testbuffer_read(void);
-  void Testbuffer_write(void);
-  void Testget_data(void);
-  void Testget_data_OOB_OffsetLTZero(void);
-  void Testget_data_OOB_ExceedsSize(void);
-  void Testget_data_NotValid(void);
-  void TestSetData(void);
-  void TestSetData_OOB_ExceedsSize(void);
-  void TestSetData_NotValid(void);
-  void TestClone(void);
-  void TestClone_NotValid(void);
-  void TestClone_BufferAllocFailed(void);
+  void TestDefaultCtor();
+  void TestCopyCtor();
+  void TestDtor();
+  void TestOpAssignment();
+  void TestOpAssignment_ToSelf();
+  void Testempty();
+  void Testempty_NotEmpty();
+  void TestSize();
+  void Testbuffer_read();
+  void Testbuffer_write();
+  void Testget_data();
+  void Testget_data_OOB_OffsetLTZero();
+  void Testget_data_OOB_ExceedsSize();
+  void Testget_data_NotValid();
+  void TestSetData();
+  void TestSetData_OOB_ExceedsSize();
+  void TestSetData_NotValid();
+  void TestClone();
+  void TestClone_NotValid();
+  void TestClone_BufferAllocFailed();
 
   //  Verify proper memory management (no memory leaks) ************************
   // TODO: Revisit, add conceptual tests.
 };
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestDefaultCtor(void)
+void TestMsgBufferSuite::TestDefaultCtor()
 {
   // SUT
   host_buffer sut;
@@ -309,7 +309,7 @@ void TestMsgBufferSuite::TestDefaultCtor(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestCopyCtor(void)
+void TestMsgBufferSuite::TestCopyCtor()
 {
   host_buffer rhs;
   PopulateBaseValues(rhs);
@@ -320,7 +320,7 @@ void TestMsgBufferSuite::TestCopyCtor(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestDtor(void)
+void TestMsgBufferSuite::TestDtor()
 {
   host_buffer sut;
 
@@ -330,7 +330,7 @@ void TestMsgBufferSuite::TestDtor(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestOpAssignment(void)
+void TestMsgBufferSuite::TestOpAssignment()
 {
   host_buffer rhs;
   PopulateBaseValues(rhs);
@@ -346,7 +346,7 @@ void TestMsgBufferSuite::TestOpAssignment(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestOpAssignment_ToSelf(void)
+void TestMsgBufferSuite::TestOpAssignment_ToSelf()
 {
   host_buffer sut;
   PopulateBaseValues(sut);
@@ -363,7 +363,7 @@ void TestMsgBufferSuite::TestOpAssignment_ToSelf(void)
 
 
 //  ****************************************************************************
-void TestMsgBufferSuite::Testempty(void)
+void TestMsgBufferSuite::Testempty()
 {
   host_buffer sut;
 
@@ -374,7 +374,7 @@ void TestMsgBufferSuite::Testempty(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::Testempty_NotEmpty(void)
+void TestMsgBufferSuite::Testempty_NotEmpty()
 {
   host_buffer sut(10);
 
@@ -385,7 +385,7 @@ void TestMsgBufferSuite::Testempty_NotEmpty(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestSize(void)
+void TestMsgBufferSuite::TestSize()
 {
   host_buffer sut;
   // TODO: Needs completely new tests
@@ -393,7 +393,7 @@ void TestMsgBufferSuite::TestSize(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::Testbuffer_read(void)
+void TestMsgBufferSuite::Testbuffer_read()
 {
   // TODO: Needs a completely new test
   //host_buffer sut;
@@ -405,7 +405,7 @@ void TestMsgBufferSuite::Testbuffer_read(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::Testbuffer_write(void)
+void TestMsgBufferSuite::Testbuffer_write()
 {
   // TODO: Needs a completely new test
   //host_buffer sut;
@@ -417,7 +417,7 @@ void TestMsgBufferSuite::Testbuffer_write(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::Testget_data(void)
+void TestMsgBufferSuite::Testget_data()
 {
   host_buffer sut;
   PopulateBaseValues(sut);
@@ -461,7 +461,7 @@ void TestMsgBufferSuite::Testget_data(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::Testget_data_OOB_OffsetLTZero(void)
+void TestMsgBufferSuite::Testget_data_OOB_OffsetLTZero()
 {
   host_buffer sut;
   PopulateBaseValues(sut);
@@ -475,7 +475,7 @@ void TestMsgBufferSuite::Testget_data_OOB_OffsetLTZero(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::Testget_data_OOB_ExceedsSize(void)
+void TestMsgBufferSuite::Testget_data_OOB_ExceedsSize()
 {
   host_buffer sut;
   PopulateBaseValues(sut);
@@ -489,7 +489,7 @@ void TestMsgBufferSuite::Testget_data_OOB_ExceedsSize(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::Testget_data_NotValid(void)
+void TestMsgBufferSuite::Testget_data_NotValid()
 {
   host_buffer sut;
 
@@ -502,7 +502,7 @@ void TestMsgBufferSuite::Testget_data_NotValid(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestSetData(void)
+void TestMsgBufferSuite::TestSetData()
 {
   host_buffer sut;
   PopulateBaseValues(sut);
@@ -540,7 +540,7 @@ void TestMsgBufferSuite::TestSetData(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestSetData_OOB_ExceedsSize(void)
+void TestMsgBufferSuite::TestSetData_OOB_ExceedsSize()
 {
   host_buffer sut;
 
@@ -552,7 +552,7 @@ void TestMsgBufferSuite::TestSetData_OOB_ExceedsSize(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestSetData_NotValid(void)
+void TestMsgBufferSuite::TestSetData_NotValid()
 {
   host_buffer sut;
 
@@ -564,7 +564,7 @@ void TestMsgBufferSuite::TestSetData_NotValid(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestClone(void)
+void TestMsgBufferSuite::TestClone()
 {
   host_buffer rhs;
   PopulateBaseValues(rhs);
@@ -581,7 +581,7 @@ void TestMsgBufferSuite::TestClone(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestClone_NotValid(void)
+void TestMsgBufferSuite::TestClone_NotValid()
 {
   host_buffer rhs;
 
@@ -592,7 +592,7 @@ void TestMsgBufferSuite::TestClone_NotValid(void)
 }
 
 //  ****************************************************************************
-void TestMsgBufferSuite::TestClone_BufferAllocFailed(void)
+void TestMsgBufferSuite::TestClone_BufferAllocFailed()
 {
   // TODO: Create a FakeStoragePolicy that allows interaction with operations. Example, cause allocation to fail.
 }

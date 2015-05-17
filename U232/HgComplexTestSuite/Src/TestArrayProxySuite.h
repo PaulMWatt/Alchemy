@@ -95,47 +95,47 @@ protected:
 public:
   //  Test Cases ***************************************************************
   //  Test the basic function set with a u32 ***********************************
-  void TestDtor(void);
-  void TestCopyConstructor(void);
-  void TestValueConstructor(void);
-  void TestAssignment(void);
-  void TestValueAssignment(void);
+  void TestDtor();
+  void TestCopyConstructor();
+  void TestValueConstructor();
+  void TestAssignment();
+  void TestValueAssignment();
 
   // Comparison Operators
-  void TestOpEquals(void);
-  void TestOpEquals_false(void);
-  void TestOpNotEquals(void);
-  void TestOpNotEquals_false(void);
-  void TestOpLessThan(void);
-  void TestOpLessThan_false(void);
+  void TestOpEquals();
+  void TestOpEquals_false();
+  void TestOpNotEquals();
+  void TestOpNotEquals_false();
+  void TestOpLessThan();
+  void TestOpLessThan_false();
 
   // Status and Methods
-  void TestClear(void);
-  void TestSize(void);
-  void TestSizeOf(void);
+  void TestClear();
+  void TestSize();
+  void TestSizeOf();
 
   // Accessors
-  void TestGet(void);
-  void TestSet(void);
+  void TestGet();
+  void TestSet();
 
-  void TestAt_const(void);
-  void TestAt(void);
-  void TestOpSquare_const(void);
-  void TestOpSquare(void);
-  void TestFront_const(void);
-  void TestFront(void);
-  void TestBack_const(void);
-  void TestBack(void);
+  void TestAt_const();
+  void TestAt();
+  void TestOpSquare_const();
+  void TestOpSquare();
+  void TestFront_const();
+  void TestFront();
+  void TestBack_const();
+  void TestBack();
 
   // Iterators
-  void TestBegin(void);
-  void TestEnd(void);
-  void TestRBegin(void);
-  void TestREnd(void);
+  void TestBegin();
+  void TestEnd();
+  void TestRBegin();
+  void TestREnd();
 };
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestDtor(void)
+void TestArrayDataSuite::TestDtor()
 {
   const std::array<uint8_t, 8> k_control = {1,2,3,4,5,6,7,8};
 //  const uint8_t k_control[8] = {1,2,3,4,5,6,7,8};
@@ -152,7 +152,7 @@ void TestArrayDataSuite::TestDtor(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestCopyConstructor(void)
+void TestArrayDataSuite::TestCopyConstructor()
 {
   array_data_8    existing;
   const std::array<uint8_t, 8> k_control = {0xB,0xA,5,0xE,0xB,0xA,1,1};
@@ -167,7 +167,7 @@ void TestArrayDataSuite::TestCopyConstructor(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestValueConstructor(void)
+void TestArrayDataSuite::TestValueConstructor()
 {
   const std::array<uint8_t, 8> k_control = {0xB,0xA,5,0xE,0xB,0xA,1,1};
   array_data_8    existing;
@@ -181,7 +181,7 @@ void TestArrayDataSuite::TestValueConstructor(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestAssignment(void)
+void TestArrayDataSuite::TestAssignment()
 {
   const std::array<uint8_t, 8> k_control = {0xD,0xE,0xA,0xD,0xB,0xA,1,1};
   array_data_8    existing;
@@ -198,7 +198,7 @@ void TestArrayDataSuite::TestAssignment(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestValueAssignment(void)
+void TestArrayDataSuite::TestValueAssignment()
 {
   const std::array<uint8_t, 8> k_control = {0xB,0x1,0x6,0xB,0xE,0xA,0xD,0x5};
   array_data_8    existing;
@@ -216,7 +216,7 @@ void TestArrayDataSuite::TestValueAssignment(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestOpEquals(void)
+void TestArrayDataSuite::TestOpEquals()
 {
   const std::array<uint8_t, 8> k_control = {0xB,0x1,0x6,0xB,0xE,0xA,0xD,0x5};
   array_data_8 sut(k_control);
@@ -226,7 +226,7 @@ void TestArrayDataSuite::TestOpEquals(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestOpEquals_false(void)
+void TestArrayDataSuite::TestOpEquals_false()
 {
   const std::array<uint8_t, 8> k_control = {0xB,0x1,0x6,0xB,0xE,0xA,0xD,0x5};
   array_data_8 sut(k_control);
@@ -237,7 +237,7 @@ void TestArrayDataSuite::TestOpEquals_false(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestOpNotEquals(void)
+void TestArrayDataSuite::TestOpNotEquals()
 {
   const std::array<uint8_t, 8> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
   array_data_8 sut(k_control);
@@ -248,7 +248,7 @@ void TestArrayDataSuite::TestOpNotEquals(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestOpNotEquals_false(void)
+void TestArrayDataSuite::TestOpNotEquals_false()
 {
   const std::array<uint8_t, 8> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
   array_data_8 sut(k_control);
@@ -258,7 +258,7 @@ void TestArrayDataSuite::TestOpNotEquals_false(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestOpLessThan(void)
+void TestArrayDataSuite::TestOpLessThan()
 {
   const std::array<uint8_t, 8> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
   array_data_8 sut(k_control);
@@ -269,7 +269,7 @@ void TestArrayDataSuite::TestOpLessThan(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestOpLessThan_false(void)
+void TestArrayDataSuite::TestOpLessThan_false()
 {
   const std::array<uint8_t, 8> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
   array_data_8 sut(k_control);
@@ -279,7 +279,7 @@ void TestArrayDataSuite::TestOpLessThan_false(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestClear(void)
+void TestArrayDataSuite::TestClear()
 {
   const std::array<uint8_t, 8> k_control = {0x6,0x0,0x0,0xD,0xF,0x0,0x0,0xd};
   const std::array<uint8_t, 8> k_cleared = {0};
@@ -292,7 +292,7 @@ void TestArrayDataSuite::TestClear(void)
 
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestSize(void)
+void TestArrayDataSuite::TestSize()
 {
   const size_t k_control = array_data_8().size();
 
@@ -304,7 +304,7 @@ void TestArrayDataSuite::TestSize(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestSizeOf(void)
+void TestArrayDataSuite::TestSizeOf()
 {
   const size_t k_control = Hg::SizeOf<array_data_8>::value;
 
@@ -316,7 +316,7 @@ void TestArrayDataSuite::TestSizeOf(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestGet(void)
+void TestArrayDataSuite::TestGet()
 {
   const std::array<uint8_t, 8> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
   const array_data_8 sut(k_control);
@@ -327,7 +327,7 @@ void TestArrayDataSuite::TestGet(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestSet(void)
+void TestArrayDataSuite::TestSet()
 {
   // Verify Set() writes the value to the buffer and the shadow copy.
   const std::array<uint8_t, 8> k_initial = {0xB,0xE,0xE,0xF,0xB,0xE,0xE,0xF};
@@ -342,7 +342,7 @@ void TestArrayDataSuite::TestSet(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestAt_const(void)
+void TestArrayDataSuite::TestAt_const()
 {
   const std::array<uint8_t, 8> k_control = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
   const array_data_8 sut(k_control);
@@ -359,7 +359,7 @@ void TestArrayDataSuite::TestAt_const(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestAt(void)
+void TestArrayDataSuite::TestAt()
 {
   const std::array<uint8_t, 8> k_control = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
   array_data_8 initial(k_control);
@@ -386,7 +386,7 @@ void TestArrayDataSuite::TestAt(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestOpSquare_const(void)
+void TestArrayDataSuite::TestOpSquare_const()
 {
   const std::array<uint8_t, 8> k_control = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
   const array_data_8 sut(k_control);
@@ -403,7 +403,7 @@ void TestArrayDataSuite::TestOpSquare_const(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestOpSquare(void)
+void TestArrayDataSuite::TestOpSquare()
 {
   const std::array<uint8_t, 8> k_control = {0x7,0xE,0x5,0x7,0xC,0x0,0xD,0xE};
   array_data_8 initial(k_control);
@@ -430,7 +430,7 @@ void TestArrayDataSuite::TestOpSquare(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestFront_const(void)
+void TestArrayDataSuite::TestFront_const()
 {
   const std::array<uint8_t, 8> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
   const array_data_8 sut(k_control);
@@ -441,7 +441,7 @@ void TestArrayDataSuite::TestFront_const(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestFront(void)
+void TestArrayDataSuite::TestFront()
 {
   const std::array<uint8_t, 8> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
   array_data_8 sut;
@@ -452,7 +452,7 @@ void TestArrayDataSuite::TestFront(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestBack_const(void)
+void TestArrayDataSuite::TestBack_const()
 {
   const size_t k_len = 8;   
   const std::array<uint8_t, k_len> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
@@ -464,7 +464,7 @@ void TestArrayDataSuite::TestBack_const(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestBack(void)
+void TestArrayDataSuite::TestBack()
 {
   const uint8_t k_control = 8;   
   array_data_8 sut;
@@ -475,7 +475,7 @@ void TestArrayDataSuite::TestBack(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestBegin(void)
+void TestArrayDataSuite::TestBegin()
 {
   // Note: c.front() is equivalent to *c.begin()
   const std::array<uint8_t, 8> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
@@ -488,7 +488,7 @@ void TestArrayDataSuite::TestBegin(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestEnd(void)
+void TestArrayDataSuite::TestEnd()
 {
   // Note: c.end() is equivalent to std::advance(c.begin(), c.size());
   //       Moving the iterator 'size' elements forward reaches the end iterator.
@@ -506,7 +506,7 @@ void TestArrayDataSuite::TestEnd(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestRBegin(void)
+void TestArrayDataSuite::TestRBegin()
 {
   // Note: *c.rbegin()is equivalent to c.back() 
   const std::array<uint8_t, 8> k_control = {0xF,0xE,0xE,0xD,0xC,0x0,0xD,0xE};
@@ -519,7 +519,7 @@ void TestArrayDataSuite::TestRBegin(void)
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestREnd(void)
+void TestArrayDataSuite::TestREnd()
 {
   // Note: c.rend() is equivalent to std::advance(c.rbegin(), c.size());
   //       Moving the iterator 'size' elements forward(reverse) reaches the end iterator.

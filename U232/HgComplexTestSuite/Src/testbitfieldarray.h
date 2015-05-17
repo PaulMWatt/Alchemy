@@ -116,52 +116,52 @@
 //  //  Test Cases ***************************************************************
 //
 //  // Static Assertions
-//  void TestStatic(void);
+//  void TestStatic();
 //
 //  // Construction and assignment
-//  void TestDefaultConstructor(void);
-//  void TestCopyConstructor(void);
-//  void TestValueConstructor(void);
-//  void TestAssignment(void);
-//  void TestValueAssignment(void);
+//  void TestDefaultConstructor();
+//  void TestCopyConstructor();
+//  void TestValueConstructor();
+//  void TestAssignment();
+//  void TestValueAssignment();
 //
 //  // Status and Methods
-//  void TestEmpty_true(void);
-//  void TestEmpty_false(void);
-//  void TestSize(void);
-//  void TestSizeOf(void);
+//  void TestEmpty_true();
+//  void TestEmpty_false();
+//  void TestSize();
+//  void TestSizeOf();
 //
 //  // Accessors
-//  void TestData_const(void);
-//  void TestData(void);
-//  void TestAt_const(void);
-//  void TestAt(void);
-//  void TestOpSquare_const(void);
-//  void TestOpSquare(void);
-//  void TestFront_const(void);
-//  void TestFront(void);
-//  void TestFront_BitFields(void);
-//  void TestBack_const(void);
-//  void TestBack(void);
-//  void TestBack_BitFields(void);
+//  void TestData_const();
+//  void TestData();
+//  void TestAt_const();
+//  void TestAt();
+//  void TestOpSquare_const();
+//  void TestOpSquare();
+//  void TestFront_const();
+//  void TestFront();
+//  void TestFront_BitFields();
+//  void TestBack_const();
+//  void TestBack();
+//  void TestBack_BitFields();
 //
 //  // Iterators
-//  void TestBegin(void);
-//  void TestEnd(void);
-//  void TestRBegin(void);
-//  void TestREnd(void);
+//  void TestBegin();
+//  void TestEnd();
+//  void TestRBegin();
+//  void TestREnd();
 //};
 //
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestStatic(void)
+//void TestBitFieldArray::TestStatic()
 //{
 //
 //  TS_ASSERT((std::is_same<SUT::user_bit_field_type, SUT_bit_field_type>::value));
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestDefaultConstructor(void)
+//void TestBitFieldArray::TestDefaultConstructor()
 //{
 //  const SUT::value_type k_control[k_count] = { };
 //
@@ -172,7 +172,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestCopyConstructor(void)
+//void TestBitFieldArray::TestCopyConstructor()
 //{
 //  SUT input;
 //  Populate(input);
@@ -184,7 +184,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestValueConstructor(void)
+//void TestBitFieldArray::TestValueConstructor()
 //{
 //  using namespace test::data;
 //
@@ -198,7 +198,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestAssignment(void)
+//void TestBitFieldArray::TestAssignment()
 //{
 //  SUT sut;
 //  SUT input;
@@ -211,7 +211,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestValueAssignment(void)
+//void TestBitFieldArray::TestValueAssignment()
 //{
 //  using namespace test::data;
 //
@@ -226,7 +226,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestEmpty_true(void)
+//void TestBitFieldArray::TestEmpty_true()
 //{
 //  // TODO: error C2265: 'abstract declarator' : reference to a zero-sized array is illegal, Add a static assertion to prevent this.
 //  //Hg::BitFieldArray<SUT_bit_field_type,0> sut;
@@ -238,7 +238,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestEmpty_false(void)
+//void TestBitFieldArray::TestEmpty_false()
 //{
 //  SUT sut;
 //
@@ -249,7 +249,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestSize(void)
+//void TestBitFieldArray::TestSize()
 //{
 //  SUT sut;
 //
@@ -260,7 +260,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestSizeOf(void)
+//void TestBitFieldArray::TestSizeOf()
 //{
 //  const size_t k_control = k_count * sizeof(SUT::value_type);
 //
@@ -273,7 +273,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestData_const(void)
+//void TestBitFieldArray::TestData_const()
 //{
 //  using namespace test::data;
 //
@@ -286,7 +286,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestData(void)
+//void TestBitFieldArray::TestData()
 //{
 //  using namespace test::data;
 //
@@ -302,7 +302,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestAt_const(void)
+//void TestBitFieldArray::TestAt_const()
 //{
 //  using namespace test::data;
 //  const SUT sut(k_color_values);
@@ -319,7 +319,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestAt(void)
+//void TestBitFieldArray::TestAt()
 //{
 //  using namespace test::data;
 //  SUT initial(k_color_values);
@@ -346,7 +346,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestOpSquare_const(void)
+//void TestBitFieldArray::TestOpSquare_const()
 //{
 //  using namespace test::data;
 //  const SUT sut(k_color_values);
@@ -363,7 +363,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestOpSquare(void)
+//void TestBitFieldArray::TestOpSquare()
 //{
 //  using namespace test::data;
 //  SUT initial(k_color_values);
@@ -390,7 +390,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestFront_const(void)
+//void TestBitFieldArray::TestFront_const()
 //{
 //  using namespace test::data;
 //  const SUT sut(k_color_values);
@@ -401,7 +401,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestFront(void)
+//void TestBitFieldArray::TestFront()
 //{
 //  using namespace test::data;
 //  SUT sut;
@@ -412,7 +412,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestFront_BitFields(void)
+//void TestBitFieldArray::TestFront_BitFields()
 //{
 //  using namespace test::data;
 //  SUT sut;
@@ -432,7 +432,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestBack_const(void)
+//void TestBitFieldArray::TestBack_const()
 //{
 //  using namespace test::data;
 //  const SUT sut(k_color_values);
@@ -443,7 +443,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestBack(void)
+//void TestBitFieldArray::TestBack()
 //{
 //  using namespace test::data;
 //  const size_t k_last = k_count - 1;   
@@ -456,7 +456,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestBack_BitFields(void)
+//void TestBitFieldArray::TestBack_BitFields()
 //{
 //  using namespace test::data;
 //  const size_t k_last = k_count - 1;   
@@ -478,7 +478,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestBegin(void)
+//void TestBitFieldArray::TestBegin()
 //{
 //  using namespace test::data;
 //  SUT sut(k_color_values);
@@ -490,7 +490,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestEnd(void)
+//void TestBitFieldArray::TestEnd()
 //{
 //  // Note: c.end() is equivalent to std::advance(c.begin(), c.size());
 //  //       Moving the iterator 'size' elements forward reaches the end iterator.
@@ -508,7 +508,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestRBegin(void)
+//void TestBitFieldArray::TestRBegin()
 //{
 //  // Note: *c.rbegin()is equivalent to c.back() 
 //  using namespace test::data;
@@ -521,7 +521,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestREnd(void)
+//void TestBitFieldArray::TestREnd()
 //{
 //  // Note: c.rend() is equivalent to std::advance(c.rbegin(), c.size());
 //  //       Moving the iterator 'size' elements forward(reverse) reaches the end iterator.

@@ -70,25 +70,25 @@ public:
   /* Test Cases **************************************************************/
 
   //  Byte-Order Tests *********************************************************
-  void TestEndianSwap_no_op(void);
-  void TestEndianSwap_int16(void);
-  void TestEndianSwap_uint16(void);
-  void TestEndianSwap_int32(void);
-  void TestEndianSwap_uint32(void);
-  void TestEndianSwap_int64(void);
-  void TestEndianSwap_uint64(void);
+  void TestEndianSwap_no_op();
+  void TestEndianSwap_int16();
+  void TestEndianSwap_uint16();
+  void TestEndianSwap_int32();
+  void TestEndianSwap_uint32();
+  void TestEndianSwap_int64();
+  void TestEndianSwap_uint64();
 
-  void TestEndianType_no_op(void);
-  void TestEndianType_swap_order(void);
+  void TestEndianType_no_op();
+  void TestEndianType_swap_order();
 
-  void TestHostByteOrder_to_host(void);
-  void TestHostByteOrder_to_network(void);
-  void TestNetByteOrder_to_host(void);
-  void TestNetByteOrder_to_network(void);
+  void TestHostByteOrder_to_host();
+  void TestHostByteOrder_to_network();
+  void TestNetByteOrder_to_host();
+  void TestNetByteOrder_to_network();
 };
 
 //  ****************************************************************************
-void TestByteOrder::TestEndianSwap_no_op(void)
+void TestByteOrder::TestEndianSwap_no_op()
 {
   // Verify a few types that do not have specializations for EndianSwap.
   const double k_real = 2345.987;
@@ -117,7 +117,7 @@ void TestByteOrder::TestEndianSwap_no_op(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestEndianSwap_int16(void)
+void TestByteOrder::TestEndianSwap_int16()
 {
   const int16_t k_control = 0x1234;
   const int16_t k_expect  = 0x3412;
@@ -127,7 +127,7 @@ void TestByteOrder::TestEndianSwap_int16(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestEndianSwap_uint16(void)
+void TestByteOrder::TestEndianSwap_uint16()
 {
   const uint16_t k_control = 0x24CD;
   const uint16_t k_expect  = 0xCD24;
@@ -137,7 +137,7 @@ void TestByteOrder::TestEndianSwap_uint16(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestEndianSwap_int32(void)
+void TestByteOrder::TestEndianSwap_int32()
 {
   const int32_t k_control = 0x12345678;
   const int32_t k_expect  = 0x78563412;
@@ -147,7 +147,7 @@ void TestByteOrder::TestEndianSwap_int32(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestEndianSwap_uint32(void)
+void TestByteOrder::TestEndianSwap_uint32()
 {
   const uint32_t k_control = 0xFEDCBA98;
   const uint32_t k_expect  = 0x98BADCFE;
@@ -157,7 +157,7 @@ void TestByteOrder::TestEndianSwap_uint32(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestEndianSwap_int64(void)
+void TestByteOrder::TestEndianSwap_int64()
 {
   const int64_t k_control = 0x0123456789ABCDEFull;
   const int64_t k_expect  = 0xEFCDAB8967452301ull;
@@ -167,7 +167,7 @@ void TestByteOrder::TestEndianSwap_int64(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestEndianSwap_uint64(void)
+void TestByteOrder::TestEndianSwap_uint64()
 {
   const uint64_t k_control = 0x0123456789ABCDEFull;
   const uint64_t k_expect  = 0xEFCDAB8967452301ull;
@@ -177,7 +177,7 @@ void TestByteOrder::TestEndianSwap_uint64(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestEndianType_no_op(void)
+void TestByteOrder::TestEndianType_no_op()
 {
   const int32_t k_control = 0x12345678;
   const int32_t k_expect  = 0x12345678;
@@ -187,7 +187,7 @@ void TestByteOrder::TestEndianType_no_op(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestEndianType_swap_order(void)
+void TestByteOrder::TestEndianType_swap_order()
 {
   const int32_t k_control = 0x12345678;
   const int32_t k_expect  = 0x78563412;
@@ -197,7 +197,7 @@ void TestByteOrder::TestEndianType_swap_order(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestHostByteOrder_to_host(void)
+void TestByteOrder::TestHostByteOrder_to_host()
 {
   const uint32_t k_control = 0x12345678;
   const uint32_t k_expect  = 0x12345678;
@@ -207,7 +207,7 @@ void TestByteOrder::TestHostByteOrder_to_host(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestHostByteOrder_to_network(void)
+void TestByteOrder::TestHostByteOrder_to_network()
 {
   const uint32_t k_control = 0x12345678;
   const uint32_t k_expect  = 0x78563412;
@@ -217,7 +217,7 @@ void TestByteOrder::TestHostByteOrder_to_network(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestNetByteOrder_to_host(void)
+void TestByteOrder::TestNetByteOrder_to_host()
 {
   const uint32_t k_control = 0x12345678;
   const uint32_t k_expect  = 0x78563412;
@@ -227,7 +227,7 @@ void TestByteOrder::TestNetByteOrder_to_host(void)
 }
 
 //  ****************************************************************************
-void TestByteOrder::TestNetByteOrder_to_network(void)
+void TestByteOrder::TestNetByteOrder_to_network()
 {
   const uint32_t k_control = 0x78563412;
   const uint32_t k_expect  = 0x78563412;
