@@ -197,11 +197,16 @@ public:
   void Test_Hg_create();
   void Test_Hg_create_Invalid_type();
 
-  //Hg_clone
+  void Test_Hg_clone();
+  void Test_Hg_clone_Uninitialized();
+
   void Test_Hg_destroy();
 
   void Test_Hg_field_alloc();
-  
+  void Test_Hg_field_alloc_Uninitialized_msg();
+  void Test_Hg_field_alloc_Uninitialized_field();
+  void Test_Hg_field_alloc_zero_size();
+
   void Test_Hg_type();
   void Test_Hg_type_Uninitialized();
 
@@ -441,6 +446,8 @@ void CarbonTestSuite::Test_msg_to_struct_array()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_local_endianess()
 {
+  TS_FAIL("Add More tests that make use of the object_t type, which contains a vector.");
+
   int endian = Hg_local_endianess();
 
   TS_ASSERT_EQUALS(ALCHEMY_ENDIANESS, endian);
@@ -465,6 +472,21 @@ void CarbonTestSuite::Test_Hg_create_Invalid_type()
 }
 
 //  ******************************************************************************
+void CarbonTestSuite::Test_Hg_clone()
+{
+  TS_FAIL("Add a valid test");
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_clone_Uninitialized()
+{
+  // SUT
+  Hg_msg_t* p_msg = Hg_clone(0);
+
+  TS_ASSERT(!p_msg);
+}
+
+//  ******************************************************************************
 void CarbonTestSuite::Test_Hg_destroy()
 {
   Hg_msg_t *sut = Hg_create(k_vertex_t);
@@ -479,6 +501,7 @@ void CarbonTestSuite::Test_Hg_destroy()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_field_alloc()
 {
+  TS_FAIL("Add a valid test");
   const size_t k_control = Hg::SizeOf<Hg::triangle_t>::value;
   Hg_msg_t *p_msg = GetSUT(k_triangle_t);
 
@@ -491,6 +514,34 @@ void CarbonTestSuite::Test_Hg_field_alloc()
 
   size_t result = Hg_size(p_msg);
   TS_ASSERT_EQUALS(k_control, result);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_field_alloc_Uninitialized_msg()
+{
+  // SUT
+  Hg_msg_t *p_field = GetSUT(k_vertex_t);
+
+  size_t len = Hg_field_alloc(0, (void**)&p_field, 200);
+
+  TS_ASSERT_EQUALS(0, len);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_field_alloc_Uninitialized_field()
+{
+  // SUT
+  Hg_msg_t *p_msg = GetSUT(k_vertex_t);
+
+  size_t len = Hg_field_alloc(p_msg, 0, 200);
+
+  TS_ASSERT_EQUALS(0, len);
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_Hg_field_alloc_zero_size()
+{
+  TS_FAIL("Add a valid test");
 }
 
 //  ******************************************************************************
@@ -538,6 +589,7 @@ void CarbonTestSuite::Test_Hg_size_Uninitialized()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_data_size()
 {
+  TS_FAIL("Add a valid test");
   const size_t k_control = Hg::SizeOf<Hg::object_t>::value;
   Hg_msg_t *p_msg = GetSUT(k_object_t);
 
