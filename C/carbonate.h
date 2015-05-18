@@ -12,9 +12,9 @@
 //  ****************************************************************************
 #ifndef CARBONATE_H_INCLUDED
 #define CARBONATE_H_INCLUDED
-//  Includes *******************************************************************
-#include <Carbon.h>
-#include <C/conversion.h>
+
+// The contents of this header file only apply to C++ builds.
+#ifdef __cplusplus
 
 namespace C
 {
@@ -125,9 +125,43 @@ Hg_type_t carbon_type(const Hg_msg_t* p_msg)
 } // namespace C
 
 
+//  Forward Declarations *******************************************************
+//  These functions are used by the Carbonated implementation functions.
 
-// TODO: Need to move this header declaration to some place convenient for the user.
-#include <CarbonTestDefs.h>
+void CarbonDestroy(
+  Hg_msg_t* p_src
+);
 
+
+size_t GetTypeSize(
+  int v
+);
+
+
+size_t GetTypeDataSize(
+  Hg_msg_t* p_src
+);
+
+
+int CarbonSwapByteOrder(
+  Hg_msg_t* p_src
+);
+
+
+size_t CarbonPackMessage( 
+  const Hg_msg_t  *p_src,
+  unsigned char   *p_buffer,
+  size_t           len
+);
+
+
+size_t CarbonUnpackMessage( 
+  Hg_msg_t            *p_src,
+  const unsigned char *p_buffer,
+  size_t              len
+);
+
+
+#endif // __cplusplus
 
 #endif

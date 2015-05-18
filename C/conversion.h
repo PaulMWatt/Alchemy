@@ -13,6 +13,10 @@
 #ifndef CONVERSION_H_INCLUDED
 #define CONVERSION_H_INCLUDED
 //  Includes *******************************************************************
+
+// The contents of this header file only apply to C++ builds.
+#ifdef __cplusplus
+
 #include <Carbon.h>
 #include <Hg.h>
 #include <Hg/static_storage_policy.h>
@@ -412,5 +416,7 @@ size_t UnpackMessage( Hg_msg_t            *p_msg,
 
 } // namespace C
 
+
+#endif // __cplusplus
 
 #endif

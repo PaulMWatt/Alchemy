@@ -46,5 +46,8 @@
     <ClInclude Include="..\..\C\conversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="c_usage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

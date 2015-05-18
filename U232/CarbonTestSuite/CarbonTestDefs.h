@@ -7,7 +7,7 @@
 //  ****************************************************************************
 #ifndef CARBON_TEST_DEFS_H_INCLUDED
 #define CARBON_TEST_DEFS_H_INCLUDED
-#include <Alchemy.h>
+#include <Carbon.h>
 
 ALCHEMY_STRUCT  ( fundamentals_t,
   ALCHEMY_DATUM (char,  ch),

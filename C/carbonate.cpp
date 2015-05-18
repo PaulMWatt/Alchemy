@@ -6,19 +6,15 @@
 //  @copyright 2015 Paul M Watt
 //  ****************************************************************************
 //  Includes *******************************************************************
-
 #include <Carbon.h>
 #include <C/carbonate.h>
-#include <CarbonTestDefs.h>
 
-
-
-// Disable name-mangling for these 
-// functions when compiled with C++.
+// Disable name-mangling for these functions
+// that are to be exported from this library.
 extern "C"
 {
 
-
+//  ****************************************************************************
 //  ****************************************************************************
 ALCHEMY_API 
 int Hg_local_endianess()

@@ -37,6 +37,8 @@
 ///   - ALCHEMY_END_PACKED
 ///   - ALCHEMY_BITS(INDEX,COUNT,NAME)
 /// 
+//  ****************************************************************************
+///
 /// The MIT License(MIT)
 /// 
 /// @copyright 2014 Paul M Watt
@@ -83,8 +85,7 @@
 /// ~~~{.cpp}
 ///
 ///   // Define the message data format
-///   ALCHEMY_STRUCT
-///   ( new_point_t,
+///   ALCHEMY_STRUCT  (new_point_t,
 ///     ALCHEMY_DATUM (uint8_t,    msgType),
 ///     ALCHEMY_DATUM (uint8_t,    verNum),
 ///     ALCHEMY_DATUM (uint16_t,   id),
@@ -182,7 +183,7 @@
 ///
 ///             
 #define ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)\
-                                        DECLARE_ALLOCATOR_DATUM(TYPE,ALLOCATOR,COUNT,NAME)
+                              DECLARE_ALLOCATOR_DATUM(TYPE,ALLOCATOR,COUNT,NAME)
 
 
 //  ****************************************************************************
@@ -267,18 +268,5 @@
 /// 
 #define ALCHEMY_END_PACKED              DECLARE_PACKED_FOOTER
 
-
-//#define ALCHEMY_PACKED(TYPE,NAME)       DECLARE_PACKED_HEADER(TYPE,NAME)
-//#define C_BEGIN_PACKED(TYPE,NAME)       C_DECLARE_PACKED_HEADER(TYPE,NAME)
-//#define ALCHEMY_PACKED(TYPE,NAME)      Hg_DECLARE_PACKED_HEADER(TYPE,NAME)
-
-//#define C_BIT_FIELD(INDEX,NAME,COUNT)\
-//                                        C_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
-//
-//#define ALCHEMY_BITS(INDEX,NAME,COUNT)\
-//                                        Hg_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
-
-//#define C_END_PACKED                    C_DECLARE_PACKED_FOOTER
-//#define );                   Hg_DECLARE_PACKED_FOOTER
 
 #endif
