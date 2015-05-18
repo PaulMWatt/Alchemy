@@ -69,10 +69,7 @@ public:
   // tearDown will be called after each test case to clean up common resources.
   virtual void tearDown()
   { 
-    if (m_pSut)
-    {
-      delete[] (m_pSut - C::k_carbon_footprint);
-    }
+    Hg_destroy(m_pSut);
   }
 
 protected:
@@ -501,18 +498,23 @@ void CarbonTestSuite::Test_Hg_destroy()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_field_alloc()
 {
-  TS_FAIL("Add a valid test");
-  const size_t k_control = Hg::SizeOf<Hg::triangle_t>::value;
-  Hg_msg_t *p_msg = GetSUT(k_triangle_t);
+  const size_t k_triangle_size = Hg::SizeOf<Hg::triangle_t>::value;
+  const size_t k_control = k_triangle_size * 12;
+
+  Hg_msg_t *p_msg = GetSUT(k_object_t);
+
+  object_t* p_object = (object_t*)p_msg;
 
   // SUT
+  size_t result = 
+    Hg_field_alloc( p_msg, 
+                    (void**)&p_object->surfaces, 
+                    k_triangle_size * 12);
 
-  triangle_t &p = *(triangle_t*)p_msg;
-  Hg::triangle_t hg;
-  C::struct_to_msg(p, hg);
-  //Hg_to_network(p_msg);
+  TS_ASSERT_EQUALS(k_control, result);
 
-  size_t result = Hg_size(p_msg);
+  result = Hg_size((Hg_msg_t*)p_object->surfaces);
+
   TS_ASSERT_EQUALS(k_control, result);
 }
 
@@ -541,7 +543,17 @@ void CarbonTestSuite::Test_Hg_field_alloc_Uninitialized_field()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_field_alloc_zero_size()
 {
-  TS_FAIL("Add a valid test");
+  Hg_msg_t *p_msg = GetSUT(k_object_t);
+
+  object_t* p_object = (object_t*)p_msg;
+
+  // SUT
+  size_t result = 
+    Hg_field_alloc( p_msg, 
+                    (void**)&p_object->surfaces, 
+                    0);
+
+  TS_ASSERT_EQUALS(0, result);
 }
 
 //  ******************************************************************************
@@ -589,9 +601,18 @@ void CarbonTestSuite::Test_Hg_size_Uninitialized()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_data_size()
 {
-  TS_FAIL("Add a valid test");
-  const size_t k_control = Hg::SizeOf<Hg::object_t>::value;
+  const size_t k_count          = 4;
+  const size_t k_triangle_size  = Hg::SizeOf<Hg::triangle_t>::value;
+  const size_t k_control        = Hg::SizeOf<Hg::object_t>::value
+                                + (k_triangle_size * k_count);
+
   Hg_msg_t *p_msg = GetSUT(k_object_t);
+
+  object_t* p_object = (object_t*)p_msg;
+
+  Hg_field_alloc( p_msg, 
+                  (void**)&p_object->surfaces, 
+                  k_triangle_size * k_count);
 
   // SUT
   size_t len = Hg_data_size(p_msg);
