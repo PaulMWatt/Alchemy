@@ -122,6 +122,5 @@ C_DECLARE_EXPORTED_TYPES
   object_t
 );
 
-
 #endif
 

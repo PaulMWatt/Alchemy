@@ -42,9 +42,7 @@ Hg_msg_t* Hg_clone(
   const Hg_msg_t* p_src
 )
 {
-  GetTypeDataSize(const_cast<Hg_msg_t*>(p_src));
-
-  return 0;
+  return CarbonClone(p_src);
 }
 
 
@@ -59,6 +57,11 @@ void  Hg_destroy(
     return;
 
   CarbonDestroy(p_msg);
+
+  // Zeroize the preamble to prevent this 
+  // message from accidentally being reused
+  // after it has been freed.
+  ::memset(p_base, 0, C::k_carbon_footprint);
 
   delete[] p_base;
 }

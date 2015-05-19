@@ -133,8 +133,13 @@ void CarbonDestroy(
 );
 
 
+Hg_msg_t* CarbonClone(
+  const Hg_msg_t* p_src
+);
+
+
 size_t GetTypeSize(
-  int v
+  int type_id
 );
 
 

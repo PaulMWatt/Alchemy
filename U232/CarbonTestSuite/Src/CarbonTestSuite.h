@@ -188,6 +188,8 @@ public:
   void Test_struct_to_msg_array();
   void Test_msg_to_struct_array();
 
+  void Test_struct_to_msg_vector();
+  void Test_msg_to_struct_vector();
 
   // Collection of functions to test in the Carbon API
   void Test_Hg_local_endianess();
@@ -399,7 +401,6 @@ void CarbonTestSuite::Test_struct_to_msg_array()
 
   Hg::color_map_t hg_c;
 
-  // TODO: Need to correct the copy of arrays. it is pasting array[size] in the copy code. Therefore, it tries to dereference one passed the end.
   // SUT
   C::struct_to_msg(c, hg_c);
   
@@ -440,11 +441,55 @@ void CarbonTestSuite::Test_msg_to_struct_array()
 }
 
 //  ******************************************************************************
+void CarbonTestSuite::Test_struct_to_msg_vector()
+{
+  object_t obj;
+
+  Hg::object_t hg_obj;
+
+  // SUT
+  C::struct_to_msg(obj, hg_obj);
+  
+  //for (size_t index = 0; index < 16; ++index)
+  //{
+  //  TS_ASSERT_EQUALS(c.table[index].R, hg_c.table[index].R);
+  //  TS_ASSERT_EQUALS(c.table[index].G, hg_c.table[index].G);
+  //  TS_ASSERT_EQUALS(c.table[index].B, hg_c.table[index].B);
+  //  TS_ASSERT_EQUALS(c.table[index].A, hg_c.table[index].A);
+  //}
+}
+
+//  ******************************************************************************
+void CarbonTestSuite::Test_msg_to_struct_vector()
+{
+  Hg::object_t hg_obj;
+
+  //for (size_t index = 0; index < 16; ++index)
+  //{
+  //  hg_c.table[index].R = index * 2;
+  //  hg_c.table[index].G = index * 3;
+  //  hg_c.table[index].B = index * 4;
+  //  hg_c.table[index].A = index * 5;
+  //}
+
+  object_t obj;
+
+  // SUT
+  C::msg_to_struct(hg_obj, obj);
+  
+  //for (size_t index = 0; index < 16; ++index)
+  //{
+  //  TS_ASSERT_EQUALS(c.table[index].R, hg_c.table[index].R);
+  //  TS_ASSERT_EQUALS(c.table[index].G, hg_c.table[index].G);
+  //  TS_ASSERT_EQUALS(c.table[index].B, hg_c.table[index].B);
+  //  TS_ASSERT_EQUALS(c.table[index].A, hg_c.table[index].A);
+  //}
+}
+
+//  ******************************************************************************
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_local_endianess()
 {
-  TS_FAIL("Add More tests that make use of the object_t type, which contains a vector.");
-
   int endian = Hg_local_endianess();
 
   TS_ASSERT_EQUALS(ALCHEMY_ENDIANESS, endian);
@@ -471,7 +516,14 @@ void CarbonTestSuite::Test_Hg_create_Invalid_type()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_clone()
 {
-  TS_FAIL("Add a valid test");
+  Hg_msg_t *sut = GetSUT(k_vertex_t);
+
+  // SUT
+  Hg_msg_t* p_result = Hg_clone(sut);
+
+  size_t len = Hg_size(sut);
+
+  TS_ASSERT_SAME_DATA(p_result, sut, len);
 }
 
 //  ******************************************************************************
@@ -491,8 +543,6 @@ void CarbonTestSuite::Test_Hg_destroy()
   // SUT
   Hg_destroy(0);
   Hg_destroy(sut);
-
-  // Nothing to verify, except that it does not crash.
 }
 
 //  ******************************************************************************

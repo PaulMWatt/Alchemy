@@ -294,6 +294,38 @@
 
 
 //  ****************************************************************************
+//  Carbon structure destroy function
+//  ****************************************************************************
+#define EACH_C_TYPE_CLONE(r, data, i, x)                                       \
+  case BOOST_PP_CAT(data, x): { p_dest = Hg_create(BOOST_PP_CAT(data, x));     \
+    Hg::##x msg;                                                               \
+    C::struct_to_msg(*(##x*)p_src,msg);                                        \
+    C::msg_to_struct(msg, *(##x*)p_dest);                                      \
+    return (Hg_msg_t*)p_dest;                                                  \
+  }
+
+
+#define DEFINE_C_TYPE_CLONE(S) \
+  BOOST_PP_SEQ_FOR_EACH_I(EACH_C_TYPE_CLONE, k_, S)
+
+//  ****************************************************************************
+#define CARBON_MSG_CLONE(S)                                                    \
+  Hg_msg_t* CarbonClone(const Hg_msg_t* p_src)                                 \
+  {                                                                            \
+    if (!p_src)                                                                \
+      return 0;                                                                \
+                                                                               \
+    Hg_msg_t *p_dest = 0;                                                      \
+    Hg_type_t id = C::carbon_type(p_src);                                      \
+    switch (id)                                                                \
+    {                                                                          \
+    DEFINE_C_TYPE_CLONE(S)                                                     \
+    }                                                                          \
+    return 0;                                                                  \
+  }
+
+
+//  ****************************************************************************
 //  Carbon type size function
 //  This function starts with the total of the statically sized fields,
 //  then adds the size of a pointer for each dynamically sized field.
@@ -442,6 +474,7 @@ size_t CarbonUnpackMessage( Hg_msg_t            *p_src,                        \
 #define C_EXPORTED_TYPES_IMPL(S)                                               \
   CARBON_EXPORT_ENUM(S);                                                       \
   CARBON_TYPE_DESTROY(S);                                                      \
+  CARBON_MSG_CLONE(S);                                                         \
   CARBON_TYPE_SIZE(S);                                                         \
   CARBON_TYPE_DATA_SIZE(S);                                                    \
   CARBON_BYTE_ORDER_CONVERSION(S);                                             \
