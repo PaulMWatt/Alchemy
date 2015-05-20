@@ -92,13 +92,25 @@ ALCHEMY_STRUCT(object_t,
 );
 
 //  ****************************************************************************
-//  
-// 
+#if defined(ALCHEMY_CARBONATE)
+
 ALCHEMY_STRUCT(row_t,
   ALCHEMY_ARRAY      (double, 3, col)
 );
+
+ALCHEMY_STRUCT(matrix_t,
+  ALCHEMY_ARRAY      (row_t,  3, row)
+);
+
+#else
+
+// TODO: There is an issue that will not allow multi-dimensional arrays
+//       to be created by alchemy definitions. This must be resolved.
+
 typedef std::array<double,  3>          row_t;
 typedef std::array<row_t,   3>          matrix_t;
+
+#endif
 
 //  ****************************************************************************
 //  
@@ -124,9 +136,9 @@ ALCHEMY_STRUCT(world_t,
   ALCHEMY_DATUM    (color4,                    ambient),
   ALCHEMY_DATUM    (vertex_t,                  light),
   ALCHEMY_DATUM    (uint8_t,                   object_count),
-  ALCHEMY_ALLOC  (object_t, object_count,    objects),
+  ALCHEMY_ALLOC    (object_t, object_count,    objects),
   ALCHEMY_DATUM    (uint8_t,                   instance_count),
-  ALCHEMY_ALLOC  (instance_t, instance_count, instances)
+  ALCHEMY_ALLOC    (instance_t, instance_count, instances)
 );
 
 #endif
