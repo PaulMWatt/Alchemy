@@ -1,3 +1,11 @@
+Changes
+========================================================
+As a result of the Carbon addition, the message definition MACROs have been changed to use the prefix 'ALCHEMY' rather than 'Hg'. This has allowed me to keep the libraries mostly separated, and Alchemy becomes the central theme of the library.
+
+The packed bit definitions are now consistent with the main message format. Both formats use a single macro that contains a list of parameters that represent the fields.
+
+One other adjustment. The message types should be placed in the global namespace now. The MACROs will automatically place each message type in the appropriate namespace related to its sub-library. For example, Hg.
+
 Benchmarks
 ========================================================
 Optimizations continue to improve the speed of Alchemy each week. This is a summary of the current benchmark results. The details are further below:
@@ -32,6 +40,14 @@ potential loss of convenience or performance.
 
 All commenting is done using doxygen.
 
+Carbon (C), C-linkable API generation 
+==============================
+
+The preprocessor has been utilized to generate definitions that are compatible with C. A Mercury library can now be generated and configured to generate Carbon definitions as well. All of the power and speed of the Hg messages will be compiled into a library that exports C-linkable interfaces, as well as C-style structures to access the data.
+
+This library will allow any language that is capable of importing a C-library to take advantage of Hg message serialization support. More details will soon follow regarding documentation and usage examples.
+
+
 Mercury (Hg), Messenger of the Gods
 ==============================
 
@@ -62,11 +78,11 @@ Message structure definitions are created with the list of MACROs below.
 Refer to the appropriate MACROs documentation for details on correct
 usage:
 
-  HG_BEGIN_FORMAT(TYPE_LIST, ...)
-  -   HG_DATUM(TYPE,NAME)
-  -   HG_ARRAY(TYPE,COUNT,NAME)
-  -   HG_DYNAMIC(TYPE,COUNT,NAME)
-  -   HG_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
+  ALCHEMY_BEGIN_FORMAT(TYPE_LIST, ...)
+  -   ALCHEMY_DATUM(TYPE,NAME)
+  -   ALCHEMY_ARRAY(TYPE,COUNT,NAME)
+  -   ALCHEMY_DYNAMIC(TYPE,COUNT,NAME)
+  -   ALCHEMY_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
 
 Hg provides a portable bit-field interface that works by generating the
 appropriate shift and mask operations for each field. This provides the 
@@ -78,19 +94,19 @@ into a user-specified integral type.
 
 Hg currently is written to allow up to 32 bit-fields in a single parameter.
 
-  - HG_BEGIN_PACKED(TYPE,BITSET)
-  -   HG_BIT_FIELD(INDEX, NAME, COUNT)
-  - HG_END_PACKED
+  - ALCHEMY_BEGIN_PACKED(TYPE,BITSET, ...)
+  -   ALCHEMY_BIT_FIELD(INDEX, NAME, COUNT)
 
 -------------
 
 Here is a short example of a Hg message definition and how it can be used:
 
+`#include <Alchemy.h>`  
 `// Message definition specifies the TypeList format, and associates a name with each field.`  
-`HG_BEGIN_FORMAT(AppError,`  
-  `HG_DATUM(uint32_t,id)`  
-  `HG_DATUM(uint32_t,code),`  
-  `HG_ARRAY(char,128,desc)`  
+`ALCHEMY_BEGIN_FORMAT(AppError,`  
+  `ALCHEMY_DATUM(uint32_t,id)`  
+  `ALCHEMY_DATUM(uint32_t,code),`  
+  `ALCHEMY_ARRAY(char,128,desc)`  
 `)`  
   
 `// Now messages can be created, populated, copied, and converted between byte-order.`  
@@ -107,6 +123,43 @@ Here is a short example of a Hg message definition and how it can be used:
 `// Assuming there is a socket open and ready to be written to,`  
 `// the network instance of the message will provide the data.`  
 `send(sock, msgNet.data(), msgNet.size(), 0);`
+
+Here is the sample example used with C and Carbon rather than C++:
+
+`// Inclusion of the carbon header triggers the generation of the Carbon definitions.`  
+`#include <Carbon.h>`  
+`// Same message definitions as before.`  
+`ALCHEMY_BEGIN_FORMAT(AppError,`  
+  `ALCHEMY_DATUM(uint32_t,id)`  
+  `ALCHEMY_DATUM(uint32_t,code),`  
+  `ALCHEMY_ARRAY(char,128,desc)`  
+`)`  
+  
+`// An enumerated value that identifies the `  
+`// type of message to be created is generated.`  
+`Hg_msg_t *p_msg = Hg_create(k_AppError);`
+`AppError *msg = (AppError*)p_msg;`  
+`msg->id   = 1;`  
+`msg->code = GetError();`  
+`strncpy(msg->desc, GetErrorDesc(), sizeof(msg->desc));`  
+  
+`// Convert to network byte-order`  
+`// AppError::net_t msgNet = Hg::to_network(msg);`  
+`// Carbon messages are converted in-place.`
+`Hg_to_network(p_msg);`
+  
+`// The environment that uses the carbon library is reposible`    
+`// for managing memory to serialize the messages.`
+`size_t len = Hg_size(p_msg);`  
+`unsigned char *p_buffer = malloc(len);`  
+`Hg_pack(p_msg, p_buffer, len)`  
+``  
+`// Now the data can be sent in network order`  
+`send(sock, p_buffer, len, 0);`
+``  
+`// Cleanup resources.`
+`free(p_buffer);`
+`Hg_destroy(p_msg);`
 
 -------------
 
@@ -202,7 +255,6 @@ These are the basic benchmark tests that have been written:
 Active and Planned Improvements:
 
 Currently in progress:
- * Nearly complete with development for Carbon (C). This is an auxiallary library that will allow you to generate a C-linkable library of your Hg definitions to import into any type of environment that is capable of loading and linking to C-based DLLS.
  * Cross-compiler support and cross-platform integration with auto-tools. Currently the projects are Visual Studio Solutions.
  * Adding support for Clang.
  * Clean up TODO: tags left in the code. 
