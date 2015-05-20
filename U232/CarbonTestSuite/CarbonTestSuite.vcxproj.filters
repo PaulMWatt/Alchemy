@@ -12,6 +12,9 @@
     <Filter Include="Header Files\Tests">
       <UniqueIdentifier>{669d6bb6-4018-4812-b729-dc3f31b00351}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tests\Common">
+      <UniqueIdentifier>{dccb18d4-26a4-4803-aa47-38f8b0dbe2e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -48,6 +51,12 @@
     </ClInclude>
     <ClInclude Include="c_usage.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\geometry_testdata.h">
+      <Filter>Header Files\Tests\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\geometry_typelist.h">
+      <Filter>Header Files\Tests\Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

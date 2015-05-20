@@ -107,6 +107,13 @@ size_t get_datum_size(const T datum, const HgT*)
   return GetDatumSize<T, Hg::vector_value<HgT>::value>::get_data_size(datum);
 }
 
+//  ****************************************************************************
+template< typename T>
+size_t get_datum_size(const T datum)
+{
+  return GetDatumSize<T, true>::get_data_size(datum);
+}
+
 
 //  ****************************************************************************
 /// Facilitates translating values from C-structs to Hg::Message formats.
@@ -198,10 +205,8 @@ struct translate_from_C<T,U,Hg::vector_trait>
 
     // Get the size of the vector from the C-structure
     // and allocate space in the Hg message.
-    //template< typename T, typename HgT>
-    //get_datum_size<T, (const T datum, const HgT*)
 
-    size_t len = get_datum_size<T>(src, (U*)0);
+    size_t len = get_datum_size<T>(src);
     dest.resize(len);
 
     if (0 == len)

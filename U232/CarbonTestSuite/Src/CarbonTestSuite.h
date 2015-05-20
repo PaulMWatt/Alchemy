@@ -46,6 +46,7 @@ using namespace std;
 #include <C/carbonate.h>
 #include <CarbonTestDefs.h>
 
+#include <U232/common/geometry_testdata.h>
 
 //  ****************************************************************************
 /// CarbonTestSuite Test Suite class.
@@ -443,20 +444,49 @@ void CarbonTestSuite::Test_msg_to_struct_array()
 //  ******************************************************************************
 void CarbonTestSuite::Test_struct_to_msg_vector()
 {
-  object_t obj;
+  Hg_msg_t*     p_msg = GetSUT(k_object_t);
+  object_t*     obj   = (object_t*)p_msg;
 
-  Hg::object_t hg_obj;
+  obj->count = 12;
+  Hg_field_alloc(p_msg, (void**)&obj->surfaces, 12 * sizeof(triangle_t));
+
+  obj->count = 12;
+  for (int index = 0; index < 12; ++index)
+  {
+    obj->surfaces[index].pts[0] = test::data::k_cube_triangles[index].pts[0];
+    obj->surfaces[index].pts[1] = test::data::k_cube_triangles[index].pts[1];
+    obj->surfaces[index].pts[2] = test::data::k_cube_triangles[index].pts[2];
+    
+    obj->surfaces[index].normal.start.X = test::data::k_cube_triangles[index].normal.start.X;
+    obj->surfaces[index].normal.start.Y = test::data::k_cube_triangles[index].normal.start.Y;
+    obj->surfaces[index].normal.start.Z = test::data::k_cube_triangles[index].normal.start.Z;
+
+    obj->surfaces[index].normal.magnitude.X = test::data::k_cube_triangles[index].normal.magnitude.X;
+    obj->surfaces[index].normal.magnitude.Y = test::data::k_cube_triangles[index].normal.magnitude.Y;
+    obj->surfaces[index].normal.magnitude.Z = test::data::k_cube_triangles[index].normal.magnitude.Z;
+  }
 
   // SUT
-  C::struct_to_msg(obj, hg_obj);
-  
-  //for (size_t index = 0; index < 16; ++index)
-  //{
-  //  TS_ASSERT_EQUALS(c.table[index].R, hg_c.table[index].R);
-  //  TS_ASSERT_EQUALS(c.table[index].G, hg_c.table[index].G);
-  //  TS_ASSERT_EQUALS(c.table[index].B, hg_c.table[index].B);
-  //  TS_ASSERT_EQUALS(c.table[index].A, hg_c.table[index].A);
-  //}
+  Hg::object_t  hg_obj;
+  C::struct_to_msg(*obj, hg_obj);
+
+  TS_ASSERT_EQUALS(12, hg_obj.count);
+
+  for (int index = 0; index < 12; ++index)
+  {
+    TS_ASSERT_EQUALS(obj->surfaces[index].pts[0], hg_obj.surfaces[index].pts[0]);
+    TS_ASSERT_EQUALS(obj->surfaces[index].pts[1], hg_obj.surfaces[index].pts[1]);
+    TS_ASSERT_EQUALS(obj->surfaces[index].pts[2], hg_obj.surfaces[index].pts[2]);
+    
+    TS_ASSERT_EQUALS(obj->surfaces[index].normal.start.X, hg_obj.surfaces[index].normal.start.X);
+    TS_ASSERT_EQUALS(obj->surfaces[index].normal.start.Y, hg_obj.surfaces[index].normal.start.Y);
+    TS_ASSERT_EQUALS(obj->surfaces[index].normal.start.Z, hg_obj.surfaces[index].normal.start.Z);
+
+    TS_ASSERT_EQUALS(obj->surfaces[index].normal.magnitude.X, hg_obj.surfaces[index].normal.magnitude.X);
+    TS_ASSERT_EQUALS(obj->surfaces[index].normal.magnitude.Y, hg_obj.surfaces[index].normal.magnitude.Y);
+    TS_ASSERT_EQUALS(obj->surfaces[index].normal.magnitude.Z, hg_obj.surfaces[index].normal.magnitude.Z);
+  }
+
 }
 
 //  ******************************************************************************

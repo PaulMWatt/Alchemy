@@ -94,6 +94,9 @@ ALCHEMY_STRUCT(object_t,
 //  ****************************************************************************
 //  
 // 
+ALCHEMY_STRUCT(row_t,
+  ALCHEMY_ARRAY      (double, 3, col)
+);
 typedef std::array<double,  3>          row_t;
 typedef std::array<row_t,   3>          matrix_t;
 
