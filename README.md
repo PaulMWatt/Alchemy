@@ -1,10 +1,9 @@
-Changes
+Classic C++ Implementation
 ========================================================
-As a result of the Carbon addition, the message definition MACROs have been changed to use the prefix 'ALCHEMY' rather than 'Hg'. This has allowed me to keep the libraries mostly separated, and Alchemy becomes the central theme of the library.
+This branch will contain any bug-fixes and nominal support that I can add to the library with this version of C++. The library itself is usable, albeit limited in some feature areas. To my knowledge, no one is dependent on this library yet.  
+I want to move forward and learn Modern C++. There are quite a few work-arounds from this version that can be completely eliminated with the new syntax support. I expect the generated code to be more readable, and even more efficient.  
+If anyone has interest in continued support for Classic C++, please let me know. I would like to hear from you.
 
-The packed bit definitions are now consistent with the main message format. Both formats use a single macro that contains a list of parameters that represent the fields.
-
-One other adjustment. The message types should be placed in the global namespace now. The MACROs will automatically place each message type in the appropriate namespace related to its sub-library. For example, Hg.
 
 Benchmarks
 ========================================================

@@ -23,6 +23,9 @@
     <ClInclude Include="..\..\benchmark\using_Hg.h" />
     <ClInclude Include="..\..\benchmark\using_memcpy.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\README.md" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{28141038-3B75-4A64-88AD-218FC21A2E11}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
