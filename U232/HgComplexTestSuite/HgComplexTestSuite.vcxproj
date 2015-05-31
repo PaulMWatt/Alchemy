@@ -262,17 +262,12 @@ cd "../.."</Command>
     <ClInclude Include="..\common\geometry_typelist.h" />
     <ClInclude Include="..\common\test_def.h" />
     <ClInclude Include="..\common\test_helper.h" />
-    <ClInclude Include="geometry_testdata.h" />
-    <ClInclude Include="geometry_typelist.h" />
-    <ClInclude Include="msgtest_typelist.h" />
     <ClInclude Include="Src\TestArrayProxySuite.h" />
     <ClInclude Include="Src\TestBitFieldArray.h" />
     <ClInclude Include="Src\TestDynamicMessageSuite.h" />
     <ClInclude Include="Src\TestDynTypePermsSuite.h" />
     <ClInclude Include="Src\TestFocusedDynamicMessageSuite.h" />
     <ClInclude Include="Src\TestVectorProxySuite.h" />
-    <ClInclude Include="test_def.h" />
-    <ClInclude Include="test_helper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgComplexTestSuiteRunner.cpp">

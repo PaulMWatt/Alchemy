@@ -197,12 +197,6 @@
     <ClInclude Include="..\..\Pb\dynamic.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
-    <ClInclude Include="geometry_testdata.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="geometry_typelist.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\integer_sequence.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
@@ -227,9 +221,6 @@
     <ClInclude Include="..\..\Pb\meta_util.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
-    <ClInclude Include="msgtest_typelist.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\offset_of.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
@@ -237,12 +228,6 @@
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Pb\size_of.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="test_def.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="test_helper.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Pb\type_at.h">
