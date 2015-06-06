@@ -15,7 +15,7 @@ namespace Hg
 {
 
 //  ****************************************************************************
-//  A trait-type to define constants and common parameterized typedefs.
+//  A trait-type to define constants and common parameterized aliases.
 //
 template< size_t    IndexT,
           typename  HostT,
@@ -23,8 +23,8 @@ template< size_t    IndexT,
         >
 struct FieldIndex
 {
-  typedef HostT                                   host_type;
-  typedef FieldIndex<IndexT,HostT,CountT>         this_type;
+  using host_type = HostT;
+  using this_type = FieldIndex<IndexT,HostT,CountT>;
 
   enum { k_index = IndexT};
   enum { k_size  = CountT};
@@ -36,15 +36,15 @@ struct FieldIndex
 template<>
 struct FieldIndex<0,MT,0>
 {
-  typedef MT                                   host_type;
-  typedef FieldIndex<0,MT,0>                   this_type;
+  using host_type = MT;
+  using this_type = FieldIndex<0,MT,0>;
 
   enum { k_index = 0};
   enum { k_size  = 0};
 };
 
 //  ****************************************************************************
-typedef FieldIndex<0,MT,0>     idx_empty_t;
+using idx_empty_t = FieldIndex<0,MT,0>;
 
 //  ****************************************************************************
 //  The base container definition for a list of bit-fields.
@@ -59,44 +59,44 @@ struct PackedBits
   // Define each of these types for the base.
   // This will ensure the types exist if less than 
   // the maximum number of bit-fields are defined.
-  typedef idx_empty_t   idx_0;
-  typedef idx_empty_t   idx_1;
-  typedef idx_empty_t   idx_2;
-  typedef idx_empty_t   idx_3;
-  typedef idx_empty_t   idx_4;
-  typedef idx_empty_t   idx_5;
-  typedef idx_empty_t   idx_6;
-  typedef idx_empty_t   idx_7;
+  using idx_0  = idx_empty_t;
+  using idx_1  = idx_empty_t;
+  using idx_2  = idx_empty_t;
+  using idx_3  = idx_empty_t;
+  using idx_4  = idx_empty_t;
+  using idx_5  = idx_empty_t;
+  using idx_6  = idx_empty_t;
+  using idx_7  = idx_empty_t;
 
-  typedef idx_empty_t   idx_8;
-  typedef idx_empty_t   idx_9;
-  typedef idx_empty_t   idx_10;
-  typedef idx_empty_t   idx_11;
-  typedef idx_empty_t   idx_12;
-  typedef idx_empty_t   idx_13;
-  typedef idx_empty_t   idx_14;
-  typedef idx_empty_t   idx_15;
+  using idx_8  = idx_empty_t;
+  using idx_9  = idx_empty_t;
+  using idx_10 = idx_empty_t;
+  using idx_11 = idx_empty_t;
+  using idx_12 = idx_empty_t;
+  using idx_13 = idx_empty_t;
+  using idx_14 = idx_empty_t;
+  using idx_15 = idx_empty_t;
 
-  typedef idx_empty_t   idx_16;
-  typedef idx_empty_t   idx_17;
-  typedef idx_empty_t   idx_18;
-  typedef idx_empty_t   idx_19;
-  typedef idx_empty_t   idx_20;
-  typedef idx_empty_t   idx_21;
-  typedef idx_empty_t   idx_22;
-  typedef idx_empty_t   idx_23;
+  using idx_16 = idx_empty_t;
+  using idx_17 = idx_empty_t;
+  using idx_18 = idx_empty_t;
+  using idx_19 = idx_empty_t;
+  using idx_20 = idx_empty_t;
+  using idx_21 = idx_empty_t;
+  using idx_22 = idx_empty_t;
+  using idx_23 = idx_empty_t;
 
-  typedef idx_empty_t   idx_24;
-  typedef idx_empty_t   idx_25;
-  typedef idx_empty_t   idx_26;
-  typedef idx_empty_t   idx_27;
-  typedef idx_empty_t   idx_28;
-  typedef idx_empty_t   idx_29;
-  typedef idx_empty_t   idx_30;
-  typedef idx_empty_t   idx_31;
+  using idx_24 = idx_empty_t;
+  using idx_25 = idx_empty_t;
+  using idx_26 = idx_empty_t;
+  using idx_27 = idx_empty_t;
+  using idx_28 = idx_empty_t;
+  using idx_29 = idx_empty_t;
+  using idx_30 = idx_empty_t;
+  using idx_31 = idx_empty_t;
 
-  typedef PackedBits<T>                               this_type;
-  typedef T                                           value_type;
+  using this_type   = PackedBits<T>;
+  using value_type  = T;
 
   enum { k_offset_0 = 0 };
 
@@ -179,12 +179,8 @@ template< size_t    Idx,
         >
 struct DeduceBitFieldList
 {
-  typedef 
-    typename type_at < Idx,
-                      format_type
-                    >::type                   base_t;
-
-  typedef base_t                              type;
+  using base_t = typename type_at < Idx, format_type>::type;
+  using type   = base_t;
 };
 
 

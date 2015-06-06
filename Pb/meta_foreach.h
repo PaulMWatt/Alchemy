@@ -88,7 +88,7 @@ private:
   {
     // Extract the type at the current index specified for this instance
     // of the process helper function, and call the user's functor.
-    typedef typename type_at<IndexT, FormatT>::type type_t;
+    using type_t = typename type_at<IndexT, FormatT>::type;
 
 #ifdef _WIN32
     ftor.operator() < IndexT, 
@@ -160,10 +160,10 @@ Function& ForEachType(Function   &fn)
   // The helper template is required because this processing is performed
   // on types at compile-time. Dynamic input variables are not permitted for
   // parameterized function calls.
-  typedef detail::ForEachTypeHelper<BeginIndex, 
-                                    EndIndex, 
-                                    ContainerT,
-                                    Function>     Handler;
+  using Handler = detail::ForEachTypeHelper<BeginIndex, 
+                                            EndIndex, 
+                                            ContainerT,
+                                            Function>;
   Handler process(fn);
   process();
 

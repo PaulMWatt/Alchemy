@@ -219,7 +219,6 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\bit_field\bit_field_vector.h" />
     <ClInclude Include="..\..\Pb\byte_order.h" />
     <ClInclude Include="..\..\Pb\compiler.h" />
-    <ClInclude Include="..\..\Pb\container_size.h" />
     <ClInclude Include="..\..\Pb\detail\alias_templates.h" />
     <ClInclude Include="..\..\Pb\detail\auto.h" />
     <ClInclude Include="..\..\Pb\detail\conditional.h" />
@@ -234,7 +233,6 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\detail\variadic_templates.h" />
     <ClInclude Include="..\..\Pb\dynamic.h" />
     <ClInclude Include="..\..\Pb\integer_sequence.h" />
-    <ClInclude Include="..\..\Pb\length.h" />
     <ClInclude Include="..\..\Pb\meta_auto_rec_macros.h" />
     <ClInclude Include="..\..\Pb\meta_error.h" />
     <ClInclude Include="..\..\Pb\meta_foreach.h" />
@@ -242,16 +240,8 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\meta_macros.h" />
     <ClInclude Include="..\..\Pb\meta_math.h" />
     <ClInclude Include="..\..\Pb\meta_util.h" />
-    <ClInclude Include="..\..\Pb\offset_of.h" />
-    <ClInclude Include="..\..\Pb\size_at.h" />
-    <ClInclude Include="..\..\Pb\size_of.h" />
-    <ClInclude Include="..\..\Pb\type_at.h" />
     <ClInclude Include="..\..\Pb\type_list.h" />
-    <ClInclude Include="..\..\Pb\type_list\length.h" />
-    <ClInclude Include="..\..\Pb\type_list\offset_of.h" />
-    <ClInclude Include="..\..\Pb\type_list\size_at.h" />
-    <ClInclude Include="..\..\Pb\type_list\type_at.h" />
-    <ClInclude Include="..\..\Pb\type_node.h" />
+    <ClInclude Include="..\..\Pb\type_list_size.h" />
     <ClInclude Include="..\..\storage_policy.h" />
     <ClInclude Include="..\common\geometry_testdata.h" />
     <ClInclude Include="..\common\geometry_typelist.h" />

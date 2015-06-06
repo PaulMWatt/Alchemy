@@ -34,14 +34,14 @@ template< typename StorageT>
 class MsgBuffer
 {
 public:
-  //  Typedefs *****************************************************************
-  typedef StorageT                                          storage_type;
-  typedef typename storage_type::data_type                  data_type;
-  typedef typename storage_type::s_pointer                  s_pointer;
-  typedef typename storage_type::w_pointer                  w_pointer;
+  //  Aliases ******************************************************************
+  using storage_type = StorageT;
+  using data_type    = typename storage_type::data_type;
+  using s_pointer    = typename storage_type::s_pointer;
+  using w_pointer    = typename storage_type::w_pointer;
 
-  typedef data_type*                                        pointer;
-  typedef const data_type*                                  const_pointer;
+  using pointer      = data_type*;
+  using const_pointer= const data_type*;
 
   //  Construction *************************************************************
   //  **************************************************************************
@@ -318,7 +318,7 @@ public:
 
     // Read from the user supplied offset as well as the base offset 
     // configured for this Packet Buffer.
-    size_t total_offset = static_cast<size_t>(offset()) + pos;
+    auto total_offset = static_cast<size_t>(offset()) + pos;
 
     // Verify the data can be safely written within the bounds of the buffer.
     size_t bytes_read = 0;
@@ -465,7 +465,7 @@ public:
   }
 
 private:
-  //  Typedefs *****************************************************************
+  //  Aliases ******************************************************************
   typedef std::vector<data_type>          DataVector;
 
 

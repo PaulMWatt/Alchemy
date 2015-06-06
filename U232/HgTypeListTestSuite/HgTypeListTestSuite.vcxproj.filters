@@ -27,9 +27,6 @@
     <Filter Include="Header Files\Alchemy\Pb\bit_field">
       <UniqueIdentifier>{5994d86a-e6c2-4182-88a4-4f50ca4f1145}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Alchemy\Pb\type_list">
-      <UniqueIdentifier>{ea5c05eb-c1f8-4e6b-bd4f-1a18a2e7c642}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Tests">
       <UniqueIdentifier>{4898ff05-c63c-4975-9636-9cab7d5a86b3}</UniqueIdentifier>
     </Filter>
@@ -54,24 +51,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Pb\bit_field\bit_field.h">
       <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\bit_field\bit_field_array.h">
-      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\bit_field\bit_field_vector.h">
-      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\type_list\length.h">
-      <Filter>Header Files\Alchemy\Pb\type_list</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\type_list\offset_of.h">
-      <Filter>Header Files\Alchemy\Pb\type_list</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\type_list\size_at.h">
-      <Filter>Header Files\Alchemy\Pb\type_list</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\type_list\type_at.h">
-      <Filter>Header Files\Alchemy\Pb\type_list</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Hg\deduce_type_trait.h">
       <Filter>Header Files\Alchemy\Hg</Filter>
@@ -124,16 +103,10 @@
     <ClInclude Include="..\..\Pb\compiler.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Pb\container_size.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\dynamic.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Pb\integer_sequence.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\length.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Pb\meta_error.h">
@@ -154,22 +127,7 @@
     <ClInclude Include="..\..\Pb\meta_util.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Pb\offset_of.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\size_at.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\size_of.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\type_at.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\type_list.h">
-      <Filter>Header Files\Alchemy\Pb</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\type_node.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
     <ClInclude Include="Src\hgtypelisttestsuite.h">
@@ -210,6 +168,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Pb\detail\variadic_templates.h">
       <Filter>Header Files\Alchemy\Pb\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\type_list_size.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

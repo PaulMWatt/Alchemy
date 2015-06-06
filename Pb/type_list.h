@@ -484,7 +484,7 @@ struct back
 
 //  ****************************************************************************
 /// This allows the first type of the list to be removed, and
-/// the remainder of the list will become the type typedef.
+/// the remainder of the list will become the type alias.
 /// 
 /// @tparam T   The type_list from which the first element will be removed.
 ///
@@ -508,7 +508,7 @@ struct pop_front< type_list<> >
 
 //  ****************************************************************************
 /// This allows the last type of the list to be removed, and
-/// the remainder of the list will become the type typedef.
+/// the remainder of the list will become the type alias.
 /// 
 /// @tparam T   The type_list from which the last element will be removed.
 ///
@@ -532,7 +532,7 @@ struct pop_back< type_list<> >
 
 //  ****************************************************************************
 /// This allows the a new type to be pushed at the front of the list.
-/// The new list will become the typedef of the pushed type and
+/// The new list will become the alias of the pushed type and
 /// the existing type list.
 /// 
 /// 'type' will be defined to contain the type_list with a new element at the front.
@@ -552,7 +552,7 @@ public:
 
 //  ****************************************************************************
 /// This allows the a new type to be pushed at the back of the list.
-/// The new list will become the typedef of the pushed type and
+/// The new list will become the alias of the pushed type and
 /// the existing type list.
 /// 
 /// 'type' will be defined to contain the type_list with a new element at the end.

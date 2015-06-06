@@ -38,57 +38,49 @@ template< size_t    IdxT,
 struct DataProxy <vector_trait, IdxT, FormatT>
   : public Hg::Datum<IdxT, FormatT>
 {
-  //  Typedefs *****************************************************************
-  typedef FormatT                       format_type;
+  //  Aliases ******************************************************************
+  using format_type = FormatT;
 
-    typedef  
-      Hg::Datum < IdxT,
-                  format_type
-                >                       datum_type;
+  using datum_type  = Hg::Datum < IdxT,format_type>;
 
-  typedef typename
-    detail::DefineFieldType < IdxT, 
-                              format_type
-                            >::type     field_type;
-                                        ///< Type mapping for the message format
-                                        ///  type to the actual value_type.
+  /// Type mapping for the message format
+  /// type to the actual value_type.
+  using field_type  = typename detail::DefineFieldType <IdxT, format_type>::type;
 
-  typedef typename
-    field_type::index_type              index_type;
-                                        ///< The raw type extracted at the current
-                                        ///  index defined in the parent type_list.
+  /// The raw type extracted at the current
+  /// index defined in the parent type_list.
+  using index_type  = typename field_type::index_type;
 
-  typedef typename
-    index_type::value_type              data_type;
-                                        ///< The value type of the element extracted 
-                                        ///  at the current index defined in the 
-                                        ///  parent type_list.
+  /// The value type of the element extracted 
+  /// at the current index defined in the 
+  /// parent type_list.
+  using data_type    = typename index_type::value_type;
 
-  //  Typedefs *****************************************************************
-  typedef typename 
-  std::conditional< std::is_base_of<vector_trait, index_type>::value,
-                    index_type,                  
-                    typename field_type::value_type                  
-                  >::type
-                                        value_type;
+  //  Aliases ******************************************************************
+  using value_type   = typename 
+          std::conditional< std::is_base_of<vector_trait, index_type>::value,
+                            index_type,                  
+                            typename field_type::value_type                  
+                          >::type;
 
-  typedef typename                      ///  Reference to an element in the vector.
-    value_type::reference               reference;
-                                                                                
-  typedef typename                      ///  Const Reference to an element in the vector.
-    value_type::const_reference         const_reference;
+  ///  Reference to an element in the vector.
+  using reference       = typename value_type::reference;
+                                  
+  ///  Const Reference to an element in the vector.
+  using const_reference = typename value_type::const_reference;
 
-  typedef typename                      ///  An iterator to a value_type index.
-    value_type::iterator                iterator;
+  ///  An iterator to a value_type index.
+  using iterator        = typename value_type::iterator;
 
-  typedef typename                      ///  A const iterator to a value_type index.
-    value_type::const_iterator          const_iterator;
+  ///  A const iterator to a value_type index.
+  using const_iterator  = typename value_type::const_iterator;
 
-  typedef typename                      ///  A reverse iterator to a value_type index.
-    value_type::reverse_iterator        reverse_iterator;
+  ///  A reverse iterator to a value_type index.
+  using reverse_iterator= typename value_type::reverse_iterator;
 
-  typedef typename                      ///  A const reverse iterator to a value_type index.
-    value_type::const_reverse_iterator  const_reverse_iterator;
+  ///  A const reverse iterator to a value_type index.
+  using const_reverse_iterator =
+    typename value_type::const_reverse_iterator;
 
   //  **************************************************************************
   /// Default Constructor
@@ -209,6 +201,7 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   template <size_t ExtentT>
   void set(const data_type (&value)[ExtentT])
   {
+    resize(ExtentT);
     std::copy( &value[0], 
               (&value[0]) + ExtentT, 
                 std::back_inserter(this->get()));

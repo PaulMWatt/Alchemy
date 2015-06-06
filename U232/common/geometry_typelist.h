@@ -107,8 +107,8 @@ ALCHEMY_STRUCT(matrix_t,
 // TODO: There is an issue that will not allow multi-dimensional arrays
 //       to be created by alchemy definitions. This must be resolved.
 
-typedef std::array<double,  3>          row_t;
-typedef std::array<row_t,   3>          matrix_t;
+using row_t     = std::array<double,  3>;
+using matrix_t  = std::array<row_t,   3>;
 
 #endif
 

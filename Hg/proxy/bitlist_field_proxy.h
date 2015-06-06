@@ -29,15 +29,9 @@ template <size_t    kt_idx,
 struct DataProxy<packed_trait, kt_idx, format_t>
   : public Datum<kt_idx, format_t>
 {
-  typedef 
-    Datum < kt_idx,
-            format_t
-          >                                       datum_type;
-
-  typedef typename 
-    datum_type::value_type                        value_type;
-
-  typedef datum_type                              reference;
+  using datum_type = Datum < kt_idx, format_t>;
+  using value_type = typename datum_type::value_type;
+  using reference  = datum_type;
 
   //  **************************************************************************
   /// Default Constructor

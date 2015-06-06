@@ -342,15 +342,15 @@ protected:
 
 // Pre-defined types to represent Host, Network, big and little byte order 
 // for the current platform.
-typedef HostByteOrderT<k_endianess>   HostByteOrder;
-typedef NetByteOrderT <k_endianess>   NetByteOrder;
+using HostByteOrder = HostByteOrderT<k_endianess>;
+using NetByteOrder  = NetByteOrderT <k_endianess>;
 
 #if (ALCHEMY_BIG_ENDIAN == ALCHEMY_ENDIANESS)
-typedef HostByteOrderT<k_endianess>   BigEndian;
-typedef NetByteOrderT <k_endianess>   LittleEndian;
+using BigEndian     = HostByteOrderT<k_endianess>;
+using LittleEndian  = NetByteOrderT <k_endianess>;
 #else
-typedef HostByteOrderT<k_endianess>   LittleEndian;
-typedef NetByteOrderT <k_endianess>   BigEndian;
+using LittleEndian  = HostByteOrderT<k_endianess>;
+using BigEndian     = NetByteOrderT <k_endianess>;
 #endif
 
 } // namespace Hg

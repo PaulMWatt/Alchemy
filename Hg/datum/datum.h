@@ -44,31 +44,27 @@ class Datum
 
 public:
   //  Constants ****************************************************************
+  /// The offset in the buffer where this 
+  /// msg field is located.
   static const
     size_t k_offset = offset_of<Idx, format_t>::value;
-                                        ///< The offset in the buffer where this 
-                                        ///  msg field is located.
 
-  //  Typedefs *****************************************************************
-  typedef typename
-    detail::DefineFieldType < Idx, 
-                              format_t
-                            >::type     field_type;
-                                        ///< Type mapping for the message format
-                                        ///  type to the actual value_type.
+  //  Aliases ******************************************************************
+  /// Type mapping for the message format
+  /// type to the actual value_type.
+  using field_type = typename detail::DefineFieldType < Idx, format_t>::type;
 
-  typedef typename
-    field_type::index_type              index_type;
-                                        ///< The type extracted at the current
-                                        ///  index defined in the parent type_list.
-  typedef typename
-    field_type::value_type              value_type;
-                                        ///< The data type managed by this Datum.
-                                        ///  This is the type of data that will 
-                                        ///  be written to the attached buffer.
+  /// The type extracted at the current
+  /// index defined in the parent type_list.
+  using index_type = typename field_type::index_type;
 
-  typedef format_t                      format_type;
-                                        ///< format of the parent type_list.
+  /// The data type managed by this Datum.
+  /// This is the type of data that will 
+  /// be written to the attached buffer.
+  using value_type = typename field_type::value_type;
+
+  /// format of the parent type_list.
+  using format_type= format_t;
 
   //  **************************************************************************
   /// Default Constructor
@@ -88,8 +84,6 @@ public:
   { 
     set(datum.get());
   }
-
-#ifdef ALCHEMY_RVALUE_REF_SUPPORTED
 
   //  **************************************************************************
   /// Move Constructor
@@ -115,8 +109,6 @@ public:
     this->set(datum.get());
     return *this;
   }
-
-#endif
 
   //  **************************************************************************
   /// Assignment Operator
@@ -311,8 +303,7 @@ protected:
   value_type& get_reference()
   { 
     field_type* pThis = static_cast<field_type*>(this);
-    //return pThis->m_data;
-    return pThis->reference();
+    return static_cast<field_type*>(this)->reference();
   }
 
   //  **************************************************************************
@@ -320,13 +311,13 @@ protected:
   /// 
   const value_type& get_data() const
   { 
-    const field_type* pThis = static_cast<const field_type*>(this);
-    return pThis->data();
-    //return pThis->m_data; 
+    // remove constness to be able to call the request for data.
+    // This functions return type is const, so no violation of invariants.
+    return static_cast<const field_type*>(this)->data();
   }
 
   //  **************************************************************************
-  /// Returns the value of the data buffer.
+  /// Sets the value into the data buffer.
   /// 
   void set_data(const value_type &value)                
   { 

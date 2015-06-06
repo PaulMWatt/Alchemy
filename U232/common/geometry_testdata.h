@@ -26,7 +26,7 @@ namespace test
 namespace data
 {
 
-typedef std::vector<uint8_t>            byte_vector;
+using byte_vector = std::vector<uint8_t>;
 
 
 // A few basic color definitions

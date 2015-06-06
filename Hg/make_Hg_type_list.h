@@ -165,19 +165,7 @@ struct ReplaceType< ArrayT, array_trait>
                           type_trait
                         >::type         array_type;
 
-  // TODO: Delete this commented code
-  //typedef typename
-  //  DeclareTypeSequence < std::vector<value_type>, 
-  //                        type_trait
-  //                      >::type         vector_type;
-  
   typedef array_type                    type;
-  // TODO: Delete this commented code
-  //typedef typename
-  //  std::conditional< has_dynamic<value_type>::value, 
-  //                    vector_type, 
-  //                    array_type
-  //                  >::type             type;
 };
 
 //  ****************************************************************************
@@ -228,13 +216,14 @@ struct make_Hg_worker
     AdjustType<T>::type                 adjusted_type;
                                         
 
-
-  typedef typename                      // The next item on the list to process.
-    Hg::front<TailT>::type              next_type;
+                                        // The next item on the list to process.
+  typedef Hg::front_t<TailT>            next_type;           
+                  
                                         
 
-  typedef typename                      // The remainder of the unprocessed types.
-    Hg::pop_front<TailT>::type          list_tail;
+                                        // The remainder of the unprocessed types.
+  typedef Hg::pop_front_t<TailT>        list_tail;
+    
                                         
 
   typedef typename                      
@@ -242,11 +231,11 @@ struct make_Hg_worker
                     list_tail,          // types that have been adjusted to be
                     HgT                 // compatible for Hg message types.
                   >::type               hg_list;
-                                        
-  typedef typename  
-    Hg::push_front< adjusted_type,       // The list of types converted for Hg.
-                    hg_list
-                  >::type               type; 
+            
+                                        // The list of types converted for Hg.
+  typedef Hg::push_front_t< adjusted_type,       
+                            hg_list
+                          >             type; 
 };
 
 //  ****************************************************************************

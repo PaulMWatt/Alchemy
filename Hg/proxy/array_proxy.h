@@ -35,15 +35,6 @@ struct array_size< std::array<T, N> >
   : std::integral_constant<size_t, N>
 { };
 
-////  ****************************************************************************
-///// Extracts the array extent from a std::array definition.
-/////
-//template< class T, size_t N>
-//struct array_size< Hg::BitFieldArray<T, N> > 
-//  : std::integral_constant<size_t, N>
-//{ };
-
-
 //  ****************************************************************************
 /// A template to provide access to sequences of data fields.
 /// 
@@ -56,73 +47,62 @@ template< size_t    IdxT,
 struct DataProxy <array_trait, IdxT, FormatT>
   : public Hg::Datum<IdxT, FormatT>
 {
-  //  Typedefs *****************************************************************
-  typedef FormatT                       format_type;
+  //  Aliases ******************************************************************
+  using format_type = FormatT;
+  using datum_type  = Hg::Datum < IdxT, format_type>;
 
-  typedef  
-    Hg::Datum < IdxT,
-                format_type
-              >                         datum_type;
+  /// Type mapping for the message format
+  /// type to the actual value_type.
+  using field_type  = typename detail::DefineFieldType < IdxT, format_type>::type;
 
-  typedef typename
-    detail::DefineFieldType < IdxT, 
-                              format_type
-                            >::type     field_type;
-                                        ///< Type mapping for the message format
-                                        ///  type to the actual value_type.
+  /// The type extracted at the current
+  /// index defined in the parent type_list.
+  using index_type = typename field_type::index_type;
 
-  typedef typename
-    field_type::index_type              index_type;
-                                        ///< The type extracted at the current
-                                        ///  index defined in the parent type_list.
-
-  typedef typename
-    index_type::value_type              data_type;
-                                        ///< The value type of the element extracted 
-                                        ///  at the current index defined in the 
-                                        ///  parent type_list.
+  /// The value type of the element extracted 
+  /// at the current index defined in the 
+  /// parent type_list.
+  using data_type  = typename index_type::value_type;
 
   //  Constants ****************************************************************
+  /// The number of elements in the array.
   static 
-    const size_t k_extent = array_size<index_type>::value;
-                                        ///< The number of elements in the array.
+    const auto k_extent = array_size<index_type>::value;
 
-  //  Typedefs *****************************************************************
-  typedef typename 
-  std::conditional< std::is_base_of<array_trait, index_type>::value,
-                    index_type,                  
-                    typename field_type::value_type                  
-                  >::type
-                                        value_type;
-
-                                        ///< The data type managed by this Array.
-                                        ///  This is the type of data that will 
-                                        ///  be written to the attached buffer.
-                                        ///
-                                        ///  The index_type is redefined here
-                                        ///  in order to capture and convert array
-                                        ///  definitions like this: "(&T) [N]"
-                                        ///  To the form: std::array<T,N>
+  //  Aliases ******************************************************************
+  ///  The data type managed by this Array.
+  ///  This is the type of data that will 
+  ///  be written to the attached buffer.
+  ///
+  ///  The index_type is redefined here
+  ///  in order to capture and convert array
+  ///  definitions like this: "(&T) [N]"
+  ///  To the form: std::array<T,N>
+  using value_type = 
+    typename std::conditional < std::is_base_of<array_trait, index_type>::value,
+                                index_type,                  
+                                typename field_type::value_type                  
+                              >::type;
 
 
+  ///  Reference to an element in the array.                                        
+  using reference       = typename value_type::reference;                     
   
-  typedef typename                      ///  Reference to an element in the array.
-    value_type::reference               reference;
-                                                                                
-  typedef typename                      ///  Const Reference to an element in the array.
-    value_type::const_reference         const_reference;
+  ///  Const Reference to an element in the array.
+  using const_reference = typename value_type::const_reference;
 
-  typedef typename                      ///  An iterator to a value_type index.
-    value_type::iterator                iterator;
+  ///  An iterator to a value_type index.
+  using iterator        = typename value_type::iterator;
 
-  typedef typename                      ///  A const iterator to a value_type index.
-    value_type::const_iterator          const_iterator;
+  ///  A const iterator to a value_type index.
+  using const_iterator  = typename value_type::const_iterator;
 
-  typedef typename                      ///  A reverse iterator to a value_type index.
-    value_type::reverse_iterator        reverse_iterator;
+  ///  A reverse iterator to a value_type index.
+  using reverse_iterator= typename value_type::reverse_iterator;
 
-  typedef typename                      ///  A const reverse iterator to a value_type index.
-    value_type::const_reverse_iterator  const_reverse_iterator;
+  ///  A const reverse iterator to a value_type index.
+  using const_reverse_iterator =
+    typename value_type::const_reverse_iterator;
 
   //  **************************************************************************
   /// Default Constructor

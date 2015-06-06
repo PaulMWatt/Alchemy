@@ -28,7 +28,7 @@ namespace detail
 
 //  ****************************************************************************
 /// A convenience meta-function to define the correct type of DataProxy holder.
-/// The constructed type can be accessed through the public typedef *type*. 
+/// The constructed type can be accessed through the public alias *type*. 
 /// 
 /// @tparam IdxT
 /// @tparam FormatT
@@ -42,19 +42,12 @@ struct DeduceProxyType
   //  Deduce the traits from the value_type in order to select the most 
   //  appropriate Proxy handler for value management.
   //
-  typedef typename 
-    Deducetype_atTrait < IdxT, 
-                        FormatT
-                      >::type           selected_type;
+  using selected_type = typename Deducetype_atTrait < IdxT, FormatT>::type;
 
   //  **************************************************************************
   //  The selected DataProxy type for the specified input type.
-  typedef DataProxy < selected_type,
-                      IdxT,
-                      FormatT
-                    >                   type;
+  using type          = DataProxy < selected_type, IdxT, FormatT>;
 };
-
 
 } // namespace detail
 

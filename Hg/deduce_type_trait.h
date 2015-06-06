@@ -48,45 +48,45 @@ private:
   ///   3: dynamic array proxy   Dynamically sized nested homogenous types
   ///   4: fixed array proxy     Fixed sized nested homogenous types 
   ///
-  typedef typename 
+  using basic_type = typename 
     std::conditional< packed_value<value_type>::value,
                       packed_trait,
                       fundamental_trait
-                    >::type                     basic_type;
+                    >::type;
 
   //  **************************************************************************
   //  Defines the nested-type trait to use for compound structures.  
   //
-  typedef typename 
+  using nested_type = typename 
     std::conditional< nested_value<value_type>::value,
                       nested_trait,
                       basic_type
-                    >::type                     nested_type;
+                    >::type;
 
   //  **************************************************************************
   //  Specifies a sequence type trait to use if a sequence_value is selected.  
   //
-  typedef typename
+  using dynamic_type = typename 
     std::conditional< vector_value<value_type>::value,
                       vector_trait,
                       nested_type
-                    >::type                     dynamic_type;
+                    >::type;
 
   //  **************************************************************************
   //  Differentiates between an array and a vector type sequence.  
   //
-  typedef typename
+  using deduced_type_trait = typename 
     std::conditional< array_value<value_type>::value, 
                       array_trait,
                       dynamic_type
-                    >::type                     deduced_type_trait;
+                    >::type;
 
 public:
 
   //  **************************************************************************
   /// The type trait tag deduced for the specified parameter type.
   ///
-  typedef deduced_type_trait                    type;
+  using type = deduced_type_trait;
 };
 
 //  ****************************************************************************
@@ -101,17 +101,15 @@ template< size_t    IdxT,
 struct Deducetype_atTrait
 {
 private:
-  typedef typename 
-    type_at< IdxT, FormatT >::type           value_type;
+  using value_type         = typename type_at< IdxT, FormatT >::type;
 
-  typedef typename
-    DeduceTypeTrait<value_type>::type       deduced_type_trait;
+  using deduced_type_trait = typename DeduceTypeTrait<value_type>::type;
 
 public:
   //  **************************************************************************
   /// The type trait tag deduced for the specified parameter type.
   ///
-  typedef deduced_type_trait                type;
+  using type = deduced_type_trait;
 };
 
 

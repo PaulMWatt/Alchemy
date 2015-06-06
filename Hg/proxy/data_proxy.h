@@ -40,15 +40,10 @@ template< typename  datum_trait,
 struct DataProxy
   : public Hg::Datum<kt_idx, format_t>
 {
-  typedef  
-    Hg::Datum < kt_idx,
-                format_t
-              >                                   datum_type;
+  using datum_type = Hg::Datum <kt_idx, format_t>;
+  using value_type = typename datum_type::value_type;
 
-  typedef typename 
-    datum_type::value_type                        value_type;
-
-  typedef datum_type&                             reference;
+  using reference  = datum_type&;
 
   //  **************************************************************************
   /// Default Constructor

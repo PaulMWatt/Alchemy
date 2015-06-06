@@ -66,15 +66,6 @@ typedef type_list
   std::array<mixed_bits, 5>
 > Hg_nested_sub;
 
-#ifdef ENABLE_BITFIELD_SEQUENCE
-//  ****************************************************************************
-typedef type_list
-<
-  uint32_t,      
-  Hg::BitFieldArray<mixed_bits, 5>
-> Hg_nested_adjusted;
-#endif
-
 }
 
 //  ****************************************************************************
@@ -145,19 +136,9 @@ public:
   // Test Cases **************************************************************
   void TestNoSubstitution();
   void TestArrayNoSub();
-#ifdef ENABLE_BITFIELD_SEQUENCE
-//  void TestArraySubBitFields();
-//  void TestArraySubNested();
-#endif
   void TestArrayArrayNoSub();
-//  void TestArrayArrayBitSet();
   void TestVectorNoSub();
-#ifdef ENABLE_BITFIELD_SEQUENCE
-//  void TestVectorSubBitFields();
-//  void TestVectorSubNested();
-#endif
   void TestVectorArrayNoSub();
-//  void TestVectorArrayBitSet();
 
 };
 
@@ -198,31 +179,6 @@ void Hgtype_listTestSuite::TestArrayNoSub()
   TS_ASSERT((std::is_same<SUT, result_type>::value));
 }
 
-#ifdef ENABLE_BITFIELD_SEQUENCE
-//  ****************************************************************************
-void Hgtype_listTestSuite::TestArraySubBitFields()
-{
-  typedef type_list
-  <
-    std::array<mixed_bits, 5>
-  > SUT;
-
-  typedef make_Hg_type_list<SUT>::type     result_type;
-
-  TS_ASSERT(!(std::is_same<SUT, result_type>::value));
-}
-
-//  ****************************************************************************
-void Hgtype_listTestSuite::TestArraySubNested()
-{
-  typedef Hg::Hg_nested_sub                 SUT;
-  typedef make_Hg_type_list<SUT>::type      result_type;
-
-  TS_ASSERT(!(std::is_same<SUT, result_type>::value));
-  TS_ASSERT((std::is_same<Hg::Hg_nested_adjusted, result_type>::value));
-}
-#endif
-
 //  ****************************************************************************
 void Hgtype_listTestSuite::TestArrayArrayNoSub()
 {
@@ -235,27 +191,6 @@ void Hgtype_listTestSuite::TestArrayArrayNoSub()
 
   TS_ASSERT((std::is_same<SUT, result_type>::value));
 }
-
-#ifdef ENABLE_BITFIELD_SEQUENCE
-//  ****************************************************************************
-void Hgtype_listTestSuite::TestArrayArrayBitSet()
-{
-  typedef type_list
-  <
-    std::array< std::array<mixed_bits, 10>, 2 >
-  > SUT;
-
-  typedef type_list
-  <
-    std::array< BitFieldArray<mixed_bits, 10>, 2 >
-  > expected_type;
-
-  typedef make_Hg_type_list<SUT>::type     result_type;
-
-  TS_ASSERT(!(std::is_same<expected_type, result_type>::value));
-}
-#endif
-
 
 //  ****************************************************************************
 void Hgtype_listTestSuite::TestVectorNoSub()
@@ -275,40 +210,6 @@ void Hgtype_listTestSuite::TestVectorNoSub()
   TS_ASSERT((std::is_same<SUT, result_type>::value));
 }
 
-#ifdef ENABLE_BITFIELD_SEQUENCE
-//  ****************************************************************************
-void Hgtype_listTestSuite::TestVectorSubBitFields()
-{
-  typedef type_list
-  <
-    size_t,
-    std::vector<mixed_bits>
-  > SUT;
-
-  typedef make_Hg_type_list<SUT>::type     result_type;
-
-  TS_ASSERT(!(std::is_same<SUT, result_type>::value));
-}
-
-//  ****************************************************************************
-void Hgtype_listTestSuite::TestVectorSubNested()
-{
-  typedef type_list
-  <
-    std::vector<Hg::Hg_nested_sub>
-  > SUT;
-
-  typedef type_list
-  <
-    std::vector<Hg::Hg_nested_adjusted>
-  > expected_type;
-
-  typedef make_Hg_type_list<SUT>::type     result_type;
-
-  TS_ASSERT(!(std::is_same<expected_type, result_type>::value));
-}
-#endif
-
 //  ****************************************************************************
 void Hgtype_listTestSuite::TestVectorArrayNoSub()
 {
@@ -321,27 +222,6 @@ void Hgtype_listTestSuite::TestVectorArrayNoSub()
 
   TS_ASSERT((std::is_same<SUT, result_type>::value));
 }
-
-#ifdef ENABLE_BITFIELD_SEQUENCE
-//  ****************************************************************************
-void Hgtype_listTestSuite::TestVectorArrayBitSet()
-{
-  typedef type_list
-  <
-    std::vector< std::array<mixed_bits, 10> >
-  > SUT;
-
-  typedef type_list
-  <
-    std::vector< BitFieldArray<mixed_bits, 10> >
-  > expected_type;
-
-  typedef make_Hg_type_list<SUT>::type     result_type;
-
-  TS_ASSERT(!(std::is_same<expected_type, result_type>::value));
-
-}
-#endif
 
 
 #endif

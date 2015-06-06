@@ -34,9 +34,10 @@ namespace detail
 template <typename FieldT>
 struct field_data_t
 {
-  typedef FieldT         value_type;    ///< The matching data type for the index.
-                                        ///  The default implementation uses 
-                                        ///  the same type as the index type.
+  /// The matching data type for the index.
+  /// The default implementation uses 
+  /// the same type as the index type.
+  using value_type = FieldT;            
 };
 
 //  ****************************************************************************
@@ -50,93 +51,6 @@ void copy_value_type(T& to, const T& from)
 {
   to = from;
 }
-
-
-//  ****************************************************************************
-/// (Static-Array Specialization) Type definitions for bit-fields in type-container.
-///
-/// @param SubTypeT           [typename] This parameterized type declares the
-///                           sub-type of the array defined at the location 
-///                           in the parent type container.
-/// @param N                  [size_t] The number of elements in the array.
-///
-//template< typename SubTypeT,
-//          size_t   N
-//        >
-//struct field_data_t < Hg::BitFieldArray<SubTypeT, N> >
-//{
-//  typedef 
-//    SubTypeT                            sub_type;
-//
-//  typedef 
-//    Hg::BitFieldArray<SubTypeT, N>      value_type;
-//};
-
-
-//  ****************************************************************************
-/// (Fixed-Array Specialization) To copy from one instance to another.
-///
-/// @tparam SubTypeT          [typename] This parameterized type declares the
-///                           sub-type of the array defined at the location 
-///                           in the parent type container.
-/// @tparam N                 [size_t] The number of elements in the array.
-///
-//template< typename SubTypeT,
-//          size_t   N
-//        >
-//void copy_value_type(       BitFieldArray<SubTypeT, N>& to, 
-//                      const BitFieldArray<SubTypeT, N>& from)
-//{
-//  std::copy(from.begin(), from.end(), to.begin());
-//}
-
-//  ****************************************************************************
-/// (Dynamic-Array Specialization) Type definitions for bit-field in type-container.
-///
-/// @param SubTypeT           [typename] This parameterized type declares the
-///                           sub-type of the vector defined at the location 
-///                           in the parent type container.
-/// @param AllocT             [typename] The defined allocator of the vector.
-///
-//template< typename SubTypeT,
-//          typename AllocT
-//        >
-//struct field_data_t < Hg::BitFieldVector<SubTypeT, AllocT> >
-//{
-//  typedef 
-//    SubTypeT                                      sub_type;
-//
-//  typedef 
-//    Hg::BitFieldVector<SubTypeT, AllocT>          value_type;
-//};
-
-
-//  ****************************************************************************
-/// (Dynamic-Array Specialization) To copy from one instance to another.
-///
-/// @param SubTypeT           [typename] This parameterized type declares the
-///                           sub-type of the vector defined at the location 
-///                           in the parent type container.
-/// @param AllocT             [typename] The defined allocator of the vector.
-///
-//template< class SubTypeT,
-//          class A
-//        >
-//void copy_value_type(       BitFieldVector<SubTypeT, A>& to, 
-//                      const BitFieldVector<SubTypeT, A>& from)
-//{
-//  to.clear();
-//  if (from.empty())
-//  {
-//    return;
-//  }
-//
-//  to.resize(from.size());
-//  std::copy( from.begin(), 
-//             from.end(), 
-//             to.begin());    
-//}
-
 
 //  ****************************************************************************
 /// (Fixed-Array Specialization) To copy from one instance to another.
@@ -169,22 +83,18 @@ template< typename SubTypeT,
         >
 struct field_data_t < std::vector<SubTypeT, AllocT> >
 {
-  typedef 
-    SubTypeT                            sub_type;
+  using sub_type        = SubTypeT;
+  using value_sub_type  = typename field_data_t<sub_type>::value_type;
 
-  typedef typename 
-    field_data_t<sub_type>::value_type  value_sub_type;
-
-
-  typedef typename
-    std::conditional
-      < nested_value<sub_type>::value,
-        std::vector< value_sub_type, AllocT>,
-        std::vector< sub_type, AllocT>
-      >::type                           value_type;
-                                        ///< The proper value_type definition
-                                        ///  deduced from the type-container
-                                        ///  and the specified array sub-type.
+  /// The proper value_type definition
+  /// deduced from the type-container
+  /// and the specified array sub-type.
+  using value_type      = typename
+                            std::conditional
+                              < nested_value<sub_type>::value,
+                                std::vector< value_sub_type, AllocT>,
+                                std::vector< sub_type, AllocT>
+                              >::type;
 };
 
 
@@ -235,13 +145,14 @@ template< class FieldT,
           class TraitT = typename Hg::detail::DeduceTypeTrait<FieldT>::type >
 struct FieldTypes
 {
-  typedef 
-    FieldT              index_type;     ///< The type at the index of the
-                                        ///  parent type container.
-  typedef typename
-    field_data_t<index_type>::value_type
-                        value_type;     ///< The specified value type for 
-                                        ///  the current Datum.
+  /// The type at the index of the
+  /// parent type container.
+  using index_type = FieldT; 
+  
+  /// The specified value type for 
+  /// the current Datum.
+  using value_type = typename field_data_t<index_type>::value_type;
+
 
   //  **************************************************************************
   /// Returns a reference to the internal data storage.
@@ -271,9 +182,10 @@ struct FieldTypes
   }
 
 protected:
-  value_type            m_data;         ///< This is a local copy of the data
-                                        ///  value to shadow the value held in
-                                        ///  the buffer. 
+  /// This is a local copy of the data
+  /// value to shadow the value held in
+  /// the buffer. 
+  value_type            m_data;         
 };
 
 //  ****************************************************************************
@@ -287,13 +199,13 @@ template< typename FieldT >
 struct FieldTypes <FieldT, nested_trait>
   : public field_data_t<FieldT>::value_type
 {
-  typedef 
-    FieldT              index_type;     ///< The type at the index of the
-                                        ///  parent type container.
-  typedef typename
-    field_data_t<index_type>::value_type
-                        value_type;     ///< The specified value type for 
-                                        ///  the current Datum.
+  /// The type at the index of the
+  /// parent type container.
+  using index_type = FieldT;
+
+  /// The specified value type for 
+  /// the current Datum.
+  using value_type = typename field_data_t<index_type>::value_type;
 
   //  **************************************************************************
   /// Returns a reference to the internal data storage.
@@ -334,15 +246,16 @@ template< typename FieldT >
 struct FieldTypes <FieldT, packed_trait>
   : public FieldT
 {
-  typedef 
-    FieldT              index_type;     ///< The type at the index of the
-                                        ///  parent type container.
-  typedef typename
-    field_data_t<index_type>::value_type
-                        packed_type;    ///< The packed-bit container type.
-  typedef typename
-    packed_type::value_type
-                        value_type;     ///< The value type used by the packed-bits.
+  /// The type at the index of the
+  /// parent type container.
+  using index_type = FieldT;
+
+  /// The packed-bit container type.
+  using packed_type= typename field_data_t<index_type>::value_type;
+
+  /// The value type used by the packed-bits.
+  using value_type = typename packed_type::value_type;
+
 
   //  **************************************************************************
   /// Returns a reference to the internal data storage.
@@ -394,17 +307,14 @@ template< size_t   Idx,
         >
 struct DefineFieldType
 {
-  //  Typedefs *****************************************************************
-  typedef typename 
-    Hg::type_at<Idx, format_t>::type     index_type;
-                                        ///< The type extracted at the current
-                                        ///  index defined in the parent type_list.
+  //  Aliases ******************************************************************
+  /// The type extracted at the current
+  /// index defined in the parent type_list.
+  using index_type = typename Hg::type_at<Idx, format_t>::type;
 
-  typedef  
-    detail::FieldTypes  
-      < index_type >                    type;
-                                        ///< The field type definition that maps
-                                        ///  a field type with it's value_type.
+  /// The field type definition that maps
+  /// a field type with it's value_type.
+  using type       = detail::FieldTypes< index_type >;
 };
 
 

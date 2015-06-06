@@ -32,10 +32,10 @@ struct HasDynamic_Impl
 // HasDynamic implementation for type_containers *******************************
 template <typename T>
 struct HasDynamic_Impl<T, true>
-  : value_if< vector_value<typename front<T>::type>::value,
+  : value_if< vector_value<front_t<T>>::value,
               bool,
               true,
-              has_dynamic<typename pop_front<T>::type>::value
+              has_dynamic<pop_front_t<T>>::value
             >
 { };
 
@@ -55,17 +55,17 @@ template< typename ListT,
         >
 struct DynamicFieldSequence
 {
-  typedef typename
+  using NextSeqT = typename
     std::conditional< vector_value<typename front<ListT>::type>::value,
                       typename IntegralNode<IdxT, SeqT>::type,
                       SeqT
-                    >::type             NextSeqT;
+                    >::type;
 
-  typedef typename
+  using type = typename
     DynamicFieldSequence< typename pop_front<ListT>::type,
                           NextSeqT,
                           IdxT+1
-                        >::type         type;
+                        >::type;
 };
 
 //  ****************************************************************************
@@ -79,7 +79,7 @@ template< typename SeqT,
 struct DynamicFieldSequence<MT, SeqT, IdxT>
   : reverse<SeqT>
 {
-  typedef SeqT                          NextSeqT;
+  using NextSeqT = SeqT;
 };
 
 
@@ -87,7 +87,7 @@ struct DynamicFieldSequence<MT, SeqT, IdxT>
 template <typename T, bool IsHaveDynamicT = false >
 struct DynamicFields_Impl
 { 
-  typedef MT    type;
+  using type = MT;
 };
 
 // HasDynamic implementation for type_containers *******************************

@@ -68,7 +68,7 @@ struct yes_t
 //  ****************************************************************************
 /// Negative Type for use in SFINAE selection templates.
 /// 
-typedef char no_t; 
+using no_t = char; 
 
 //  ****************************************************************************
 /// This construct provides mechanism to declare and 
@@ -80,7 +80,7 @@ typedef char no_t;
 template <typename T>
 struct instance_of
 {
-  typedef T type;
+  using type = T;
 
   // This constructor allows global constants to be declared and initialized.
   instance_of(int = 0)

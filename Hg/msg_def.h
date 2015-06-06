@@ -62,7 +62,7 @@
 
 
 //  ****************************************************************************
-//  Creates a declaration for a new type_list typedef.  
+//  Creates a declaration for a new type_list alias.  
 //
 #define MAKE_TYPELIST(...)\
   make_type_list_t< __VA_ARGS__ >
@@ -120,7 +120,7 @@
 namespace Hg
 {
 
-//  Typedefs *******************************************************************
+//  Aliases ********************************************************************
 typedef size_t (*pfnGetDatumSize)(const uint8_t*, size_t);
 
 
@@ -129,7 +129,7 @@ typedef size_t (*pfnGetDatumSize)(const uint8_t*, size_t);
 ///
 /// @tparam T     A type_list definition.
 ///
-/// @return       A typedef called *type* is defined to return the size trait.
+/// @return       An alias called *type* is defined to return the size trait.
 ///               - static_size_trait indicates a fixed-size message whose
 ///                                   size is completely known at compile-time.
 ///               - dynamic_size_trait indicates a dyanmically sized message.
@@ -212,14 +212,13 @@ struct message_size_trait
   {                                                                            \
     typedef F                           this_type;                             \
     typedef F##_tl                      format_type;                           \
-    enum { k_size = size_of<format_type>::value };                              \
+    enum { k_size = size_of<format_type>::value };                             \
     enum { k_length                   = length<format_type>::value };          \
                                                                                \
     template< size_t IDX>                                                      \
     Datum<IDX, format_type>& FieldAt()                                         \
     {                                                                          \
-      typedef Datum   < IDX,                                                   \
-                        format_type>    datum_type_t;                          \
+      using datum_type_t = Datum< IDX, format_type>;                           \
       return this_type::FieldAtIndex((datum_type_t*)0);                        \
     }                                                                          \
     template< size_t IDX>                                                      \
@@ -250,11 +249,7 @@ struct message_size_trait
     }                                                                          \
   };                                                                           \
   BEGIN_NAMESPACE(detail)                                                      \
-  template <>                                                                  \
-  struct field_data_t <F##_Hg>                                                 \
-  {                                                                            \
-    typedef F                           value_type;                            \
-  };                                                                           \
+  template <> struct field_data_t <F##_Hg> { using value_type = F; };          \
   END_NAMESPACE(detail)                                                        \
   END_NAMESPACE(Hg)                                                            
 
@@ -347,9 +342,9 @@ struct message_size_trait
   struct C                                                                     \
     : public PackedBits<T>                                                     \
   {                                                                            \
-    typedef C                                     this_type;                   \
-    typedef T                                     value_type;                  \
-    typedef PackedBits<T>                         base_type;                   \
+    using this_type   = C;                                                     \
+    using value_type  = T;                                                     \
+    using base_type   = PackedBits<T>;                                         \
                                                                                \
     C()                                                                        \
       : base_type()                                                            \
@@ -378,7 +373,7 @@ struct message_size_trait
   END_NAMESPACE(Hg)
 
 // *****************************************************************************
-#define Eval_Hg_DECLARE_BIT_FIELD(IDX,P,N)                                      \
+#define Eval_Hg_DECLARE_BIT_FIELD(IDX,P,N)                                     \
   typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \
   struct P##_tag                                                               \
   { static ptrdiff_t offset()                                                  \

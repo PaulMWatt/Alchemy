@@ -36,11 +36,11 @@ struct BitField
   static_assert(CountT <= (sizeof(T)* 8),
                 "The number of bits in the BitField cannot exceed the size of the host type T.");
     
-  //  Typedefs ******************************************************************
+  //  Aliases ******************************************************************
   typedef BitField<OwnerT, TagT, OffsetT, CountT, T>&   reference;
   typedef T                                             value_type;
 
-  //  Constants *****************************************************************
+  //  Constants ****************************************************************
   enum { k_offset = OffsetT };
   enum { k_size   = CountT  };
 
@@ -50,17 +50,17 @@ struct BitField
   ///
   enum { k_mask   = T(((tmp::math::pow<size_t, 2, k_size>::value)-1) << k_offset) };
 
-  //  ****************************************************************************
+  //  **************************************************************************
   BitField()
   { }
 
-  //  Operators *****************************************************************
+  //  Operators ****************************************************************
   operator value_type()
   {
     return  mask_value();
   }
 
-  //  ****************************************************************************
+  //  **************************************************************************
   value_type operator=(const value_type& rhs)
   {
     value_type& base_value = value();
@@ -70,7 +70,7 @@ struct BitField
     return mask_value();
   }
 
-  //  ****************************************************************************
+  //  **************************************************************************
   BitField& operator=(const BitField& rhs)
   {
     value_type value = rhs.value() & k_mask;
@@ -85,8 +85,8 @@ struct BitField
     return (value() & k_mask) >> k_offset;
   }
 private:
-  //  Member Functions **********************************************************
-  //  ***************************************************************************
+  //  Member Functions *********************************************************
+  //  **************************************************************************
   value_type& value()
   {
     return owner()->value();

@@ -12,56 +12,8 @@
 
 namespace Hg
 {
-//
-////  Forward Declarations *******************************************************
-////  ****************************************************************************
-//template< typename MsgT,
-//          typename BufferT,
-//          typename SizeTraitT
-//        >
-//std::shared_ptr<BufferT>
-//  pack_message( MsgT    &msg_values, 
-//                size_t   size,
-//                BufferT &buffer);
-//
-////  ****************************************************************************
-//template< typename MsgT,
-//          typename BufferT,
-//          typename SizeTraitT
-//        >
-//std::shared_ptr<BufferT>
-//  pack_message( MsgT    &msg_values, 
-//                BufferT &buffer);
-//
-////  ****************************************************************************
-//template< typename MsgT,
-//          typename BufferT,
-//          typename SizeTraitT
-//        >
-//size_t pack_message(MsgT     &msg_values,
-//                    BufferT  &buffer,
-//                    size_t    offset);
-//
-//
-////  ****************************************************************************
-//template< typename MsgT,
-//          typename BufferT,
-//          typename SizeTraitT
-//        >
-//MsgT& unpack_message(       MsgT &msg_values,
-//                          const BufferT  &buffer);
-//
-//
-////  ****************************************************************************
-//template< typename MsgT,
-//          typename BufferT,
-//          typename SizeTraitT
-//        >
-//size_t unpack_message(MsgT &msg_values,
-//                      BufferT  &buffer,
-//                      size_t    offset);
-//
-//
+
+
 } // namespace Hg
 
 #endif 
