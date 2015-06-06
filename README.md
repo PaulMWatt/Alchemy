@@ -1,10 +1,13 @@
-Changes
+Converting Alchemy to use Modern C++ Features
 ========================================================
-As a result of the Carbon addition, the message definition MACROs have been changed to use the prefix 'ALCHEMY' rather than 'Hg'. This has allowed me to keep the libraries mostly separated, and Alchemy becomes the central theme of the library.
+I have implemented a type_list with variadic templates and integrated this into Alchemy. That is in the current version stored in the repository.
 
-The packed bit definitions are now consistent with the main message format. Both formats use a single macro that contains a list of parameters that represent the fields.
-
-One other adjustment. The message types should be placed in the global namespace now. The MACROs will automatically place each message type in the appropriate namespace related to its sub-library. For example, Hg.
+Other immediate plans:
+*Add the use of auto where possible
+*Add the use of decltype
+*Convert to range-based for loops
+*Additional template aliases for the rest of the implementation.
+*Lambda expressions.
 
 Benchmarks
 ========================================================
