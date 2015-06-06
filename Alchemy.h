@@ -77,7 +77,7 @@
 /// This definition requires that the parent class derive from the MsgFormat 
 /// base class.
 ///             
-/// @param TYPE_LIST         The TypeList used to defined the layout format.
+/// @param TYPE_LIST         The type_list used to defined the layout format.
 ///             
 /// @note           This definition MACRO should be placed in the global namespace.
 ///                 C++ objects will be placed in a namespace that corresponds
@@ -105,7 +105,7 @@
 //  ****************************************************************************
 /// Adds a field to the message definition.
 /// 
-/// This MACRO generates code based on the TypeList specified in the 
+/// This MACRO generates code based on the type_list specified in the 
 /// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field.
 ///             
@@ -119,7 +119,7 @@
 //  ****************************************************************************
 /// Adds a fixed-size array field to the message definition.
 /// 
-/// This MACRO generates code based on the TypeList specified in the 
+/// This MACRO generates code based on the type_list specified in the 
 /// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field.
 ///             
@@ -134,7 +134,7 @@
 //  ****************************************************************************
 /// Adds a field with a dynamic size to the message definition.
 /// 
-/// This MACRO generates code based on the TypeList specified in the 
+/// This MACRO generates code based on the type_list specified in the 
 /// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field. 
 /// Finally, a field is provided to specify how this datum will know how
@@ -160,7 +160,7 @@
 //  ****************************************************************************
 /// Adds a field with a dynamic size controlled by a user specified allocator.
 /// 
-/// This MACRO generates code based on the TypeList specified in the 
+/// This MACRO generates code based on the type_list specified in the 
 /// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
 /// name the property associated with this message format field. 
 /// A field is provided for the user to indicate how the field can determine
@@ -230,7 +230,7 @@
 ///         
 /// @remarks        There are a number of constructs that are created by the definition
 ///                 of this MACRO:
-///                 1) ContainerSize<> specialization to properly return the
+///                 1) container_size<> specialization to properly return the
 ///                    size of the data buffer required for the bitset.
 ///                    Otherwise the size of the BIT_SET object would be returned.
 ///                 2) field_data_t<> specialization that defines the 

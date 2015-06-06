@@ -62,11 +62,16 @@
 
 
 //  ****************************************************************************
-//  Creates a declaration for a new TypeList typedef.  
+//  Creates a declaration for a new type_list typedef.  
 //
-#define DEFINE_TYPELIST(N,...)\
-  typedef TypeList < __VA_ARGS__ > N;
+#define MAKE_TYPELIST(...)\
+  make_type_list_t< __VA_ARGS__ >
 
+//  ****************************************************************************
+//  Creates a declaration for a new type_list and removes the last element.  
+//
+#define DEFINE_TYPELIST_POP_BACK(N,...)\
+  using N = pop_back_t< MAKE_TYPELIST(__VA_ARGS__) >;
 
 //  ****************************************************************************
 //  Helps convert generic ALCHEMY datum declarations to elemental declarations.  
@@ -101,12 +106,8 @@
 #include <Pb/meta_fwd.h>
 #include <Pb/auto_index.h>
 #include <Pb/byte_order.h>
-#include <Pb/length.h>
-#include <Pb/offset_of.h>
-#include <Pb/size_at.h>
-#include <Pb/size_of.h>
+#include <Pb/type_list_size.h>
 #include <Pb/meta_math.h>
-#include <Pb/dynamic.h>
 #include <Hg/deduce_msg_type_list.h>
 #include <Hg/make_Hg_type_list.h>
 #include <Hg/proxy/deduce_proxy_type.h>
@@ -126,7 +127,7 @@ typedef size_t (*pfnGetDatumSize)(const uint8_t*, size_t);
 //  ****************************************************************************
 /// Indicates the type size the specified message is, static or dynamic.
 ///
-/// @paramt T     A TypeList definition.
+/// @tparam T     A type_list definition.
 ///
 /// @return       A typedef called *type* is defined to return the size trait.
 ///               - static_size_trait indicates a fixed-size message whose
@@ -175,7 +176,7 @@ struct message_size_trait
 
 #if defined(_MSC_VER)
 #define DEFINE_STRUCT_TYPELIST(N, S) \
-  DEFINE_TYPELIST(N, \
+  DEFINE_TYPELIST_POP_BACK(N, \
     BOOST_PP_SEQ_FOR_EACH_I(EACH_TYPE, unused, BOOST_PP_VARIADIC_TO_SEQ(S)) Hg::MT)
 
 
@@ -185,7 +186,7 @@ struct message_size_trait
 #else
 
 #define DEFINE_STRUCT_TYPELIST(N, ...) \
-  DEFINE_TYPELIST(N, \
+  DEFINE_TYPELIST_POP_BACK(N, \
     BOOST_PP_SEQ_FOR_EACH_I(EACH_TYPE, unused, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)) Hg::MT)
 
 
@@ -211,7 +212,7 @@ struct message_size_trait
   {                                                                            \
     typedef F                           this_type;                             \
     typedef F##_tl                      format_type;                           \
-    enum { k_size = SizeOf<format_type>::value };                              \
+    enum { k_size = size_of<format_type>::value };                              \
     enum { k_length                   = length<format_type>::value };          \
                                                                                \
     template< size_t IDX>                                                      \
@@ -337,9 +338,11 @@ struct message_size_trait
 #define Hg_DECLARE_PACKED_HEADER(T,C,...)                                      \
   BEGIN_NAMESPACE(Hg)                                                          \
   struct C;                                                                    \
+  namespace detail {                                                           \
   template <>                                                                  \
-  struct ContainerSize<C>                                                      \
+  struct container_size<C>                                                     \
     : std::integral_constant<size_t, sizeof(T)>         { };                   \
+  }                                                                            \
                                                                                \
   struct C                                                                     \
     : public PackedBits<T>                                                     \

@@ -48,7 +48,7 @@ public:
   typedef const value_type&                   const_reference;
 
   //  Constants ****************************************************************
-  enum { k_size = SizeOf<format_type>::value };
+  enum { k_size = size_of<format_type>::value };
                                         ///< Indicates the size in bytes of the
                                         ///  data buffer managed by this message.
 

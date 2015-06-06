@@ -292,7 +292,7 @@ void UsingMemcpy::test_no_conversion( DataBuffer &data,
   using alchemy::benchmark::DataBuffer;
   using alchemy::benchmark::NoConversion;
 
-  size_t len   = Hg::SizeOf<alchemy::benchmark::NoConversion>::value;
+  size_t len   = Hg::size_of<alchemy::benchmark::NoConversion>::value;
   size_t count = data.Size() / len;
 
   cout << "no_conversion size: " << len   << "\t\tcount: " << count << endl;
@@ -315,7 +315,7 @@ void UsingMemcpy::test_basic( DataBuffer &data,
   using alchemy::benchmark::DataBuffer;
   using alchemy::benchmark::Basic;
 
-  size_t len   = Hg::SizeOf<alchemy::benchmark::Basic>::value;
+  size_t len   = Hg::size_of<alchemy::benchmark::Basic>::value;
   size_t count = data.Size() / len;
 
   cout << "        basic size: " << len   << "\t\tcount: " << count << endl;
@@ -338,7 +338,7 @@ void UsingMemcpy::test_packed_bits(DataBuffer &data,
   using alchemy::benchmark::DataBuffer;
   using alchemy::benchmark::Packed;
 
-  size_t len   = Hg::SizeOf<alchemy::benchmark::Packed>::value;
+  size_t len   = Hg::size_of<alchemy::benchmark::Packed>::value;
   size_t count = data.Size() / len;
 
   cout << "       packed size: " << len   << "\t\tcount: " << count << endl;
@@ -362,7 +362,7 @@ void UsingMemcpy::test_unaligned( DataBuffer &data,
   using alchemy::benchmark::DataBuffer;
   using alchemy::benchmark::Unaligned;
 
-  size_t len   = Hg::SizeOf<alchemy::benchmark::Unaligned>::value;
+  size_t len   = Hg::size_of<alchemy::benchmark::Unaligned>::value;
   size_t count = data.Size() / len;
 
   cout << "    unaligned size: " << len   << "\t\tcount: " << count << endl;
@@ -385,7 +385,7 @@ void UsingMemcpy::test_complex(DataBuffer &data,
   using alchemy::benchmark::DataBuffer;
   using alchemy::benchmark::Complex;
 
-  size_t len   = Hg::SizeOf<alchemy::benchmark::Complex>::value;
+  size_t len   = Hg::size_of<alchemy::benchmark::Complex>::value;
   size_t count = data.Size() / len;
   cout << "      complex size: " << len   << "\t\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
@@ -407,7 +407,7 @@ void UsingMemcpy::test_array (DataBuffer &data,
   using alchemy::benchmark::DataBuffer;
   using alchemy::benchmark::Array;
 
-  size_t len   = Hg::SizeOf<alchemy::benchmark::Array>::value;
+  size_t len   = Hg::size_of<alchemy::benchmark::Array>::value;
   size_t count = data.Size() / len;
   cout << "        array size: " << len   << "\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)

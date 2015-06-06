@@ -50,13 +50,13 @@ struct MT { };
 //  ****************************************************************************
 /// An alias that may be more readable.
 /// 
-typedef MT        empty;
+using empty = MT;
 
 
 //  ****************************************************************************
 /// A short alias for the 'unsigned char'.
 /// 
-typedef unsigned char   byte_t;
+using byte_t = unsigned char;
 
 //  ****************************************************************************
 /// Affirmative Type for use in SFINAE selection templates.

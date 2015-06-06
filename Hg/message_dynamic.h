@@ -16,7 +16,7 @@ namespace Hg
 //  ****************************************************************************
 /// Query for the amount of dynamic memory required by a specified Hg::basic_msg.
 ///
-/// @paramt T       [typename] The Hg::basic_msg format definition of the 
+/// @tparam T       [typename] The Hg::basic_msg format definition of the 
 ///                 message to be converted.
 /// @param msg      The message object to be queried.
 ///                           

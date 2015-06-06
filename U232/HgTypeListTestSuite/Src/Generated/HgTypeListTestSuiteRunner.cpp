@@ -20,55 +20,43 @@ int main( int argc, char *argv[] ) {
     status = CxxTest::Main< CxxTest::ParenPrinter >( tmp, argc, argv );
     return status;
 }
-bool suite_HgTypeListTestSuite_init = false;
+bool suite_Hgtype_listTestSuite_init = false;
 #include "..\hgtypelisttestsuite.h"
 
-static HgTypeListTestSuite suite_HgTypeListTestSuite;
+static Hgtype_listTestSuite suite_Hgtype_listTestSuite;
 
-static CxxTest::List Tests_HgTypeListTestSuite = { 0, 0 };
-CxxTest::StaticSuiteDescription suiteDescription_HgTypeListTestSuite( "../hgtypelisttestsuite.h", 123, "HgTypeListTestSuite", suite_HgTypeListTestSuite, Tests_HgTypeListTestSuite );
+static CxxTest::List Tests_Hgtype_listTestSuite = { 0, 0 };
+CxxTest::StaticSuiteDescription suiteDescription_Hgtype_listTestSuite( "../hgtypelisttestsuite.h", 125, "Hgtype_listTestSuite", suite_Hgtype_listTestSuite, Tests_Hgtype_listTestSuite );
 
-static class TestDescription_suite_HgTypeListTestSuite_TestNoSubstitution : public CxxTest::RealTestDescription {
+static class TestDescription_suite_Hgtype_listTestSuite_TestNoSubstitution : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_HgTypeListTestSuite_TestNoSubstitution() : CxxTest::RealTestDescription( Tests_HgTypeListTestSuite, suiteDescription_HgTypeListTestSuite, 144, "TestNoSubstitution" ) {}
- void runTest() { suite_HgTypeListTestSuite.TestNoSubstitution(); }
-} testDescription_suite_HgTypeListTestSuite_TestNoSubstitution;
+ TestDescription_suite_Hgtype_listTestSuite_TestNoSubstitution() : CxxTest::RealTestDescription( Tests_Hgtype_listTestSuite, suiteDescription_Hgtype_listTestSuite, 146, "TestNoSubstitution" ) {}
+ void runTest() { suite_Hgtype_listTestSuite.TestNoSubstitution(); }
+} testDescription_suite_Hgtype_listTestSuite_TestNoSubstitution;
 
-static class TestDescription_suite_HgTypeListTestSuite_TestArrayNoSub : public CxxTest::RealTestDescription {
+static class TestDescription_suite_Hgtype_listTestSuite_TestArrayNoSub : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_HgTypeListTestSuite_TestArrayNoSub() : CxxTest::RealTestDescription( Tests_HgTypeListTestSuite, suiteDescription_HgTypeListTestSuite, 145, "TestArrayNoSub" ) {}
- void runTest() { suite_HgTypeListTestSuite.TestArrayNoSub(); }
-} testDescription_suite_HgTypeListTestSuite_TestArrayNoSub;
+ TestDescription_suite_Hgtype_listTestSuite_TestArrayNoSub() : CxxTest::RealTestDescription( Tests_Hgtype_listTestSuite, suiteDescription_Hgtype_listTestSuite, 147, "TestArrayNoSub" ) {}
+ void runTest() { suite_Hgtype_listTestSuite.TestArrayNoSub(); }
+} testDescription_suite_Hgtype_listTestSuite_TestArrayNoSub;
 
-static class TestDescription_suite_HgTypeListTestSuite_TestArrayArrayNoSub : public CxxTest::RealTestDescription {
+static class TestDescription_suite_Hgtype_listTestSuite_TestArrayArrayNoSub : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_HgTypeListTestSuite_TestArrayArrayNoSub() : CxxTest::RealTestDescription( Tests_HgTypeListTestSuite, suiteDescription_HgTypeListTestSuite, 150, "TestArrayArrayNoSub" ) {}
- void runTest() { suite_HgTypeListTestSuite.TestArrayArrayNoSub(); }
-} testDescription_suite_HgTypeListTestSuite_TestArrayArrayNoSub;
+ TestDescription_suite_Hgtype_listTestSuite_TestArrayArrayNoSub() : CxxTest::RealTestDescription( Tests_Hgtype_listTestSuite, suiteDescription_Hgtype_listTestSuite, 152, "TestArrayArrayNoSub" ) {}
+ void runTest() { suite_Hgtype_listTestSuite.TestArrayArrayNoSub(); }
+} testDescription_suite_Hgtype_listTestSuite_TestArrayArrayNoSub;
 
-static class TestDescription_suite_HgTypeListTestSuite_TestArrayArrayBitSet : public CxxTest::RealTestDescription {
+static class TestDescription_suite_Hgtype_listTestSuite_TestVectorNoSub : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_HgTypeListTestSuite_TestArrayArrayBitSet() : CxxTest::RealTestDescription( Tests_HgTypeListTestSuite, suiteDescription_HgTypeListTestSuite, 151, "TestArrayArrayBitSet" ) {}
- void runTest() { suite_HgTypeListTestSuite.TestArrayArrayBitSet(); }
-} testDescription_suite_HgTypeListTestSuite_TestArrayArrayBitSet;
+ TestDescription_suite_Hgtype_listTestSuite_TestVectorNoSub() : CxxTest::RealTestDescription( Tests_Hgtype_listTestSuite, suiteDescription_Hgtype_listTestSuite, 154, "TestVectorNoSub" ) {}
+ void runTest() { suite_Hgtype_listTestSuite.TestVectorNoSub(); }
+} testDescription_suite_Hgtype_listTestSuite_TestVectorNoSub;
 
-static class TestDescription_suite_HgTypeListTestSuite_TestVectorNoSub : public CxxTest::RealTestDescription {
+static class TestDescription_suite_Hgtype_listTestSuite_TestVectorArrayNoSub : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_HgTypeListTestSuite_TestVectorNoSub() : CxxTest::RealTestDescription( Tests_HgTypeListTestSuite, suiteDescription_HgTypeListTestSuite, 152, "TestVectorNoSub" ) {}
- void runTest() { suite_HgTypeListTestSuite.TestVectorNoSub(); }
-} testDescription_suite_HgTypeListTestSuite_TestVectorNoSub;
-
-static class TestDescription_suite_HgTypeListTestSuite_TestVectorArrayNoSub : public CxxTest::RealTestDescription {
-public:
- TestDescription_suite_HgTypeListTestSuite_TestVectorArrayNoSub() : CxxTest::RealTestDescription( Tests_HgTypeListTestSuite, suiteDescription_HgTypeListTestSuite, 157, "TestVectorArrayNoSub" ) {}
- void runTest() { suite_HgTypeListTestSuite.TestVectorArrayNoSub(); }
-} testDescription_suite_HgTypeListTestSuite_TestVectorArrayNoSub;
-
-static class TestDescription_suite_HgTypeListTestSuite_TestVectorArrayBitSet : public CxxTest::RealTestDescription {
-public:
- TestDescription_suite_HgTypeListTestSuite_TestVectorArrayBitSet() : CxxTest::RealTestDescription( Tests_HgTypeListTestSuite, suiteDescription_HgTypeListTestSuite, 158, "TestVectorArrayBitSet" ) {}
- void runTest() { suite_HgTypeListTestSuite.TestVectorArrayBitSet(); }
-} testDescription_suite_HgTypeListTestSuite_TestVectorArrayBitSet;
+ TestDescription_suite_Hgtype_listTestSuite_TestVectorArrayNoSub() : CxxTest::RealTestDescription( Tests_Hgtype_listTestSuite, suiteDescription_Hgtype_listTestSuite, 159, "TestVectorArrayNoSub" ) {}
+ void runTest() { suite_Hgtype_listTestSuite.TestVectorArrayNoSub(); }
+} testDescription_suite_Hgtype_listTestSuite_TestVectorArrayNoSub;
 
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";

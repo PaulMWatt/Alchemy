@@ -191,11 +191,11 @@ public:
  void runTest() { suite_TestMeta.Test_type_container_empty(); }
 } testDescription_suite_TestMeta_Test_type_container_empty;
 
-static class TestDescription_suite_TestMeta_Test_type_container_TypeList : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Test_type_container_type_list : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_Test_type_container_TypeList() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 104, "Test_type_container_TypeList" ) {}
- void runTest() { suite_TestMeta.Test_type_container_TypeList(); }
-} testDescription_suite_TestMeta_Test_type_container_TypeList;
+ TestDescription_suite_TestMeta_Test_type_container_type_list() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 104, "Test_type_container_type_list" ) {}
+ void runTest() { suite_TestMeta.Test_type_container_type_list(); }
+} testDescription_suite_TestMeta_Test_type_container_type_list;
 
 static class TestDescription_suite_TestMeta_Test_type_container_traits : public CxxTest::RealTestDescription {
 public:
@@ -203,125 +203,125 @@ public:
  void runTest() { suite_TestMeta.Test_type_container_traits(); }
 } testDescription_suite_TestMeta_Test_type_container_traits;
 
-static class TestDescription_suite_TestMeta_TestContainerSize : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testcontainer_size : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestContainerSize() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 108, "TestContainerSize" ) {}
- void runTest() { suite_TestMeta.TestContainerSize(); }
-} testDescription_suite_TestMeta_TestContainerSize;
+ TestDescription_suite_TestMeta_Testcontainer_size() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 108, "Testcontainer_size" ) {}
+ void runTest() { suite_TestMeta.Testcontainer_size(); }
+} testDescription_suite_TestMeta_Testcontainer_size;
 
-static class TestDescription_suite_TestMeta_TestTypeAt_1_to_max : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testtype_at_1_to_max : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestTypeAt_1_to_max() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 114, "TestTypeAt_1_to_max" ) {}
- void runTest() { suite_TestMeta.TestTypeAt_1_to_max(); }
-} testDescription_suite_TestMeta_TestTypeAt_1_to_max;
+ TestDescription_suite_TestMeta_Testtype_at_1_to_max() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 114, "Testtype_at_1_to_max" ) {}
+ void runTest() { suite_TestMeta.Testtype_at_1_to_max(); }
+} testDescription_suite_TestMeta_Testtype_at_1_to_max;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_char : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_char : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_char() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 118, "TestSizeOf_char" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_char(); }
-} testDescription_suite_TestMeta_TestSizeOf_char;
+ TestDescription_suite_TestMeta_Testsize_of_char() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 118, "Testsize_of_char" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_char(); }
+} testDescription_suite_TestMeta_Testsize_of_char;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_uchar : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_uchar : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_uchar() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 119, "TestSizeOf_uchar" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_uchar(); }
-} testDescription_suite_TestMeta_TestSizeOf_uchar;
+ TestDescription_suite_TestMeta_Testsize_of_uchar() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 119, "Testsize_of_uchar" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_uchar(); }
+} testDescription_suite_TestMeta_Testsize_of_uchar;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_short : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_short : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_short() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 120, "TestSizeOf_short" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_short(); }
-} testDescription_suite_TestMeta_TestSizeOf_short;
+ TestDescription_suite_TestMeta_Testsize_of_short() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 120, "Testsize_of_short" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_short(); }
+} testDescription_suite_TestMeta_Testsize_of_short;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_ushort : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_ushort : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_ushort() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 121, "TestSizeOf_ushort" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_ushort(); }
-} testDescription_suite_TestMeta_TestSizeOf_ushort;
+ TestDescription_suite_TestMeta_Testsize_of_ushort() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 121, "Testsize_of_ushort" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_ushort(); }
+} testDescription_suite_TestMeta_Testsize_of_ushort;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_long : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_long : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_long() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 122, "TestSizeOf_long" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_long(); }
-} testDescription_suite_TestMeta_TestSizeOf_long;
+ TestDescription_suite_TestMeta_Testsize_of_long() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 122, "Testsize_of_long" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_long(); }
+} testDescription_suite_TestMeta_Testsize_of_long;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_ulong : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_ulong : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_ulong() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 123, "TestSizeOf_ulong" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_ulong(); }
-} testDescription_suite_TestMeta_TestSizeOf_ulong;
+ TestDescription_suite_TestMeta_Testsize_of_ulong() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 123, "Testsize_of_ulong" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_ulong(); }
+} testDescription_suite_TestMeta_Testsize_of_ulong;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_float : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_float : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_float() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 124, "TestSizeOf_float" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_float(); }
-} testDescription_suite_TestMeta_TestSizeOf_float;
+ TestDescription_suite_TestMeta_Testsize_of_float() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 124, "Testsize_of_float" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_float(); }
+} testDescription_suite_TestMeta_Testsize_of_float;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_double : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_double : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_double() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 125, "TestSizeOf_double" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_double(); }
-} testDescription_suite_TestMeta_TestSizeOf_double;
+ TestDescription_suite_TestMeta_Testsize_of_double() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 125, "Testsize_of_double" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_double(); }
+} testDescription_suite_TestMeta_Testsize_of_double;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_empty : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_empty : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_empty() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 128, "TestSizeOf_empty" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_empty(); }
-} testDescription_suite_TestMeta_TestSizeOf_empty;
+ TestDescription_suite_TestMeta_Testsize_of_empty() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 128, "Testsize_of_empty" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_empty(); }
+} testDescription_suite_TestMeta_Testsize_of_empty;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_TypeList : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_type_list : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_TypeList() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 129, "TestSizeOf_TypeList" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_TypeList(); }
-} testDescription_suite_TestMeta_TestSizeOf_TypeList;
+ TestDescription_suite_TestMeta_Testsize_of_type_list() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 129, "Testsize_of_type_list" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_type_list(); }
+} testDescription_suite_TestMeta_Testsize_of_type_list;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_NestedNestedTypeList : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_NestedNestedtype_list : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_NestedNestedTypeList() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 130, "TestSizeOf_NestedNestedTypeList" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_NestedNestedTypeList(); }
-} testDescription_suite_TestMeta_TestSizeOf_NestedNestedTypeList;
+ TestDescription_suite_TestMeta_Testsize_of_NestedNestedtype_list() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 130, "Testsize_of_NestedNestedtype_list" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_NestedNestedtype_list(); }
+} testDescription_suite_TestMeta_Testsize_of_NestedNestedtype_list;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_BitSet : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_BitSet : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_BitSet() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 131, "TestSizeOf_BitSet" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_BitSet(); }
-} testDescription_suite_TestMeta_TestSizeOf_BitSet;
+ TestDescription_suite_TestMeta_Testsize_of_BitSet() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 131, "Testsize_of_BitSet" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_BitSet(); }
+} testDescription_suite_TestMeta_Testsize_of_BitSet;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_DynamicValue : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_DynamicValue : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_DynamicValue() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 132, "TestSizeOf_DynamicValue" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_DynamicValue(); }
-} testDescription_suite_TestMeta_TestSizeOf_DynamicValue;
+ TestDescription_suite_TestMeta_Testsize_of_DynamicValue() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 132, "Testsize_of_DynamicValue" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_DynamicValue(); }
+} testDescription_suite_TestMeta_Testsize_of_DynamicValue;
 
-static class TestDescription_suite_TestMeta_TestSizeOf_NestedArray : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_of_NestedArray : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeOf_NestedArray() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 133, "TestSizeOf_NestedArray" ) {}
- void runTest() { suite_TestMeta.TestSizeOf_NestedArray(); }
-} testDescription_suite_TestMeta_TestSizeOf_NestedArray;
+ TestDescription_suite_TestMeta_Testsize_of_NestedArray() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 133, "Testsize_of_NestedArray" ) {}
+ void runTest() { suite_TestMeta.Testsize_of_NestedArray(); }
+} testDescription_suite_TestMeta_Testsize_of_NestedArray;
 
-static class TestDescription_suite_TestMeta_TestSizeAt_1_to_max : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testsize_at_1_to_max : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestSizeAt_1_to_max() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 136, "TestSizeAt_1_to_max" ) {}
- void runTest() { suite_TestMeta.TestSizeAt_1_to_max(); }
-} testDescription_suite_TestMeta_TestSizeAt_1_to_max;
+ TestDescription_suite_TestMeta_Testsize_at_1_to_max() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 136, "Testsize_at_1_to_max" ) {}
+ void runTest() { suite_TestMeta.Testsize_at_1_to_max(); }
+} testDescription_suite_TestMeta_Testsize_at_1_to_max;
 
-static class TestDescription_suite_TestMeta_TestOffsetOf_basic : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testoffset_of_basic : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestOffsetOf_basic() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 139, "TestOffsetOf_basic" ) {}
- void runTest() { suite_TestMeta.TestOffsetOf_basic(); }
-} testDescription_suite_TestMeta_TestOffsetOf_basic;
+ TestDescription_suite_TestMeta_Testoffset_of_basic() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 139, "Testoffset_of_basic" ) {}
+ void runTest() { suite_TestMeta.Testoffset_of_basic(); }
+} testDescription_suite_TestMeta_Testoffset_of_basic;
 
-static class TestDescription_suite_TestMeta_TestOffsetOf_bitset : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testoffset_of_bitset : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestOffsetOf_bitset() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 140, "TestOffsetOf_bitset" ) {}
- void runTest() { suite_TestMeta.TestOffsetOf_bitset(); }
-} testDescription_suite_TestMeta_TestOffsetOf_bitset;
+ TestDescription_suite_TestMeta_Testoffset_of_bitset() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 140, "Testoffset_of_bitset" ) {}
+ void runTest() { suite_TestMeta.Testoffset_of_bitset(); }
+} testDescription_suite_TestMeta_Testoffset_of_bitset;
 
-static class TestDescription_suite_TestMeta_TestOffsetOf_nested : public CxxTest::RealTestDescription {
+static class TestDescription_suite_TestMeta_Testoffset_of_nested : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_TestMeta_TestOffsetOf_nested() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 141, "TestOffsetOf_nested" ) {}
- void runTest() { suite_TestMeta.TestOffsetOf_nested(); }
-} testDescription_suite_TestMeta_TestOffsetOf_nested;
+ TestDescription_suite_TestMeta_Testoffset_of_nested() : CxxTest::RealTestDescription( Tests_TestMeta, suiteDescription_TestMeta, 141, "Testoffset_of_nested" ) {}
+ void runTest() { suite_TestMeta.Testoffset_of_nested(); }
+} testDescription_suite_TestMeta_Testoffset_of_nested;
 
 static class TestDescription_suite_TestMeta_TestBitSet_constructor : public CxxTest::RealTestDescription {
 public:

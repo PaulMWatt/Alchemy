@@ -218,7 +218,7 @@ public:
 protected:
   //  Member Data **************************************************************
   static const 
-    size_t  k_size = Hg::SizeOf<typename T::format_type>::value; 
+    size_t  k_size = Hg::size_of<typename T::format_type>::value; 
 
 
   byte_t     *m_pBuffer;      ///< pointer to the raw data buffer.

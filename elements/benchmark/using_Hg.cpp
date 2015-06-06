@@ -29,7 +29,7 @@ void test_impl( DataBuffer &data,
 {
   typedef Hg::basic_msg<T, Hg::BufferedStaticStoragePolicy>   HgType;
 
-  size_t len = Hg::SizeOf<HgType>::value;
+  size_t len = Hg::size_of<HgType>::value;
   size_t count = data.Size() / len;
 
   cout << name << " size: " << len   << "\t\tcount: " << count << endl;

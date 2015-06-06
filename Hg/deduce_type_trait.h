@@ -25,7 +25,7 @@ namespace detail
 /// suited for specified type.
 /// The constructed type can be accessed through the public typedef *type*. 
 /// 
-/// @paramt ValueT      [typename] The value to identify the traits.
+/// @tparam ValueT      [typename] The value to identify the traits.
 /// 
 template< typename  ValueT >
 struct DeduceTypeTrait
@@ -90,19 +90,19 @@ public:
 };
 
 //  ****************************************************************************
-/// A specialization that will deduce the traits from an index in a TypeList.
+/// A specialization that will deduce the traits from an index in a type_list.
 /// 
-/// @paramt IdxT
-/// @paramt FormatT
+/// @tparam IdxT
+/// @tparam FormatT
 /// 
 template< size_t    IdxT,
           typename  FormatT
         >
-struct DeduceTypeAtTrait
+struct Deducetype_atTrait
 {
 private:
   typedef typename 
-    TypeAt< IdxT, FormatT >::type           value_type;
+    type_at< IdxT, FormatT >::type           value_type;
 
   typedef typename
     DeduceTypeTrait<value_type>::type       deduced_type_trait;

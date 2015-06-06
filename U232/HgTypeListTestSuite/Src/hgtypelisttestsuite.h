@@ -1,6 +1,6 @@
-//  HgTypeListTestSuite
+//  Hgtype_listTestSuite
 //     
-//  @file HgTypeListTestSuite.hpp
+//  @file Hgtype_listTestSuite.hpp
 //  
 //  Verifies the type modification processor to convert user-defined typelists to Hg compatible typelists.
 //  Each test verifies some substitution type that should or should not occur to create
@@ -27,8 +27,8 @@
 //   TS_TRACE(message):                       Print message as an information message
 //  ****************************************************************************  
     
-#ifndef HgTypeListTestSuite_H_INCLUDED
-#define HgTypeListTestSuite_H_INCLUDED
+#ifndef Hgtype_listTestSuite_H_INCLUDED
+#define Hgtype_listTestSuite_H_INCLUDED
 
 #include <cxxtest/TestSuite.h>
 #include <alchemy.h>
@@ -53,32 +53,34 @@ ALCHEMY_PACKED
 namespace Hg
 {
 //  ****************************************************************************
-typedef TypeList
+typedef type_list
 <
   uint32_t,      
   std::array<uint16_t, 5>
 > Hg_nested_basic;
 
 //  ****************************************************************************
-typedef TypeList
+typedef type_list
 <
   uint32_t,      
   std::array<mixed_bits, 5>
 > Hg_nested_sub;
 
+#ifdef ENABLE_BITFIELD_SEQUENCE
 //  ****************************************************************************
-typedef TypeList
+typedef type_list
 <
   uint32_t,      
   Hg::BitFieldArray<mixed_bits, 5>
 > Hg_nested_adjusted;
+#endif
 
 }
 
 //  ****************************************************************************
 //  A type array used to create the nested message field.
 //
-typedef TypeList
+typedef type_list
 <
   uint32_t,      
   mixed_bits,        // Extra bytes are required after this field to test offsets.
@@ -99,7 +101,7 @@ typedef TypeList
 //  ****************************************************************************
 //  The expected hg typelist after conversion of hg_list_t.
 //
-typedef TypeList
+typedef type_list
 <
   uint32_t,      
   mixed_bits,        // Extra bytes are required after this field to test offsets.
@@ -119,12 +121,12 @@ typedef TypeList
 
 
 //  ****************************************************************************
-//  HgTypeListTestSuite Test Suite class.
-class HgTypeListTestSuite : public CxxTest::TestSuite
+//  Hgtype_listTestSuite Test Suite class.
+class Hgtype_listTestSuite : public CxxTest::TestSuite
 {
 public:
 
-  HgTypeListTestSuite()
+  Hgtype_listTestSuite()
   { }
 
   // Fixture Management ******************************************************
@@ -148,23 +150,23 @@ public:
 //  void TestArraySubNested();
 #endif
   void TestArrayArrayNoSub();
-  void TestArrayArrayBitSet();
+//  void TestArrayArrayBitSet();
   void TestVectorNoSub();
 #ifdef ENABLE_BITFIELD_SEQUENCE
 //  void TestVectorSubBitFields();
 //  void TestVectorSubNested();
 #endif
   void TestVectorArrayNoSub();
-  void TestVectorArrayBitSet();
+//  void TestVectorArrayBitSet();
 
 };
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestNoSubstitution()
+void Hgtype_listTestSuite::TestNoSubstitution()
 {
   // Verify a Typelist that does not perform any substitution for
   // any of the types used in the Typelist.
-  typedef TypeList
+  typedef type_list
   <
     char,
     short,
@@ -180,9 +182,9 @@ void HgTypeListTestSuite::TestNoSubstitution()
 }
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestArrayNoSub()
+void Hgtype_listTestSuite::TestArrayNoSub()
 {
-  typedef TypeList
+  typedef type_list
   <
     std::array<char,  10>,
     std::array<short, 10>,
@@ -198,9 +200,9 @@ void HgTypeListTestSuite::TestArrayNoSub()
 
 #ifdef ENABLE_BITFIELD_SEQUENCE
 //  ****************************************************************************
-void HgTypeListTestSuite::TestArraySubBitFields()
+void Hgtype_listTestSuite::TestArraySubBitFields()
 {
-  typedef TypeList
+  typedef type_list
   <
     std::array<mixed_bits, 5>
   > SUT;
@@ -211,7 +213,7 @@ void HgTypeListTestSuite::TestArraySubBitFields()
 }
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestArraySubNested()
+void Hgtype_listTestSuite::TestArraySubNested()
 {
   typedef Hg::Hg_nested_sub                 SUT;
   typedef make_Hg_type_list<SUT>::type      result_type;
@@ -222,9 +224,9 @@ void HgTypeListTestSuite::TestArraySubNested()
 #endif
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestArrayArrayNoSub()
+void Hgtype_listTestSuite::TestArrayArrayNoSub()
 {
-  typedef TypeList
+  typedef type_list
   <
     std::array< std::array<Hg::Hg_nested_basic, 10>, 5>
   > SUT;
@@ -234,15 +236,16 @@ void HgTypeListTestSuite::TestArrayArrayNoSub()
   TS_ASSERT((std::is_same<SUT, result_type>::value));
 }
 
+#ifdef ENABLE_BITFIELD_SEQUENCE
 //  ****************************************************************************
-void HgTypeListTestSuite::TestArrayArrayBitSet()
+void Hgtype_listTestSuite::TestArrayArrayBitSet()
 {
-  typedef TypeList
+  typedef type_list
   <
     std::array< std::array<mixed_bits, 10>, 2 >
   > SUT;
 
-  typedef TypeList
+  typedef type_list
   <
     std::array< BitFieldArray<mixed_bits, 10>, 2 >
   > expected_type;
@@ -251,11 +254,13 @@ void HgTypeListTestSuite::TestArrayArrayBitSet()
 
   TS_ASSERT(!(std::is_same<expected_type, result_type>::value));
 }
+#endif
+
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestVectorNoSub()
+void Hgtype_listTestSuite::TestVectorNoSub()
 {
-  typedef TypeList
+  typedef type_list
   <
     size_t,
     std::vector<char>,
@@ -272,9 +277,9 @@ void HgTypeListTestSuite::TestVectorNoSub()
 
 #ifdef ENABLE_BITFIELD_SEQUENCE
 //  ****************************************************************************
-void HgTypeListTestSuite::TestVectorSubBitFields()
+void Hgtype_listTestSuite::TestVectorSubBitFields()
 {
-  typedef TypeList
+  typedef type_list
   <
     size_t,
     std::vector<mixed_bits>
@@ -286,14 +291,14 @@ void HgTypeListTestSuite::TestVectorSubBitFields()
 }
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestVectorSubNested()
+void Hgtype_listTestSuite::TestVectorSubNested()
 {
-  typedef TypeList
+  typedef type_list
   <
     std::vector<Hg::Hg_nested_sub>
   > SUT;
 
-  typedef TypeList
+  typedef type_list
   <
     std::vector<Hg::Hg_nested_adjusted>
   > expected_type;
@@ -305,9 +310,9 @@ void HgTypeListTestSuite::TestVectorSubNested()
 #endif
 
 //  ****************************************************************************
-void HgTypeListTestSuite::TestVectorArrayNoSub()
+void Hgtype_listTestSuite::TestVectorArrayNoSub()
 {
-  typedef TypeList
+  typedef type_list
   <
     std::vector< std::array<uint32_t, 10> >
   > SUT;
@@ -317,15 +322,16 @@ void HgTypeListTestSuite::TestVectorArrayNoSub()
   TS_ASSERT((std::is_same<SUT, result_type>::value));
 }
 
+#ifdef ENABLE_BITFIELD_SEQUENCE
 //  ****************************************************************************
-void HgTypeListTestSuite::TestVectorArrayBitSet()
+void Hgtype_listTestSuite::TestVectorArrayBitSet()
 {
-  typedef TypeList
+  typedef type_list
   <
     std::vector< std::array<mixed_bits, 10> >
   > SUT;
 
-  typedef TypeList
+  typedef type_list
   <
     std::vector< BitFieldArray<mixed_bits, 10> >
   > expected_type;
@@ -335,5 +341,7 @@ void HgTypeListTestSuite::TestVectorArrayBitSet()
   TS_ASSERT(!(std::is_same<expected_type, result_type>::value));
 
 }
+#endif
+
 
 #endif

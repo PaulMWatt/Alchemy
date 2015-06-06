@@ -116,46 +116,46 @@ struct Deserializer
 //  ****************************************************************************
 //  Imports an array of bit-list fields.
 //
-template< typename T,
-          size_t   N,
-          typename BufferT
-        >
-struct Deserializer <Hg::BitFieldArray<T,N>, BufferT, packed_trait>
-  : public std::integral_constant<size_t, N>
-{
-  typedef Hg::BitFieldArray<T,N>        array_type;
-  typedef typename
-    array_type::value_type              value_type;
-  typedef BufferT                       buffer_type;
-  typedef packed_trait                  data_type_trait;
-
-  //  **************************************************************************
-  size_t Read ( array_type   &value, 
-                size_t        count,
-                buffer_type  &buffer,
-                size_t        offset)
-  {
-    if (0 == count)
-    {
-      return 0;
-    }
-
-    // Calculate the size of data to write in bytes.
-    size_t size = count * sizeof(value_type);
-
-    value_type *pFirst = &(value[0].value());
-
-    return buffer.get_range(pFirst, size, offset);
-  }
-
-  //  **************************************************************************
-  size_t Read ( value_type   &value, 
-                buffer_type  &buffer,
-                size_t        offset)
-  {
-    return buffer.get_data( value, offset);
-  }
-};
+//template< typename T,
+//          size_t   N,
+//          typename BufferT
+//        >
+//struct Deserializer <Hg::BitFieldArray<T,N>, BufferT, packed_trait>
+//  : public std::integral_constant<size_t, N>
+//{
+//  typedef Hg::BitFieldArray<T,N>        array_type;
+//  typedef typename
+//    array_type::value_type              value_type;
+//  typedef BufferT                       buffer_type;
+//  typedef packed_trait                  data_type_trait;
+//
+//  //  **************************************************************************
+//  size_t Read ( array_type   &value, 
+//                size_t        count,
+//                buffer_type  &buffer,
+//                size_t        offset)
+//  {
+//    if (0 == count)
+//    {
+//      return 0;
+//    }
+//
+//    // Calculate the size of data to write in bytes.
+//    size_t size = count * sizeof(value_type);
+//
+//    value_type *pFirst = &(value[0].value());
+//
+//    return buffer.get_range(pFirst, size, offset);
+//  }
+//
+//  //  **************************************************************************
+//  size_t Read ( value_type   &value, 
+//                buffer_type  &buffer,
+//                size_t        offset)
+//  {
+//    return buffer.get_data( value, offset);
+//  }
+//};
 
 
 //  ****************************************************************************
@@ -518,7 +518,7 @@ struct UnpackDatum< IdxT,
                   const BufferT  &buffer,
                         size_t   &dynamic_offset)
   {
-    size_t     offset = Hg::OffsetOf<IdxT, typename MsgT::format_type>::value
+    size_t     offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
                       + dynamic_offset;
 
     // Read directly into the output array.

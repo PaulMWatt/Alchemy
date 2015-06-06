@@ -54,7 +54,7 @@ struct PackDatum<IdxT, MsgT, BufferT, nested_trait>
       proxy_type::value_type                                            value_type;
 
     value_type &value  = msg.template FieldAt<IdxT>().get();
-    size_t     offset = Hg::OffsetOf<IdxT, typename MsgT::format_type>::value
+    size_t     offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
                       + dynamic_offset;
     pack_message< value_type, 
                   BufferT,

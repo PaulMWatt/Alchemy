@@ -81,7 +81,7 @@ protected:
   static const 
     Hg_type_t k_test_msg_type = k_vertex_t;
   static const 
-    size_t k_msg_buffer_len = Hg::SizeOf<Hg::vertex_t>::value;
+    size_t k_msg_buffer_len = Hg::size_of<Hg::vertex_t>::value;
 
   // Test Suite Data **********************************************************
   Hg_msg_t    *m_pSut;
@@ -578,7 +578,7 @@ void CarbonTestSuite::Test_Hg_destroy()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_field_alloc()
 {
-  const size_t k_triangle_size = Hg::SizeOf<Hg::triangle_t>::value;
+  const size_t k_triangle_size = Hg::size_of<Hg::triangle_t>::value;
   const size_t k_control = k_triangle_size * 12;
 
   Hg_msg_t *p_msg = GetSUT(k_object_t);
@@ -660,7 +660,7 @@ void CarbonTestSuite::Test_Hg_type_Uninitialized()
 //  ******************************************************************************
 void CarbonTestSuite::Test_Hg_size()
 {
-  const size_t k_control = Hg::SizeOf<Hg::ray_t>::value;
+  const size_t k_control = Hg::size_of<Hg::ray_t>::value;
   Hg_msg_t *p_msg = GetSUT(k_ray_t);
 
   // SUT
@@ -682,8 +682,8 @@ void CarbonTestSuite::Test_Hg_size_Uninitialized()
 void CarbonTestSuite::Test_Hg_data_size()
 {
   const size_t k_count          = 4;
-  const size_t k_triangle_size  = Hg::SizeOf<Hg::triangle_t>::value;
-  const size_t k_control        = Hg::SizeOf<Hg::object_t>::value
+  const size_t k_triangle_size  = Hg::size_of<Hg::triangle_t>::value;
+  const size_t k_control        = Hg::size_of<Hg::object_t>::value
                                 + (k_triangle_size * k_count);
 
   Hg_msg_t *p_msg = GetSUT(k_object_t);

@@ -56,7 +56,7 @@ struct UnpackDatum<IdxT, MsgT, BufferT, nested_trait>
     typedef typename
       proxy_type::value_type                                            value_type;
 
-    size_t     offset = Hg::OffsetOf<IdxT, typename MsgT::format_type>::value
+    size_t     offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
                       + dynamic_offset;
     value_type& value = msg.template FieldAt<IdxT>().get();
     unpack_message< value_type, 

@@ -257,8 +257,8 @@ void TestMessageSuite::Testempty_false()
 void TestMessageSuite::TestSize()
 {
   // SUT
-  SUT sut(get_buffer().get(), Hg::SizeOf<SUT::format_type>::value);
-  TS_ASSERT_EQUALS(Hg::SizeOf<SUT::format_type>::value, sut.size());
+  SUT sut(get_buffer().get(), Hg::size_of<SUT::format_type>::value);
+  TS_ASSERT_EQUALS(Hg::size_of<SUT::format_type>::value, sut.size());
 }
 
 //  ****************************************************************************

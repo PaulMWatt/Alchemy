@@ -14,7 +14,7 @@
 namespace Hg
 {
 
-typedef TypeList 
+typedef type_list 
         <
           uint8_t,      
           uint8_t,      
@@ -22,7 +22,7 @@ typedef TypeList
           uint32_t      
         > Basic_format;
  
-typedef TypeList 
+typedef type_list 
         <
           uint32_t,     
           Basic_format, 
@@ -55,20 +55,20 @@ ALCHEMY_PACKED
 namespace Hg
 {
 
-typedef TypeList 
+typedef type_list 
         <
           Bits_type_a,
           Bits_type_b
         > Bitset_format; 
 
-typedef TypeList 
+typedef type_list 
         <
           uint8_t,
           uint16_t,
           Bitset_format
         > Nested_bitset_format; 
 
-typedef TypeList
+typedef type_list
         <
           uint8_t,            
           uint8_t,      
@@ -77,7 +77,7 @@ typedef TypeList
           Nested_format   
         > Compound_format;
 
-typedef TypeList
+typedef type_list
         <
           uint8_t,        
           Compound_format

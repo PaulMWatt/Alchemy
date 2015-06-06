@@ -497,7 +497,7 @@ void TestDynamicMessageSuite::TestSize()
   // SUT
   SUT sut;
 
-  TS_ASSERT_EQUALS(Hg::SizeOf<SUT::format_type>::value, sut.size());
+  TS_ASSERT_EQUALS(Hg::size_of<SUT::format_type>::value, sut.size());
 }
 
 //  ****************************************************************************

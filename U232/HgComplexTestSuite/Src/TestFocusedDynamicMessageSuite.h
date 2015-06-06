@@ -593,7 +593,7 @@ typedef Hg::basic_msg<Hg::vinst_t>        MsgInstance;
 typedef MsgInstance                               SUT;
 
 const size_t k_count        = 2;
-const size_t k_buffer_size  = 2 + (Hg::SizeOf<Hg::instance_t>::value * 2);
+const size_t k_buffer_size  = 2 + (Hg::size_of<Hg::instance_t>::value * 2);
 
 //  ************************************
 void make_buffer(byte_vector &buffer)

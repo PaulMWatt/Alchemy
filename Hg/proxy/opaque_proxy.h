@@ -15,7 +15,6 @@
 
 #include <Pb/meta_fwd.h>
 #include <Pb/type_list.h>
-#include <Pb/type_at.h>
 #include <Hg/datum/datum.h>
 #include <Hg/storage_policy.h>
 
@@ -33,8 +32,8 @@ namespace detail
 /// This version derives from the Vector Proxy.
 /// Additional functionality is defined for obtaining views of the data buffers.
 /// 
-/// @paramt IdxT
-/// @paramt FormatType
+/// @tparam IdxT
+/// @tparam FormatType
 /// 
 template< size_t    IdxT,
           typename  FormatT
@@ -64,12 +63,12 @@ struct DataProxy <opaque_vector_trait, IdxT, FormatT>
   typedef typename
     field_type::index_type              index_type;
                                         ///< The raw type extracted at the current
-                                        ///  index defined in the parent TypeList.
+                                        ///  index defined in the parent type_list.
   typedef typename
     index_type::value_type              data_type;
                                         ///< The value type of the element extracted 
                                         ///  at the current index defined in the 
-                                        ///  parent TypeList.
+                                        ///  parent type_list.
 
   //  Typedefs *****************************************************************
   typedef typename
@@ -136,8 +135,8 @@ struct DataProxy <opaque_vector_trait, IdxT, FormatT>
 ///// This version derives from the Array Proxy.
 ///// Additional functionality is defined for obtaining views of the data buffers.
 ///// 
-///// @paramt IdxT
-///// @paramt FormatType
+///// @tparam IdxT
+///// @tparam FormatType
 ///// 
 //template< size_t    IdxT,
 //          typename  FormatT
@@ -167,12 +166,12 @@ struct DataProxy <opaque_vector_trait, IdxT, FormatT>
 //  typedef typename
 //    field_type::index_type              index_type;
 //                                        ///< The raw type extracted at the current
-//                                        ///  index defined in the parent TypeList.
+//                                        ///  index defined in the parent type_list.
 //  typedef typename
 //    index_type::value_type              data_type;
 //                                        ///< The value type of the element extracted 
 //                                        ///  at the current index defined in the 
-//                                        ///  parent TypeList.
+//                                        ///  parent type_list.
 //
 //  //  Typedefs *****************************************************************
 //  typedef typename

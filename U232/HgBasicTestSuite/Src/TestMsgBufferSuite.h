@@ -6,11 +6,11 @@
 // 
 // The individual data fields are not available at this level. 
 // MsgBuffer is aware of the format of the data due to the format_type,
-// TypeList definition. 
+// type_list definition. 
 // 
 // The tests require stuffing buffers in the worker functions to match the
 // expected results. These buffers are populated with the expected values at
-// the offset locations defined in the encoded TypeList.
+// the offset locations defined in the encoded type_list.
 //
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
@@ -129,14 +129,14 @@ protected:
   {
     // Provide plenty of extra storage for the nested type,
     // this will allow for flexible offsets.
-    const size_t k_len = Hg::SizeOf<format_type>::value ;
+    const size_t k_len = Hg::size_of<format_type>::value ;
     return s_pointer(new(std::nothrow) data_type[k_len]);
   }
 
   //  ****************************************************************************
   size_t GetLength()
   {
-    return Hg::SizeOf<format_type>::value;
+    return Hg::size_of<format_type>::value;
   }
 
   //  ****************************************************************************
@@ -204,22 +204,22 @@ protected:
     //// data->ul32  = k_unsigned32_t;
     //// data->uc8   = k_unsigned8_t;
 
-    ::memcpy( &(pBuffer[ Hg::OffsetOf<0,format_type>::value ]), 
+    ::memcpy( &(pBuffer[ Hg::offset_of<0,format_type>::value ]), 
               &k_signed8_t, 
               sizeof(int8_t));
-    ::memcpy( &(pBuffer[ Hg::OffsetOf<1,format_type>::value ]), 
+    ::memcpy( &(pBuffer[ Hg::offset_of<1,format_type>::value ]), 
               &k_signed16_t, 
               sizeof(int16_t));
-    ::memcpy( &(pBuffer[ Hg::OffsetOf<2,format_type>::value ]), 
+    ::memcpy( &(pBuffer[ Hg::offset_of<2,format_type>::value ]), 
               &k_signed32_t, 
               sizeof(int32_t));
-    ::memcpy( &(pBuffer[ Hg::OffsetOf<3,format_type>::value ]), 
+    ::memcpy( &(pBuffer[ Hg::offset_of<3,format_type>::value ]), 
               &k_unsigned16_t, 
               sizeof(uint16_t));
-    ::memcpy( &(pBuffer[ Hg::OffsetOf<4,format_type>::value ]), 
+    ::memcpy( &(pBuffer[ Hg::offset_of<4,format_type>::value ]), 
               &k_unsigned32_t, 
               sizeof(uint32_t));
-    ::memcpy( &(pBuffer[ Hg::OffsetOf<5,format_type>::value ]), 
+    ::memcpy( &(pBuffer[ Hg::offset_of<5,format_type>::value ]), 
               &k_unsigned8_t, 
               sizeof(uint8_t));
 
@@ -245,22 +245,22 @@ protected:
     //// data->ul32  = k_other_unsigned32_t;
     //// data->uc8   = k_unsigned8_t;
 
-    ::memcpy( &pBuffer[ Hg::OffsetOf<0,format_type>::value ], 
+    ::memcpy( &pBuffer[ Hg::offset_of<0,format_type>::value ], 
               &k_signed8_t, 
               sizeof(int8_t));
-    ::memcpy( &pBuffer[ Hg::OffsetOf<1,format_type>::value ], 
+    ::memcpy( &pBuffer[ Hg::offset_of<1,format_type>::value ], 
               &k_other_signed16_t, 
               sizeof(int16_t));
-    ::memcpy( &pBuffer[ Hg::OffsetOf<2,format_type>::value ], 
+    ::memcpy( &pBuffer[ Hg::offset_of<2,format_type>::value ], 
               &k_other_signed32_t, 
               sizeof(int32_t));
-    ::memcpy( &pBuffer[ Hg::OffsetOf<3,format_type>::value ], 
+    ::memcpy( &pBuffer[ Hg::offset_of<3,format_type>::value ], 
               &k_other_unsigned16_t, 
               sizeof(uint16_t));
-    ::memcpy( &pBuffer[ Hg::OffsetOf<4,format_type>::value ], 
+    ::memcpy( &pBuffer[ Hg::offset_of<4,format_type>::value ], 
               &k_other_unsigned32_t, 
               sizeof(uint32_t));
-    ::memcpy( &pBuffer[ Hg::OffsetOf<5,format_type>::value ], 
+    ::memcpy( &pBuffer[ Hg::offset_of<5,format_type>::value ], 
               &k_unsigned8_t, 
               sizeof(uint8_t));
 
@@ -419,37 +419,37 @@ void TestMsgBufferSuite::Testget_data()
 
   // SUT: Test every parameter
   int8_t c8 = 0;
-  size_t size_read = sut.get_data(c8, Hg::OffsetOf<0,format_type>::value);
+  size_t size_read = sut.get_data(c8, Hg::offset_of<0,format_type>::value);
 
   TS_ASSERT_EQUALS(sizeof(c8), size_read);
   TS_ASSERT_EQUALS(k_signed8_t, c8);
 
   int16_t s16 = 0;
-  size_read = sut.get_data(s16, Hg::OffsetOf<1, format_type>::value);
+  size_read = sut.get_data(s16, Hg::offset_of<1, format_type>::value);
 
   TS_ASSERT_EQUALS(sizeof(s16), size_read);
   TS_ASSERT_EQUALS(k_signed16_t, s16);
 
   int32_t l32 = 0;
-  size_read = sut.get_data(l32, Hg::OffsetOf<2, format_type>::value);
+  size_read = sut.get_data(l32, Hg::offset_of<2, format_type>::value);
 
   TS_ASSERT_EQUALS(sizeof(l32), size_read);
   TS_ASSERT_EQUALS(k_signed32_t, l32);
 
   uint16_t us16 = 0;
-  size_read = sut.get_data(us16, Hg::OffsetOf<3, format_type>::value);
+  size_read = sut.get_data(us16, Hg::offset_of<3, format_type>::value);
 
   TS_ASSERT_EQUALS(sizeof(us16), size_read);
   TS_ASSERT_EQUALS(k_unsigned16_t, us16);
 
   uint32_t ul32 = 0;
-  size_read = sut.get_data(ul32, Hg::OffsetOf<4, format_type>::value);
+  size_read = sut.get_data(ul32, Hg::offset_of<4, format_type>::value);
 
   TS_ASSERT_EQUALS(sizeof(ul32), size_read);
   TS_ASSERT_EQUALS(k_unsigned32_t, ul32);
 
   uint8_t uc8 = 0;
-  size_read = sut.get_data(uc8, Hg::OffsetOf<5, format_type>::value);
+  size_read = sut.get_data(uc8, Hg::offset_of<5, format_type>::value);
 
   TS_ASSERT_EQUALS(sizeof(uc8), size_read);
   TS_ASSERT_EQUALS(k_unsigned8_t, uc8);
@@ -490,7 +490,7 @@ void TestMsgBufferSuite::Testget_data_NotValid()
 
   // SUT
   int32_t l32 = 0xAAAAAAAA;
-  size_t status = sut.get_data(l32, Hg::OffsetOf<2,format_type>::value);
+  size_t status = sut.get_data(l32, Hg::offset_of<2,format_type>::value);
 
   TS_ASSERT_DIFFERS(sizeof(l32), status);
   TS_ASSERT_EQUALS(0xAAAAAAAA, l32);
@@ -504,27 +504,27 @@ void TestMsgBufferSuite::TestSetData()
 
   // SUT
   int8_t c8 = k_signed8_t;
-  size_t status = sut.set_data(c8, Hg::OffsetOf<0,format_type>::value);
+  size_t status = sut.set_data(c8, Hg::offset_of<0,format_type>::value);
   TS_ASSERT_EQUALS(sizeof(c8), status);
 
   int16_t s16 = k_signed16_t;
-  status = sut.set_data(s16, Hg::OffsetOf<1,format_type>::value);
+  status = sut.set_data(s16, Hg::offset_of<1,format_type>::value);
   TS_ASSERT_EQUALS(sizeof(s16), status);
 
   int32_t l32 = k_signed32_t;
-  status = sut.set_data(l32, Hg::OffsetOf<2,format_type>::value);
+  status = sut.set_data(l32, Hg::offset_of<2,format_type>::value);
   TS_ASSERT_EQUALS(sizeof(l32), status);
 
   uint16_t us16 = k_unsigned16_t;
-  status = sut.set_data(us16, Hg::OffsetOf<3,format_type>::value);
+  status = sut.set_data(us16, Hg::offset_of<3,format_type>::value);
   TS_ASSERT_EQUALS(sizeof(us16), status);
 
   uint32_t ul32 = k_unsigned32_t;
-  status = sut.set_data(ul32, Hg::OffsetOf<4,format_type>::value);
+  status = sut.set_data(ul32, Hg::offset_of<4,format_type>::value);
   TS_ASSERT_EQUALS(sizeof(ul32), status);
 
   uint8_t uc8 = k_unsigned8_t;
-  status = sut.set_data(uc8, Hg::OffsetOf<5,format_type>::value);
+  status = sut.set_data(uc8, Hg::offset_of<5,format_type>::value);
   TS_ASSERT_EQUALS(sizeof(uc8), status);
 
   // Verify the buffer.
@@ -553,7 +553,7 @@ void TestMsgBufferSuite::TestSetData_NotValid()
 
   // SUT
   int32_t l32 = k_signed32_t;
-  size_t status = sut.set_data(l32, Hg::OffsetOf<2,format_type>::value);
+  size_t status = sut.set_data(l32, Hg::offset_of<2,format_type>::value);
 
   TS_ASSERT_DIFFERS(sizeof(l32), status);
 }

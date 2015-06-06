@@ -30,8 +30,8 @@ namespace detail
 /// A convenience meta-function to define the correct type of DataProxy holder.
 /// The constructed type can be accessed through the public typedef *type*. 
 /// 
-/// @paramt IdxT
-/// @paramt FormatT
+/// @tparam IdxT
+/// @tparam FormatT
 /// 
 template< size_t    IdxT,
           typename  FormatT
@@ -43,7 +43,7 @@ struct DeduceProxyType
   //  appropriate Proxy handler for value management.
   //
   typedef typename 
-    DeduceTypeAtTrait < IdxT, 
+    Deducetype_atTrait < IdxT, 
                         FormatT
                       >::type           selected_type;
 

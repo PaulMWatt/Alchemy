@@ -196,7 +196,7 @@
 #define EACH_C_DESTROY(r, typelist, i, x)                                      \
   C::destroy_datum(                                                            \
     src.##BOOST_PP_TUPLE_ELEM(3,2,x),                                          \
-    (Hg::TypeAt<i, Hg::##typelist##_tl>::type*)0);
+    (Hg::type_at<i, Hg::##typelist##_tl>::type*)0);
 
 #if defined(_MSC_VER)
 
@@ -225,7 +225,7 @@
 #define EACH_C_ACTIVE_SIZE(r, typelist, i, x)                                  \
   total_size += C::get_datum_size(                                             \
       src.##BOOST_PP_TUPLE_ELEM(3,2,x),                                        \
-      (Hg::TypeAt<i, Hg::##typelist##_tl>::type*)0);       
+      (Hg::type_at<i, Hg::##typelist##_tl>::type*)0);       
 
 #if defined(_MSC_VER)
 
@@ -332,8 +332,8 @@
 //  ****************************************************************************
 #define EACH_C_SIZE(r, data, i, x)                                             \
   case BOOST_PP_CAT(data, x): {                                                \
-    typedef Hg::TypeAt<BOOST_PP_CAT(data, x) , Hg::exported_types>::type TypeX;\
-    size_t static_size  = Hg::SizeOf<TypeX>::value;                            \
+    typedef Hg::type_at<BOOST_PP_CAT(data, x) , Hg::exported_types>::type TypeX;\
+    size_t static_size  = Hg::size_of<TypeX>::value;                            \
     size_t count = Hg::dynamic_field_count<TypeX::format_type>::value;         \
     size_t dynamic_size = count * sizeof(void*);                               \
     return static_size + dynamic_size;                                         \
@@ -485,7 +485,7 @@ size_t CarbonUnpackMessage( Hg_msg_t            *p_src,                        \
 //  ****************************************************************************
 #define C_DECLARE_EXPORTED_TYPES(...)                                          \
   BEGIN_NAMESPACE(Hg);                                                         \
-    DEFINE_TYPELIST(exported_types, __VA_ARGS__);                              \
+    using exported_types = make_type_list_t<__VA_ARGS__>;                      \
   END_NAMESPACE(Hg);                                                           \
   C_EXPORTED_TYPES_IMPL(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
 

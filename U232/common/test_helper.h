@@ -37,7 +37,7 @@ struct HgTestHelper
   template <typename FormatT>
   s_pointer create_data_bufferT()
   {
-    const size_t k_len = Hg::SizeOf<FormatT>::value;
+    const size_t k_len = Hg::size_of<FormatT>::value;
     return s_pointer(new(std::nothrow) data_type[k_len]);
   }
 
@@ -55,7 +55,7 @@ struct HgTestHelper
   //  ****************************************************************************
   size_t get_length()
   {
-    return Hg::SizeOf<T>::value;
+    return Hg::size_of<T>::value;
   }
 
   //  ****************************************************************************

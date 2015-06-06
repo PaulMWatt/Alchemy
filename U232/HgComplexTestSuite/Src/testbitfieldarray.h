@@ -129,7 +129,7 @@
 //  void TestEmpty_true();
 //  void TestEmpty_false();
 //  void TestSize();
-//  void TestSizeOf();
+//  void Testsize_of();
 //
 //  // Accessors
 //  void TestData_const();
@@ -260,7 +260,7 @@
 //}
 //
 ////  ****************************************************************************
-//void TestBitFieldArray::TestSizeOf()
+//void TestBitFieldArray::Testsize_of()
 //{
 //  const size_t k_control = k_count * sizeof(SUT::value_type);
 //

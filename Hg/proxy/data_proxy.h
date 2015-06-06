@@ -14,9 +14,7 @@
 //  Includes ******************************************************************
 
 #include <Pb/meta_fwd.h>
-#include <Pb/length.h>
 #include <Pb/type_list.h>
-#include <Pb/type_at.h>
 #include <Hg/datum/datum.h>
 #include <Hg/storage_policy.h>
 
@@ -29,11 +27,11 @@ namespace detail
 //  ****************************************************************************
 /// A template to adapt all field types to the Datum assignment.
 /// 
-/// @paramt datum_trait     The general category of proxy management required by
+/// @tparam datum_trait     The general category of proxy management required by
 ///                         the specified field.
-/// @paramt kt_idx
-/// @paramt format_type
-/// @paramt kt_offset
+/// @tparam kt_idx
+/// @tparam format_type
+/// @tparam kt_offset
 /// 
 template< typename  datum_trait, 
           size_t    kt_idx,

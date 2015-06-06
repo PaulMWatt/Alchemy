@@ -20,8 +20,6 @@ which is a required component of alchemy.
 
 TestArrayProxySuite.h:
 
-TestBitFieldArray.h:
-
 TestDynamicMessageSuite.h:
 
 TestDynTypePermsSuite.h:

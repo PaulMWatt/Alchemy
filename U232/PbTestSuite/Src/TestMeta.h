@@ -101,44 +101,44 @@ public:
 
   // Specializations
   void Test_type_container_empty();
-  void Test_type_container_TypeList();
+  void Test_type_container_type_list();
   void Test_type_container_traits();
 
-  // Test ContainerSize ********************************************************
-  void TestContainerSize();
+  // Test container_size ********************************************************
+  void Testcontainer_size();
 
   // Test length, TypeContainer item count *************************************
 //  void Test_length();
 
-  // TypeAt Template Tests *****************************************************
-  void TestTypeAt_1_to_max();
+  // type_at Template Tests *****************************************************
+  void Testtype_at_1_to_max();
 
-  // SizeOf Template Tests *****************************************************
+  // size_of Template Tests *****************************************************
   // Verify the intrinsic types
-  void TestSizeOf_char();
-  void TestSizeOf_uchar();
-  void TestSizeOf_short();
-  void TestSizeOf_ushort();
-  void TestSizeOf_long();
-  void TestSizeOf_ulong();
-  void TestSizeOf_float();
-  void TestSizeOf_double();
+  void Testsize_of_char();
+  void Testsize_of_uchar();
+  void Testsize_of_short();
+  void Testsize_of_ushort();
+  void Testsize_of_long();
+  void Testsize_of_ulong();
+  void Testsize_of_float();
+  void Testsize_of_double();
 
   // Verify the type_containers
-  void TestSizeOf_empty();
-  void TestSizeOf_TypeList();
-  void TestSizeOf_NestedNestedTypeList();
-  void TestSizeOf_BitSet();
-  void TestSizeOf_DynamicValue();
-  void TestSizeOf_NestedArray();
+  void Testsize_of_empty();
+  void Testsize_of_type_list();
+  void Testsize_of_NestedNestedtype_list();
+  void Testsize_of_BitSet();
+  void Testsize_of_DynamicValue();
+  void Testsize_of_NestedArray();
 
-  // SizeAt Template Tests *****************************************************
-  void TestSizeAt_1_to_max();
+  // size_at Template Tests *****************************************************
+  void Testsize_at_1_to_max();
 
-  // OffsetOf Template Tests ***************************************************
-  void TestOffsetOf_basic();
-  void TestOffsetOf_bitset();
-  void TestOffsetOf_nested();
+  // offset_of Template Tests ***************************************************
+  void Testoffset_of_basic();
+  void Testoffset_of_bitset();
+  void Testoffset_of_nested();
 
   //  BitSet Body Tests ********************************************************
   void TestBitSet_constructor();
@@ -307,12 +307,12 @@ void TestMeta::Test_type_container_empty()
 }
 
 //  ****************************************************************************
-void TestMeta::Test_type_container_TypeList()
+void TestMeta::Test_type_container_type_list()
 {
   // The type array requires an instantiated template type.
-  typedef Hg::TypeList<int>                     sut1_t;
-  typedef Hg::TypeList<int, double>             sut2_t;
-  typedef Hg::TypeList<int, double, ptrdiff_t>  sut3_t;
+  typedef Hg::type_list<int>                     sut1_t;
+  typedef Hg::type_list<int, double>             sut2_t;
+  typedef Hg::type_list<int, double, ptrdiff_t>  sut3_t;
 
   TS_ASSERT(Hg::type_container<sut1_t>::value);
   TS_ASSERT(Hg::type_container<sut2_t>::value);
@@ -327,41 +327,41 @@ void TestMeta::Test_type_container_traits()
 }
 
 //  ****************************************************************************
-void TestMeta::TestContainerSize()
+void TestMeta::Testcontainer_size()
 {
   // Use the pre-declared types for this test.
   // Basic_format
-  const size_t k_control1 = sizeof(Hg::TypeAt<0, Hg::Basic_format>::type)
-                          + sizeof(Hg::TypeAt<1, Hg::Basic_format>::type)
-                          + sizeof(Hg::TypeAt<2, Hg::Basic_format>::type)
-                          + sizeof(Hg::TypeAt<3, Hg::Basic_format>::type);
-  TS_ASSERT_EQUALS(k_control1, Hg::ContainerSize<Hg::Basic_format>::value);
+  const size_t k_control1 = sizeof(Hg::type_at<0, Hg::Basic_format>::type)
+                          + sizeof(Hg::type_at<1, Hg::Basic_format>::type)
+                          + sizeof(Hg::type_at<2, Hg::Basic_format>::type)
+                          + sizeof(Hg::type_at<3, Hg::Basic_format>::type);
+  TS_ASSERT_EQUALS(k_control1, Hg::detail::container_size<Hg::Basic_format>::value);
 
   //  This section contains type_containers ************************************
-  // type_containers must use SizeOf<> or ContainerSize<> to determine the
+  // type_containers must use size_of<> or container_size<> to determine the
   // actual buffer size required. Otherwise, there total object size is reported.
 
   // Compound_format
-  const size_t k_control2 = sizeof(Hg::TypeAt<0, Hg::Compound_format>::type)
-                          + sizeof(Hg::TypeAt<1, Hg::Compound_format>::type)
-                          + sizeof(Hg::TypeAt<2, Hg::Compound_format>::type)
-                          + Hg::SizeOf<Hg::TypeAt<3, Hg::Compound_format>::type>::value
-                          + Hg::SizeOf<Hg::TypeAt<4, Hg::Compound_format>::type>::value;
-  TS_ASSERT_EQUALS(k_control2, Hg::ContainerSize<Hg::Compound_format>::value);
+  const size_t k_control2 = sizeof(Hg::type_at<0, Hg::Compound_format>::type)
+                          + sizeof(Hg::type_at<1, Hg::Compound_format>::type)
+                          + sizeof(Hg::type_at<2, Hg::Compound_format>::type)
+                          + Hg::size_of<Hg::type_at<3, Hg::Compound_format>::type>::value
+                          + Hg::size_of<Hg::type_at<4, Hg::Compound_format>::type>::value;
+  TS_ASSERT_EQUALS(k_control2, Hg::detail::container_size<Hg::Compound_format>::value);
 
   // Nested_compound_format
-  const size_t k_control3 = sizeof(Hg::TypeAt<0, Hg::Nested_compound_format>::type)
-    + Hg::SizeOf<Hg::TypeAt<1, Hg::Nested_compound_format>::type>::value;
-  TS_ASSERT_EQUALS(k_control3, Hg::ContainerSize<Hg::Nested_compound_format>::value);
+  const size_t k_control3 = sizeof(Hg::type_at<0, Hg::Nested_compound_format>::type)
+    + Hg::size_of<Hg::type_at<1, Hg::Nested_compound_format>::type>::value;
+  TS_ASSERT_EQUALS(k_control3, Hg::detail::container_size<Hg::Nested_compound_format>::value);
 
 }
 
 //  ****************************************************************************
-void TestMeta::TestTypeAt_1_to_max()
+void TestMeta::Testtype_at_1_to_max()
 {
-  // This test declares a TypeList with a unique type for each potential
+  // This test declares a type_list with a unique type for each potential
   // index in the array up to the max elements.
-  typedef Hg::TypeList< char,   unsigned char,  short,  unsigned short,
+  typedef Hg::type_list< char,   unsigned char,  short,  unsigned short,
                           int,    unsigned int,   long,   unsigned long,
                           float,  double,         size_t, ptrdiff_t,
                           char*,  const char*,    char&,  const char&,
@@ -372,160 +372,162 @@ void TestMeta::TestTypeAt_1_to_max()
                         > sut_t;
 
   // Each assertion verifies the type at the the requested index
-  // matches the type encoded into the TypeList.
-  TS_ASSERT((std::is_same<char,            Hg::TypeAt<0,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<unsigned char,   Hg::TypeAt<1,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<short,           Hg::TypeAt<2,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<unsigned short,  Hg::TypeAt<3,sut_t>::type>::value));
+  // matches the type encoded into the type_list.
+  TS_ASSERT((std::is_same<char,            Hg::type_at<0,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<unsigned char,   Hg::type_at<1,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<short,           Hg::type_at<2,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<unsigned short,  Hg::type_at<3,sut_t>::type>::value));
                                                                                 
-  TS_ASSERT((std::is_same<int,             Hg::TypeAt<4,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<unsigned int,    Hg::TypeAt<5,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<long,            Hg::TypeAt<6,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<unsigned long,   Hg::TypeAt<7,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<int,             Hg::type_at<4,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<unsigned int,    Hg::type_at<5,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<long,            Hg::type_at<6,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<unsigned long,   Hg::type_at<7,sut_t>::type>::value));
                                                                                 
-  TS_ASSERT((std::is_same<float,           Hg::TypeAt<8,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<double,          Hg::TypeAt<9,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<size_t,          Hg::TypeAt<10,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<ptrdiff_t,       Hg::TypeAt<11,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<float,           Hg::type_at<8,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<double,          Hg::type_at<9,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<size_t,          Hg::type_at<10,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<ptrdiff_t,       Hg::type_at<11,sut_t>::type>::value));
                                                                                   
-  TS_ASSERT((std::is_same<char*,           Hg::TypeAt<12,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<const char*,     Hg::TypeAt<13,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<char&,           Hg::TypeAt<14,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<const char&,     Hg::TypeAt<15,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<char*,           Hg::type_at<12,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<const char*,     Hg::type_at<13,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<char&,           Hg::type_at<14,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<const char&,     Hg::type_at<15,sut_t>::type>::value));
                                                                                   
-  TS_ASSERT((std::is_same<short*,          Hg::TypeAt<16,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<const short*,    Hg::TypeAt<17,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<short&,          Hg::TypeAt<18,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<const short&,    Hg::TypeAt<19,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<short*,          Hg::type_at<16,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<const short*,    Hg::type_at<17,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<short&,          Hg::type_at<18,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<const short&,    Hg::type_at<19,sut_t>::type>::value));
                                                                                   
-  TS_ASSERT((std::is_same<int*,            Hg::TypeAt<20,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<const int*,      Hg::TypeAt<21,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<int&,            Hg::TypeAt<22,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<const int&,      Hg::TypeAt<23,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<int*,            Hg::type_at<20,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<const int*,      Hg::type_at<21,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<int&,            Hg::type_at<22,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<const int&,      Hg::type_at<23,sut_t>::type>::value));
                                                                                   
-  TS_ASSERT((std::is_same<long*,           Hg::TypeAt<24,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<const long*,     Hg::TypeAt<25,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<long&,           Hg::TypeAt<26,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<const long&,     Hg::TypeAt<27,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<long*,           Hg::type_at<24,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<const long*,     Hg::type_at<25,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<long&,           Hg::type_at<26,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<const long&,     Hg::type_at<27,sut_t>::type>::value));
                                                                                   
-  TS_ASSERT((std::is_same<float*,          Hg::TypeAt<28,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<const float*,    Hg::TypeAt<29,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<float&,          Hg::TypeAt<30,sut_t>::type>::value));
-  TS_ASSERT((std::is_same<const float&,    Hg::TypeAt<31,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<float*,          Hg::type_at<28,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<const float*,    Hg::type_at<29,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<float&,          Hg::type_at<30,sut_t>::type>::value));
+  TS_ASSERT((std::is_same<const float&,    Hg::type_at<31,sut_t>::type>::value));
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_char()
+void TestMeta::Testsize_of_char()
 {
   typedef char sut_t;
-  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_uchar()
+void TestMeta::Testsize_of_uchar()
 {
   typedef unsigned char sut_t;
-  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_short()
+void TestMeta::Testsize_of_short()
 {
   typedef short sut_t;
-  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_ushort()
+void TestMeta::Testsize_of_ushort()
 {
   typedef unsigned short sut_t;
-  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_long()
+void TestMeta::Testsize_of_long()
 {
   typedef long sut_t;
-  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_ulong()
+void TestMeta::Testsize_of_ulong()
 {
   typedef unsigned long sut_t;
-  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_float()
+void TestMeta::Testsize_of_float()
 {
   typedef float sut_t;
-  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_double()
+void TestMeta::Testsize_of_double()
 {
   typedef double sut_t;
-  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(sizeof(sut_t), Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_empty()
+void TestMeta::Testsize_of_empty()
 {
   typedef Hg::MT sut_t;
-  TS_ASSERT_EQUALS(1, Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(1, Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_TypeList()
+void TestMeta::Testsize_of_type_list()
 {
-  typedef Hg::TypeList<int, double, ptrdiff_t> sut_t;
+  typedef Hg::type_list<int, double, ptrdiff_t> sut_t;
   const size_t k_control  = sizeof(int)
                           + sizeof(double)
                           + sizeof(ptrdiff_t);
 
   // SUT
-  TS_ASSERT_EQUALS(k_control, Hg::SizeOf<sut_t>::value);
-  TS_ASSERT_EQUALS(sizeof(sut_t::type), Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(k_control, Hg::size_of<sut_t>::value);
+
+// TODO: I think that I can remove this. I am not certain that the original intent was ever required. that is making the typelist itself report the proper size with a sizeof call.
+//  TS_ASSERT_EQUALS(sizeof(sut_t::type), Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_NestedNestedTypeList()
+void TestMeta::Testsize_of_NestedNestedtype_list()
 {
   const size_t k_control_pt      = sizeof(int32_t) * 3;
   const size_t k_control_camera  = k_control_pt * 3;
 
-  const size_t pt_size      = Hg::SizeOf<Hg::pt3d_t>::value;
-  const size_t camera_size  = Hg::SizeOf<Hg::camera_t>::value;
+  const size_t pt_size      = Hg::size_of<Hg::pt3d_t>::value;
+  const size_t camera_size  = Hg::size_of<Hg::camera_t>::value;
 
-  const size_t pt_size_f      = Hg::SizeOf<Hg::pt3d_t::format_type>::value;
-  const size_t camera_size_f  = Hg::SizeOf<Hg::camera_t::format_type>::value;
+  const size_t pt_size_f      = Hg::size_of<Hg::pt3d_t::format_type>::value;
+  const size_t camera_size_f  = Hg::size_of<Hg::camera_t::format_type>::value;
 
   bool is_pt = Hg::type_container<Hg::pt3d_t>::value;
   bool is_camera = Hg::type_container<Hg::camera_t>::value;
 
   // SUT
-  TS_ASSERT_EQUALS(k_control_pt, Hg::SizeOf<Hg::pt3d_t>::value);
-  TS_ASSERT_EQUALS(k_control_camera, Hg::SizeOf<Hg::camera_t>::value);
+  TS_ASSERT_EQUALS(k_control_pt, Hg::size_of<Hg::pt3d_t>::value);
+  TS_ASSERT_EQUALS(k_control_camera, Hg::size_of<Hg::camera_t>::value);
   
-  //TS_ASSERT_EQUALS(sizeof(sut_t::type), Hg::SizeOf<sut_t>::value);
+  //TS_ASSERT_EQUALS(sizeof(sut_t::type), Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_BitSet()
+void TestMeta::Testsize_of_BitSet()
 {
   typedef Hg::Bits_type_a sut_t;
   const size_t k_control  = sizeof(Hg::Bits_type_a::value_type);
 
   // SUT
   TS_ASSERT_EQUALS(true,      Hg::type_container<sut_t>::value);
-  TS_ASSERT_EQUALS(k_control, Hg::SizeOf<sut_t>::value);
-  TS_ASSERT_EQUALS(k_control, Hg::ContainerSize<sut_t>::value);
+  TS_ASSERT_EQUALS(k_control, Hg::size_of<sut_t>::value);
+  TS_ASSERT_EQUALS(k_control, Hg::detail::container_size<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_DynamicValue()
+void TestMeta::Testsize_of_DynamicValue()
 {
   typedef std::vector<char>                     char_vec;
   typedef std::vector<double>                   double_vec;
@@ -533,20 +535,20 @@ void TestMeta::TestSizeOf_DynamicValue()
 
   // Dynamically sized values return 0 for their static size.
   // All size calculations are performed at runtime for these field types.
-  size_t size_char = Hg::SizeOf<char_vec>::value;
+  size_t size_char = Hg::size_of<char_vec>::value;
   TS_ASSERT_EQUALS(0, size_char);
 
-  size_t size_double = Hg::SizeOf<char_vec>::value;
+  size_t size_double = Hg::size_of<char_vec>::value;
   TS_ASSERT_EQUALS(0, size_double);
 
-  size_t size_array = Hg::SizeOf<char_vec>::value;
+  size_t size_array = Hg::size_of<char_vec>::value;
   TS_ASSERT_EQUALS(0, size_array);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeOf_NestedArray()
+void TestMeta::Testsize_of_NestedArray()
 {
-  typedef Hg::TypeList
+  typedef Hg::type_list
   <
     int32_t,    // 4-bytes
     uint32_t,   // 4-bytes
@@ -556,19 +558,19 @@ void TestMeta::TestSizeOf_NestedArray()
     uint8_t     // 1-byte
   > Inner;      // 14-bytes total
 
-  typedef Hg::TypeList<std::array<Inner, 3> > sut_t;
-  const size_t k_control  = Hg::SizeOf<Inner>::value * 3;
+  typedef Hg::type_list<std::array<Inner, 3> > sut_t;
+  const size_t k_control  = Hg::size_of<Inner>::value * 3;
 
   // SUT
-  TS_ASSERT_EQUALS(k_control, Hg::SizeOf<sut_t>::value);
+  TS_ASSERT_EQUALS(k_control, Hg::size_of<sut_t>::value);
 }
 
 //  ****************************************************************************
-void TestMeta::TestSizeAt_1_to_max()
+void TestMeta::Testsize_at_1_to_max()
 {
-  // This test declares a TypeList with a unique type for each potential
+  // This test declares a type_list with a unique type for each potential
   // index in the array up to the max elements.
-  typedef Hg::TypeList < char,   unsigned char,  short,  unsigned short,
+  typedef Hg::type_list < char,   unsigned char,  short,  unsigned short,
                           int,    unsigned int,   long,   unsigned long,
                           float,  double,         size_t, ptrdiff_t,
                           char*,  const char*,    char&,  const char&,
@@ -579,149 +581,149 @@ void TestMeta::TestSizeAt_1_to_max()
                         > sut_t;
 
   // Each assertion verifies the size of type at the the requested index
-  // matches the size of the type encoded into the TypeList.
-  size_t result = (Hg::SizeAt<0,sut_t>::value);
+  // matches the size of the type encoded into the type_list.
+  size_t result = (Hg::size_at<0,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(char),            result);
-  result = (Hg::SizeAt<1,sut_t>::value);
+  result = (Hg::size_at<1,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(unsigned char),   result);
-  result = (Hg::SizeAt<2,sut_t>::value);
+  result = (Hg::size_at<2,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(short),           result);
-  result = (Hg::SizeAt<3,sut_t>::value);
+  result = (Hg::size_at<3,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(unsigned short),  result);
 
-  result = (Hg::SizeAt<4,sut_t>::value);
+  result = (Hg::size_at<4,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(int),             result);
-  result = (Hg::SizeAt<5,sut_t>::value);
+  result = (Hg::size_at<5,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(unsigned int),    result);
-  result = (Hg::SizeAt<6,sut_t>::value);
+  result = (Hg::size_at<6,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(long),            result);
-  result = (Hg::SizeAt<7,sut_t>::value);
+  result = (Hg::size_at<7,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(unsigned long),   result);
 
-  result = (Hg::SizeAt<8,sut_t>::value);
+  result = (Hg::size_at<8,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(float),           result);
-  result = (Hg::SizeAt<9,sut_t>::value);
+  result = (Hg::size_at<9,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(double),          result);
-  result = (Hg::SizeAt<10,sut_t>::value);
+  result = (Hg::size_at<10,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(size_t),          result);
-  result = (Hg::SizeAt<11,sut_t>::value);
+  result = (Hg::size_at<11,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(ptrdiff_t),       result);
                                             
-  result = (Hg::SizeAt<12,sut_t>::value);
+  result = (Hg::size_at<12,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(char*),           result);
-  result = (Hg::SizeAt<13,sut_t>::value);
+  result = (Hg::size_at<13,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(const char*),     result);
-  result = (Hg::SizeAt<14,sut_t>::value);
+  result = (Hg::size_at<14,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(char&),           result);
-  result = (Hg::SizeAt<15,sut_t>::value);
+  result = (Hg::size_at<15,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(const char&),     result);
                                             
-  result = (Hg::SizeAt<16,sut_t>::value);
+  result = (Hg::size_at<16,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(short*),          result);
-  result = (Hg::SizeAt<17,sut_t>::value);
+  result = (Hg::size_at<17,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(const short*),    result);
-  result = (Hg::SizeAt<18,sut_t>::value);
+  result = (Hg::size_at<18,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(short&),          result);
-  result = (Hg::SizeAt<19,sut_t>::value);
+  result = (Hg::size_at<19,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(const short&),    result);
                                             
-  result = (Hg::SizeAt<20,sut_t>::value);
+  result = (Hg::size_at<20,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(int*),            result);
-  result = (Hg::SizeAt<21,sut_t>::value);
+  result = (Hg::size_at<21,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(const int*),      result);
-  result = (Hg::SizeAt<22,sut_t>::value);
+  result = (Hg::size_at<22,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(int&),            result);
-  result = (Hg::SizeAt<23,sut_t>::value);
+  result = (Hg::size_at<23,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(const int&),      result);
                                             
-  result = (Hg::SizeAt<24,sut_t>::value);
+  result = (Hg::size_at<24,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(long*),           result);
-  result = (Hg::SizeAt<25,sut_t>::value);
+  result = (Hg::size_at<25,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(const long*),     result);
-  result = (Hg::SizeAt<26,sut_t>::value);
+  result = (Hg::size_at<26,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(long&),           result);
-  result = (Hg::SizeAt<27,sut_t>::value);
+  result = (Hg::size_at<27,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(const long&),     result);
                                             
-  result = (Hg::SizeAt<28,sut_t>::value);
+  result = (Hg::size_at<28,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(float*),          result);
-  result = (Hg::SizeAt<29,sut_t>::value);
+  result = (Hg::size_at<29,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(const float*),    result);
-  result = (Hg::SizeAt<30,sut_t>::value);
+  result = (Hg::size_at<30,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(float&),          result);
-  result = (Hg::SizeAt<31,sut_t>::value);
+  result = (Hg::size_at<31,sut_t>::value);
   TS_ASSERT_EQUALS(sizeof(const float&),    result);
 }
 
 //  ****************************************************************************
-void TestMeta::TestOffsetOf_basic()
+void TestMeta::Testoffset_of_basic()
 {
   typedef Hg::Basic_format fmt;
 
-  // Verifies the correct offset is calculated for each type in the TypeList.
+  // Verifies the correct offset is calculated for each type in the type_list.
   size_t offsetTotal = 0;
 
-  size_t offset = (Hg::OffsetOf<0,fmt>::value);
+  size_t offset = (Hg::offset_of<0,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
 
   offsetTotal += sizeof(uint8_t); 
-  offset = (Hg::OffsetOf<1,fmt>::value);
+  offset = (Hg::offset_of<1,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
 
   offsetTotal += sizeof(uint8_t);
-  offset = (Hg::OffsetOf<2,fmt>::value);
+  offset = (Hg::offset_of<2,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
 
   offsetTotal += sizeof(uint16_t);
-  offset = (Hg::OffsetOf<3,fmt>::value);
+  offset = (Hg::offset_of<3,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
 }
 
 //  ****************************************************************************
-void TestMeta::TestOffsetOf_bitset()
+void TestMeta::Testoffset_of_bitset()
 {
   typedef Hg::Bitset_format fmt;
 
-  // Verifies the correct offset is calculated for each type in the TypeList.
+  // Verifies the correct offset is calculated for each type in the type_list.
   size_t offsetTotal = 0;
 
-  size_t offset = (Hg::OffsetOf<0,fmt>::value);
+  size_t offset = (Hg::offset_of<0,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
   offsetTotal += sizeof(Hg::Bits_type_a::value_type); 
-  offset = (Hg::OffsetOf<1,fmt>::value);
+  offset = (Hg::offset_of<1,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
   offsetTotal += sizeof(Hg::Bits_type_b::value_type);
-  size_t size = (Hg::SizeOf<fmt>::value);
+  size_t size = (Hg::size_of<fmt>::value);
 
   // Verify the final size is the sum of all of the offsets.
   TS_ASSERT_EQUALS(offsetTotal, size);
 }
 
 //  ****************************************************************************
-void TestMeta::TestOffsetOf_nested()
+void TestMeta::Testoffset_of_nested()
 {
   typedef Hg::Nested_format fmt;
 
-  // Verifies the correct offset is calculated for each type in the TypeList.
+  // Verifies the correct offset is calculated for each type in the type_list.
   size_t offsetTotal = 0;
 
   // Verify the location for all of the intrinsic types
-  size_t offset = (Hg::OffsetOf<0,fmt>::value);
+  size_t offset = (Hg::offset_of<0,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
   offsetTotal += sizeof(uint32_t); 
 
   // Verify the location of the Nested structure
-  offset = (Hg::OffsetOf<1,fmt>::value);
+  offset = (Hg::offset_of<1,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
-  offsetTotal += Hg::SizeOf<Hg::Basic_format>::value;
+  offsetTotal += Hg::size_of<Hg::Basic_format>::value;
 
-  offset = (Hg::OffsetOf<2,fmt>::value);
+  offset = (Hg::offset_of<2,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
   offsetTotal += sizeof(uint16_t); 
-  offset = (Hg::OffsetOf<3,fmt>::value);
+  offset = (Hg::offset_of<3,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
   offsetTotal += sizeof(uint8_t); 
-  offset = (Hg::OffsetOf<4,fmt>::value);
+  offset = (Hg::offset_of<4,fmt>::value);
   TS_ASSERT_EQUALS(offsetTotal, offset);
   offsetTotal += sizeof(uint8_t); 
 }
@@ -793,7 +795,7 @@ void TestMeta::TestBitSet_size()
 //  ****************************************************************************
 void TestMeta::TestForEach()
 {
-  // TODO: Revisit to implement a test that iterates over a TypeList
+  // TODO: Revisit to implement a test that iterates over a type_list
 }
 
 

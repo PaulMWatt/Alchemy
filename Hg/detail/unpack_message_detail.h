@@ -49,7 +49,7 @@ struct UnpackDatum
   //                        sized fields.
   //
   void operator()(MsgT &msg,
-                  BufferT  &buffer,
+                  const BufferT  &buffer,
                   size_t    dynamic_offset)
   {
     typedef typename
@@ -59,8 +59,10 @@ struct UnpackDatum
     typedef typename
       proxy_type::value_type                                            value_type;
 
-    size_t offset = Hg::OffsetOf<IdxT, typename MsgT::format_type>::value
+    size_t offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
                   + dynamic_offset;
+
+    msg.template FieldAt<IdxT>().get();
 
     buffer.get_data(msg.template FieldAt<IdxT>().get(), 
                     offset);
@@ -176,7 +178,7 @@ MsgT& unpack_message(       MsgT &msg_values,
                           const BufferT  &buffer,
                           const static_size_trait&  )
 {
-  const size_t k_msg_size = Hg::SizeOf<typename MsgT::format_type>::value;
+  const size_t k_msg_size = Hg::size_of<typename MsgT::format_type>::value;
   // Verify the input buffer contains enough data to populate the message.
   if ( buffer.empty()
     || buffer.size() < k_msg_size)
@@ -221,7 +223,7 @@ size_t unpack_message (       MsgT  &msg_values,
     std::remove_const<BufferT>::type              MutableBuffer;
 
   // Calculate the number of bytes that is expected to be read for this message.
-  size_t length = Hg::SizeOf<typename MsgT::format_type>::value;
+  size_t length = Hg::size_of<typename MsgT::format_type>::value;
 
   size_t org_offset = buffer.offset();
   MutableBuffer working(buffer);
@@ -253,7 +255,7 @@ MsgT& unpack_message(       MsgT &msg_values,
                           const BufferT  &buffer,
                           const dynamic_size_trait&  )
 {
-  const size_t k_msg_size = Hg::SizeOf<typename MsgT::format_type>::value;
+  const size_t k_msg_size = Hg::size_of<typename MsgT::format_type>::value;
   // Verify the input buffer contains enough data to populate the minimum size
   // required by the message.
   if ( buffer.empty()
@@ -300,7 +302,7 @@ size_t unpack_message (       MsgT  &msg_values,
     std::remove_const<BufferT>::type              MutableBuffer;
 
   // Calculate the number of bytes that is expected to be read for this message.
-  size_t length = Hg::SizeOf<typename MsgT::format_type>::value;
+  size_t length = Hg::size_of<typename MsgT::format_type>::value;
 
   size_t org_offset = buffer.offset();
   MutableBuffer working(buffer);

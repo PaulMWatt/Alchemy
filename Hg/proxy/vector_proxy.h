@@ -14,7 +14,6 @@
 
 #include <Pb/meta_fwd.h>
 #include <Pb/type_list.h>
-#include <Pb/type_at.h>
 #include <Hg/datum/datum.h>
 #include <Hg/storage_policy.h>
 #include <Hg/msg_view.h>
@@ -30,8 +29,8 @@ namespace detail
 //  ****************************************************************************
 /// A template to provide access to sequences of data fields.
 /// 
-/// @paramt IdxT
-/// @paramt FormatType
+/// @tparam IdxT
+/// @tparam FormatType
 /// 
 template< size_t    IdxT,
           typename  FormatT
@@ -57,13 +56,13 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   typedef typename
     field_type::index_type              index_type;
                                         ///< The raw type extracted at the current
-                                        ///  index defined in the parent TypeList.
+                                        ///  index defined in the parent type_list.
 
   typedef typename
     index_type::value_type              data_type;
                                         ///< The value type of the element extracted 
                                         ///  at the current index defined in the 
-                                        ///  parent TypeList.
+                                        ///  parent type_list.
 
   //  Typedefs *****************************************************************
   typedef typename 

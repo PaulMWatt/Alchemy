@@ -1,12 +1,12 @@
-//  @file msgtest_TypeList.h
+//  @file msgtest_type_list.h
 //  
 //  This is a helper file for tests with type definitions.
 // 
 //  The MIT License(MIT)
 //  @copyright 2014 Paul M Watt
 //  ****************************************************************************
-#ifndef MSGTEST_TypeList_H_INCLUDED
-#define MSGTEST_TypeList_H_INCLUDED
+#ifndef MSGTEST_type_list_H_INCLUDED
+#define MSGTEST_type_list_H_INCLUDED
 
 //  Test Types *****************************************************************
 // A current limitation for the Hg definitions are they must be defined in 

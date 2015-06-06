@@ -11,7 +11,6 @@
 #define DATUM_H_INCLUDED
 //  Includes *******************************************************************
 #include <Pb/meta_fwd.h>
-#include <Pb/type_at.h>
 #include <Hg/datum/basic_datum.h>
 
 namespace Hg
@@ -27,9 +26,9 @@ namespace Hg
 /// internally by the buffers the Datum<> instance is mapped to.
 /// 
 /// @param  Idx               [size_t] The index of this element in the 
-///                           TypeList definition.
+///                           type_list definition.
 ///                           Idx must be < length<T>::value.
-/// @param  format_t          [typename] The TypeList that contains this 
+/// @param  format_t          [typename] The type_list that contains this 
 ///                           elements definition.
 ///                           T must be an indexable type container.
 /// @note           Parameterized type **T** is verified by the compiler to be
@@ -46,7 +45,7 @@ class Datum
 public:
   //  Constants ****************************************************************
   static const
-    size_t k_offset = OffsetOf<Idx, format_t>::value;
+    size_t k_offset = offset_of<Idx, format_t>::value;
                                         ///< The offset in the buffer where this 
                                         ///  msg field is located.
 
@@ -61,7 +60,7 @@ public:
   typedef typename
     field_type::index_type              index_type;
                                         ///< The type extracted at the current
-                                        ///  index defined in the parent TypeList.
+                                        ///  index defined in the parent type_list.
   typedef typename
     field_type::value_type              value_type;
                                         ///< The data type managed by this Datum.
@@ -69,7 +68,7 @@ public:
                                         ///  be written to the attached buffer.
 
   typedef format_t                      format_type;
-                                        ///< format of the parent TypeList.
+                                        ///< format of the parent type_list.
 
   //  **************************************************************************
   /// Default Constructor

@@ -48,7 +48,7 @@ static const size_t k_array_8_size = 8;
 //  ****************************************************************************
 /// A type array that contains a few variations of ArrayData entries.
 ///
-typedef TypeList
+typedef type_list
 <
   uint32_t,
   std::array<uint8_t, k_array_8_size>,
@@ -112,7 +112,7 @@ public:
   // Status and Methods
   void TestClear();
   void TestSize();
-  void TestSizeOf();
+  void Testsize_of();
 
   // Accessors
   void TestGet();
@@ -304,9 +304,9 @@ void TestArrayDataSuite::TestSize()
 }
 
 //  ****************************************************************************
-void TestArrayDataSuite::TestSizeOf()
+void TestArrayDataSuite::Testsize_of()
 {
-  const size_t k_control = Hg::SizeOf<array_data_8>::value;
+  const size_t k_control = Hg::size_of<array_data_8>::value;
 
   // SUT
   array_data_8 sut;

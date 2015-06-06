@@ -24,7 +24,7 @@ namespace detail
 /// Type definition that indicates the parameterized-type
 /// located at an index in a type container.
 ///
-/// @paramT field_t           [typename] This parameterized type declares the
+/// @tparam field_t           [typename] This parameterized type declares the
 ///                           type at the associated location in the parent 
 ///                           type container.
 ///
@@ -76,10 +76,10 @@ void copy_value_type(T& to, const T& from)
 //  ****************************************************************************
 /// (Fixed-Array Specialization) To copy from one instance to another.
 ///
-/// @paramt SubTypeT          [typename] This parameterized type declares the
+/// @tparam SubTypeT          [typename] This parameterized type declares the
 ///                           sub-type of the array defined at the location 
 ///                           in the parent type container.
-/// @paramt N                 [size_t] The number of elements in the array.
+/// @tparam N                 [size_t] The number of elements in the array.
 ///
 //template< typename SubTypeT,
 //          size_t   N
@@ -141,10 +141,10 @@ void copy_value_type(T& to, const T& from)
 //  ****************************************************************************
 /// (Fixed-Array Specialization) To copy from one instance to another.
 ///
-/// @paramt SubTypeT          [typename] This parameterized type declares the
+/// @tparam SubTypeT          [typename] This parameterized type declares the
 ///                           sub-type of the array defined at the location 
 ///                           in the parent type container.
-/// @paramt N                 [size_t] The number of elements in the array.
+/// @tparam N                 [size_t] The number of elements in the array.
 ///
 template< typename SubTypeT,
           size_t   N
@@ -227,7 +227,7 @@ void copy_value_type(       std::vector<SubTypeT, AllocT>& to,
 /// @note           The simplest method to specialize the value_type is
 ///                 to create a specialization of the *field_data_t* template.
 /// 
-/// @paramt FieldT            This parameterized type declares the
+/// @tparam FieldT            This parameterized type declares the
 ///                           type at the associated location in the parent 
 ///                           type container.
 /// 
@@ -279,7 +279,7 @@ protected:
 //  ****************************************************************************
 /// Nested Specialization for the index and data field type definitions.
 /// 
-/// @paramt FieldT            This parameterized type declares the
+/// @tparam FieldT            This parameterized type declares the
 ///                           type at the associated location in the parent 
 ///                           type container.
 /// 
@@ -326,7 +326,7 @@ struct FieldTypes <FieldT, nested_trait>
 //  ****************************************************************************
 /// Packed Bits Specialization for the index and data field type definitions.
 /// 
-/// @paramt FieldT            This parameterized type declares the
+/// @tparam FieldT            This parameterized type declares the
 ///                           type at the associated location in the parent 
 ///                           type container.
 /// 
@@ -382,10 +382,10 @@ struct FieldTypes <FieldT, packed_trait>
 /// Specialize this template class to customize the internal type that 
 /// an index_type will resolve to.
 ///
-/// @paramt  Idx              [size_t] The index of this element in the 
-///                           TypeList definition.
+/// @tparam  Idx              [size_t] The index of this element in the 
+///                           type_list definition.
 ///                           Idx must be < length<T>::value.
-/// @paramt  T                The TypeList that contains this 
+/// @tparam  T                The type_list that contains this 
 ///                           elements definition.
 ///                           T must be an indexable type container.
 ///
@@ -396,9 +396,9 @@ struct DefineFieldType
 {
   //  Typedefs *****************************************************************
   typedef typename 
-    Hg::TypeAt<Idx, format_t>::type     index_type;
+    Hg::type_at<Idx, format_t>::type     index_type;
                                         ///< The type extracted at the current
-                                        ///  index defined in the parent TypeList.
+                                        ///  index defined in the parent type_list.
 
   typedef  
     detail::FieldTypes  

@@ -9,10 +9,7 @@
 #define MAKE_HG_TYPE_LIST_H_INCLUDED
 //  Includes ******************************************************************
 #include <Pb/type_list.h>
-#include <Pb/type_at.h>
 #include <Hg/proxy/deduce_proxy_type.h>
-//#include <Pb/bit_field/bit_field_array.h>
-//#include <Pb/bit_field/bit_field_vector.h>
 #include <Pb/dynamic.h>
 
 namespace Hg
@@ -26,7 +23,7 @@ namespace Hg
 /// types. This prevents Hg from properly interfacing with the parameters
 /// to accurately serialize the data.
 /// 
-template< class T>
+template< typename T>
 struct make_Hg_type_list;
 
 namespace detail
@@ -63,25 +60,13 @@ namespace detail
 
 
 //  ****************************************************************************
-//  Creates a type list with exactly one type entry.
-// 
-template < class T >
-struct StartTypeList
-{
-  typedef typename
-    Hg::push_front< Hg::TypeList< Hg::MT >, 
-                    T 
-                  >::type               type;
-};
-
-//  ****************************************************************************
 //  Creates the proper type declaration for a sequence container type.
 // 
-//  @paramt T             The type container used for the declaration.
-/// @paramT ValueTraitT   The trait type of the value_type of the container.
+//  @tparam T             The type container used for the declaration.
+/// @tparam ValueTraitT   The trait type of the value_type of the container.
 //
-template< class T,
-          class ValueTraitT
+template< typename T,
+          typename ValueTraitT
         >
 struct DeclareTypeSequence
 {
@@ -91,9 +76,9 @@ struct DeclareTypeSequence
 //  ****************************************************************************
 //  Processes a child nested-type for Hg compatibility.
 // 
-//  @paramt T             The type container used for the type declaration.
+//  @tparam T             The type container used for the type declaration.
 //
-template< class T >
+template< typename T >
 struct DeclareTypeSequence < T, nested_trait >
 {
   typedef typename
@@ -101,32 +86,15 @@ struct DeclareTypeSequence < T, nested_trait >
 };
 
 //  ****************************************************************************
-//  Declares a BitFieldArray in place of the array<bit_field> definition.
-// 
-//  @paramt ArrayT        The array definition type.
-//  @paramt T             The value type in the container.
-//  @param  N             The number of elements in the container.
-//
-//template< class   T,
-//          size_t  N,
-//          template <class, size_t> class ArrayT
-//        >
-//struct DeclareTypeSequence < ArrayT<T,N>, packed_trait >
-//{
-//  typedef 
-//    Hg::BitFieldArray<T, N>             type;
-//};
-
-//  ****************************************************************************
 //  Redeclares the array of nested types, as an array of nested Hg types.
 // 
-//  @paramt ArrayT        The array definition type.
-//  @paramt T             The value type in the container.
+//  @tparam ArrayT        The array definition type.
+//  @tparam T             The value type in the container.
 //  @param  N             The number of elements in the container.
 //
-template< class   T,
+template< typename   T,
           size_t  N,
-          template <class, size_t> class ArrayT
+          template <typename, size_t> class ArrayT
         >
 struct DeclareTypeSequence < ArrayT<T,N>, nested_trait >
 {
@@ -140,27 +108,10 @@ struct DeclareTypeSequence < ArrayT<T,N>, nested_trait >
 };
 
 //  ****************************************************************************
-//  Declares a BitFieldVector in place of the vector<bit_field> definition.
-// 
-//  @paramt VectorT       The vector definition type.
-//  @paramt T             The value type in the container.
-//  @param  A             The allocator used for memory management.
-//
-//template< class T,
-//          class A,
-//          template <class, class> class VectorT
-//        >
-//struct DeclareTypeSequence < VectorT<T,A>, packed_trait >
-//{
-//  typedef  
-//    Hg::BitFieldVector<T, A>            type;
-//};
-
-//  ****************************************************************************
 //  Processes a nested field recursively to correct any vector definitions.
 // 
-//  @paramt VectorT       The vector definition type.
-//  @paramt T             The value type in the container.
+//  @tparam VectorT       The vector definition type.
+//  @tparam T             The value type in the container.
 //  @param  A             The allocator used for memory management.
 //
 template< class T,
@@ -214,14 +165,14 @@ struct ReplaceType< ArrayT, array_trait>
                           type_trait
                         >::type         array_type;
 
-  typedef typename
-    DeclareTypeSequence < std::vector<value_type>, 
-                          type_trait
-                        >::type         vector_type;
-
+  // TODO: Delete this commented code
+  //typedef typename
+  //  DeclareTypeSequence < std::vector<value_type>, 
+  //                        type_trait
+  //                      >::type         vector_type;
   
-  // TODO: Need to find a solution for redefined symbols when the array is converted to a vector.
   typedef array_type                    type;
+  // TODO: Delete this commented code
   //typedef typename
   //  std::conditional< has_dynamic<value_type>::value, 
   //                    vector_type, 
@@ -293,16 +244,16 @@ struct make_Hg_worker
                   >::type               hg_list;
                                         
   typedef typename  
-    Hg::push_front< hg_list,
-                    adjusted_type       // The list of types converted for Hg.
+    Hg::push_front< adjusted_type,       // The list of types converted for Hg.
+                    hg_list
                   >::type               type; 
 };
 
 //  ****************************************************************************
 //  Terminating case where the next element reported by the input list is empty.
 // 
-template< class LList,
-          class PList
+template< typename LList,
+          typename PList
         >
 struct make_Hg_worker < Hg::MT, 
                         LList, 
@@ -319,7 +270,7 @@ struct make_Hg_worker < Hg::MT,
 //  ****************************************************************************
 //  @Note:  Type T must be a typelist.
 //
-template< class T>
+template< typename T>
 struct make_Hg_type_list
 {
 protected:
@@ -335,7 +286,7 @@ public:
   typedef typename                      // Make the Hg compatible list.
     detail::make_Hg_worker< next_type,
                             list_tail,
-                            Hg::TypeList<Hg::MT>
+                            Hg::type_list<>
                           >::type       type;
 };
 
@@ -344,4 +295,41 @@ public:
 
 
 #endif
+
+
+// TODO: This will be deleted when it is verified the BitFieldArray and Vector are not needed. A better approach has been developed, the msg_view.
+//  ****************************************************************************
+//  Declares a BitFieldArray in place of the array<bit_field> definition.
+// 
+//  @tparam ArrayT        The array definition type.
+//  @tparam T             The value type in the container.
+//  @param  N             The number of elements in the container.
+//
+//template< typename   T,
+//          size_t  N,
+//          template <typename, size_t> typename ArrayT
+//        >
+//struct DeclareTypeSequence < ArrayT<T,N>, packed_trait >
+//{
+//  typedef 
+//    Hg::BitFieldArray<T, N>             type;
+//};
+
+
+//  ****************************************************************************
+//  Declares a BitFieldVector in place of the vector<bit_field> definition.
+// 
+//  @tparam VectorT       The vector definition type.
+//  @tparam T             The value type in the container.
+//  @param  A             The allocator used for memory management.
+//
+//template< class T,
+//          class A,
+//          template <class, class> class VectorT
+//        >
+//struct DeclareTypeSequence < VectorT<T,A>, packed_trait >
+//{
+//  typedef  
+//    Hg::BitFieldVector<T, A>            type;
+//};
 

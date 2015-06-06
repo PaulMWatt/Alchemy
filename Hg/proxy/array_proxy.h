@@ -12,7 +12,6 @@
 
 #include <Pb/meta_fwd.h>
 #include <Pb/type_list.h>
-#include <Pb/type_at.h>
 #include <Hg/datum/datum.h>
 #include <Hg/storage_policy.h>
 #include <array>
@@ -36,20 +35,20 @@ struct array_size< std::array<T, N> >
   : std::integral_constant<size_t, N>
 { };
 
-//  ****************************************************************************
-/// Extracts the array extent from a std::array definition.
-///
-template< class T, size_t N>
-struct array_size< Hg::BitFieldArray<T, N> > 
-  : std::integral_constant<size_t, N>
-{ };
+////  ****************************************************************************
+///// Extracts the array extent from a std::array definition.
+/////
+//template< class T, size_t N>
+//struct array_size< Hg::BitFieldArray<T, N> > 
+//  : std::integral_constant<size_t, N>
+//{ };
 
 
 //  ****************************************************************************
 /// A template to provide access to sequences of data fields.
 /// 
-/// @paramt IdxT        The index of the array field represented by this proxy.
-/// @paramt FormatType  The type list format that contains the array field.
+/// @tparam IdxT        The index of the array field represented by this proxy.
+/// @tparam FormatType  The type list format that contains the array field.
 /// 
 template< size_t    IdxT,
           typename  FormatT
@@ -75,13 +74,13 @@ struct DataProxy <array_trait, IdxT, FormatT>
   typedef typename
     field_type::index_type              index_type;
                                         ///< The type extracted at the current
-                                        ///  index defined in the parent TypeList.
+                                        ///  index defined in the parent type_list.
 
   typedef typename
     index_type::value_type              data_type;
                                         ///< The value type of the element extracted 
                                         ///  at the current index defined in the 
-                                        ///  parent TypeList.
+                                        ///  parent type_list.
 
   //  Constants ****************************************************************
   static 

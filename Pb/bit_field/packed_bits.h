@@ -52,9 +52,9 @@ typedef FieldIndex<0,MT,0>     idx_empty_t;
 // 
 template <typename T>
 struct PackedBits
-  : public container_trait
-  , public packed_trait
-  
+  : public packed_trait
+  , public container_trait
+     
 { 
   // Define each of these types for the base.
   // This will ensure the types exist if less than 
@@ -180,7 +180,7 @@ template< size_t    Idx,
 struct DeduceBitFieldList
 {
   typedef 
-    typename TypeAt < Idx,
+    typename type_at < Idx,
                       format_type
                     >::type                   base_t;
 

@@ -1,6 +1,6 @@
 /// @file detail/deduce_msg_type_list.h
 /// 
-/// The declaration and definition of DeduceMsgTypeList.
+/// The declaration and definition of DeduceMsgtype_list.
 ///           
 /// A template meta-function that composes a typelist definition from
 /// a specified object that contains a collection of meta-functions that 
@@ -30,12 +30,12 @@ template< typename  T,
           size_t    PosT,
           size_t    LimitT
         >
-struct DeduceMsgTypeList_Worker
+struct DeduceMsgtype_list_Worker
 { 
   typedef typename
     push_front
-    < typename DeduceMsgTypeList_Worker<T,PosT+1, LimitT>::type, 
-      typename Hg::TypeAt<PosT, typename T::format_type>::type
+    < typename DeduceMsgtype_list_Worker<T,PosT+1, LimitT>::type, 
+      typename Hg::type_at<PosT, typename T::format_type>::type
     >::type                                                     type;
 };
 
@@ -43,10 +43,10 @@ struct DeduceMsgTypeList_Worker
 template< typename  T,
           size_t    PosT
         >
-struct DeduceMsgTypeList_Worker<T, PosT, PosT>
+struct DeduceMsgtype_list_Worker<T, PosT, PosT>
 { 
   typedef 
-    TypeList<typename Hg::TypeAt<PosT, typename T::format_type>::type>      type;
+    type_list<typename Hg::type_at<PosT, typename T::format_type>::type>      type;
 };
 
 //  ****************************************************************************
@@ -55,16 +55,16 @@ struct DeduceMsgTypeList_Worker<T, PosT, PosT>
 ///
 /// The constructed type can be accessed through the public typedef *type*. 
 /// 
-/// @paramt T           [typename] The msg type that contains the sub-fields.
+/// @tparam T           [typename] The msg type that contains the sub-fields.
 /// @param  SizeT       [size_t]   The number of sub-fields to index.
 /// 
 template< typename  T,
           size_t    SizeT
         >
-struct DeduceMsgTypeList
+struct DeduceMsgtype_list
 { 
   typedef typename
-    DeduceMsgTypeList_Worker<T,0, SizeT>::type                  type; 
+    DeduceMsgtype_list_Worker<T,0, SizeT>::type                  type; 
 };
 
 } // namespace detail

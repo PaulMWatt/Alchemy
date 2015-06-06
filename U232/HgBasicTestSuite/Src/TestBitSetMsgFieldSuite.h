@@ -80,7 +80,7 @@ namespace Hg
 //  ****************************************************************************
 //  A type array that contains an entry for each of the fundamental types.
 //
-typedef TypeList
+typedef type_list
 <
   byte_4x2,      
   byte_8x1,     

@@ -1,4 +1,4 @@
-//  @file Geometry_TypeList.h
+//  @file Geometry_type_list.h
 //  
 //  This is a helper file for a series of tests of combinations of sub-types.
 // 

@@ -96,48 +96,48 @@ struct Serializer <VectorT, BufferT, fundamental_trait>
 //  ****************************************************************************
 //  Exports arrays of bit-field values into a packed buffer.
 //
-template< typename T,
-          typename A,
-          typename BufferT
-        >
-struct Serializer <Hg::BitFieldVector<T,A>, BufferT, packed_trait>
-{
-  typedef Hg::BitFieldVector<T,A>       vector_type;
-
-  typedef typename
-    vector_type::value_type             value_type;
-
-  typedef BufferT                       buffer_type;
-
-  typedef packed_trait                  data_type_trait;
-
-  //  **************************************************************************
-  size_t Write( vector_type   &value, 
-                buffer_type   &buffer,
-                size_t         offset)
-  {
-    // Calculate the size of data to write in bytes.
-    size_t size = value.size() * sizeof(value_type);
-
-    value_type *pFirst = value.data();
-    value_type *pLast  = pFirst;
-
-    std::advance(pLast, size);
-    buffer.set_range( pFirst, 
-                      pLast, 
-                      offset);
-
-    return size;
-  }
-
-  //  **************************************************************************
-  size_t Write( value_type  &value, 
-                buffer_type &buffer,
-                size_t      offset)
-  {
-    return buffer.set_data( value, offset);
-  }
-};
+//template< typename T,
+//          typename A,
+//          typename BufferT
+//        >
+//struct Serializer <Hg::BitFieldVector<T,A>, BufferT, packed_trait>
+//{
+//  typedef Hg::BitFieldVector<T,A>       vector_type;
+//
+//  typedef typename
+//    vector_type::value_type             value_type;
+//
+//  typedef BufferT                       buffer_type;
+//
+//  typedef packed_trait                  data_type_trait;
+//
+//  //  **************************************************************************
+//  size_t Write( vector_type   &value, 
+//                buffer_type   &buffer,
+//                size_t         offset)
+//  {
+//    // Calculate the size of data to write in bytes.
+//    size_t size = value.size() * sizeof(value_type);
+//
+//    value_type *pFirst = value.data();
+//    value_type *pLast  = pFirst;
+//
+//    std::advance(pLast, size);
+//    buffer.set_range( pFirst, 
+//                      pLast, 
+//                      offset);
+//
+//    return size;
+//  }
+//
+//  //  **************************************************************************
+//  size_t Write( value_type  &value, 
+//                buffer_type &buffer,
+//                size_t      offset)
+//  {
+//    return buffer.set_data( value, offset);
+//  }
+//};
 
 
 //  ****************************************************************************
@@ -473,7 +473,7 @@ struct PackDatum< IdxT,
     }
 
     // Calculate the total starting offset.
-    size_t offset = Hg::OffsetOf<IdxT, typename message_type::format_type>::value
+    size_t offset = Hg::offset_of<IdxT, typename message_type::format_type>::value
                   + dynamic_offset;
 
     size_t bytes_written = 

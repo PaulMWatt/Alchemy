@@ -252,9 +252,9 @@ struct ByteOrderConversionFunctor
   //  This function provides the ability for every type of data field to be
   //  converted by this functor.
   //  
-  //  @paramT size_t          Parameterized value that specifies the index
+  //  @tparam size_t          Parameterized value that specifies the index
   //                          of the data field to be converted.
-  //  @paramT value_type      [typename] The type of the data element T.
+  //  @tparam value_type      [typename] The type of the data element T.
   //  @param unnamed          An unused variable to disambiguate the appropriate
   //                          specialization function for the compiler to select.
   //  

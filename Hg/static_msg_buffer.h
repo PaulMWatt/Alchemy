@@ -286,14 +286,14 @@ public:
     size_t bytes_written = 0;
     size_t total_size = size();
     if ( (total_offset >= 0)
-      && (total_offset + Hg::SizeOf<T>::value) <= total_size)
+      && (total_offset + Hg::size_of<T>::value) <= total_size)
     {
       bytes_written = 
         storage_type::write ( raw_data(),
                               &value,
-                              Hg::SizeOf<T>::value,
+                              Hg::size_of<T>::value,
                               total_offset)
-        ? Hg::SizeOf<T>::value
+        ? Hg::size_of<T>::value
         : 0;
     }
 

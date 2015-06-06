@@ -10,7 +10,6 @@
 //  Includes *******************************************************************
 #include <Pb/dynamic.h>
 #include <Pb/meta_foreach.h>
-#include <Pb/type_at.h>
 #include <Hg/deduce_type_trait.h>
 
 namespace Hg
@@ -34,7 +33,7 @@ template< class T,
           class A,
           class TypeTraitT
         >
-struct SizeOfVector
+struct size_ofVector
 {
   //  **************************************************************************
   template< class TypeT,
@@ -57,7 +56,7 @@ template< class T,
           class A,
           bool  HasDynamicT
         >
-struct HelperSizeOfVector
+struct Helpersize_ofVector
 {
   static size_t size(const std::vector<T,A>& field)
   {
@@ -65,7 +64,7 @@ struct HelperSizeOfVector
 
     // This specialization represents vectors of nested traits. 
     // Therefore, T must have a defined format_type.
-    const size_t k_fixed_size = Hg::SizeOf<typename T::format_type>::value;
+    const size_t k_fixed_size = Hg::size_of<typename T::format_type>::value;
 
     for (size_t index = 0; index < field.size(); ++index)
     {
@@ -88,11 +87,11 @@ struct HelperSizeOfVector
 template< class T,
           class A
         >
-struct HelperSizeOfVector <T, A, false>
+struct Helpersize_ofVector <T, A, false>
 {
   static size_t size(const std::vector<T,A>& field)
   {
-    return  field.size() * Hg::SizeOf<typename T::format_type>::value;  
+    return  field.size() * Hg::size_of<typename T::format_type>::value;  
   }
 };
 
@@ -105,7 +104,7 @@ struct HelperSizeOfVector <T, A, false>
 template< class T,
           class A
         >
-struct SizeOfVector<T,A,nested_trait>
+struct size_ofVector<T,A,nested_trait>
 {
   //  **************************************************************************
   size_t operator()(const std::vector<T,A>& field)
@@ -113,7 +112,7 @@ struct SizeOfVector<T,A,nested_trait>
     typedef typename 
       T::format_type          format_type;
 
-    return nested::HelperSizeOfVector<T, A, has_dynamic<format_type>::value>::size(field);
+    return nested::Helpersize_ofVector<T, A, has_dynamic<format_type>::value>::size(field);
   }
 };
 
@@ -124,14 +123,14 @@ struct SizeOfVector<T,A,nested_trait>
 template< typename T,
           typename A
         >
-struct SizeOfVector<T,A,vector_trait>
+struct size_ofVector<T,A,vector_trait>
 {
   //  **************************************************************************
   size_t operator()(const std::vector<T,A>& field)
   {
     size_t total_size = 0;
 
-    SizeOfVector< typename T::value_type, 
+    size_ofVector< typename T::value_type, 
                   typename T::allocator_type, 
                   typename DeduceTypeTrait<typename T::value_type>::type
                 > Size;
@@ -148,13 +147,13 @@ struct SizeOfVector<T,A,vector_trait>
 //  ****************************************************************************
 /// Reports the total dynamic size of vector of bit-fields for this item.
 ///    
-template< class T,
-          class A
-        >
-size_t dynamic_size(const Hg::BitFieldVector<T,A>& field)
-{
-  return field.size() * Hg::SizeOf<T>::value;
-}
+//template< class T,
+//          class A
+//        >
+//size_t dynamic_size(const Hg::BitFieldVector<T,A>& field)
+//{
+//  return field.size() * Hg::size_of<T>::value;
+//}
 
 //  ****************************************************************************
 /// Reports the total size of the dynamic buffers required for this message.
@@ -164,7 +163,7 @@ template< class T,
         >
 size_t dynamic_size(const std::vector<T,A>& field)
 {
-  SizeOfVector<T,A, typename DeduceTypeTrait<T>::type> Size;
+  size_ofVector<T,A, typename DeduceTypeTrait<T>::type> Size;
   return Size(field);
 }
 
@@ -209,9 +208,9 @@ struct DynamicSizeFunctor
   ///
   /// Reports the dynamic size of the requested field.
   /// 
-  /// @paramt size_t          Parameterized value that specifies the index
+  /// @tparam size_t          Parameterized value that specifies the index
   ///                         of the data field to be converted.
-  /// @paramt value_type      [typename] A discriminator type for disambiguation.
+  /// @tparam value_type      [typename] A discriminator type for disambiguation.
   /// @param unnamed          An unused variable to disambiguate the appropriate
   ///                         specialization function for the compiler to select.
   /// 

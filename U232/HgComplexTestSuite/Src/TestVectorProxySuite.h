@@ -46,7 +46,7 @@ namespace Hg
 //  ****************************************************************************
 /// A type array that contains a few variations of Vector entries.
 ///
-typedef TypeList
+typedef type_list
 <
   uint32_t,
   std::vector<uint8_t>,

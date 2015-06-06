@@ -59,7 +59,7 @@ struct PackDatum
       proxy_type::value_type                      value_type;
 
     value_type &value = msg.template FieldAt<IdxT>().get();
-    size_t     offset = Hg::OffsetOf<IdxT, typename MsgT::format_type>::value
+    size_t     offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
                       + dynamic_offset;
     buffer.set_data(value, offset);
   }
@@ -174,7 +174,7 @@ bool
   pack_message_pre_allocated( MsgT& msg_values,
                               BufferT & fixed_buffer)
 {
-  if (fixed_buffer.size() < Hg::SizeOf<typename MsgT::format_type>::value)
+  if (fixed_buffer.size() < Hg::size_of<typename MsgT::format_type>::value)
   {
     return false;
   }
@@ -212,7 +212,7 @@ BufferT&
                 const static_size_trait*)
 {
   // Resize the buffer.
-  buffer.resize(Hg::SizeOf<typename MsgT::format_type>::value);
+  buffer.resize(Hg::size_of<typename MsgT::format_type>::value);
 
   detail::PackMessageWorker < 0, 
                               Hg::length<typename MsgT::format_type>::value,
@@ -244,7 +244,7 @@ size_t pack_message(MsgT  &msg_values,
                     const static_size_trait*)
 {
   // Calculate the number of bytes that is expected to be written.
-  size_t length = Hg::SizeOf<typename MsgT::format_type>::value;
+  size_t length = Hg::size_of<typename MsgT::format_type>::value;
 
   size_t org_offset = buffer.offset();
 
@@ -326,7 +326,7 @@ size_t pack_message(MsgT  &msg_values,
                     const dynamic_size_trait*)
 {
   // Calculate the number of bytes that is expected to be written.
-  size_t length = Hg::SizeOf<typename MsgT::format_type>::value;
+  size_t length = Hg::size_of<typename MsgT::format_type>::value;
 
   size_t org_offset = buffer.offset();
   // The new adjusted offset must be cumulative in order to 

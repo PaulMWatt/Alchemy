@@ -64,9 +64,9 @@ struct msg_size;
 //  ****************************************************************************
 /// An object that defines and manages access to a formatted message buffer.
 ///                 
-/// @paramt HgT             A message description that has 
+/// @tparam HgT             A message description that has 
 ///                           defined the format and utilities for field access.
-/// @paramt ByteOrderT      The specified byte-order for this
+/// @tparam ByteOrderT      The specified byte-order for this
 ///                           message definition. HostByteOrder is the default.
 /// 
 template< typename HgT,
@@ -175,11 +175,11 @@ public:
 //  ****************************************************************************
 /// An object that defines and manages access to a formatted message buffer.
 ///                 
-/// @paramt MsgT            A message description that has 
+/// @tparam MsgT            A message description that has 
 ///                           defined the format and utilities for field access.
 ///                           The MsgT must define these member-types:
-///                             format_type:    TypeList defines the format
-/// @paramt StorageT        StoragePolicy that manages access rules for the buffer.
+///                             format_type:    type_list defines the format
+/// @tparam StorageT        StoragePolicy that manages access rules for the buffer.
 ///
 ///                           @note The HG declaration MACROs define a template
 ///                                 format that is compatible with Hg::basic_msg.
@@ -225,7 +225,7 @@ public:
                   Hg::LittleEndian>           little_t;
 
   //  Constants ****************************************************************
-  enum { k_size = SizeOf<format_type>::value };
+  enum { k_size = size_of<format_type>::value };
                                         ///< Indicates the size in bytes of the
                                         ///  data buffer managed by this message.
   static const
@@ -431,7 +431,7 @@ struct msg_size
 {
   static size_t calculate(const T &msg)
   {
-    size_t fixed_size   = Hg::SizeOf<typename T::format_type>::value;
+    size_t fixed_size   = Hg::size_of<typename T::format_type>::value;
     size_t dynamic_size = dynamic_size_of<typename T::message_type, 
                                           typename T::storage_type>(msg);
     return fixed_size + dynamic_size; 
@@ -448,7 +448,7 @@ struct msg_size<T, false>
 {
   static size_t calculate(const T &msg)
   {
-    return Hg::SizeOf<typename T::format_type>::value;
+    return Hg::size_of<typename T::format_type>::value;
   }
 };
 

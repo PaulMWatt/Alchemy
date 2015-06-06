@@ -88,7 +88,7 @@ private:
   {
     // Extract the type at the current index specified for this instance
     // of the process helper function, and call the user's functor.
-    typedef typename TypeAt<IndexT, FormatT>::type type_t;
+    typedef typename type_at<IndexT, FormatT>::type type_t;
 
 #ifdef _WIN32
     ftor.operator() < IndexT, 
