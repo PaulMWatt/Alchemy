@@ -21,7 +21,7 @@ template< bool  Predicate,
         >
 struct conditional
 { 
-  typedef TrueType            type;
+  using type = TrueType;
 };
 
 //  ***************************************************************************
@@ -32,7 +32,7 @@ template< class TrueType,
         >
 struct conditional<false, TrueType, FalseType>
 { 
-  typedef FalseType           type;
+  using type =FalseType;
 };
 
 } // namespace Pb

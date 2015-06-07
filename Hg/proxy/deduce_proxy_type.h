@@ -16,7 +16,6 @@
 #include <Hg/proxy/bitlist_field_proxy.h>
 #include <Hg/proxy/vector_proxy.h>
 #include <Hg/proxy/array_proxy.h>
-#include <Hg/proxy/opaque_proxy.h>
 
 namespace Hg
 {

@@ -70,7 +70,7 @@ template< typename T,
         >
 struct DeclareTypeSequence
 {
-  typedef T                             type;
+  using type = T;
 };
 
 //  ****************************************************************************
@@ -81,8 +81,7 @@ struct DeclareTypeSequence
 template< typename T >
 struct DeclareTypeSequence < T, nested_trait >
 {
-  typedef typename
-    make_Hg_type_list<T>::type          type;
+  using type = typename make_Hg_type_list<T>::type;
 };
 
 //  ****************************************************************************
@@ -98,13 +97,10 @@ template< typename   T,
         >
 struct DeclareTypeSequence < ArrayT<T,N>, nested_trait >
 {
-  // Define a typedef that represents the actual data-type
+  // Define an alias that represents the actual data-type
   // that reprsents the type-list T passed into this array.
-  typedef typename
-    FieldTypes <T>::value_type          value_type;
-
-  typedef  
-    std::array< value_type, N>          type;
+  using value_type  = typename FieldTypes <T>::value_type;
+  using type        = std::array< value_type, N>;
 };
 
 //  ****************************************************************************
@@ -114,19 +110,16 @@ struct DeclareTypeSequence < ArrayT<T,N>, nested_trait >
 //  @tparam T             The value type in the container.
 //  @param  A             The allocator used for memory management.
 //
-template< class T,
-          class A,
-          template <class, class> class VectorT
+template< typename T,
+          typename A,
+          template <typename, typename> class VectorT
         >
 struct DeclareTypeSequence < VectorT<T,A>, nested_trait  >
 {
-  // Define a typedef that represents the actual data-type
+  // Define an alias that represents the actual data-type
   // that reprsents the type-list T passed into this array.
-  typedef typename
-    FieldTypes <T>::value_type          value_type;
-
-  typedef 
-    std::vector< value_type, A>         type;
+  using value_type = typename FieldTypes <T>::value_type;
+  using type       = std::vector< value_type, A>;
 };
 
 
@@ -134,108 +127,89 @@ struct DeclareTypeSequence < VectorT<T,A>, nested_trait  >
 //  ****************************************************************************
 //  The default implementation is a no-op and returns the same type.
 // 
-template< class T,
-          class TraitT>
+template< typename T,
+          typename TraitT>
 struct ReplaceType
 {
-  typedef T                             type;
+  using type = T;
 };
 
 //  ****************************************************************************
 //  The array type requires the specific definitions for internal types.
 // 
-template< class ArrayT >
+template< typename ArrayT >
 struct ReplaceType< ArrayT, array_trait>
 {
   // Extract the type and extent from the array declaration.
-  typedef typename
-    ArrayT::value_type                  value_type;
+  using value_type = typename ArrayT::value_type;
 
   // Deduce the type trait of value_type
   // for declaration of the type sequence.
-  typedef typename
-    deduce_type_trait<value_type>::type   type_trait;
+  using type_trait = deduce_type_trait_t<value_type>;
 
   // If the value type has a dynamic size, then the array will be converted
   // to a vector, with a pre-allocated size.
   // This greatly simplifies serialization.
   // It also allows pure fixed-size constructs to be optimized as such.
-  typedef typename
-    DeclareTypeSequence < ArrayT, 
-                          type_trait
-                        >::type         array_type;
-
-  typedef array_type                    type;
+  using array_type = typename DeclareTypeSequence < ArrayT, type_trait>::type;
+  using type       = array_type;
 };
 
 //  ****************************************************************************
 //  The vector type requires the specific definitions for internal types.
 // 
-template< class VectorT >
+template< typename VectorT >
 struct ReplaceType< VectorT, vector_trait>
 {
   // Extract the value type declaration from inside the vector declaration.
-  typedef typename
-    VectorT::value_type                 value_type;
+  using value_type = typename VectorT::value_type;
 
   // Deduce the type trait of value_type
   // for declaration of the type sequence.
-  typedef typename
-    deduce_type_trait<value_type>::type   type_trait;
+  using type_trait = deduce_type_trait_t<value_type>;
 
-  typedef typename
-    DeclareTypeSequence < VectorT, 
-                          type_trait
-                        >::type         type;
+  using type = typename DeclareTypeSequence < VectorT, type_trait>::type;
 };
 
 
 //  ****************************************************************************
 //  Inspects the input type, and applies adjustments for compatibility with Hg.
 // 
-template< class T >
+template< typename T >
 struct AdjustType
 {
-  typedef typename 
-    ReplaceType < T, 
-                  typename deduce_type_trait<T>::type 
-                >::type                 type;
+  using type = typename ReplaceType <T, deduce_type_trait_t<T>>::type;
 };
 
 //  ****************************************************************************
 //  Inspect each item and add the proper format to the final type_list.
 // 
-template< class T,
-          class TailT,
-          class HgT
+template< typename T,
+          typename TailT,
+          typename HgT
         >
 struct make_Hg_worker
 {
-                                        // The result of inspecting a type and
-  typedef typename                      // potentially adjusting the type.
-    AdjustType<T>::type                 adjusted_type;
-                                        
+  // The result of inspecting a type and
+  // potentially adjusting the type.
+  using adjusted_type = typename AdjustType<T>::type;
 
-                                        // The next item on the list to process.
-  typedef Hg::front_t<TailT>            next_type;           
-                  
-                                        
+  // The next item on the list to process.
+  using next_type = Hg::front_t<TailT>;
 
-                                        // The remainder of the unprocessed types.
-  typedef Hg::pop_front_t<TailT>        list_tail;
-    
-                                        
+  // The remainder of the unprocessed types.
+  using list_tail = Hg::pop_front_t<TailT>;
 
-  typedef typename                      
-    make_Hg_worker< next_type,          // A recursively built list of processed
-                    list_tail,          // types that have been adjusted to be
-                    HgT                 // compatible for Hg message types.
-                  >::type               hg_list;
+  // A recursively built list of processed
+  // types that have been adjusted to be
+  // compatible for Hg message types.
+  using hg_list = typename make_Hg_worker < next_type,          
+                                            list_tail,          
+                                            HgT                 
+                                          >::type;
             
-                                        // The list of types converted for Hg.
-  typedef Hg::push_front_t< adjusted_type,       
-                            hg_list
-                          >             type; 
+  // The list of types converted for Hg.
+  using type = Hg::push_front_t< adjusted_type, hg_list>; 
 };
 
 //  ****************************************************************************
@@ -244,39 +218,27 @@ struct make_Hg_worker
 template< typename LList,
           typename PList
         >
-struct make_Hg_worker < Hg::MT, 
-                        LList, 
-                        PList>
+struct make_Hg_worker < Hg::MT, LList, PList>
 {
-  typedef PList                         type;
+  using type = PList;
 };
 
 } // namespace detail
 
 
-
+// TODO: The solution for this function is very similar to the type_list implementation of move_item. Revisit, and investigate the possibility of creating a "transform" function with a meta-functor.
 
 //  ****************************************************************************
-//  @Note:  Type T must be a typelist.
+//  @Note:  Type T must be a type_list.
 //
 template< typename T>
 struct make_Hg_type_list
 {
-protected:
-  typedef typename                      // The next item on the list to process.
-    Hg::front<T>::type                  next_type;
-                                        
-
-  typedef typename                      // The remainder of the unprocessed types.
-    Hg::pop_front<T>::type              list_tail;
-
-
-public:                                        
-  typedef typename                      // Make the Hg compatible list.
-    detail::make_Hg_worker< next_type,
-                            list_tail,
-                            Hg::type_list<>
-                          >::type       type;
+  using type = 
+    typename detail::make_Hg_worker < Hg::front_t<T>,
+                                      Hg::pop_front_t<T>,
+                                      Hg::type_list<>
+                                    >::type;
 };
 
 
@@ -284,41 +246,4 @@ public:
 
 
 #endif
-
-
-// TODO: This will be deleted when it is verified the BitFieldArray and Vector are not needed. A better approach has been developed, the msg_view.
-//  ****************************************************************************
-//  Declares a BitFieldArray in place of the array<bit_field> definition.
-// 
-//  @tparam ArrayT        The array definition type.
-//  @tparam T             The value type in the container.
-//  @param  N             The number of elements in the container.
-//
-//template< typename   T,
-//          size_t  N,
-//          template <typename, size_t> typename ArrayT
-//        >
-//struct DeclareTypeSequence < ArrayT<T,N>, packed_trait >
-//{
-//  typedef 
-//    Hg::BitFieldArray<T, N>             type;
-//};
-
-
-//  ****************************************************************************
-//  Declares a BitFieldVector in place of the vector<bit_field> definition.
-// 
-//  @tparam VectorT       The vector definition type.
-//  @tparam T             The value type in the container.
-//  @param  A             The allocator used for memory management.
-//
-//template< class T,
-//          class A,
-//          template <class, class> class VectorT
-//        >
-//struct DeclareTypeSequence < VectorT<T,A>, packed_trait >
-//{
-//  typedef  
-//    Hg::BitFieldVector<T, A>            type;
-//};
 

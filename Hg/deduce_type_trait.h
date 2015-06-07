@@ -23,7 +23,7 @@ namespace detail
 //  ****************************************************************************
 /// A convenience meta-function to define the type trait tag that is best 
 /// suited for specified type.
-/// The constructed type can be accessed through the public typedef *type*. 
+/// The constructed type can be accessed through the public alias *type*. 
 /// 
 /// @tparam ValueT      [typename] The value to identify the traits.
 /// 

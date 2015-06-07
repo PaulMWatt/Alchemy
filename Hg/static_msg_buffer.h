@@ -24,14 +24,13 @@ template<>
 class MsgBuffer <BufferedStaticStoragePolicy>
 {
 public:
-  //  Typedefs *****************************************************************
-  typedef BufferedStaticStoragePolicy                       storage_type;
-  typedef storage_type::data_type                           data_type;
-  typedef storage_type::s_pointer                           s_pointer;
-  typedef storage_type::w_pointer                           w_pointer;
-
-  typedef data_type*                                        pointer;
-  typedef const data_type*                                  const_pointer;
+  //  Aliases ******************************************************************
+  using storage_type  = BufferedStaticStoragePolicy;
+  using data_type     = storage_type::data_type;
+  using s_pointer     = storage_type::s_pointer;
+  using w_pointer     = storage_type::w_pointer;
+  using pointer       = data_type*;
+  using const_pointer = const data_type*;
 
   //  Construction *************************************************************
   //  **************************************************************************

@@ -27,25 +27,18 @@ template< typename MsgT,
 class msg_view
 {      
 public:
-  //  Typedefs *****************************************************************
-  typedef MsgT                                message_type;
+  //  Aliases ******************************************************************
+  using message_type    = MsgT;
+  using format_type     = typename MsgT::format_type;
+  using storage_type    = Hg::BufferedStoragePolicy;
+  using byte_order_type = ByteOrderT;
 
-  typedef typename 
-    MsgT::format_type                         format_type;
-  typedef Hg::BufferedStoragePolicy           storage_type;
-
-  typedef ByteOrderT                          byte_order_type;
-
-  typedef Message < MsgT, 
-                    byte_order_type
-                  >                           value_type;
-
-  typedef byte_t*                             raw_pointer;
-
-  typedef value_type*                         pointer;
-  typedef const value_type*                   const_pointer;
-  typedef value_type&                         reference;
-  typedef const value_type&                   const_reference;
+  using value_type      = Message < MsgT, byte_order_type>;
+  using raw_pointer     = byte_t*;
+  using pointer         = value_type*;
+  using const_pointer   = const value_type*;
+  using reference       = value_type&;
+  using const_reference = const value_type&;
 
   //  Constants ****************************************************************
   enum { k_size = size_of<format_type>::value };
@@ -59,8 +52,8 @@ public:
                                         ///  message contains fields that are
                                         ///  potentially dynamically allocated.
 
-  typedef msg_view_iterator<MsgT>         iterator;
-  typedef msg_view_const_iterator<MsgT>   const_iterator;
+  using iterator        = msg_view_iterator<MsgT>;
+  using const_iterator  = msg_view_const_iterator<MsgT>;
 
 
   //  **************************************************************************

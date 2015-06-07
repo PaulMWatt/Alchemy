@@ -32,11 +32,13 @@ template< typename  T,
         >
 struct DeduceMsgtype_list_Worker
 { 
-  typedef typename
-    push_front
+  using format_type = typename T::format_type;
+
+  using type = 
+    push_front_t
     < typename DeduceMsgtype_list_Worker<T,PosT+1, LimitT>::type, 
-      typename Hg::type_at<PosT, typename T::format_type>::type
-    >::type                                                     type;
+      Hg::type_at_t<PosT, format_type>
+    >;
 };
 
 //  ****************************************************************************
@@ -45,15 +47,15 @@ template< typename  T,
         >
 struct DeduceMsgtype_list_Worker<T, PosT, PosT>
 { 
-  typedef 
-    type_list<typename Hg::type_at<PosT, typename T::format_type>::type>      type;
+  using format_type = typename T::format_type;
+  using type        = type_list<Hg::type_at_t<PosT, format_type>>;
 };
 
 //  ****************************************************************************
 /// A convenience meta-function to define the typelist of a message object 
 /// that is derived from the specified field-types.
 ///
-/// The constructed type can be accessed through the public typedef *type*. 
+/// The constructed type can be accessed through the public alias *type*. 
 /// 
 /// @tparam T           [typename] The msg type that contains the sub-fields.
 /// @param  SizeT       [size_t]   The number of sub-fields to index.
@@ -63,8 +65,7 @@ template< typename  T,
         >
 struct DeduceMsgtype_list
 { 
-  typedef typename
-    DeduceMsgtype_list_Worker<T,0, SizeT>::type                  type; 
+  using type = typename DeduceMsgtype_list_Worker<T,0, SizeT>::type; 
 };
 
 } // namespace detail

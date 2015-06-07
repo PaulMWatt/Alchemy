@@ -37,8 +37,8 @@ struct BitField
                 "The number of bits in the BitField cannot exceed the size of the host type T.");
     
   //  Aliases ******************************************************************
-  typedef BitField<OwnerT, TagT, OffsetT, CountT, T>&   reference;
-  typedef T                                             value_type;
+  using reference = BitField<OwnerT, TagT, OffsetT, CountT, T>&;
+  using value_type= T;
 
   //  Constants ****************************************************************
   enum { k_offset = OffsetT };

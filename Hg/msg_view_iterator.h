@@ -25,15 +25,13 @@ template< typename T >
 class msg_view_const_iterator 
 {      
 public:
-  typedef msg_view_const_iterator<T>              iter_t;
-  typedef std::random_access_iterator_tag         iterator_category;
-
-  typedef basic_msg< T,
-                    BufferedStaticStoragePolicy>  value_type;
-  typedef ptrdiff_t                               difference_type;
-  typedef const value_type*                       pointer;
-  typedef const value_type&                       reference;
-  typedef value_type*                             Tptr;
+  using iter_t            = msg_view_const_iterator<T>;
+  using iterator_category = std::random_access_iterator_tag;
+  using value_type        = basic_msg<T,BufferedStaticStoragePolicy>;
+  using difference_type   = ptrdiff_t;
+  using pointer           = const value_type*;
+  using reference         = const value_type&;
+  using Tptr              = value_type*;
 
   //  **************************************************************************
   /// Default constructor with a pointer to a NULL msg_view.
@@ -266,15 +264,13 @@ class msg_view_iterator
        : public msg_view_const_iterator<T>
 {
 public:
-  typedef msg_view_iterator<T>                    iter_t;
-  typedef msg_view_const_iterator<T>              base_t;
-  typedef std::random_access_iterator_tag         iterator_category;
-
-  typedef basic_msg< T,
-                    BufferedStaticStoragePolicy>  value_type;
-  typedef ptrdiff_t                               difference_type;
-  typedef value_type*                             pointer;
-  typedef value_type&                             reference;
+  using iter_t            = msg_view_iterator<T>;
+  using base_t            = msg_view_const_iterator<T>;
+  using iterator_category = std::random_access_iterator_tag;
+  using value_type        = basic_msg< T,BufferedStaticStoragePolicy>;
+  using difference_type   = ptrdiff_t;
+  using pointer           = value_type*;
+  using reference         = value_type&;
 
   //  **************************************************************************
   /// Default constructor for an iterator with a NULL msg_view pointer.

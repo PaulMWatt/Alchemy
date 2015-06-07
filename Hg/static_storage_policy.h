@@ -34,11 +34,11 @@ template <bool     IsBufferedT>
 struct StaticStoragePolicy
   : std::integral_constant<bool, IsBufferedT>
 {
-  typedef unsigned char                 data_type;
-  typedef data_type*                    pointer;
-  typedef const data_type*              const_pointer;
-  typedef std::shared_ptr<data_type>    s_pointer;
-  typedef std::weak_ptr<data_type>      w_pointer;
+  using data_type     = unsigned char;
+  using pointer       = data_type*;
+  using const_pointer = typedef const data_type*;
+  using s_pointer     = std::shared_ptr<data_type>;
+  using w_pointer     = std::weak_ptr<data_type>;
   
   //  **************************************************************************
   /// Not Implemented.
@@ -114,7 +114,7 @@ struct StaticStoragePolicy
   }
 };
 
-typedef StaticStoragePolicy<true>     BufferedStaticStoragePolicy;
+using BufferedStaticStoragePolicy = StaticStoragePolicy<true>;
 
 } // namespace Hg
 

@@ -143,7 +143,7 @@ namespace Hg
   AUTO_INDEX_ZERO                                                              \
   DECREMENT_UNTIL_MATCH                                                        \
   DECREMENT_UNTIL_ZERO                                                         \
-  typedef std::integral_constant<int, __LINE__>  enum_base;  
+  using enum_base = std::integral_constant<int, __LINE__>;  
 
 //  ****************************************************************************
 #define INC_COUNTER        ADD_ENUM_H(__LINE__ - enum_base::value)

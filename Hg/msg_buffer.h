@@ -466,8 +466,7 @@ public:
 
 private:
   //  Aliases ******************************************************************
-  typedef std::vector<data_type>          DataVector;
-
+  using DataVector = std::vector<data_type>;
 
   // Private Member Data *******************************************************
   DataVector        m_data;               ///< The storage medium managed by
