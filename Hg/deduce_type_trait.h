@@ -1,6 +1,6 @@
 /// @file detail/deduce_type_trait.h
 /// 
-/// The declaration and definition of DeduceTypeTrait.
+/// The declaration and definition of deduce_type_trait.
 ///           
 /// A template meta-function that selects the appropriate trait tag for 
 /// automatic type deduction of other processing constructs. One particularly
@@ -28,26 +28,26 @@ namespace detail
 /// @tparam ValueT      [typename] The value to identify the traits.
 /// 
 template< typename  ValueT >
-struct DeduceTypeTrait
+struct deduce_type_trait
 {
 private:
   //  **************************************************************************
-  typedef ValueT                        value_type;
+  using value_type = ValueT;
 
   //  **************************************************************************
-  /// There are four distinct types of proxy objects required:
-  /// Search from most general to most restrictive.
-  /// Propagate the type info forward until the last test.
-  /// The remaining trait at the end will be the most specific type role
-  /// the index_type satisfies.
-  ///
-  ///   1: datum proxy:          Fundamental and nested heterogenous types.
-  ///                            - This is the catch all type for fields that
-  ///                              do not require any special processing.
-  ///   2: bit field proxy       Bit-field types
-  ///   3: dynamic array proxy   Dynamically sized nested homogenous types
-  ///   4: fixed array proxy     Fixed sized nested homogenous types 
-  ///
+  //  There are four distinct types of proxy objects required:
+  //  Search from most general to most restrictive.
+  //  Propagate the type info forward until the last test.
+  //  The remaining trait at the end will be the most specific type role
+  //  the index_type satisfies.
+  // 
+  //    1: datum proxy:          Fundamental and nested heterogenous types.
+  //                             - This is the catch all type for fields that
+  //                               do not require any special processing.
+  //    2: bit field proxy       Bit-field types
+  //    3: dynamic array proxy   Dynamically sized nested homogenous types
+  //    4: fixed array proxy     Fixed sized nested homogenous types 
+  // 
   using basic_type = typename 
     std::conditional< packed_value<value_type>::value,
                       packed_trait,
@@ -75,7 +75,7 @@ private:
   //  **************************************************************************
   //  Differentiates between an array and a vector type sequence.  
   //
-  using deduced_type_trait = typename 
+  using deduced_trait = typename 
     std::conditional< array_value<value_type>::value, 
                       array_trait,
                       dynamic_type
@@ -86,8 +86,16 @@ public:
   //  **************************************************************************
   /// The type trait tag deduced for the specified parameter type.
   ///
-  using type = deduced_type_trait;
+  using type = deduced_trait;
 };
+
+//  **************************************************************************
+/// Template alias to access the meta-operation, deduce_type_trait.
+///
+template <typename value_type>
+using deduce_type_trait_t = typename deduce_type_trait<value_type>::type;
+
+
 
 //  ****************************************************************************
 /// A specialization that will deduce the traits from an index in a type_list.
@@ -98,19 +106,18 @@ public:
 template< size_t    IdxT,
           typename  FormatT
         >
-struct Deducetype_atTrait
+struct deduce_type_trait_at
 {
 private:
-  using value_type         = typename type_at< IdxT, FormatT >::type;
-
-  using deduced_type_trait = typename DeduceTypeTrait<value_type>::type;
+  using value_type    = typename type_at< IdxT, FormatT >::type;
 
 public:
   //  **************************************************************************
   /// The type trait tag deduced for the specified parameter type.
   ///
-  using type = deduced_type_trait;
+  using type = deduce_type_trait_t<value_type>;
 };
+
 
 
 } // namespace detail

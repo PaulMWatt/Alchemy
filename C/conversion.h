@@ -120,7 +120,7 @@ size_t get_datum_size(const T datum)
 ///
 template< typename T, 
           typename U,
-          typename trait_t = Hg::detail::DeduceTypeTrait<U::value_type>::type
+          typename trait_t = Hg::detail::deduce_type_trait<U::value_type>::type
         >
 struct translate_from_C
 {
@@ -235,7 +235,7 @@ struct translate_from_C<T,U,Hg::vector_trait>
 ///
 template< typename T, 
           typename U,
-          typename trait_t = Hg::detail::DeduceTypeTrait<T::value_type>::type
+          typename trait_t = Hg::detail::deduce_type_trait<T::value_type>::type
         >
 struct translate_to_C
 {

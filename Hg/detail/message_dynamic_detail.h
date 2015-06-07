@@ -29,16 +29,16 @@ struct DynamicSizeWorker;
 //  ****************************************************************************
 /// Determines the number of bytes required to serialize a vector.
 ///    
-template< class T,
-          class A,
-          class TypeTraitT
+template< typename T,
+          typename A,
+          typename TypeTraitT
         >
 struct size_ofVector
 {
   //  **************************************************************************
-  template< class TypeT,
-            class AllocT,
-            template <class, class> class VectorT
+  template< typename TypeT,
+            typename AllocT,
+            template <typename, typename> class VectorT
           >
   size_t operator()(const VectorT<TypeT,AllocT>& field)
   {
@@ -52,8 +52,8 @@ namespace nested
 //  ****************************************************************************
 //  Returns the size of a vector that contains a dynamically-sized nested type.
 //
-template< class T,
-          class A,
+template< typename T,
+          typename A,
           bool  HasDynamicT
         >
 struct Helpersize_ofVector
@@ -84,8 +84,8 @@ struct Helpersize_ofVector
 //  ****************************************************************************
 //  Returns the size of a vector that contains a fixed-size nested type.
 //
-template< class T,
-          class A
+template< typename T,
+          typename A
         >
 struct Helpersize_ofVector <T, A, false>
 {
@@ -101,16 +101,15 @@ struct Helpersize_ofVector <T, A, false>
 /// Determines the number of bytes required to serialize a vector.
 /// This version handles a vector with sub-messages.
 ///    
-template< class T,
-          class A
+template< typename T,
+          typename A
         >
 struct size_ofVector<T,A,nested_trait>
 {
   //  **************************************************************************
   size_t operator()(const std::vector<T,A>& field)
   {
-    typedef typename 
-      T::format_type          format_type;
+    using format_type = typename T::format_type;
 
     return nested::Helpersize_ofVector<T, A, has_dynamic<format_type>::value>::size(field);
   }
@@ -132,7 +131,7 @@ struct size_ofVector<T,A,vector_trait>
 
     size_ofVector< typename T::value_type, 
                   typename T::allocator_type, 
-                  typename DeduceTypeTrait<typename T::value_type>::type
+                  typename deduce_type_trait<typename T::value_type>::type
                 > Size;
 
     for (size_t index = 0; index < field.size(); ++index)
@@ -147,8 +146,8 @@ struct size_ofVector<T,A,vector_trait>
 //  ****************************************************************************
 /// Reports the total dynamic size of vector of bit-fields for this item.
 ///    
-//template< class T,
-//          class A
+//template< typename T,
+//          typename A
 //        >
 //size_t dynamic_size(const Hg::BitFieldVector<T,A>& field)
 //{
@@ -158,12 +157,12 @@ struct size_ofVector<T,A,vector_trait>
 //  ****************************************************************************
 /// Reports the total size of the dynamic buffers required for this message.
 ///    
-template< class T,
-          class A
+template< typename T,
+          typename A
         >
 size_t dynamic_size(const std::vector<T,A>& field)
 {
-  size_ofVector<T,A, typename DeduceTypeTrait<T>::type> Size;
+  size_ofVector<T,A, typename deduce_type_trait<T>::type> Size;
   return Size(field);
 }
 
@@ -180,13 +179,10 @@ size_t dynamic_size(const T& field)
 template< typename MsgT >
 struct DynamicSizeFunctor
 {
-  //  Typedefs *****************************************************************
-  typedef MsgT                      message_type;
-  typedef typename
-    message_type::format_type           format_type;
-
-  typedef typename
-    dynamic_fields<format_type>::type   dynamic_field_indices;
+  //  Aliases ******************************************************************
+  using message_type          = MsgT;
+  using format_type           = typename message_type::format_type;
+  using dynamic_field_indices = typename dynamic_fields<format_type>::type;
 
   //  Data Members *************************************************************
   const message_type &message;
@@ -219,12 +215,10 @@ struct DynamicSizeFunctor
           >
   void operator()(const value_t*)
   {
-    typedef typename
-      Hg::detail::DeduceProxyType < IdxT,
-                                    format_type>::type        proxy_type;
-    typedef typename
-      proxy_type::value_type                                  value_type;
+    using proxy_type  = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
+    using value_type  = typename proxy_type::value_type;
                                       
+
     message_type &msg = const_cast<message_type&>(message);
     value_type &value = msg.template FieldAt<IdxT>().get();
     m_dynamic_size += dynamic_size(value);
@@ -252,9 +246,8 @@ struct DynamicSizeWorker
   static
     size_t size(const MsgT& msg)
   {
-    typedef MsgT                      message_type;
-    typedef typename  
-      message_type::format_type           format_type;
+    using message_type  = MsgT;
+    using format_type   = typename message_type::format_type;
 
     // Initialize a functor to query for the dynamic size of each field.
     detail::DynamicSizeFunctor< message_type > ftor(msg);

@@ -154,7 +154,7 @@ struct ReplaceType< ArrayT, array_trait>
   // Deduce the type trait of value_type
   // for declaration of the type sequence.
   typedef typename
-    DeduceTypeTrait<value_type>::type   type_trait;
+    deduce_type_trait<value_type>::type   type_trait;
 
   // If the value type has a dynamic size, then the array will be converted
   // to a vector, with a pre-allocated size.
@@ -181,7 +181,7 @@ struct ReplaceType< VectorT, vector_trait>
   // Deduce the type trait of value_type
   // for declaration of the type sequence.
   typedef typename
-    DeduceTypeTrait<value_type>::type   type_trait;
+    deduce_type_trait<value_type>::type   type_trait;
 
   typedef typename
     DeclareTypeSequence < VectorT, 
@@ -198,7 +198,7 @@ struct AdjustType
 {
   typedef typename 
     ReplaceType < T, 
-                  typename DeduceTypeTrait<T>::type 
+                  typename deduce_type_trait<T>::type 
                 >::type                 type;
 };
 

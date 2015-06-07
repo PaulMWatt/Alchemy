@@ -55,14 +55,10 @@ template< typename VectorT,
         >
 struct Deserializer <VectorT, BufferT, fundamental_trait>
 {
-  typedef VectorT                       vector_type;
-
-  typedef typename
-    vector_type::value_type             value_type;
-
-  typedef BufferT                       buffer_type;
-
-  typedef fundamental_trait             data_type_trait;
+  using vector_type     = VectorT;
+  using value_type      = typename vector_type::value_type;
+  using buffer_type     = BufferT;
+  using data_type_trait = fundamental_trait;
 
   //  **************************************************************************
   size_t Read ( vector_type   &value, 
@@ -92,49 +88,6 @@ struct Deserializer <VectorT, BufferT, fundamental_trait>
 
 };
 
-//  ****************************************************************************
-//  Imports a vector of bit-list fields.
-//
-//template< typename T,
-//          typename A,
-//          typename BufferT
-//        >
-//struct Deserializer <Hg::BitFieldVector<T,A>, BufferT, packed_trait>
-//{
-//  typedef Hg::BitFieldVector<T,A>       vector_type;
-//  typedef typename
-//    vector_type::value_type             value_type;
-//  typedef BufferT                       buffer_type;
-//  typedef packed_trait                  data_type_trait;
-//
-//  //  **************************************************************************
-//  size_t Read ( vector_type  &value, 
-//                size_t        count, 
-//                buffer_type  &buffer,
-//                size_t        offset)
-//  {
-//    if (0 == count)
-//    {
-//      return 0;
-//    }
-//
-//    // Calculate the size of data to write in bytes.
-//    size_t size = count * sizeof(value_type);
-//
-//    value_type *pFirst = &(value[0].value());
-//
-//    return buffer.get_range(pFirst, size, offset);
-//  }
-//
-//  //  **************************************************************************
-//  size_t Read ( value_type   &value, 
-//                buffer_type  &buffer,
-//                size_t        offset)
-//  {
-//    return buffer.get_data( value, offset);
-//  }
-//};
-
 
 //  ****************************************************************************
 //  Exports a vector of nested types with each sub-item written individually.
@@ -145,10 +98,11 @@ template< typename T,
         >
 struct Deserializer <std::vector<T, A>, BufferT, nested_trait>
 {
-  typedef std::vector<T,A>              vector_type;
-  typedef T                             value_type;
-  typedef BufferT                       buffer_type;
-  typedef nested_trait                  data_type_trait;
+  using vector_type       = std::vector<T,A>;
+  using buffer_type       = BufferT;
+  using data_type_trait   = nested_trait;
+  using value_type        = T;
+  using value_format_type = typename value_type::format_type;
 
   //  **************************************************************************
   size_t Read ( vector_type    &value, 
@@ -181,14 +135,9 @@ struct Deserializer <std::vector<T, A>, BufferT, nested_trait>
                 buffer_type    &buffer,
                 size_t          offset)
   {
-    // An important typedef for selecting the proper
-    // version of the unpack function for the sub-elements.
-    typedef typename
-      message_size_trait<typename value_type::format_type>::type     size_trait;
-
     return  unpack_message< value_type,
                             buffer_type,
-                            size_trait
+                            message_size_trait_t<value_format_type>
                           >(value, buffer, offset);
   }
 };
@@ -204,18 +153,14 @@ template< typename T,
         >
 struct Deserializer <std::vector<T, A>, BufferT, array_trait>
 {
-  typedef std::vector<T,A>              vector_type;
-  typedef typename
-    vector_type::value_type             value_type;
-
-  typedef BufferT                       buffer_type;
+  using vector_type= std::vector<T,A>;
+  using value_type = typename vector_type::value_type;
+  using buffer_type= BufferT;
 
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of deserializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < value_type >::type              data_type_trait;
+  using data_type_trait = typename Hg::detail::deduce_type_trait_t<value_type>;
 
   //  **************************************************************************
   size_t Read ( vector_type    &value, 
@@ -244,17 +189,14 @@ template< typename T,
         >
 struct Deserializer <std::vector<T, A>, BufferT, vector_trait>
 {
-  typedef std::vector<T, A>             vector_type;
-  typedef typename
-    vector_type::value_type             value_type;
-  typedef BufferT                       buffer_type;
+  using vector_type= std::vector<T, A>;
+  using value_type = typename vector_type::value_type;
+  using buffer_type= BufferT;
 
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of deserializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < value_type >::type              data_type_trait;
+  using data_type_trait = typename Hg::detail::deduce_type_trait_t<value_type>;
 
   //  **************************************************************************
   size_t Read ( vector_type  &value, 
@@ -291,26 +233,20 @@ size_t DeserializeInBulk( std::vector<T,A> &value,
                           BufferT          &buffer,
                           size_t            offset)
 {
-  typedef std::vector<T,A>              vector_type;
-
-  typedef typename
-    vector_type::value_type             data_type;
-  typedef typename
-    vector_type::allocator_type         allocator_type;
+  using vector_type     = std::vector<T,A>;
+  using data_type       = typename vector_type::value_type;
+  using allocator_type  = typename vector_type::allocator_type;
+  using buffer_type     = BufferT;
 
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of deserializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < data_type >::type               data_type_trait;
+  using data_type_trait = typename Hg::detail::deduce_type_trait_t<data_type>;
 
-  typedef 
-    Vector::Deserializer
-      < vector_type, 
-        BufferT, 
-        data_type_trait
-      >                                 deserializer_t;
+  using deserializer_t = Vector::Deserializer < vector_type, 
+                                                buffer_type, 
+                                                data_type_trait
+                                              >;
 
   deserializer_t  deserializer;
   size_t          bytes_written = 0;
@@ -350,22 +286,18 @@ size_t DeserializeByItem( std::vector<T,A>  &value,
                           BufferT           &buffer,
                           size_t            offset)
 {
-  typedef std::vector<T,A>              vector_type;
-
-  typedef typename
-    vector_type::value_type             data_type;
-  typedef typename
-    vector_type::allocator_type         allocator_type;
+  using vector_type     = std::vector<T,A>;
+  using data_type       = typename vector_type::value_type;
+  using allocator_type  = typename vector_type::allocator_type;
+  using buffer_type     = BufferT;
 
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of deserializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < data_type >::type               data_type_trait;
+  using data_type_trait = typename Hg::detail::deduce_type_trait_t<data_type>;
 
   Vector::Deserializer< vector_type, 
-                        BufferT, 
+                        buffer_type, 
                         data_type_trait>  deserializer;
 
   size_t count = value.size();
@@ -404,21 +336,18 @@ size_t DeserializeVector (VectorT<T, A>  &value,
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of deserializing the data.
-  typedef VectorT<T, A>                 vector_type;
+  using vector_type     = VectorT<T, A>;
+  using value_type      = T;
+  using data_type_trait = typename Hg::detail::deduce_type_trait_t<value_type>;
 
-  typedef T                             value_type;
-
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < value_type >::type              value_type_trait;
 
 
   // Define the correct type of deserialize functor 
   // based on the type contained within the vector.
-  typedef Vector::Deserializer< vector_type,
-                                BufferT,
-                                value_type_trait
-                              >         deserializer_t;
+  using deserializer_t = Vector::Deserializer < vector_type,
+                                                BufferT,
+                                                data_type_trait
+                                              >;
 
   deserializer_t deserializer;
   return deserializer.Read(value, count, buffer, offset);
@@ -444,21 +373,11 @@ struct UnpackDatum< IdxT,
                     BufferT, 
                     vector_trait>
 {
-  //  Typedefs *****************************************************************
-  typedef typename
-    Hg::detail::DeduceProxyType 
-      < IdxT,
-        typename MsgT::format_type
-      >::type                                     proxy_type;
+  //  Aliases ******************************************************************
+  using message_type= MsgT;
+  using buffer_type = BufferT;
+  using format_type = typename message_type::format_type;
 
-  typedef typename
-    proxy_type::value_type                        value_type;
-  typedef typename
-    value_type::value_type                        data_type;
-
-  typedef MsgT                                message_type;
-
-  typedef BufferT                                 buffer_type;
 
   //  **************************************************************************
   //  Reads a dynamically-size field from the specified buffer.
@@ -474,7 +393,7 @@ struct UnpackDatum< IdxT,
                   const buffer_type  &buffer,
                         size_t   &dynamic_offset)
   {
-    size_t     offset = Hg::offset_of<IdxT, typename message_type::format_type>::value
+    size_t     offset = Hg::offset_of<IdxT, format_type>::value
                       + dynamic_offset;
     
     // Query the message object for the number of elements in the buffer;
@@ -487,7 +406,7 @@ struct UnpackDatum< IdxT,
     }
 
     // Allocate space for the incoming data.
-    value_type& value = msg.template FieldAt<IdxT>().get();
+    auto& value = msg.template FieldAt<IdxT>().get();
     value.resize(count);
 
     size_t bytes_read = 

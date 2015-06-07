@@ -49,19 +49,18 @@ struct UnpackDatum<IdxT, MsgT, BufferT, nested_trait>
                   const BufferT  &buffer,
                         size_t   &dynamic_offset)
   {
-    typedef typename
-      Hg::detail::DeduceProxyType < IdxT,
-                                    typename MsgT::format_type
-                                  >::type                               proxy_type;
-    typedef typename
-      proxy_type::value_type                                            value_type;
+    using format_type = typename MsgT::format_type;
+    using proxy_type  = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
+    using value_type  = typename proxy_type::value_type;
+    using value_format_type = typename value_type::format_type;
 
-    size_t     offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
+
+    size_t     offset = Hg::offset_of<IdxT, format_type>::value
                       + dynamic_offset;
     value_type& value = msg.template FieldAt<IdxT>().get();
     unpack_message< value_type, 
                     BufferT,
-                    typename message_size_trait<typename value_type::format_type>::type
+                    message_size_trait_t<value_format_type>
                   >(value, buffer, offset);
   }
 };

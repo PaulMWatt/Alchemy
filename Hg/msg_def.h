@@ -121,7 +121,7 @@ namespace Hg
 {
 
 //  Aliases ********************************************************************
-typedef size_t (*pfnGetDatumSize)(const uint8_t*, size_t);
+using pfnGetDatumSize = size_t(*)(const uint8_t*, size_t);
 
 
 //  ****************************************************************************
@@ -145,6 +145,12 @@ struct message_size_trait
       static_size_trait
     >
 { };
+
+//  ****************************************************************************
+/// Template alias for convenient access of Hg::message_size_trait.
+///
+template< typename T >
+using message_size_trait_t = typename message_size_trait<T>::type;
 
 } // namespace Hg
 
@@ -205,13 +211,13 @@ struct message_size_trait
 #define Hg_DECLARE_STRUCT_HEADER(F, ...)                                       \
   BEGIN_NAMESPACE(Hg)                                                          \
   DEFINE_STRUCT_TYPELIST(F##_tl, __VA_ARGS__)                                  \
-  typedef Hg::make_Hg_type_list<F##_tl>::type               F##_Hg;            \
+  using F##_Hg = Hg::make_Hg_type_list<F##_tl>::type;                          \
                                                                                \
   struct F                                                                     \
     : nested_trait                                                             \
   {                                                                            \
-    typedef F                           this_type;                             \
-    typedef F##_tl                      format_type;                           \
+    using this_type   = F;                                                     \
+    using format_type = F##_tl;                                                \
     enum { k_size = size_of<format_type>::value };                             \
     enum { k_length                   = length<format_type>::value };          \
                                                                                \
@@ -256,10 +262,8 @@ struct message_size_trait
 
 //  ****************************************************************************
 #define DECLARE_DATUM_ENTRY_IDX(IDX,P)                                         \
-    typedef                                                                    \
-      Hg::detail::DeduceProxyType < IDX,                                       \
-                                    format_type>::type        Proxy##P;        \
-    typedef Proxy##P::datum_type                              datum_##P;       \
+    using Proxy##P = Hg::detail::deduce_proxy_type_t<IDX, format_type>;        \
+    using datum_##P = Proxy##P::datum_type;                                    \
     Proxy##P   P;                                                              \
                                                                                \
     datum_##P& FieldAtIndex(const datum_##P*)                                  \
@@ -374,13 +378,13 @@ struct message_size_trait
 
 // *****************************************************************************
 #define Eval_Hg_DECLARE_BIT_FIELD(IDX,P,N)                                     \
-  typedef FieldIndex< IDX, this_type,N> idx_##IDX;                             \
+  using idx_##IDX = FieldIndex< IDX, this_type,N>;                             \
   struct P##_tag                                                               \
   { static ptrdiff_t offset()                                                  \
     { return offsetof(this_type, P); }                                         \
   };                                                                           \
                                                                                \
-  typedef BitField  < this_type, P##_tag, k_offset_##IDX, N, value_type > P##_t; \
+  using P##_t = BitField< this_type, P##_tag, k_offset_##IDX, N, value_type >; \
   enum { TMP_PASTE(k_offset_, TMP_INC(IDX)) = k_offset_##IDX + N };            \
                                                                                \
   P##_t P;

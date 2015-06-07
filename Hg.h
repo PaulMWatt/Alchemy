@@ -76,23 +76,14 @@ class Message
   : public HgT
 {
 public:
-  //  Typedefs *****************************************************************
-  typedef Message                             this_type;
-  typedef HgT                                 base_type;
-
-  typedef typename
-    base_type::message_type                   message_type;
-
-  typedef typename
-    base_type::format_type                    format_type;
-
-  typedef typename
-    base_type::storage_type                   storage_type;
-
-  typedef typename
-    base_type::const_pointer                  const_pointer;
-
-  typedef ByteOrderT                          byte_order_type;
+  //  Aliases ******************************************************************
+  using this_type       = Message;
+  using base_type       = HgT;
+  using message_type    = typename base_type::message_type;
+  using format_type     = typename base_type::format_type;
+  using storage_type    = typename base_type::storage_type;
+  using const_pointer   = typename base_type::const_pointer;
+  using byte_order_type = ByteOrderT;
 
 
   //  Construction *************************************************************
@@ -191,38 +182,22 @@ class basic_msg
   : public MsgT
 {
 public:
-  //  Typedefs *****************************************************************
-  typedef MsgT                                message_type;
-
-  typedef typename 
-    MsgT::format_type                         format_type;
-  typedef StorageT                            storage_type;
-
-  typedef MsgBuffer<storage_type>             buffer_type;
-
-  typedef typename
-    message_size_trait<format_type>::type     size_trait;
-
-  typedef typename 
-    storage_type::data_type                   data_type;
-  typedef data_type*                          pointer;
-  typedef const data_type*                    const_pointer;
-  typedef MsgT&                               reference;
-  typedef const MsgT&                         const_reference;
-
-  typedef basic_msg< MsgT, StorageT >         this_type;
-
-  typedef Message<this_type, 
-                  Hg::HostByteOrder>          host_t;
-
-  typedef Message<this_type, 
-                  Hg::NetByteOrder>           net_t;
-
-  typedef Message<this_type, 
-                  Hg::BigEndian>              big_t;
-
-  typedef Message<this_type, 
-                  Hg::LittleEndian>           little_t;
+  //  Aliases ******************************************************************
+  using message_type    = MsgT;
+  using format_type     = typename MsgT::format_type;
+  using storage_type    = StorageT;
+  using buffer_type     = MsgBuffer<storage_type>;
+  using size_trait      = message_size_trait_t<format_type>;
+  using data_type       = typename storage_type::data_type;
+  using pointer         = data_type*;
+  using const_pointer   = const data_type*;
+  using reference       = MsgT&;
+  using const_reference = const MsgT&;
+  using this_type       = basic_msg<MsgT, StorageT>;
+  using host_t          = Message<this_type, Hg::HostByteOrder>;
+  using net_t           = Message<this_type, Hg::NetByteOrder>;
+  using big_t           = Message<this_type, Hg::BigEndian>;
+  using little_t        = Message<this_type, Hg::LittleEndian>;
 
   //  Constants ****************************************************************
   enum { k_size = size_of<format_type>::value };
@@ -398,8 +373,7 @@ private:
   //  **************************************************************************
   bool pack_data(pointer pBuffer, size_t n)
   {
-    typedef MsgBuffer<BufferedStaticStoragePolicy>          static_buffer_type;
-
+    using static_buffer_type = MsgBuffer<BufferedStaticStoragePolicy>;
 
     static_buffer_type msg_buffer;
     msg_buffer.assign(pBuffer, n);

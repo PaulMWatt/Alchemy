@@ -225,7 +225,7 @@ struct add_to<param_pack<ArgsT...>, U>
 template<typename... ArgsT, typename... ArgsU>
 struct add_to<param_pack<ArgsT...>, param_pack<ArgsU...>>
 {
-  using type = param_pack<ArgsU..., ArgsT...>;
+  using type = param_pack<ArgsT..., ArgsU...>;
 };
 
 

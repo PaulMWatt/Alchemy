@@ -49,14 +49,9 @@ struct PackDatum
                   BufferT  &buffer,
                   size_t    dynamic_offset)
   {
-    typedef typename
-      Hg::detail::DeduceProxyType 
-        < IdxT,
-          typename MsgT::format_type
-        >::type                                   proxy_type;
-
-    typedef typename
-      proxy_type::value_type                      value_type;
+    using format_type= typename MsgT::format_type;
+    using proxy_type = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
+    using value_type = typename proxy_type::value_type;
 
     value_type &value = msg.template FieldAt<IdxT>().get();
     size_t     offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
@@ -78,17 +73,14 @@ void WriteDatum(MsgT& message,
                 BufferT&  buffer, 
                 size_t&   dynamic_offset)
 {
-  typedef typename
-    Hg::detail::DeduceProxyType < IdxT,
-                                  typename MsgT::format_type
-                                >::type                               proxy_type;
-  typedef typename
-    proxy_type::value_type                                            value_type;
+  using format_type= typename MsgT::format_type;
+  using proxy_type = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
+  using value_type = typename proxy_type::value_type;
 
   PackDatum < IdxT,
               MsgT,
               BufferT, 
-              typename DeduceTypeTrait<value_type>::type
+              typename deduce_type_trait<value_type>::type
             > pack;
   pack(message, buffer, dynamic_offset);
 }
@@ -238,7 +230,7 @@ BufferT&
 template< typename MsgT,
           typename BufferT
         >
-size_t pack_message(MsgT  &msg_values,
+size_t pack_message(MsgT      &msg_values,
                     BufferT   &buffer,
                     size_t     offset, 
                     const static_size_trait*)
@@ -291,7 +283,7 @@ BufferT &
                 const dynamic_size_trait*)
 {
   // Resize the buffer.
-   buffer.resize(size);
+  buffer.resize(size);
 
   detail::PackMessageWorker < 0, 
                               Hg::length<typename MsgT::format_type>::value,

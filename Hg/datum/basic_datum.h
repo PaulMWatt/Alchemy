@@ -11,8 +11,6 @@
 #include <Pb/meta_fwd.h>
 #include <Hg/msg_buffer.h>
 #include <Hg/deduce_type_trait.h>
-//#include <Pb/bit_field/bit_field_array.h>
-//#include <Pb/bit_field/bit_field_vector.h>
 
 namespace Hg
 {
@@ -141,8 +139,8 @@ void copy_value_type(       std::vector<SubTypeT, AllocT>& to,
 ///                           type at the associated location in the parent 
 ///                           type container.
 /// 
-template< class FieldT,
-          class TraitT = typename Hg::detail::DeduceTypeTrait<FieldT>::type >
+template< typename FieldT,
+          typename TraitT = typename Hg::detail::deduce_type_trait<FieldT>::type >
 struct FieldTypes
 {
   /// The type at the index of the

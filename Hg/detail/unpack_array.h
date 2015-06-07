@@ -71,14 +71,10 @@ template< typename ArrayT,
         >
 struct Deserializer
 {
-  typedef ArrayT                        array_type;
-
-  typedef typename
-    array_type::value_type              value_type;
-
-  typedef BufferT                       buffer_type;
-
-  typedef TraitT                        data_type_trait;
+  using array_type      = ArrayT;
+  using value_type      = typename array_type::value_type;
+  using buffer_type     = BufferT;
+  using data_type_trait = TraitT;
 
   static 
     const size_t value = Hg::detail::array_size<array_type>::value;
@@ -114,51 +110,6 @@ struct Deserializer
 
 
 //  ****************************************************************************
-//  Imports an array of bit-list fields.
-//
-//template< typename T,
-//          size_t   N,
-//          typename BufferT
-//        >
-//struct Deserializer <Hg::BitFieldArray<T,N>, BufferT, packed_trait>
-//  : public std::integral_constant<size_t, N>
-//{
-//  typedef Hg::BitFieldArray<T,N>        array_type;
-//  typedef typename
-//    array_type::value_type              value_type;
-//  typedef BufferT                       buffer_type;
-//  typedef packed_trait                  data_type_trait;
-//
-//  //  **************************************************************************
-//  size_t Read ( array_type   &value, 
-//                size_t        count,
-//                buffer_type  &buffer,
-//                size_t        offset)
-//  {
-//    if (0 == count)
-//    {
-//      return 0;
-//    }
-//
-//    // Calculate the size of data to write in bytes.
-//    size_t size = count * sizeof(value_type);
-//
-//    value_type *pFirst = &(value[0].value());
-//
-//    return buffer.get_range(pFirst, size, offset);
-//  }
-//
-//  //  **************************************************************************
-//  size_t Read ( value_type   &value, 
-//                buffer_type  &buffer,
-//                size_t        offset)
-//  {
-//    return buffer.get_data( value, offset);
-//  }
-//};
-
-
-//  ****************************************************************************
 //  Imports an array of nested types with each sub-item written individually.
 //
 template< typename T,
@@ -168,10 +119,11 @@ template< typename T,
 struct Deserializer <std::array<T,N>, BufferT, nested_trait>
   : public std::integral_constant<size_t, N>
 {
-  typedef std::array<T,N>               array_type;
-  typedef T                             value_type;
-  typedef BufferT                       buffer_type;
-  typedef nested_trait                  data_type_trait;
+  using array_type        = std::array<T,N>;
+  using buffer_type       = BufferT;
+  using data_type_trait   = nested_trait;
+  using value_type        = T;
+  using value_format_type = typename value_type::format_type;
 
   //  **************************************************************************
   size_t Read ( array_type     &value, 
@@ -204,14 +156,9 @@ struct Deserializer <std::array<T,N>, BufferT, nested_trait>
                 buffer_type    &buffer,
                 size_t          offset)
   {
-    // An important typedef for selecting the proper
-    // version of the unpack function for the sub-elements.
-    typedef typename
-      message_size_trait<typename value_type::format_type>::type      size_trait;
-
     return  unpack_message< value_type,
                             buffer_type,
-                            size_trait
+                            message_size_trait_t<value_format_type>
                           >(value, buffer, offset);
   }
 };
@@ -228,19 +175,15 @@ template< class   T,
 struct Deserializer <std::array<T,N>, BufferT, array_trait>
   : public std::integral_constant<size_t, N>
 {
-  typedef std::array<T,N>               array_type;
+  using array_type = std::array<T,N>;
 
-  typedef typename
-    array_type::value_type              value_type;
-
-  typedef BufferT                       buffer_type;
+  using value_type = typename array_type::value_type;
+  using buffer_type= BufferT;
 
   // The next step discriminates on the value_type managed
   // by the array to select the most efficient and correct
   // method of deserializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < value_type >::type              data_type_trait;
+  using data_type_trait = typename Hg::detail::deduce_type_trait_t<value_type>;
 
   //  **************************************************************************
   size_t Read ( array_type     &value, 
@@ -261,10 +204,8 @@ template< class    SubT,
                 buffer_type       &buffer,
                 size_t            offset)
   {
-    typedef 
-      ArrayT<SubT,SubN>                 sub_array_type;
-    typedef typename
-      sub_array_type::value_type        data_type;
+    using sub_array_type = ArrayT<SubT,SubN>;
+    using data_type      = typename sub_array_type::value_type;
 
     const size_t  k_sub_count = Hg::detail::array_size<sub_array_type>::value;
 
@@ -290,16 +231,14 @@ template< typename T,
 struct Deserializer <std::array<T,N>, BufferT, vector_trait>
   : public std::integral_constant<size_t, N>
 {
-  typedef std::array<T,N>               array_type;
-  typedef T                             value_type;
-  typedef BufferT                       buffer_type;
+  using array_type = std::array<T,N>;
+  using value_type = T;
+  using buffer_type= BufferT;
 
   // The next step discriminates on the value_type managed
   // by the array to select the most efficient and correct
   // method of deserializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < value_type >::type              data_type_trait;
+  using data_type_trait = typename Hg::detail::deduce_type_trait_t<value_type>;
 
   //  **************************************************************************
   size_t Read ( array_type  &value, 
@@ -315,8 +254,7 @@ struct Deserializer <std::array<T,N>, BufferT, vector_trait>
                 buffer_type  &buffer,
                 size_t        offset)
   {
-    typedef typename
-      value_type::value_type            data_type;
+    using data_type = typename value_type::value_type;
 
     // Since this is the vector handler, 
     // all single value entries passed in will
@@ -343,27 +281,22 @@ size_t DeserializeInBulk( std::array<T,N> &value,
                           BufferT         &buffer,
                           size_t          offset)
 {
-  typedef std::array<T,N>               array_type;
-
-  typedef typename
-    array_type::value_type              data_type;
+  using array_type = std::array<T,N>;
+  using data_type  = typename array_type::value_type;
+  using buffer_type= BufferT;
 
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of deserializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < data_type >::type               data_type_trait;
+  using data_type_trait = typename Hg::detail::deduce_type_trait<data_type>;
 
-  typedef 
-    Array::Deserializer 
-      < array_type, 
-        BufferT, 
-        data_type_trait>                deserializer_t;
+  using deserializer_t  = Array::Deserializer < array_type, 
+                                                buffer_type, 
+                                                data_type_trait>;
 
-  const size_t      k_count = value.size();
-  deserializer_t    deserializer;
-  size_t bytes_written = 0;
+  const size_t    k_count = value.size();
+  deserializer_t  deserializer;
+  size_t          bytes_written = 0;
 
   // TODO: (Optimiztion) Return and add this optimization for bulk reads if possible.
   // Process each item individually.
@@ -400,20 +333,17 @@ size_t DeserializeByItem( std::array<T,N> &value,
                           BufferT         &buffer,
                           size_t          offset)
 {
-  typedef std::array<T,N>               array_type;
-
-  typedef typename
-    array_type::value_type              data_type;
+  using array_type = std::array<T,N>;
+  using data_type  = typename array_type::value_type;
+  using buffer_type= BufferT;
 
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of deserializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < data_type >::type               data_type_trait;
+  using data_type_trait = typename Hg::detail::deduce_type_trait_t<data_type>;
 
   Array::Deserializer < data_type, 
-                        BufferT, 
+                        buffer_type, 
                         data_type_trait>  deserializer;
 
   size_t bytes_written = 0;
@@ -450,20 +380,17 @@ size_t DeserializeArray ( ArrayT<T, N> &value,
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of deserializing the data.
-  typedef ArrayT<T,N>                   array_type;
-
-  typedef T                             value_type;
-
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < value_type >::type              value_type_trait;
+  using array_type = ArrayT<T,N>;
+  using value_type = T;
+  using buffer_type= BufferT;
+  using value_type_trait = typename Hg::detail::deduce_type_trait_t<value_type>;
 
   // Define the correct type of deserialize functor 
   // based on the type contained within the vector.
-  typedef Array::Deserializer < array_type,
-                                BufferT,
-                                value_type_trait
-                              >           deserializer_t;
+  using deserializer_t = Array::Deserializer< array_type,
+                                              buffer_type,
+                                              value_type_trait
+                                            >;
 
   deserializer_t deserializer;
   return deserializer.Read(value, N, buffer, offset);
@@ -487,21 +414,10 @@ struct UnpackDatum< IdxT,
                     BufferT, 
                     array_trait>
 {
-  //  Typedefs *****************************************************************
-  typedef typename
-    Hg::detail::DeduceProxyType 
-      < IdxT,
-        typename MsgT::format_type
-      >::type                                     proxy_type;
-
-  typedef typename
-    proxy_type::value_type                        value_type;
-  typedef typename
-    value_type::value_type                        data_type;
-
-  typedef typename
-    Hg::detail::DeduceTypeTrait
-      < data_type >::type                         data_type_trait;
+  //  Aliases ******************************************************************
+  using message_type= MsgT;
+  using buffer_type = BufferT;
+  using format_type = typename MsgT::format_type;
 
 
   //  **************************************************************************
@@ -514,11 +430,11 @@ struct UnpackDatum< IdxT,
   //                        will be added to this input value to report how much 
   //                        larger the message has become. 
   //
-  void operator()(      MsgT &msg,
-                  const BufferT  &buffer,
-                        size_t   &dynamic_offset)
+  void operator()(      message_type  &msg,
+                  const buffer_type   &buffer,
+                        size_t        &dynamic_offset)
   {
-    size_t     offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
+    size_t     offset = Hg::offset_of<IdxT, format_type>::value
                       + dynamic_offset;
 
     // Read directly into the output array.

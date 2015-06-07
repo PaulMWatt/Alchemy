@@ -52,20 +52,17 @@ struct UnpackDatum
                   const BufferT  &buffer,
                   size_t    dynamic_offset)
   {
-    typedef typename
-      Hg::detail::DeduceProxyType < IdxT,
-                                    typename MsgT::format_type
-                                  >::type                               proxy_type;
-    typedef typename
-      proxy_type::value_type                                            value_type;
+    using format_type = typename MsgT::format_type;
+    using proxy_type  = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
+    using value_type  = typename proxy_type::value_type;
 
-    size_t offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
+
+    size_t offset = Hg::offset_of<IdxT, format_type>::value
                   + dynamic_offset;
 
     msg.template FieldAt<IdxT>().get();
 
-    buffer.get_data(msg.template FieldAt<IdxT>().get(), 
-                    offset);
+    buffer.get_data(msg.template FieldAt<IdxT>().get(), offset);
   }
 };
 
@@ -81,17 +78,14 @@ void ReadDatum(       MsgT& message,
                 const BufferT&  buffer, 
                       size_t&   dynamic_offset)
 {
-  typedef typename
-    Hg::detail::DeduceProxyType < IdxT,
-                                  typename MsgT::format_type
-                                >::type                               proxy_type;
-  typedef typename
-    proxy_type::value_type                                            value_type;
+  using format_type = typename MsgT::format_type;
+  using proxy_type  = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
+  using value_type  = typename proxy_type::value_type;
 
   UnpackDatum < IdxT,
                 MsgT,
                 const BufferT, 
-                typename DeduceTypeTrait<value_type>::type
+                deduce_type_trait_t<value_type>
               > unpack;
   unpack(message, buffer, dynamic_offset);
 }
@@ -219,13 +213,12 @@ size_t unpack_message (       MsgT  &msg_values,
                                size_t    offset,
                         const static_size_trait&   )
 {
-  typedef typename
-    std::remove_const<BufferT>::type              MutableBuffer;
+  using MutableBuffer = typename std::remove_const<BufferT>::type;
 
   // Calculate the number of bytes that is expected to be read for this message.
-  size_t length = Hg::size_of<typename MsgT::format_type>::value;
+  auto length = Hg::size_of<typename MsgT::format_type>::value;
+  auto org_offset = buffer.offset();
 
-  size_t org_offset = buffer.offset();
   MutableBuffer working(buffer);
   working.offset(offset+org_offset);
   detail::UnpackMessageWorker < 0, 
@@ -255,7 +248,7 @@ MsgT& unpack_message(       MsgT &msg_values,
                           const BufferT  &buffer,
                           const dynamic_size_trait&  )
 {
-  const size_t k_msg_size = Hg::size_of<typename MsgT::format_type>::value;
+  const auto k_msg_size = Hg::size_of<typename MsgT::format_type>::value;
   // Verify the input buffer contains enough data to populate the minimum size
   // required by the message.
   if ( buffer.empty()
@@ -293,13 +286,12 @@ MsgT& unpack_message(       MsgT &msg_values,
 template< typename MsgT,
           typename BufferT
         >
-size_t unpack_message (       MsgT  &msg_values,
-                        const BufferT   &buffer,
-                               size_t    offset,
+size_t unpack_message (       MsgT     &msg_values,
+                        const BufferT  &buffer,
+                              size_t    offset,
                         const dynamic_size_trait&   )
 {
-  typedef typename
-    std::remove_const<BufferT>::type              MutableBuffer;
+  using MutableBuffer = typename std::remove_const<BufferT>::type;
 
   // Calculate the number of bytes that is expected to be read for this message.
   size_t length = Hg::size_of<typename MsgT::format_type>::value;

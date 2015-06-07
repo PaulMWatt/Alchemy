@@ -28,9 +28,9 @@ size_t SerializeInBulk( ValueT  &value,
                         size_t  offset);
 
 //  ****************************************************************************
-template< class   T,
-          size_t  N,
-          class   BufferT
+template< typename T,
+          size_t   N,
+          typename BufferT
         >
 size_t SerializeByItem( std::array<T,N> &value, 
                         BufferT         &buffer,
@@ -39,10 +39,10 @@ size_t SerializeByItem( std::array<T,N> &value,
 //  ****************************************************************************
 //  Adapter function to simplify serializing a buffer from a vector-field.
 //
-template< class T,
-          class A,
-          class BufferT,
-          template <class, class> class VectorT
+template< typename T,
+          typename A,
+          typename BufferT,
+          template <typename, typename> class VectorT
         >
 size_t SerializeVector (VectorT<T, A> &value,
                         BufferT       &buffer,
@@ -61,14 +61,10 @@ template< typename ArrayT,
         >
 struct Serializer
 {
-  typedef ArrayT                        array_type;
-  
-  typedef typename
-    array_type::value_type              value_type;
-
-  typedef BufferT                       buffer_type;
-
-  typedef SerializerTraitT              data_type_trait;
+  using array_type      = ArrayT;
+  using value_type      = typename array_type::value_type;
+  using buffer_type     = BufferT;
+  using data_type_trait = SerializerTraitT;
 
   //  **************************************************************************
   template <typename TraitT>
@@ -104,57 +100,6 @@ struct Serializer
 
 
 //  ****************************************************************************
-//  Exports arrays of bit-field values into a packed buffer.
-//
-//template< typename T,
-//          size_t   N,
-//          typename BufferT
-//        >
-//struct Serializer <Hg::BitFieldArray<T,N>, BufferT, packed_trait>
-//{
-//  typedef Hg::BitFieldArray<T,N>        array_type;
-//
-//  typedef typename
-//    array_type::value_type              value_type;
-//
-//  typedef BufferT                       buffer_type;
-//
-//  typedef packed_trait                  data_type_trait;
-//
-//  //  **************************************************************************
-//  template <typename TraitT>
-//  size_t WriteMany( array_type   &value, 
-//                    buffer_type  &buffer,
-//                    size_t        offset)
-//  {
-//    // Calculate the size of data to write in bytes.
-//    size_t size = value.size() * sizeof(value_type);
-//
-//    const value_type *pFirst = value.data();
-//    const value_type *pLast  = pFirst;
-//
-//    std::advance(pLast, size);
-//    buffer.set_range( pFirst, 
-//                      pLast, 
-//                      offset);
-//
-//    return size;
-//  }
-//
-//
-//  //  **************************************************************************
-//  size_t Write( value_type   &value, 
-//                buffer_type  &buffer,
-//                size_t        offset)
-//  {
-//    buffer.set_data( value, offset);
-//    return sizeof(value_type);
-//  }
-//
-//};
-
-
-//  ****************************************************************************
 //  Exports a nested_trait with each sub-item written individually.
 //
 template< typename T,
@@ -163,17 +108,11 @@ template< typename T,
         >
 struct Serializer <std::array<T,N>, BufferT, nested_trait>
 {
-  typedef typename
-    T::format_type                      format_type;
-
-  typedef std::array<T,N>               array_type;
-
-  typedef typename
-    array_type::value_type              value_type;
-
-  typedef BufferT                       buffer_type;
-
-  typedef nested_trait                  data_type_trait;
+  using format_type     = typename T::format_type;
+  using array_type      = std::array<T,N>;
+  using value_type      = typename array_type::value_type;
+  using buffer_type     = BufferT;
+  using data_type_trait = nested_trait;
 
   //  **************************************************************************
   template <typename TraitT>
@@ -181,11 +120,6 @@ struct Serializer <std::array<T,N>, BufferT, nested_trait>
                     buffer_type    &buffer,
                     size_t          offset)
   {
-    // An important typedef for selecting the proper
-    // version of the unpack function for the sub-elements.
-    typedef typename
-      message_size_trait<format_type>::type     size_trait;
-
     size_t bytes_written = 0;
 
     // Process each item individually.
@@ -198,7 +132,7 @@ struct Serializer <std::array<T,N>, BufferT, nested_trait>
       size_t write_len =
         pack_message< value_type,
                       buffer_type,
-                      size_trait
+                      message_size_trait_t<format_type>
                     >(value[index], buffer, item_offset);
 
       bytes_written += write_len;
@@ -219,19 +153,14 @@ template< typename T,
         >
 struct Serializer <std::array<T,N>, BufferT, array_trait>
 {
-  typedef std::array<T,N>               array_type;
-
-  typedef typename
-    array_type::value_type              value_type;
-
-  typedef BufferT                       buffer_type;
+  using array_type  = std::array<T,N>;
+  using value_type  = typename array_type::value_type;
+  using buffer_type = BufferT;
 
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of serializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < value_type >::type              data_type_trait;
+  using data_type_trait = Hg::detail::deduce_type_trait_t< value_type >;
 
   //  **************************************************************************
   template <typename TraitT>
@@ -260,19 +189,14 @@ template< typename T,
         >
 struct Serializer <std::array<T,N>, BufferT, vector_trait>
 {
-  typedef std::array<T,N>               array_type;
-
-  typedef typename
-    array_type::value_type              value_type;
-
-  typedef BufferT                       buffer_type;
+  using array_type  = std::array<T,N>;
+  using value_type  = typename array_type::value_type;
+  using buffer_type = BufferT;
 
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of serializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < value_type >::type              data_type_trait;
+  using data_type_trait = Hg::detail::deduce_type_trait_t<value_type>;
 
   //  **************************************************************************
   template <typename TraitT>
@@ -288,11 +212,8 @@ struct Serializer <std::array<T,N>, BufferT, vector_trait>
                 buffer_type  &buffer,
                 size_t        offset)
   {
-    typedef typename
-      value_type::value_type            data_type;
-
-    typedef typename
-      value_type::allocator_type        allocator_type;
+    using data_type       = typename value_type::value_type;
+    using allocator_type  = typename value_type::allocator_type;
 
     // Since this is the vector handler, 
     // all single value entries passed in will
@@ -323,17 +244,13 @@ size_t SerializeInBulk( ValueT  &value,
                         BufferT &buffer,
                         size_t  offset)
 {
-  typedef ValueT                        array_type;
-
-  typedef typename
-    array_type::value_type              data_type;
+  using array_type = ValueT;
+  using data_type  = typename array_type::value_type;
 
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of serializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < data_type >::type               data_type_trait;
+  using data_type_trait = Hg::detail::deduce_type_trait_t<data_type>;
 
   Array::Serializer < array_type,
                       BufferT, 
@@ -369,25 +286,21 @@ size_t SerializeInBulk( ValueT  &value,
 //  ValueT        Must be a type that contains a sub-type defined as value_type.
 //                Such as std::vector or std::array
 //
-template< class   T,
-          size_t  N,
-          class   BufferT
+template< typename T,
+          size_t   N,
+          typename BufferT
         >
 size_t SerializeByItem( std::array<T,N> &value, 
                         BufferT         &buffer,
                         size_t          offset)
 {
-  typedef std::array<T,N>               array_type;
-
-  typedef typename
-    array_type::value_type              data_type;
+  using array_type  = std::array<T,N>;
+  using data_type   = typename array_type::value_type;
 
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of serializing the data.
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < data_type >::type               data_type_trait;
+  using data_type_trait = Hg::detail::deduce_type_trait_t<data_type>;
 
   Array::Serializer < array_type,
                       BufferT, 
@@ -429,22 +342,19 @@ size_t SerializeArray(ArrayT<T,N> &value,
   // The next step discriminates on the value_type managed
   // by the vector to select the most efficient and correct
   // method of serializing the data.
-  typedef ArrayT<T,N>                   array_type;
-
-  typedef T                             value_type;
-
-  typedef typename 
-    Hg::detail::DeduceTypeTrait
-      < value_type >::type              value_type_trait;
+  using array_type = ArrayT<T,N>;
+  using value_type = T;
+  using value_type_trait = Hg::detail::deduce_type_trait_t<value_type>;
+  using buffer_type= BufferT;
 
   // Define the correct type of serialize functor 
   // based on the type contained within the array.
-  typedef Array::Serializer < array_type,
-                              BufferT, 
-                              value_type_trait
-                            >           serializer_t;
-  typedef typename
-    serializer_t::data_type_trait       data_type_trait;
+  using serializer_t = Array::Serializer< array_type,
+                                          buffer_type, 
+                                          value_type_trait
+                                        >;
+
+  using data_type_trait = typename serializer_t::data_type_trait;
 
   serializer_t serializer;
   return serializer.template WriteMany<data_type_trait>(value, buffer, offset);
@@ -467,21 +377,10 @@ struct PackDatum< IdxT,
                   BufferT, 
                   array_trait>
 {
-  //  Typedefs *****************************************************************
-  typedef typename
-    Hg::detail::DeduceProxyType 
-      < IdxT,
-        typename MsgT::format_type
-      >::type                                     proxy_type;
-
-  typedef typename
-    proxy_type::value_type                        value_type;
-  typedef typename
-    value_type::value_type                        data_type;
-
-  typedef MsgT                                message_type;
-
-  typedef BufferT                                 buffer_type;
+  //  Aliases ******************************************************************
+  using message_type= MsgT;
+  using buffer_type = BufferT;
+  using format_type = typename message_type::format_type;
 
 
   //  **************************************************************************
@@ -494,11 +393,11 @@ struct PackDatum< IdxT,
   //                      will be added to this input value to report how much 
   //                      larger the message has become. 
   //
-  void operator()( MsgT& msg,
-                   BufferT&  buffer,
-                   size_t&   dynamic_offset)
+  void operator()( message_type&  msg,
+                   buffer_type&   buffer,
+                   size_t&        dynamic_offset)
   {
-    value_type &value = msg.template FieldAt<IdxT>().get();
+    auto &value = msg.template FieldAt<IdxT>().get();
     
     // Exit if there are no entries in this dynamic value.
     if (value.empty())
@@ -507,7 +406,7 @@ struct PackDatum< IdxT,
     }
 
     // Calculate the total starting offset.
-    size_t offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
+    size_t offset = Hg::offset_of<IdxT, format_type>::value
                   + dynamic_offset;
 
     size_t bytes_written = 

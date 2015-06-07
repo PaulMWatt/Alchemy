@@ -56,17 +56,17 @@ template< typename T,
           typename OrderT
         >
 Hg::Message < typename T::base_type, OrderT >
-  convert_byte_order( T&                                     from,
-                           Hg::Message < typename T::base_type, OrderT >&  to)
+  convert_byte_order( T&                                              from,
+                      Hg::Message < typename T::base_type, OrderT >&  to)
 {
-  typedef typename 
-    T::format_type         format_type;
+  using format_type = typename T::format_type;
+  using base_type   = typename T::base_type;
 
   // Initialize a functor to convert the data byte order,
   // then call this operation for each element in the defined message.
   detail::ByteOrderConversionFunctor
     < T,
-      Hg::Message < typename T::base_type, OrderT >
+      Hg::Message <base_type, OrderT>
     > ftor(from, to);  
 
   Hg::ForEachType < 0,
@@ -117,12 +117,10 @@ struct ConvertEndianess<T, StorageT, nested_trait>
     // Byte-order swapping is a symetric action.
     // The important goal is to define two differing orders to ensure
     // that the byte-orders are swapped.
-    typedef Hg::LittleEndian                      from_order;
-    typedef Hg::BigEndian                         to_order;
-    typedef typename 
-      Hg::basic_msg<T, StorageT>::little_t        from_type;
-    typedef typename 
-      Hg::basic_msg<T, StorageT>::big_t           to_type;
+    using from_order = Hg::LittleEndian;
+    using to_order   = Hg::BigEndian;
+    using from_type  = typename Hg::basic_msg<T, StorageT>::little_t;
+    using to_type    = typename Hg::basic_msg<T, StorageT>::big_t;
 
     // Construct a shallow message wrapper around the nested data.
     from_type  from(input);
@@ -149,11 +147,8 @@ struct ConvertEndianess<T, StorageT, array_trait>
                         ArrayValueT &output)
   {
     // Get the trait for the value_type managed by the array.
-    typedef typename
-      ArrayValueT::value_type                     value_type;
-
-    typedef typename
-      DeduceTypeTrait<value_type>::type           type_trait;
+    using value_type  = typename ArrayValueT::value_type;
+    using type_trait  = deduce_type_trait_t<value_type>;
 
     // Convert with the byte-order conversion functors to detect and handle
     // any nested array items, or arrays of arrays etc...
@@ -184,11 +179,8 @@ struct ConvertEndianess<T, StorageT, vector_trait>
                         VectorValueT &output)
   {
     // Get the trait for the value_type managed by the array.
-    typedef typename
-      VectorValueT::value_type                    value_type;
-
-    typedef typename
-      DeduceTypeTrait<value_type>::type           type_trait;
+    using value_type  = typename VectorValueT::value_type;
+    using type_trait  = deduce_type_trait_t<value_type>;
 
     // Convert with the byte-order conversion functors to detect and handle
     // any nested array items, or arrays of arrays etc...
@@ -220,15 +212,12 @@ template< typename FromMsgT,
         >
 struct ByteOrderConversionFunctor
 {
-  //  Typedefs *****************************************************************
-  typedef FromMsgT                  from_message_type;
-  typedef ToMsgT                    to_message_type;
-  typedef typename
-    from_message_type::message_type     message_type;
-  typedef typename
-    message_type::format_type           format_type;
-  typedef typename
-    from_message_type::storage_type     storage_type;
+  //  Aliases ******************************************************************
+  using from_message_type = FromMsgT;
+  using to_message_type   = ToMsgT;
+  using message_type      = typename from_message_type::message_type;
+  using format_type       = typename message_type::format_type;
+  using storage_type      = typename from_message_type::storage_type;
 
   //  Data Members *************************************************************
   from_message_type&       input;
@@ -241,7 +230,7 @@ struct ByteOrderConversionFunctor
   // 
   explicit
     ByteOrderConversionFunctor(from_message_type& from,
-                                     to_message_type&   to)
+                               to_message_type&   to)
     : input(from)
     , output(to)
   { }
@@ -262,12 +251,8 @@ struct ByteOrderConversionFunctor
             typename value_t>
   void operator()(const value_t*)
   {
-    typedef typename
-      Hg::detail::DeduceProxyType < Idx,
-                                    format_type
-                                  >::type                     proxy_type;
-    typedef typename
-      proxy_type::value_type                                  value_type;
+    using proxy_type  = Hg::detail::deduce_proxy_type_t<Idx, format_type>;
+    using value_type  = typename proxy_type::value_type;
                                       
     // The context for which the const input parameter is
     // being used here does not change the value.
@@ -281,7 +266,7 @@ struct ByteOrderConversionFunctor
     // nested processing, and value conversion.
     ConvertEndianess< value_type,
                       storage_type,
-                      typename DeduceTypeTrait<value_type>::type
+                      deduce_type_trait_t<value_type>
                     > swap_order;
     // Swap directly into the value storage for the conversion output.
     swap_order( from_value, 
@@ -295,16 +280,16 @@ struct ByteOrderConversionFunctor
 //  A no-op functor specialization to handle Message to Message conversions 
 //  of the same byte-order.
 // 
-//  @param MsgT       [typename] The input/output message type.
-//                        These types are the same, and therefore will not 
-//                        trigger any byte-order swap operations.
+//  @tparam T   The input/output message type.
+//              These types are the same, and therefore will not 
+//              trigger any byte-order swap operations.
 //  
 template< typename T >
 struct ByteOrderConversionFunctor <T, T>
 { 
-  //  Typedefs *****************************************************************
-  typedef T                      from_message_type;
-  typedef T                      to_message_type;
+  //  Aliases ******************************************************************
+  using from_message_type = T;
+  using to_message_type   = T;
 
   //  Data Members *************************************************************
   const from_message_type &input;
@@ -343,6 +328,7 @@ struct ByteOrderConversionFunctor <T, T>
     // However, a non-const version of get() causes conflicts.
     // Therefore, casting away const is the safest and cleanest solution.
     from_message_type &mutable_input = const_cast<from_message_type &>(input);
+
     // Simply copy the input value to the output value.
     output.template FieldAt<Idx>().set( 
       mutable_input.template FieldAt<Idx>().get() 

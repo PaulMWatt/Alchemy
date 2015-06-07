@@ -1,7 +1,5 @@
 /// @file detail/deduce_proxy_type.h
 /// 
-/// The declaration and definition of DeduceProxyType.
-///           
 /// A template meta-function that selects the appropriate type of Data Proxy
 /// to declare for a specified type T. The data proxy is an important layer
 /// to homogenize access to all of the different types of values supported
@@ -36,18 +34,26 @@ namespace detail
 template< size_t    IdxT,
           typename  FormatT
         >
-struct DeduceProxyType
+struct deduce_proxy_type
 {
   //  **************************************************************************
   //  Deduce the traits from the value_type in order to select the most 
   //  appropriate Proxy handler for value management.
   //
-  using selected_type = typename Deducetype_atTrait < IdxT, FormatT>::type;
+  using selected_type = typename deduce_type_trait_at < IdxT, FormatT>::type;
 
   //  **************************************************************************
   //  The selected DataProxy type for the specified input type.
   using type          = DataProxy < selected_type, IdxT, FormatT>;
 };
+
+//  ****************************************************************************
+/// A convenience template alias to access deduce_proxy_type. 
+/// 
+template< size_t IdxT,
+          typename FormatT
+        >
+using deduce_proxy_type_t = typename deduce_proxy_type<IdxT, FormatT>::type;
 
 } // namespace detail
 

@@ -36,9 +36,6 @@
     <Filter Include="Header Files\Alchemy\Hg\Detail\Unpack">
       <UniqueIdentifier>{2c8e96d1-a41e-4627-9eba-dfef47115c23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Alchemy\Hg\Detail\Unused">
-      <UniqueIdentifier>{f98db0ac-3634-4b9d-94c1-9bf52d650b84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Alchemy\Hg\Proxy">
       <UniqueIdentifier>{a65438c6-cf82-4632-a452-f45d24b1594c}</UniqueIdentifier>
     </Filter>
