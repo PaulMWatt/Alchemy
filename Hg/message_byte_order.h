@@ -31,15 +31,15 @@ namespace Hg
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-typename
-  T::base_type::net_t
+typename T::base_type::net_t
   to_network(T& from)
 {
-  typename T::base_type::net_t                to;
+  T::base_type::net_t to;
 
-  return detail::convert_byte_order < T,
-                                      NetByteOrder
-                                    >(from, to);
+  detail::convert_byte_order<T, NetByteOrder>(from, to);
+
+  return to;
+  //return std::move(to);
 }
 
 //  ****************************************************************************
@@ -60,15 +60,14 @@ typename
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-typename
-  T::base_type::host_t
+typename T::base_type::host_t
   to_host(T& from)
 {
-  typename T::base_type::host_t               to;
-  
-  return detail::convert_byte_order < T,
-                                      HostByteOrder
-                                    >(from, to);
+  T::base_type::host_t to;
+
+  detail::convert_byte_order<T,HostByteOrder>(from, to);
+
+  return to;
 }
 
 //  ****************************************************************************
@@ -89,14 +88,14 @@ typename
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-  typename T::base_type::big_t
+typename T::base_type::big_t
   to_big_endian(T& from)
 {
-  typename T::base_type::big_t                    to;
+  T::base_type::big_t to;
 
-  return detail::convert_byte_order < T,
-                                      BigEndian
-                                    >(from, to);
+  detail::convert_byte_order<T, BigEndian>(from, to);
+
+  return to;
 }
 
 //  ****************************************************************************
@@ -117,15 +116,14 @@ template< typename T >
 ///                 no conversion operations will be performed.
 ///
 template< typename T >
-  typename T::base_type::little_t
+typename T::base_type::little_t
   to_little_endian(T& from)
 {
-  typename T::base_type::little_t               to;
+  T::base_type::little_t to;
 
-  // convert the values of the message parameters.
-  return detail::convert_byte_order < T,
-                                      LittleEndian
-                                    >(from, to);
+  detail::convert_byte_order<T, LittleEndian>(from, to);
+
+  return to;
 }
 
 } // namespace Hg

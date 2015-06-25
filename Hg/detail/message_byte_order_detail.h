@@ -44,6 +44,7 @@ class basic_msg;
 //  @param T        [typename] The Hg::Message format definition of the 
 //                  message to be converted.
 //  @param from     The message object to convert from.
+//  @param to       The message object to receive the converted data.
 //                            
 //  @return         A Hg::Message object using the same format and data type as the 
 //                  input buffer will be returned. The data in the buffer will 
@@ -55,12 +56,12 @@ class basic_msg;
 template< typename T,
           typename OrderT
         >
-Hg::Message < typename T::base_type, OrderT >
-  convert_byte_order( T&                                              from,
-                      Hg::Message < typename T::base_type, OrderT >&  to)
+void convert_byte_order(T& from,
+                        Hg::Message<typename T::base_type, OrderT>& to)
 {
   using format_type = typename T::format_type;
   using base_type   = typename T::base_type;
+  using to_type     = Hg::Message < typename T::base_type, OrderT >;
 
   // Initialize a functor to convert the data byte order,
   // then call this operation for each element in the defined message.
@@ -73,8 +74,6 @@ Hg::Message < typename T::base_type, OrderT >
                     Hg::length<format_type>::value - 1,
                     format_type
                   > (ftor);
-
-  return ftor.output; 
 }
 
 //  ****************************************************************************
@@ -110,25 +109,23 @@ template< typename T,
         >
 struct ConvertEndianess<T, StorageT, nested_trait>
 {
-  template <typename NestedValueT>
-  void operator()(const NestedValueT &input,
-                        NestedValueT &output)
+  template <typename T>
+  void operator()(const T &input, T &output)
   {
     // Byte-order swapping is a symetric action.
     // The important goal is to define two differing orders to ensure
     // that the byte-orders are swapped.
     using from_order = Hg::LittleEndian;
     using to_order   = Hg::BigEndian;
+    // These are shallow message objects to wrap the actual data.
     using from_type  = typename Hg::basic_msg<T, StorageT>::little_t;
     using to_type    = typename Hg::basic_msg<T, StorageT>::big_t;
 
-    // Construct a shallow message wrapper around the nested data.
-    from_type  from(input);
-    to_type    to;
-
     // Pass this message to be byte-order swapped.
-    output = convert_byte_order<from_type, 
-                                to_order>(from, to).values();
+    to_type to(output);
+    convert_byte_order<from_type, to_order>(from_type(input), 
+                                            to);
+    output = std::move(to);
   }
 };
 
@@ -229,8 +226,7 @@ struct ByteOrderConversionFunctor
   //  @param rhs      The basic_msg object that contains the input data.
   // 
   explicit
-    ByteOrderConversionFunctor(from_message_type& from,
-                               to_message_type&   to)
+    ByteOrderConversionFunctor(from_message_type& from, to_message_type& to)
     : input(from)
     , output(to)
   { }
@@ -301,8 +297,7 @@ struct ByteOrderConversionFunctor <T, T>
   /// @param rhs      The basic_msg object that contains the input data.
   /// 
   explicit
-    ByteOrderConversionFunctor(const from_message_type& from,
-                                     to_message_type&   to)
+    ByteOrderConversionFunctor(const from_message_type& from, to_message_type& to)
     : input(from)
     , output(to)
   { }
@@ -330,9 +325,8 @@ struct ByteOrderConversionFunctor <T, T>
     from_message_type &mutable_input = const_cast<from_message_type &>(input);
 
     // Simply copy the input value to the output value.
-    output.template FieldAt<Idx>().set( 
-      mutable_input.template FieldAt<Idx>().get() 
-    );
+    output.template FieldAt<Idx>().set(
+      mutable_input.template FieldAt<Idx>().get());
   }
 };
 

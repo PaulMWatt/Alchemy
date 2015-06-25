@@ -36,7 +36,7 @@ void test_impl( DataBuffer &data,
   for (size_t index = 0; index < count; ++index)
   {
     HgType::host_t host((HgType::data_type*)data.GetBytes(len), len);  
-    HgType::net_t  net = Hg::to_network(host);
+    HgType::net_t  net = std::move(Hg::to_network(host));
 
     net.data((unsigned char*)out.GetBytes(len), len);
   }

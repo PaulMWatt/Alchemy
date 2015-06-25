@@ -96,9 +96,18 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   /// @param proxy           A reference to the Another instance of a DataProxy.
   /// 
   DataProxy(const DataProxy& proxy)
-  {
-    set(proxy.get());
+  { 
+    this->set(proxy.get());
   }
+
+  //  **************************************************************************
+  /// Move Constructor
+  ///
+  /// @param proxy           A reference to the Another instance of a DataProxy.
+  /// 
+  DataProxy(DataProxy&& proxy)
+    : datum_type(std::move(proxy))
+  { }
 
   //  **************************************************************************
   /// Value Constructor: Construct a proxy directly from a datum instance.
@@ -110,13 +119,49 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   { }
 
   //  **************************************************************************
+  /// Value Move Constructor: Construct a proxy directly from a datum instance.
+  ///
+  /// @param datum           A reference to a datum object used to initilize this.
+  /// 
+  DataProxy(datum_type&& datum)
+    : datum_type(std::move(datum))
+  { }
+
+  //  **************************************************************************
   /// Value Constructor: Construct a proxy directly from a datum instance.
   ///
   /// @param datum           A reference to a datum object used to initilize this.
   /// 
   DataProxy(const value_type& value)
-  { 
+  {
     set(value);
+  }
+
+  //  **************************************************************************
+  /// Value Move Constructor: Construct a proxy directly from a datum instance.
+  ///
+  /// @param datum           A reference to a datum object used to initilize this.
+  /// 
+  DataProxy(value_type&& value)
+    : datum_type(std::move(value))
+  { }
+
+  //  **************************************************************************
+  /// Copy assignment
+  ///
+  DataProxy& operator=(const DataProxy& value)
+  {
+    *static_cast<datum_type*>(this) = value;
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move assignment
+  ///
+  DataProxy& operator=(DataProxy&& value)
+  {
+    datum_type::operator=(std::move(value));
+    return *this;
   }
 
   //  **************************************************************************
@@ -129,11 +174,28 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   }
 
   //  **************************************************************************
+  /// Value move assignment
+  ///
+  DataProxy& operator=(datum_type&& value)
+  {
+    datum_type::operator=(std::move(value));
+    return *this;
+  }
+
+  //  **************************************************************************
   /// Value assignment
   ///
   DataProxy& operator=(const value_type &value)
   {
     set(value);
+    return *this;
+  }
+  //  **************************************************************************
+  /// Value move assignment
+  ///
+  DataProxy& operator=(value_type&& value)
+  {
+    datum_type::operator=(std::move(value));
     return *this;
   }
 

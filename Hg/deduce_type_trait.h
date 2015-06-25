@@ -30,7 +30,6 @@ namespace detail
 template< typename  ValueT >
 struct deduce_type_trait
 {
-private:
   //  **************************************************************************
   using value_type = ValueT;
 
@@ -80,8 +79,6 @@ private:
                       array_trait,
                       dynamic_type
                     >::type;
-
-public:
 
   //  **************************************************************************
   /// The type trait tag deduced for the specified parameter type.

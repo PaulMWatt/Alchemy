@@ -36,7 +36,7 @@ struct StaticStoragePolicy
 {
   using data_type     = unsigned char;
   using pointer       = data_type*;
-  using const_pointer = typedef const data_type*;
+  using const_pointer = const data_type*;
   using s_pointer     = std::shared_ptr<data_type>;
   using w_pointer     = std::weak_ptr<data_type>;
   

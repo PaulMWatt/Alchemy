@@ -81,9 +81,8 @@ public:
   /// @param datum            A reference to the Another instance of a Datum.
   /// 
   Datum(Datum& datum)
-  { 
-    set(datum.get());
-  }
+	  : field_type(datum)
+  { }
 
   //  **************************************************************************
   /// Move Constructor
@@ -93,23 +92,9 @@ public:
   /// @param proxy           A rvalue  reference to the another instance of a Datum.
   /// 
   Datum(Datum&& datum)
-  {
-    *this = std::move(datum);
-  }
+	: field_type(std::move(datum))
+  { }
   
-  //  **************************************************************************
-  /// Move Assignment operator
-  ///
-  /// Moves the current instance from one datum to another.
-  ///
-  /// @param proxy           A rvalue  reference to the another instance of a Datum.
-  /// 
-  Datum& operator=(Datum&& datum)
-  {
-    this->set(datum.get());
-    return *this;
-  }
-
   //  **************************************************************************
   /// Assignment Operator
   /// 
@@ -121,8 +106,21 @@ public:
   /// 
   Datum& operator=(const Datum& rhs)              
   { 
-    set(rhs.get());
+    field_type::operator=(rhs);
     return *this;
+  }
+
+  //  **************************************************************************
+  /// Move Assignment operator
+  ///
+  /// Moves the current instance from one datum to another.
+  ///
+  /// @param proxy           A rvalue  reference to the another instance of a Datum.
+  /// 
+  Datum& operator=(Datum&& rhs)
+  {
+    field_type::operator=(std::move(rhs));
+	  return *this;
   }
 
   //  **************************************************************************
@@ -136,9 +134,26 @@ public:
   ///                         be used to directly modify the value of the object.
   /// 
   Datum& 
-    operator=(value_type rhs)                     
+    operator=(const value_type& rhs)                     
   { 
     set(rhs);
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Assignment Operator (value_type)
+  /// 
+  /// Allows assignment to this Datum type from it's parameter type, *value_type*.
+  /// This function is the key to allowing the Datum to behave as if the
+  /// assignment was performed directly on the the managed type.
+  /// 
+  /// @param rhs              A value of the Datum value_type that will
+  ///                         be used to directly modify the value of the object.
+  /// 
+  Datum&
+    operator=(value_type&& rhs)
+  {
+    field_type::operator=(std::move(rhs));
     return *this;
   }
 

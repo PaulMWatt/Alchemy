@@ -151,6 +151,62 @@ struct FieldTypes
   /// the current Datum.
   using value_type = typename field_data_t<index_type>::value_type;
 
+  //  **************************************************************************
+  FieldTypes()
+  { }
+
+  //  **************************************************************************
+  FieldTypes(const FieldTypes& rhs)
+  {
+    m_data = rhs.m_data;
+  }
+
+  //  **************************************************************************
+  FieldTypes(FieldTypes&& rhs)
+  {
+    m_data = std::move(rhs.m_data);
+  }
+
+  //  **************************************************************************
+  FieldTypes(const value_type& rhs)
+  {
+    m_data = rhs;
+  }
+
+  //  **************************************************************************
+  FieldTypes(value_type&& rhs)
+  {
+    m_data = std::move(rhs);
+  }
+
+  //  **************************************************************************
+  FieldTypes& operator=(const FieldTypes& rhs)
+  {
+    m_data = rhs.m_data;
+    return *this;
+  }
+
+  //  **************************************************************************
+  FieldTypes& operator=(FieldTypes&& rhs)
+  {
+    m_data = std::move(rhs.m_data);
+    return *this;
+  }
+
+  //  **************************************************************************
+  FieldTypes& operator=(const value_type& rhs)
+  {
+    m_data = rhs;
+    return *this;
+  }
+  
+  //  **************************************************************************
+  FieldTypes& operator=(value_type&& rhs)
+  {
+    m_data = std::move(rhs);
+    return *this;
+  }
+
 
   //  **************************************************************************
   /// Returns a reference to the internal data storage.
@@ -172,7 +228,7 @@ struct FieldTypes
   }
 
   //  **************************************************************************
-  /// Returns the value of the data buffer.
+  /// Provides an interface to set the value of the data.
   /// 
   void data(const value_type &value)                
   { 
@@ -193,6 +249,9 @@ protected:
 ///                           type at the associated location in the parent 
 ///                           type container.
 /// 
+/// Note: The nested type provides storage for nested fields by deriving from 
+///       the user-defined format. 
+///
 template< typename FieldT > 
 struct FieldTypes <FieldT, nested_trait>
   : public field_data_t<FieldT>::value_type
@@ -225,7 +284,7 @@ struct FieldTypes <FieldT, nested_trait>
   }
 
   //  **************************************************************************
-  /// Returns the value of the data buffer.
+  /// Provides an interface to set the value of the data.
   /// 
   void data(const value_type &value)                
   { 
@@ -275,7 +334,7 @@ struct FieldTypes <FieldT, packed_trait>
   }
 
   //  **************************************************************************
-  /// Assigns a new value to the data buffer.
+  /// Provides an interface to set the value of the data.
   /// 
   void data(const value_type &value)                
   { 

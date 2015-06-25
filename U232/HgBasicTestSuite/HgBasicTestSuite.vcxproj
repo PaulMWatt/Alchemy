@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -207,7 +207,6 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Hg\proxy\bitlist_field_proxy.h" />
     <ClInclude Include="..\..\Hg\proxy\data_proxy.h" />
     <ClInclude Include="..\..\Hg\proxy\deduce_proxy_type.h" />
-    <ClInclude Include="..\..\Hg\proxy\opaque_proxy.h" />
     <ClInclude Include="..\..\Hg\proxy\vector_proxy.h" />
     <ClInclude Include="..\..\Hg\static_msg_buffer.h" />
     <ClInclude Include="..\..\Hg\static_storage_policy.h" />
@@ -215,8 +214,6 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\auto_index.h" />
     <ClInclude Include="..\..\Pb\bit_field\packed_bits.h" />
     <ClInclude Include="..\..\Pb\bit_field\bit_field.h" />
-    <ClInclude Include="..\..\Pb\bit_field\bit_field_array.h" />
-    <ClInclude Include="..\..\Pb\bit_field\bit_field_vector.h" />
     <ClInclude Include="..\..\Pb\byte_order.h" />
     <ClInclude Include="..\..\Pb\compiler.h" />
     <ClInclude Include="..\..\Pb\detail\alias_templates.h" />
@@ -242,7 +239,6 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\meta_util.h" />
     <ClInclude Include="..\..\Pb\type_list.h" />
     <ClInclude Include="..\..\Pb\type_list_size.h" />
-    <ClInclude Include="..\..\storage_policy.h" />
     <ClInclude Include="..\common\geometry_testdata.h" />
     <ClInclude Include="..\common\geometry_typelist.h" />
     <ClInclude Include="..\common\msgtest_typelist.h" />

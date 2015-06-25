@@ -123,6 +123,17 @@ struct DataProxy <array_trait, IdxT, FormatT>
   }
 
   //  **************************************************************************
+  /// Move Constructor
+  ///
+  /// Initializes this object by moving the proxy value in this.
+  ///
+  /// @param proxy           A reference to the Another instance of a DataProxy.
+  /// 
+  DataProxy(DataProxy&& proxy)
+    : datum_type(std::move(proxy))
+  { }
+
+  //  **************************************************************************
   /// Value Constructor: Construct a proxy directly from a datum instance.
   ///
   /// @param datum           A reference to a datum object used to initilize this.
@@ -142,11 +153,38 @@ struct DataProxy <array_trait, IdxT, FormatT>
   }
 
   //  **************************************************************************
-  /// Value assignment
+  /// Copy assignment
+  ///
+  DataProxy& operator=(const DataProxy& rhs)
+  {
+    datum_type::operator=(rhs);
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move assignment
+  ///
+  DataProxy& operator=(DataProxy&& rhs)
+  {
+    datum_type::operator=(std::move(rhs));
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Copy Value assignment
   ///
   DataProxy& operator=(const datum_type& value)
   {
     *static_cast<datum_type*>(this) = value;
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move Value assignment
+  ///
+  DataProxy& operator=(datum_type&& rhs)
+  {
+    datum_type::operator=(std::move(rhs));
     return *this;
   }
 
@@ -156,6 +194,15 @@ struct DataProxy <array_trait, IdxT, FormatT>
   DataProxy& operator=(const value_type &value)
   {
     set(value);
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move Value assignment
+  ///
+  DataProxy& operator=(value_type&& rhs)
+  {
+    datum_type::operator=(std::move(rhs));
     return *this;
   }
 

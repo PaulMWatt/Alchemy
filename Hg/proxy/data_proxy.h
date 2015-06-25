@@ -49,6 +49,7 @@ struct DataProxy
   /// Default Constructor
   ///
   DataProxy()
+    : datum_type()
   { }
 
   //  **************************************************************************
@@ -64,6 +65,15 @@ struct DataProxy
   }
 
   //  **************************************************************************
+  /// Move Constructor
+  ///
+  /// @param proxy           A reference to the Another instance of a DataProxy.
+  /// 
+  DataProxy(DataProxy&& proxy)
+    : datum_type(std::move(proxy))
+  { }
+
+  //  **************************************************************************
   /// Value Constructor: Construct a proxy directly from a datum instance.
   ///
   /// @param datum           A reference to a datum object used to initilize this.
@@ -73,20 +83,56 @@ struct DataProxy
   { }
 
   //  **************************************************************************
-  /// Value assignment
+  /// Copy assignment
   ///
-  DataProxy& operator=(const datum_type& value)
+  DataProxy& operator=(const DataProxy& rhs)
   {
-    *static_cast<datum_type*>(this) = value;
+    datum_type::operator=(rhs);
     return *this;
   }
 
   //  **************************************************************************
-  /// Value assignment
+  /// Move assignment
   ///
-  DataProxy& operator=(value_type value)
+  DataProxy& operator=(DataProxy&& rhs)
   {
-    *static_cast<datum_type*>(this) = value;
+    datum_type::operator=(std::move(rhs));
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Copy assignment (value)
+  ///
+  DataProxy& operator=(const datum_type& value)
+  {
+    datum_type::operator=(rhs);
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move assignment (value)
+  ///
+  DataProxy& operator=(datum_type&& rhs)
+  {
+    datum_type::operator=(std::move(rhs));
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Copy assignment value
+  ///
+  DataProxy& operator=(const value_type& rhs)
+  {
+    datum_type::operator=(rhs);
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move assignment value
+  ///
+  DataProxy& operator=(value_type&& rhs)
+  {
+    datum_type::operator=(std::move(rhs));
     return *this;
   }
 

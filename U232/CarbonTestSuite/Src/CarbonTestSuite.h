@@ -839,7 +839,7 @@ void CarbonTestSuite::Test_Hg_pack()
   unsigned char result_buffer[k_msg_buffer_len] = {0};
 
   // SUT
-  int result = Hg_pack(sut, result_buffer, k_msg_buffer_len);
+  auto result = Hg_pack(sut, result_buffer, k_msg_buffer_len);
 
   TS_ASSERT_SAME_DATA(control, result_buffer, sizeof(vertex_t));
 }
@@ -850,7 +850,7 @@ void CarbonTestSuite::Test_Hg_pack_invalid_msg()
   unsigned char buffer[k_msg_buffer_len];
 
   // SUT
-  int result = Hg_pack(0, buffer, k_msg_buffer_len);
+  auto result = Hg_pack(0, buffer, k_msg_buffer_len);
 
   TS_ASSERT_EQUALS(0, result);
 }
@@ -861,7 +861,7 @@ void CarbonTestSuite::Test_Hg_pack_invalid_buffer()
   Hg_msg_t *sut = GetSUT(k_test_msg_type);
 
   // SUT
-  int result = Hg_pack(sut, 0, k_msg_buffer_len);
+  auto result = Hg_pack(sut, 0, k_msg_buffer_len);
 
   TS_ASSERT_EQUALS(0, result);
 }
@@ -873,7 +873,7 @@ void CarbonTestSuite::Test_Hg_pack_invalid_len()
   unsigned char  buffer[k_msg_buffer_len];
 
   // SUT
-  int result = Hg_pack(sut, buffer, 0);
+  auto result = Hg_pack(sut, buffer, 0);
 
   TS_ASSERT_EQUALS(0, result);
 }
@@ -890,7 +890,7 @@ void CarbonTestSuite::Test_Hg_unpack()
   PopulateHostOrder(buffer, k_msg_buffer_len);
 
   // SUT
-  int result = Hg_unpack(sut, buffer, k_msg_buffer_len);
+  auto result = Hg_unpack(sut, buffer, k_msg_buffer_len);
 
   TS_ASSERT_SAME_DATA(control, sut, sizeof(vertex_t));
 
@@ -903,7 +903,7 @@ void CarbonTestSuite::Test_Hg_unpack_invalid_msg()
   unsigned char buffer[k_msg_buffer_len];
 
   // SUT
-  int result = Hg_unpack(0, buffer, k_msg_buffer_len);
+  auto result = Hg_unpack(0, buffer, k_msg_buffer_len);
 
   TS_ASSERT_EQUALS(0, result);
 }
@@ -914,7 +914,7 @@ void CarbonTestSuite::Test_Hg_unpack_invalid_buffer()
   Hg_msg_t *sut = GetSUT(k_test_msg_type);
 
   // SUT
-  int result = Hg_unpack(sut, 0, k_msg_buffer_len);
+  auto result = Hg_unpack(sut, 0, k_msg_buffer_len);
 
   TS_ASSERT_EQUALS(0, result);
 }
@@ -926,7 +926,7 @@ void CarbonTestSuite::Test_Hg_unpack_invalid_len()
   unsigned char  buffer[k_msg_buffer_len];
 
   // SUT
-  int result = Hg_unpack(sut, buffer, 0);
+  auto result = Hg_unpack(sut, buffer, 0);
 
   TS_ASSERT_EQUALS(0, result);
 }

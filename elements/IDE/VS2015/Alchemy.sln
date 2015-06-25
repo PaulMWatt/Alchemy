@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.30110.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Doxygen", "..\..\Doxygen\Doxygen.vcxproj", "{FD674306-0785-43B5-85CA-53710B155A0E}"
 EndProject
@@ -36,12 +36,11 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FD674306-0785-43B5-85CA-53710B155A0E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{FD674306-0785-43B5-85CA-53710B155A0E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{FD674306-0785-43B5-85CA-53710B155A0E}.Debug|x64.ActiveCfg = Debug|Win32
+		{FD674306-0785-43B5-85CA-53710B155A0E}.Debug|x64.ActiveCfg = Debug|x64
 		{FD674306-0785-43B5-85CA-53710B155A0E}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{FD674306-0785-43B5-85CA-53710B155A0E}.Release|Win32.ActiveCfg = Release|Win32
 		{FD674306-0785-43B5-85CA-53710B155A0E}.Release|Win32.Build.0 = Release|Win32
-		{FD674306-0785-43B5-85CA-53710B155A0E}.Release|x64.ActiveCfg = Release|Win32
-		{FD674306-0785-43B5-85CA-53710B155A0E}.Release|x64.Build.0 = Release|Win32
+		{FD674306-0785-43B5-85CA-53710B155A0E}.Release|x64.ActiveCfg = Release|x64
 		{947CDD76-7D45-4B12-AF7C-78705711548F}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{947CDD76-7D45-4B12-AF7C-78705711548F}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{947CDD76-7D45-4B12-AF7C-78705711548F}.Debug|Win32.ActiveCfg = Debug|Win32
@@ -105,7 +104,6 @@ Global
 		{73DC0735-11CE-4365-AFE1-CCD512F4349A}.Release|Win32.ActiveCfg = Release|Win32
 		{73DC0735-11CE-4365-AFE1-CCD512F4349A}.Release|Win32.Build.0 = Release|Win32
 		{73DC0735-11CE-4365-AFE1-CCD512F4349A}.Release|x64.ActiveCfg = Release|x64
-		{73DC0735-11CE-4365-AFE1-CCD512F4349A}.Release|x64.Build.0 = Release|x64
 		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{9135932B-0A26-4E2C-9D43-CB8063491E2B}.Debug|Win32.ActiveCfg = Debug|Win32

@@ -123,8 +123,8 @@ struct PackedBits
   }
 
   //  **************************************************************************
-  /// (Value) Assignment operator
-  ///
+  //  (Value) Assignment operator
+  //
   PackedBits& operator=(const value_type &rhs)
   {
     m_data = rhs;

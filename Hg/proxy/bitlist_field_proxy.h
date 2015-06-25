@@ -40,6 +40,7 @@ struct DataProxy<packed_trait, kt_idx, format_t>
   /// call into with no actions performed.
   ///
   DataProxy()
+    : datum_type()
   { }
 
   //  **************************************************************************
@@ -50,10 +51,40 @@ struct DataProxy<packed_trait, kt_idx, format_t>
   ///
   /// @param proxy           A reference to the Another instance of a DataProxy.
   /// 
-  DataProxy(DataProxy& proxy)
-    : datum_type(proxy)
+  DataProxy(const DataProxy& proxy)
   { 
     this->set(proxy.get());
+  }
+
+  //  **************************************************************************
+  /// Copy Assignment operator
+  ///
+  /// Makes a complete copy of an existing Proxy object, including internal
+  /// references to the MsgBuffer that is associated with the base Datum instance.
+  ///
+  /// @param proxy           A reference to the Another instance of a DataProxy.
+  /// 
+  DataProxy& operator=(const DataProxy& proxy)
+  {
+    this->set(proxy.get());
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Assignment Operator (value_type)
+  /// 
+  /// Allows assignment to this Datum type from it's parameter type, *value_type*.
+  /// This function is the key to allowing the Datum to behave as if the
+  /// assignment was performed directly on the the managed type.
+  /// 
+  /// @param rhs              A value of the Datum value_type that will
+  ///                         be used to directly modify the value of the object.
+  /// 
+  DataProxy&
+    operator=(value_type rhs)
+  {
+    datum_type::operator=(rhs);
+    return *this;
   }
 
   //  **************************************************************************
@@ -88,24 +119,8 @@ struct DataProxy<packed_trait, kt_idx, format_t>
   {
     return static_cast<datum_type*>(this)->operator value_type();
   }
-
-  //  **************************************************************************
-  /// Assignment Operator (value_type)
-  /// 
-  /// Allows assignment to this Datum type from it's parameter type, *value_type*.
-  /// This function is the key to allowing the Datum to behave as if the
-  /// assignment was performed directly on the the managed type.
-  /// 
-  /// @param rhs              A value of the Datum value_type that will
-  ///                         be used to directly modify the value of the object.
-  /// 
-  DataProxy& 
-    operator=(value_type rhs)                     
-  { 
-    datum_type::operator=(rhs);
-    return *this;
-  }
 };
+
 
 } // namespace detail
 

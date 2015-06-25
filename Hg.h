@@ -99,10 +99,39 @@ public:
   /// 
   /// @param rhs              The Hg message object from which data is copied. 
   ///
-  Message(const message_type& rhs)
-  { 
-    *static_cast<message_type*>(this) = rhs;  
+  Message(const Message& rhs)
+    : base_type(rhs)
+  {
+    //*static_cast<message_type*>(this) = rhs;
   }
+
+  //  **************************************************************************
+  /// Move Constructor
+  /// 
+  /// @param rhs              The Hg message object from which data is moved. 
+  ///
+  Message(Message&& rhs)
+    : base_type(std::move(rhs))
+  { }
+
+  //  **************************************************************************
+  /// Copy Constructor
+  /// 
+  /// @param rhs              The Hg message object from which data is copied. 
+  ///
+  Message(const message_type& rhs)
+  {
+    *static_cast<message_type*>(this) = rhs;
+  }
+
+  //  **************************************************************************
+  /// Move Constructor
+  /// 
+  /// @param rhs              The Hg message object from which data is moved. 
+  ///
+  Message(message_type&& rhs)
+    : base_type(std::move(rhs))
+  { }
 
   //  **************************************************************************
   /// Copy Constructor
@@ -111,6 +140,15 @@ public:
   ///
   Message(const base_type& rhs)
     : base_type(rhs)
+  { }
+
+  //  **************************************************************************
+  /// Move Constructor
+  /// 
+  /// @param rhs              The Hg message object from which data is moved. 
+  ///
+  Message(base_type&& rhs)
+    : base_type(std::move(rhs))
   { }
 
   //  **************************************************************************
@@ -125,7 +163,68 @@ public:
     : base_type(p,n)
   { }
 
+
   //  Operations ***************************************************************
+  //  **************************************************************************
+  /// Copy Assignment Operator
+  /// 
+  /// @param rhs              Basic message values to initialize this instance.
+  ///
+  Message& operator=(const Message& rhs)
+  {
+    if (this != &rhs)
+    {
+      base_type::operator=(rhs);
+    }
+
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move Assignment Operator
+  /// 
+  /// @param rhs              Basic message values to initialize this instance.
+  ///
+  Message& operator=(Message&& rhs)
+  {
+    if (this != &rhs)
+    {
+      base_type::operator=(std::move(rhs));
+    }
+
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Assignment Operator
+  /// 
+  /// @param rhs              Basic message values to initialize this instance.
+  ///
+  Message& operator=(const base_type& rhs)
+  {
+    if (this != &rhs)
+    {
+      base_type::operator=(rhs);
+    }
+
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move Assignment Operator
+  /// 
+  /// @param rhs              Basic message values to initialize this instance.
+  ///
+  Message& operator=(base_type&& rhs)
+  {
+    if (this != &rhs)
+    {
+      base_type::operator=(std::move(rhs));
+    }
+
+    return *this;
+  }
+
   //  **************************************************************************
   /// Assignment Operator
   /// 
@@ -135,7 +234,22 @@ public:
   {
     if (this != &rhs)
     {
-      *static_cast<message_type*>(this) = rhs;
+      base_type::operator=(rhs);
+    }
+
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Assignment Operator
+  /// 
+  /// @param rhs              Basic message values to initialize this instance.
+  ///
+  Message& operator=(message_type&& rhs)
+  {
+    if (this != &rhs)
+    {
+      base_type::operator=(std::move(rhs));
     }
 
     return *this;
@@ -227,6 +341,37 @@ public:
   }
 
   //  **************************************************************************
+  /// Move Constructor
+  /// 
+  /// @param rhs              The Hg message object from which data is moved. 
+  ///
+  basic_msg(basic_msg&& rhs)
+    : message_type(std::move(rhs))
+  { }
+
+  //  **************************************************************************
+  /// Copy Constructor
+  /// 
+  /// @param rhs              The Hg message object from which data is copied. 
+  ///
+  basic_msg(const message_type& rhs)
+    : message_type(rhs)
+  {
+    //*static_cast<message_type*>(this) = rhs;
+  }
+
+  //  **************************************************************************
+  /// Move Constructor
+  /// 
+  /// @param rhs              The Hg message object from which data is moved. 
+  ///
+  basic_msg(message_type&& rhs)
+    : message_type(std::move(rhs))
+  {
+    //*static_cast<message_type*>(this) = rhs;
+  }
+
+  //  **************************************************************************
   /// Value constructor. Constructs an initialized message from a raw data buffer.
   ///               
   /// @param p                The initialization data. The contents will only 
@@ -241,6 +386,36 @@ public:
 
   //  Operations ***************************************************************
   //  **************************************************************************
+  /// Copy Assignment Operator
+  /// 
+  /// @param rhs              Basic message values to initialize this instance.
+  ///
+  basic_msg& operator=(const basic_msg& rhs)
+  {
+    if (this != &rhs)
+    {
+      message_type::operator=(rhs);
+    }
+
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move Assignment Operator
+  /// 
+  /// @param rhs              Basic message values to initialize this instance.
+  ///
+  basic_msg& operator=(basic_msg&& rhs)
+  {
+    if (this != &rhs)
+    {
+      message_type::operator=(std::move(rhs));
+    }
+
+    return *this;
+  }
+
+  //  **************************************************************************
   /// Assignment Operator
   /// 
   /// @param rhs              Basic message values to initialize this instance.
@@ -249,7 +424,23 @@ public:
   {
     if (this != &rhs)
     {
-      *static_cast<message_type*>(this) = rhs;
+      message_type::operator=(rhs);
+//      *static_cast<message_type*>(this) = rhs;
+    }
+
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move Assignment Operator
+  /// 
+  /// @param rhs              Basic message values to initialize this instance.
+  ///
+  basic_msg& operator=(message_type&& rhs)
+  {
+    if (this != &rhs)
+    {
+      message_type::operator=(std::move(rhs));
     }
 
     return *this;

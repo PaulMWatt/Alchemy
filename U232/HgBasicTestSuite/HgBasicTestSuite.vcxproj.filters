@@ -36,9 +36,6 @@
     <Filter Include="Header Files\Alchemy\Hg\Detail\Unpack">
       <UniqueIdentifier>{2c8e96d1-a41e-4627-9eba-dfef47115c23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Alchemy\Hg\Detail\Unused">
-      <UniqueIdentifier>{f98db0ac-3634-4b9d-94c1-9bf52d650b84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Alchemy\Hg\Proxy">
       <UniqueIdentifier>{a65438c6-cf82-4632-a452-f45d24b1594c}</UniqueIdentifier>
     </Filter>
@@ -152,12 +149,6 @@
     <ClInclude Include="..\..\Hg\datum\datum.h">
       <Filter>Header Files\Alchemy\Hg\Datum</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Pb\bit_field\bit_field_array.h">
-      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Pb\bit_field\bit_field_vector.h">
-      <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Hg\make_Hg_type_list.h">
       <Filter>Header Files\Alchemy\Hg</Filter>
     </ClInclude>
@@ -209,9 +200,6 @@
     <ClInclude Include="..\..\Pb\detail\tr1_helper.h">
       <Filter>Header Files\Alchemy\Pb\detail</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\storage_policy.h">
-      <Filter>Header Files\Alchemy\Hg</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Pb\bit_field\packed_bits.h">
       <Filter>Header Files\Alchemy\Pb\bit_field</Filter>
     </ClInclude>
@@ -262,9 +250,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Hg\detail\pack_packed_bits.h">
       <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Hg\proxy\opaque_proxy.h">
-      <Filter>Header Files\Alchemy\Hg\Proxy</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Pb\meta_auto_rec_macros.h">
       <Filter>Header Files\Alchemy\Pb</Filter>

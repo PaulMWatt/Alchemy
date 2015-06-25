@@ -28,7 +28,7 @@ namespace alchemy
 namespace benchmark
 {
 
-const size_t k_cycles   = 0x20000000;
+  const size_t k_cycles = 0x20000000;
 
 enum TimeIndex
 {

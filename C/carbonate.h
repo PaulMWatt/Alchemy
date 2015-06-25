@@ -81,7 +81,7 @@ Hg_msg_t* carbon_alloc(size_t size, uint32_t buffer_id, uint32_t msg_type)
     return 0;
 
   C::carbon_t* p_msg = new C::carbon_t[size + C::k_carbon_footprint];
-  uint32_t base = buffer_id | (size << C::k_size_shift);
+  auto base = buffer_id | (size << C::k_size_shift);
   
   ::memcpy(p_msg, &base, 4);
   ::memcpy(p_msg + C::k_type_offset, &msg_type, 4);
