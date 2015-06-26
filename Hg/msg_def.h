@@ -109,7 +109,6 @@
 #include <Pb/type_list_size.h>
 #include <Pb/meta_math.h>
 #include <Hg/deduce_msg_type_list.h>
-#include <Hg/make_Hg_type_list.h>
 #include <Hg/proxy/deduce_proxy_type.h>
 
 
@@ -211,7 +210,6 @@ using message_size_trait_t = typename message_size_trait<T>::type;
 #define Hg_DECLARE_STRUCT_HEADER(F, ...)                                       \
   BEGIN_NAMESPACE(Hg)                                                          \
   DEFINE_STRUCT_TYPELIST(F##_tl, __VA_ARGS__)                                  \
-  using F##_Hg = Hg::make_Hg_type_list<F##_tl>::type;                          \
                                                                                \
   struct F                                                                     \
     : nested_trait                                                             \
@@ -254,9 +252,6 @@ using message_size_trait_t = typename message_size_trait<T>::type;
       return ftor(buffer->data(), buffer->size());                             \
     }                                                                          \
   };                                                                           \
-  BEGIN_NAMESPACE(detail)                                                      \
-  template <> struct field_data_t <F##_Hg> { using value_type = F; };          \
-  END_NAMESPACE(detail)                                                        \
   END_NAMESPACE(Hg)                                                            
 
 

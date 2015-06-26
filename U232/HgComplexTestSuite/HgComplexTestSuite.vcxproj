@@ -197,7 +197,6 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Hg\detail\unpack_nested.h" />
     <ClInclude Include="..\..\Hg\detail\unpack_stream.h" />
     <ClInclude Include="..\..\Hg\detail\unpack_vector.h" />
-    <ClInclude Include="..\..\Hg\make_Hg_type_list.h" />
     <ClInclude Include="..\..\Hg\message_byte_order.h" />
     <ClInclude Include="..\..\Hg\message_dynamic.h" />
     <ClInclude Include="..\..\Hg\msg_buffer.h" />
@@ -253,7 +252,7 @@ cd "../.."</Command>
     <ClInclude Include="..\common\test_def.h" />
     <ClInclude Include="..\common\test_helper.h" />
     <ClInclude Include="Src\TestArrayProxySuite.h" />
-    <ClInclude Include="Src\TestBitFieldArray.h" />
+    <ClInclude Include="Src\TestDefinitions.h" />
     <ClInclude Include="Src\TestDynamicMessageSuite.h" />
     <ClInclude Include="Src\TestDynTypePermsSuite.h" />
     <ClInclude Include="Src\TestFocusedDynamicMessageSuite.h" />
