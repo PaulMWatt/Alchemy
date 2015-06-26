@@ -1,28 +1,19 @@
-Converting Alchemy to use Modern C++ Features
-========================================================
-I have implemented a type_list with variadic templates and integrated this into Alchemy. That is in the current version stored in the repository.
-
-Other immediate plans:
-*Add the use of auto where possible
-*Add the use of decltype
-*Convert to range-based for loops
-*Additional template aliases for the rest of the implementation.
-*Lambda expressions.
-
 Benchmarks
 ========================================================
-Optimizations continue to improve the speed of Alchemy each week. This is a summary of the current benchmark results. The details are further below:
+The addition of move semantics to the Hg constructs now bring the speed of Alchemy to 40% faster than the hand written construct, with a significant increase for nested data structures:
 
 Test | % Faster
 ----------- |:------------
-Basic: |  **20.5059%**
-Packed: | **13.9461%**
-Unaligned: | **1.81528%**
-Complex: | **4.25552%**
-Array: | **73.3624%**
-Total: | **21.0723%**
+Basic: |  **41.37%**
+Packed: | **14.05%**
+Unaligned: | **47.74%**
+Complex: | **25.54%**
+Array: | **73.23%**
+Total: | **39.98%**
 
-Arrays appear to out-perform the basic hand-written equivalent by a considerable margin.
+Alchemy and Modern C++ Features
+========================================================
+Alchemy is now implemented with Modern C++. I will keep a branch open called "Classic C++" that only requires C++98 and TR1 features. I will fix bugs on the classic branch, but I do not plan on further developing features for it.
 
 Network Alchemy
 ========================================================
@@ -218,21 +209,13 @@ percent: Value indicates **Hg** performance (+ is better)
     
 Test | control | Hg | diff | percent
 ----------- |:---------- |:--------- |:---------- |:------------
-Basic: |  0.620346  s | 0.493183  s | -0.127208 | **20.5059%**
-Packed: | 0.710566  s | 0.61147     s | -0.0990963 | **13.9461%**
-Unaligned: | 0.577596  s | 0.567111  s | -0.010485 | **1.81528%**
-Complex: | 0.813253  s | 0.778645  s | -0.0346081 | **4.25552%**
-Array: | 0.577873  s | 0.153931   s | -0.423941 | **73.3624%**
-Total: | 3.29963  s | 2.60429   s | -0.695338 | **31.0732%**
+Basic: |  0.4133  s | 0.2423  s | -0.1710 | **41.37%**
+Packed: | 0.3959  s | 0.3403     s | -0.0556 | **14.05%**
+Unaligned: | 0.4391  s | 0.2295  s | -0.2096 | **47.74%**
+Complex: | 0.7485  s | 0.5573  s | -0.1912 | **25.54%**
+Array: | 0.5141  s | 0.1376   s | -0.3765 | **73.23%**
+Total: | 2.5109  s | 1.5071   s | -1.0039 | **39.98%**
 
-These scenarios are trivial to write by hand,  
-and are currently outside of Alchemy's capabilities.  
-Therefore, Alchemy woefully underperforms in these scenarios.  
-  
-Scenario | control | Hg | diff | percent
------------ |:---------- |:--------- |:---------- |:------------
-NoConversion: |  0.380360  s | 0.509006  s | 0.128643 | **-33.8212%**
-  
 These are the basic benchmark tests that have been written:
 
 1. A single struct with fundamental type fields.  
@@ -242,26 +225,3 @@ These are the basic benchmark tests that have been written:
 5. An array of 256 32-bit integers
 6. A structure that does not perform byte-order conversion, but does read, copy, then write data.
 
-**Previous Results**
-* I have been able to improve the overal speed of Hg so overall it is **7.5% faster** than the hand-written version.
-* Current performance results:
-* Fundamental Types: 29%  faster
-* Packed-bits:       13%  faster
-* Unaligned ints:    48%  faster
-* Nested types:      23%  slower
-* Overall:           7.5% faster
-
-**Additional tests will be added as the existing implementation is refined.
-
--------------
-
-Active and Planned Improvements:
-
-Currently in progress:
- * Cross-compiler support and cross-platform integration with auto-tools. Currently the projects are Visual Studio Solutions.
- * Adding support for Clang.
- * Clean up TODO: tags left in the code. 
-
-Soon to follow:
- * Message converters, to simplify the task of receiving a message and translating it to another format before forwarding it on to the stage of processing.
- 
