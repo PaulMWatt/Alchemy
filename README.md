@@ -26,11 +26,7 @@ Currently Alchemy is based on template library development with
 the same methodologies that are used to develop the Standard C++ Library.
 Therefore the project only includes header files.
 
-Alchemy requires a C++98 compiler with the TR1 extensions.
-Where possible C++11 and C++14 constructs will be utilized.
-However, the goal is to allow the library to continue to function
-in the absence of these newer compilers and features, with the
-potential loss of convenience or performance. 
+Alchemy requires a Modern C++98 compiler (C++11 and C++14), although a legacy version for Classic C++ with the TR1 extensions is available. This version supports fundamentals, nested, packed, arrays, vectors and message views. All new development is done exclusively on the modern branch and bug fixes on both branches.
 
 All commenting is done using doxygen.
 
@@ -131,7 +127,7 @@ Here is the sample example used with C and Carbon rather than C++:
   
 `// An enumerated value that identifies the `  
 `// type of message to be created is generated.`  
-`Hg_msg_t *p_msg = Hg_create(k_AppError);`
+`Hg_msg_t *p_msg = Hg_create(k_AppError);`  
 `AppError *msg = (AppError*)p_msg;`  
 `msg->id   = 1;`  
 `msg->code = GetError();`  
@@ -139,20 +135,20 @@ Here is the sample example used with C and Carbon rather than C++:
   
 `// Convert to network byte-order`  
 `// AppError::net_t msgNet = Hg::to_network(msg);`  
-`// Carbon messages are converted in-place.`
-`Hg_to_network(p_msg);`
+`// Carbon messages are converted in-place.`  
+`Hg_to_network(p_msg);`  
   
 `// The environment that uses the carbon library is reposible`    
-`// for managing memory to serialize the messages.`
+`// for managing memory to serialize the messages.`  
 `size_t len = Hg_size(p_msg);`  
 `unsigned char *p_buffer = malloc(len);`  
 `Hg_pack(p_msg, p_buffer, len)`  
 ``  
 `// Now the data can be sent in network order`  
-`send(sock, p_buffer, len, 0);`
+`send(sock, p_buffer, len, 0);`  
 ``  
-`// Cleanup resources.`
-`free(p_buffer);`
+`// Cleanup resources.`  
+`free(p_buffer);`  
 `Hg_destroy(p_msg);`
 
 -------------
@@ -170,18 +166,18 @@ If you know of other transport libraries and would like to see an Hg adapter to 
 -------------
 Benchmark performance:
 
-Machine:
-*Intel Core i7-4790L @ 4.00GHz 
-*16 GB RAM 
-*Windows 8.1 
+Machine:  
+*Intel Core i7-4790L @ 4.00GHz  
+*16 GB RAM  
+*Windows 8.1  
 
 These benchmarks were compiled by Visual Studio 2013 with these compiler settings:  
 *Maximixe Speed: /O2  
 *Enable Intrinsic (Yes): /Oi  
 *Favor Speed: /Ot  
-*Omit Frame Pointers (Yes): /Oy
+*Omit Frame Pointers (Yes): /Oy  
 *Whole Program Optimization (Yes): /GL  
-  
+   
 Omitting the frame pointers gave the largest boost in performance. Most probably due to the recursive implementation for many of the algorithms that process the Hg messages.
 
 Benchmark output:
