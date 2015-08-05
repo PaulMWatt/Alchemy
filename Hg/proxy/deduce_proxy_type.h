@@ -12,16 +12,20 @@
 #define DEDUCE_PROXY_TYPE_H_INCLUDED
 //  Includes ******************************************************************
 #include <Hg/deduce_type_trait.h>
-#include <Hg/proxy/data_proxy.h>
-#include <Hg/proxy/bitlist_field_proxy.h>
-#include <Hg/proxy/vector_proxy.h>
-#include <Hg/proxy/array_proxy.h>
 
 namespace Hg
 {
 
 namespace detail
 {
+
+//  Forward Declarations *******************************************************
+template< typename  datum_trait, 
+          size_t    kt_idx,
+          typename  format_t
+        >
+struct DataProxy;
+
 
 //  ****************************************************************************
 /// A convenience meta-function to define the correct type of DataProxy holder.
@@ -57,5 +61,6 @@ using deduce_proxy_type_t = typename deduce_proxy_type<IdxT, FormatT>::type;
 } // namespace detail
 
 } // namespace Hg
+
 
 #endif

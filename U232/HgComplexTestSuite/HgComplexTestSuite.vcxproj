@@ -26,7 +26,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -38,7 +38,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -209,6 +209,8 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Hg\proxy\bitlist_field_proxy.h" />
     <ClInclude Include="..\..\Hg\proxy\data_proxy.h" />
     <ClInclude Include="..\..\Hg\proxy\deduce_proxy_type.h" />
+    <ClInclude Include="..\..\Hg\proxy\optional_proxy.h" />
+    <ClInclude Include="..\..\Hg\proxy.h" />
     <ClInclude Include="..\..\Hg\proxy\vector_proxy.h" />
     <ClInclude Include="..\..\Hg\static_msg_buffer.h" />
     <ClInclude Include="..\..\Hg\static_storage_policy.h" />
@@ -244,6 +246,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\meta_macros.h" />
     <ClInclude Include="..\..\Pb\meta_math.h" />
     <ClInclude Include="..\..\Pb\meta_util.h" />
+    <ClInclude Include="..\..\Pb\optional.h" />
     <ClInclude Include="..\..\Pb\type_list.h" />
     <ClInclude Include="..\..\Pb\type_list_size.h" />
     <ClInclude Include="..\..\storage_policy.h" />
@@ -256,6 +259,7 @@ cd "../.."</Command>
     <ClInclude Include="Src\TestDynamicMessageSuite.h" />
     <ClInclude Include="Src\TestDynTypePermsSuite.h" />
     <ClInclude Include="Src\TestFocusedDynamicMessageSuite.h" />
+    <ClInclude Include="Src\TestOptionalProxySuite.h" />
     <ClInclude Include="Src\TestVectorProxySuite.h" />
   </ItemGroup>
   <ItemGroup>

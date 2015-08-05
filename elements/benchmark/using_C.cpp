@@ -6,10 +6,23 @@
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
 //  Includes *******************************************************************
-#include <using_Hg.h>
+#ifdef BENCHMARK_CARBON
+
+#include <using_C.h>
+#include <Carbon.h>
 #include <Hg.h>
+#include <../BenchmarkCarbonLibrary/BenchmarkCarbonDefs.h>
 #include <Hg/static_msg_buffer.h>
 #include <iostream>
+
+#if defined(_MSC_VER)
+
+// Library import directive for Microsoft compiler.
+#pragma comment(lib, "BenchmarkCarbonLibrary")
+
+#endif
+
+
 
 using std::cout;
 using std::endl;
@@ -22,76 +35,79 @@ namespace detail
 {
 
 //  ****************************************************************************
-template< typename T >
+template< size_t Type >
 void test_impl( DataBuffer &data,
                 DataBuffer &out,
                 const char (&name)[14])
 {
-  using HgType = Hg::basic_msg<T, Hg::BufferedStaticStoragePolicy>;
+  // Pre-allocate message objects.
+  Hg_msg_t *pMsg = Hg_create(Type);
 
-  size_t len = Hg::size_of<HgType>::value;
+  size_t len = Hg_size(pMsg);
   size_t count = data.Size() / len;
 
   cout << name << " size: " << len   << "\t\tcount: " << count << endl;
   for (size_t index = 0; index < count; ++index)
   {
-    HgType::host_t host((HgType::data_type*)data.GetBytes(len), len);  
-    HgType::net_t  net = std::move(Hg::to_network(host));
-
-    net.data((unsigned char*)out.GetBytes(len), len);
+    Hg_unpack(pMsg, (unsigned char*)data.GetBytes(len), len);  
+    Hg_to_network(pMsg);
+    Hg_pack(pMsg, (unsigned char*)out.GetBytes(len), len);
   }
 
+  Hg_destroy(pMsg);
+  pMsg = 0;
 }
 
 } // namespace detail
 
 
-//  ****************************************************************************
-void UsingHg::test_no_conversion( DataBuffer &data,
+  //  ****************************************************************************
+void UsingC::test_no_conversion( DataBuffer &data,
                                   DataBuffer &out)
 {
-  detail::test_impl<Hg::NoConversion>(data, out, "no_conversion");
+  detail::test_impl<k_NoConversion>(data, out, "no_conversion");
 }
 
 //  ****************************************************************************
-void UsingHg::test_basic(DataBuffer &data,
+void UsingC::test_basic(DataBuffer &data,
                          DataBuffer &out)
 {
-  detail::test_impl<Hg::Basic>(data, out, "        basic");
+  detail::test_impl<k_Basic>(data, out, "        basic");
 }
 
 //  ****************************************************************************
-void UsingHg::test_packed_bits( DataBuffer &data,
+void UsingC::test_packed_bits( DataBuffer &data,
                                 DataBuffer &out)
 {
-  detail::test_impl<Hg::Packed>(data, out, "       packed");
+  detail::test_impl<k_Packed>(data, out, "       packed");
 }
 
 
 //  ****************************************************************************
-void UsingHg::test_unaligned( DataBuffer &data,
+void UsingC::test_unaligned( DataBuffer &data,
                               DataBuffer &out)
 {
-  detail::test_impl<Hg::Unaligned>(data, out, "    unaligned");
+  detail::test_impl<k_Unaligned>(data, out, "    unaligned");
 }
 
 //  ****************************************************************************
-void UsingHg::test_complex(DataBuffer &data,
-                           DataBuffer &out)
-{
-  detail::test_impl<Hg::Complex>(data, out, "      complex");
-}
-
-
-//  ****************************************************************************
-void UsingHg::test_array(DataBuffer &data,
+void UsingC::test_array(DataBuffer &data,
                          DataBuffer &out)
 {
-  detail::test_impl<Hg::Array_test>(data, out, "        array");
+  detail::test_impl<k_Array_test>(data, out, "        array");
 }
+
+//  ****************************************************************************
+void UsingC::test_complex(DataBuffer &data,
+                           DataBuffer &out)
+{
+  detail::test_impl<k_Complex>(data, out, "      complex");
+}
+
 
 
 
 } // benchmark
 } // alchemy
 
+#endif

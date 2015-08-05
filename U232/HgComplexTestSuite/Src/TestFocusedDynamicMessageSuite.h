@@ -381,7 +381,7 @@ void make_buffer(byte_vector &buffer)
 {
   using namespace test::data;
 
-  uint8_t len = ::strlen(k_test_str);
+  uint8_t len = static_cast<uint8_t>(::strlen(k_test_str));
   buffer.push_back(len);
 
   const char* pFirst = &k_test_str[0];
@@ -396,7 +396,7 @@ void populate_msg(SUT &msg)
 {
   using namespace test::data;
 
-  msg.len = ::strlen(k_test_str);
+  msg.len = static_cast<uint8_t>(::strlen(k_test_str));
   msg.str.resize(msg.len);
 
   ::memcpy(&msg.str[0], k_test_str, msg.len);

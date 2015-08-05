@@ -32,6 +32,8 @@ template< typename  T,
         >
 struct DeduceMsgtype_list_Worker
 { 
+  static_assert(PosT < LimitT, "PosT must be less than LimitT");
+
   using format_type = typename T::format_type;
 
   using type = 

@@ -10,6 +10,7 @@
 //  Includes *******************************************************************
 #include <Pb/dynamic.h>
 #include <Pb/meta_foreach.h>
+#include <Pb/optional.h>
 #include <Hg/deduce_type_trait.h>
 
 namespace Hg
@@ -97,6 +98,7 @@ struct Helpersize_ofVector <T, A, false>
 
 } // namespace nested
 
+
 //  ****************************************************************************
 /// Determines the number of bytes required to serialize a vector.
 /// This version handles a vector with sub-messages.
@@ -114,6 +116,7 @@ struct size_ofVector<T,A,nested_trait>
     return nested::Helpersize_ofVector<T, A, has_dynamic<format_type>::value>::size(field);
   }
 };
+
 
 //  ****************************************************************************
 /// Determines the number of bytes required to serialize a vector.
@@ -143,16 +146,6 @@ struct size_ofVector<T,A,vector_trait>
   }
 };
 
-//  ****************************************************************************
-/// Reports the total dynamic size of vector of bit-fields for this item.
-///    
-//template< typename T,
-//          typename A
-//        >
-//size_t dynamic_size(const Hg::BitFieldVector<T,A>& field)
-//{
-//  return field.size() * Hg::size_of<T>::value;
-//}
 
 //  ****************************************************************************
 /// Reports the total size of the dynamic buffers required for this message.
@@ -167,6 +160,19 @@ size_t dynamic_size(const std::vector<T,A>& field)
 }
 
 //  ****************************************************************************
+/// Reports the conditional size for this optional field based on if a value
+/// is currently present.
+///    
+template< typename T >
+size_t dynamic_size(const optional<T>& field)
+{
+  return  field.empty()
+          ? 0
+          : dynamic_size<T>(field);
+}
+
+
+//  ****************************************************************************
 /// Catch all implementation that returns 0 dynamic size.
 ///    
 template <typename T>
@@ -174,6 +180,7 @@ size_t dynamic_size(const T& field)
 {
   return 0;
 }
+
 
 //  ****************************************************************************
 template< typename MsgT >
@@ -236,7 +243,7 @@ struct DynamicSizeFunctor
 
 
 //  ****************************************************************************
-/// 
+/// Helper functor to iterate and query the size of a dynamically-sized message.
 ///
 template< typename MsgT,
           bool     IsDynamicT
@@ -259,6 +266,7 @@ struct DynamicSizeWorker
     return ftor.size();   
   }
 };
+
 
 //  ****************************************************************************
 /// Specialization that does not request dynamic size values for non-dynamic msgs.

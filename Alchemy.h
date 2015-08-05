@@ -27,6 +27,7 @@
 ///   - ALCHEMY_ARRAY(TYPE,COUNT,NAME)
 ///   - ALCHEMY_ALLOC(TYPE,COUNT,NAME)
 ///   - ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)
+///   - ALCHEMY_OPTIONAL(TYPE,COUNT,NAME)
 ///
 /// Hg provides a portable bit-field interface that works by generating the
 /// appropriate shift and mask operations for each field. Use these MACROS
@@ -184,6 +185,36 @@
 ///             
 #define ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)\
                               DECLARE_ALLOCATOR_DATUM(TYPE,ALLOCATOR,COUNT,NAME)
+
+
+//  ****************************************************************************
+/// Adds an optional field that is not guaranteed to always be present.  
+///
+/// This declaration supports fundamental and nested types.
+/// 
+/// This MACRO generates code based on the type_list specified in the 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
+/// name the property associated with this message format field. 
+/// Finally, a field is provided to specify how this datum will be able to tell
+/// if the optional field is present.  
+///             
+/// @param TYPE     The type to use for this field
+/// @param EXISTS   Specifies how the existance of the field is determined on input.
+///                 There are a few possible ways to indicate the method:
+///                   * Reference a field previously defined in the message that
+///                     indicates the presence of the field.
+///                     A boolean field set to true, or a non-zero integral
+///                     value will indicate the field exists.
+///                   * Specify a function pointer to a user-defined function
+///                     that will inspect the data and return a boolean.
+///                     the function should have the following signature:
+///                         bool pfn_DoesOptionalDatumExist(uint8_t* pCur, size_t len)
+/// @param NAME     The name to assign this parameter in the message definition.
+///                 NAME will be the name used to access this field directly.
+///
+///             
+#define ALCHEMY_OPTIONAL(TYPE,EXISTS,NAME)\
+                                        DECLARE_OPTIONAL_DATUM(TYPE,EXISTS,NAME)
 
 
 //  ****************************************************************************

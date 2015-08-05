@@ -81,9 +81,18 @@ struct deduce_type_trait
                     >::type;
 
   //  **************************************************************************
+  //  Determines if the value is optionally defined.
+  //
+  using optional_deduced_trait = typename 
+    std::conditional< optional_value<value_type>::value, 
+                      optional_trait,
+                      deduced_trait
+                    >::type;
+
+  //  **************************************************************************
   /// The type trait tag deduced for the specified parameter type.
   ///
-  using type = deduced_trait;
+  using type = optional_deduced_trait;
 };
 
 //  **************************************************************************

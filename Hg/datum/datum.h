@@ -96,6 +96,29 @@ public:
   { }
   
   //  **************************************************************************
+  /// Value Copy Constructor
+  ///
+  /// Makes a copy of an input value to initialize this object.
+  ///
+  /// @param datum            A reference to the Another instance of a Datum.
+  /// 
+  Datum(value_type& value)
+  { 
+    set(rhs);
+  }
+
+  //  **************************************************************************
+  /// Value Move Constructor
+  ///
+  /// Moves an existing value into this datum.
+  ///
+  /// @param proxy           A rvalue  reference to the another instance of a Datum.
+  /// 
+  Datum(value_type&& value)
+	  : field_type(std::move(value))
+  { }
+  
+  //  **************************************************************************
   /// Assignment Operator
   /// 
   /// Allows assignment of the Datum value. 

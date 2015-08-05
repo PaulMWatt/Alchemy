@@ -231,6 +231,13 @@ struct sequence_trait
   : nested_trait      { };
 
 //  ***************************************************************************
+/// Any field type that is not required to appear in a message format.
+///
+struct optional_trait
+  : dynamic_size_trait
+{ };
+
+//  ***************************************************************************
 /// Indicates the fields format is undefined and will be determined by context.
 ///
 struct opaque_trait 
@@ -316,6 +323,15 @@ struct nested_value
 template<>
 struct nested_value<MT>
   : std::integral_constant<bool, false>
+{ };
+
+//  Detects types that are optionally present *********************************
+//  ***************************************************************************
+//  Detect types that are defined as optionally available.
+///
+template< typename T>
+struct optional_value
+  : std::is_base_of<optional_trait, T>
 { };
 
 

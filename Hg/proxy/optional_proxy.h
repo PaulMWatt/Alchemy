@@ -1,22 +1,22 @@
-/// @file Hg/proxy/data_proxy.h
+/// @file Hg/proxy/optional_proxy.h
 /// 
-/// The declaration and definition of the DataProxy.
+/// The OptionalProxy template.
 ///           
-/// A parameterized type that abstracts the details between all different types
-/// of message fields.  This will allow a single message field MACRO to be 
-/// used when defining fields for message format definitions.
+/// A parameterized proxy that adds the capabilities for any type to become 
+/// an optionally present type in a serialized message.
 ///             
 /// The MIT License(MIT)
 /// @copyright 2014 Paul M Watt
 //  ****************************************************************************
-#ifndef DATA_PROXY_H_INCLUDED
-#define DATA_PROXY_H_INCLUDED
+#ifndef OPTIONAL_PROXY_H_INCLUDED
+#define OPTIONAL_PROXY_H_INCLUDED
 //  Includes ******************************************************************
 
 #include <Pb/meta_fwd.h>
 #include <Pb/type_list.h>
 #include <Hg/datum/datum.h>
 #include <Hg/storage_policy.h>
+#include <Hg/proxy.h>
 
 namespace Hg
 {
@@ -24,8 +24,9 @@ namespace Hg
 namespace detail
 {
 
+
 //  ****************************************************************************
-/// A template to adapt all field types to the Datum assignment.
+/// A template to provide optional support for field definitions.
 /// 
 /// @tparam datum_trait     The general category of proxy management required by
 ///                         the specified field.
@@ -33,23 +34,37 @@ namespace detail
 /// @tparam format_type
 /// @tparam kt_offset
 /// 
-template< typename  datum_trait, 
-          size_t    kt_idx,
-          typename  format_t
+template< size_t    IdxT,
+          typename  FormatT
         >
-struct DataProxy
-  : public Hg::Datum<kt_idx, format_t>
+struct DataProxy <optional_trait, IdxT, FormatT>
+  : public  DataProxy
+            < deduce_type_trait_t< typename type_at<IdxT, FormatT>::type::optional_type>, 
+              IdxT, 
+              FormatT
+            >
 {
-  using datum_type = Hg::Datum <kt_idx, format_t>;
-  using value_type = typename datum_type::value_type;
+  /// The type managed by the optional container.
+  using index_type    = typename type_at<IdxT, FormatT>::type;
+  using optional_type = typename index_type::optional_type;
 
+  /// The proxy-type for the actual value type managed by the optional object.
+  using proxy_type = 
+          DataProxy
+          < deduce_type_trait_t< optional_type>, 
+            IdxT, 
+            FormatT
+          >;
+
+  using datum_type = typename proxy_type::datum_type;
+  using value_type = typename datum_type::value_type;
   using reference  = datum_type&;
 
   //  **************************************************************************
   /// Default Constructor
   ///
   DataProxy()
-    : datum_type()
+    : proxy_type()
   { }
 
   //  **************************************************************************
@@ -60,7 +75,7 @@ struct DataProxy
   /// @param proxy           A reference to the Another instance of a DataProxy.
   /// 
   DataProxy(const DataProxy& proxy)
-    : datum_type()
+    : proxy_type()
   {
     this->set(proxy.get());
   }
@@ -93,19 +108,40 @@ struct DataProxy
   { }
 
   //  **************************************************************************
-  /// Copy value
+  /// Value Constructor: Construct a proxy directly from the optional value type.
   ///
-  DataProxy(const value_type& rhs)
-    : datum_type()
-  {
-    this->set(rhs);
+  /// @param datum           A reference to a value type instance used to initilize this.
+  /// 
+  DataProxy(const value_type& value)
+    : datum_type(value)
+  { }
+
+  //  **************************************************************************
+  /// Value Constructor: Construct a proxy directly from the optional value type.
+  ///
+  /// @param datum           A reference to a value type instance used to initilize this.
+  /// 
+  DataProxy(value_type&& value)
+    : datum_type(std::move(value))
+  { }
+
+  //  **************************************************************************
+  /// Value Constructor: Construct a proxy directly from the optional value type.
+  ///
+  /// @param datum           A reference to a value type instance used to initilize this.
+  /// 
+  DataProxy(const optional_type& value)
+  { 
+    this->set(index_type(value));
   }
 
   //  **************************************************************************
-  /// Move value
+  /// Value Constructor: Construct a proxy directly from the optional value type.
   ///
-  DataProxy(value_type&& rhs)
-    : datum_type(std::move(rhs))
+  /// @param datum           A reference to a value type instance used to initilize this.
+  /// 
+  DataProxy(optional_type&& value)
+    : datum_type(index_type(std::move(value)))
   { }
 
   //  **************************************************************************
@@ -123,6 +159,24 @@ struct DataProxy
   DataProxy& operator=(DataProxy&& rhs)
   {
     datum_type::operator=(std::move(rhs));
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Copy assignment
+  ///
+  DataProxy& operator=(const proxy_type& rhs)
+  {
+    proxy_type::operator=(rhs);
+    return *this;
+  }
+
+  //  **************************************************************************
+  /// Move assignment
+  ///
+  DataProxy& operator=(proxy_type&& rhs)
+  {
+    proxy_type::operator=(std::move(rhs));
     return *this;
   }
 
@@ -183,6 +237,32 @@ struct DataProxy
   {
     return static_cast<const datum_type*>(this)->operator value_type();
   }
+
+  //  **************************************************************************
+  /// Exchanges the contents of this DataProxy container with those of other.
+  /// This version does not invoke any move, copy, or swap operations on
+  /// the individual elements.
+  ///
+  /// Iterators and references will remain valid, with the exception to the
+  /// end iterators.
+  ///
+  /// @param other    The other vector to swap elements.
+  ///
+  void swap(DataProxy& other)                     { this->get().swap(other.get()); }
+
+  //  **************************************************************************
+  /// Exchanges the contents of the container with those of other.
+  /// This version does not invoke any move, copy, or swap operations on
+  /// the individual elements.
+  ///
+  /// Iterators and references will remain valid, with the exception to the
+  /// end iterators.
+  ///
+  /// @param other    The other vector to swap elements.
+  ///
+  void swap(optional_type& other)                    { this->get().swap(other);   }
+
+
 };
 
 } // namespace detail

@@ -359,5 +359,48 @@ public:
  void runTest() { suite_TestMeta.TestForEach(); }
 } testDescription_suite_TestMeta_TestForEach;
 
+#include "..\TestOptional.h"
+
+static TestOptional suite_TestOptional;
+
+static CxxTest::List Tests_TestOptional = { 0, 0 };
+CxxTest::StaticSuiteDescription suiteDescription_TestOptional( "../TestOptional.h", 41, "TestOptional", suite_TestOptional, Tests_TestOptional );
+
+static class TestDescription_suite_TestOptional_TestDefaultCtor : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptional_TestDefaultCtor() : CxxTest::RealTestDescription( Tests_TestOptional, suiteDescription_TestOptional, 67, "TestDefaultCtor" ) {}
+ void runTest() { suite_TestOptional.TestDefaultCtor(); }
+} testDescription_suite_TestOptional_TestDefaultCtor;
+
+static class TestDescription_suite_TestOptional_TestValueCtor : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptional_TestValueCtor() : CxxTest::RealTestDescription( Tests_TestOptional, suiteDescription_TestOptional, 68, "TestValueCtor" ) {}
+ void runTest() { suite_TestOptional.TestValueCtor(); }
+} testDescription_suite_TestOptional_TestValueCtor;
+
+static class TestDescription_suite_TestOptional_TestValueConversion : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptional_TestValueConversion() : CxxTest::RealTestDescription( Tests_TestOptional, suiteDescription_TestOptional, 69, "TestValueConversion" ) {}
+ void runTest() { suite_TestOptional.TestValueConversion(); }
+} testDescription_suite_TestOptional_TestValueConversion;
+
+static class TestDescription_suite_TestOptional_Test_empty_true : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptional_Test_empty_true() : CxxTest::RealTestDescription( Tests_TestOptional, suiteDescription_TestOptional, 70, "Test_empty_true" ) {}
+ void runTest() { suite_TestOptional.Test_empty_true(); }
+} testDescription_suite_TestOptional_Test_empty_true;
+
+static class TestDescription_suite_TestOptional_Test_empty_false : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptional_Test_empty_false() : CxxTest::RealTestDescription( Tests_TestOptional, suiteDescription_TestOptional, 71, "Test_empty_false" ) {}
+ void runTest() { suite_TestOptional.Test_empty_false(); }
+} testDescription_suite_TestOptional_Test_empty_false;
+
+static class TestDescription_suite_TestOptional_Test_reset : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptional_Test_reset() : CxxTest::RealTestDescription( Tests_TestOptional, suiteDescription_TestOptional, 72, "Test_reset" ) {}
+ void runTest() { suite_TestOptional.Test_reset(); }
+} testDescription_suite_TestOptional_Test_reset;
+
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";
