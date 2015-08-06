@@ -9,6 +9,7 @@
 #define BASIC_DATUM_H_INCLUDED
 //  Includes ******************************************************************
 #include <Pb/meta_fwd.h>
+#include <Pb/optional.h>
 #include <Hg/msg_buffer.h>
 #include <Hg/deduce_type_trait.h>
 
@@ -95,6 +96,18 @@ struct field_data_t < std::vector<SubTypeT, AllocT> >
                               >::type;
 };
 
+//  ****************************************************************************
+/// Optional Specialization provides the type definitions for field in type-container.
+///
+/// @tparam T           [typename] The type of the optional data field. 
+///
+template< typename T >
+struct field_data_t < Hg::optional<T> >
+{
+  /// Extract the actual value-type and 
+  /// use the FieldType defined for it.
+  using value_type = T;
+};
 
 //  ****************************************************************************
 /// (Dynamic-Array Specialization) To copy from one instance to another.
@@ -146,7 +159,7 @@ struct FieldTypes
   /// The type at the index of the
   /// parent type container.
   using index_type = FieldT; 
-  
+ 
   /// The specified value type for 
   /// the current Datum.
   using value_type = typename field_data_t<index_type>::value_type;
@@ -343,6 +356,128 @@ struct FieldTypes <FieldT, packed_trait>
 
 };
 
+
+//  ****************************************************************************
+/// Nested Specialization for the index and data field type definitions.
+/// 
+/// @tparam FieldT            This parameterized type declares the
+///                           type at the associated location in the parent 
+///                           type container.
+/// 
+/// Note: The nested type provides storage for nested fields by deriving from 
+///       the user-defined format. 
+///
+template< typename FieldT > 
+struct FieldTypes <FieldT, optional_trait>
+  : public base_optional
+  , public field_data_t<FieldT>::value_type
+{
+  /// The type at the index of the
+  /// parent type container.
+  using index_type = FieldT;
+
+  /// The specified value type for 
+  /// the current Datum.
+  using value_type = typename field_data_t<index_type>::value_type;
+
+  //  **************************************************************************
+  FieldTypes()
+  { }
+
+  //  **************************************************************************
+  FieldTypes(const FieldTypes& rhs)
+    : base_optional(rhs)
+  {
+    m_data = rhs.m_data;
+  }
+
+  //  **************************************************************************
+  FieldTypes(FieldTypes&& rhs)
+    : base_optional(std::move(rhs))
+  {
+    m_data = std::move(rhs.m_data);
+  }
+
+  //  **************************************************************************
+  FieldTypes(const value_type& rhs)
+  {
+    valid();
+    m_data = rhs;
+  }
+
+  //  **************************************************************************
+  FieldTypes(value_type&& rhs)
+  {
+    valid();
+    m_data = std::move(rhs);
+  }
+
+  //  **************************************************************************
+  FieldTypes& operator=(const FieldTypes& rhs)
+  {
+    m_data = rhs.m_data;
+    return *this;
+  }
+
+  //  **************************************************************************
+  FieldTypes& operator=(FieldTypes&& rhs)
+  {
+    base_optional::operator=(std::move(rhs))
+    m_data = std::move(rhs.m_data);
+    return *this;
+  }
+
+  //  **************************************************************************
+  FieldTypes& operator=(const value_type& rhs)
+  {
+    valid();
+    m_data = rhs;
+    return *this;
+  }
+  
+  //  **************************************************************************
+  FieldTypes& operator=(value_type&& rhs)
+  {
+    valid();
+    m_data = std::move(rhs);
+    return *this;
+  }
+
+
+  //  **************************************************************************
+  /// Returns a reference to the internal data storage.
+  /// 
+  /// Returns a reference to the internal data storage managed by this
+  /// Datum. The reference to the data can be useful, and necessary for
+  ///
+  value_type& reference()                     
+  {
+    valid();
+    return m_data;
+  }
+
+  //  **************************************************************************
+  /// Returns the value of the data buffer.
+  /// 
+  const value_type& data() const
+  { 
+    return m_data;
+  }
+
+  //  **************************************************************************
+  /// Provides an interface to set the value of the data.
+  /// 
+  void data(const value_type &value)                
+  { 
+    Hg::detail::copy_value_type(reference(), value);
+  }
+
+protected:
+  /// This is a local copy of the data
+  /// value to shadow the value held in
+  /// the buffer. 
+  value_type            m_data;         
+};
 
 
 //  ****************************************************************************

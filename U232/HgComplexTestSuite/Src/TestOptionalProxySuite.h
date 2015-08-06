@@ -120,6 +120,11 @@ public:
   void TestOpLessThan_false();
 
   // Status and Methods
+  void TestIsValid_true();
+  void TestIsValid_false();
+  void TestValid();
+  void TestReset();
+
   void TestClear();
   void TestReserve();
   void TestCapacity();
@@ -309,6 +314,53 @@ void TestOptionalProxySuite::TestOpLessThan_false()
 }
 
 //  ****************************************************************************
+void TestOptionalProxySuite::TestIsValid_true()
+{
+  const uint8_t vals[] = {0x6,0x0,0x0,0xD,0xF,0x0,0x0,0xd};
+  const Hg::v_type k_control = make_vector(vals);
+
+  vector_data sut(k_control);
+
+  TS_ASSERT(sut.is_valid());
+}
+
+//  ****************************************************************************
+void TestOptionalProxySuite::TestIsValid_false()
+{
+  vector_data sut;
+
+  TS_ASSERT(!sut.is_valid());
+}
+
+//  ****************************************************************************
+void TestOptionalProxySuite::TestValid()
+{
+  vector_data sut;
+
+  TS_ASSERT(!sut.is_valid());
+
+  // SUT: Flags the managed parameter as valid.
+  sut.valid();
+
+  TS_ASSERT(sut.is_valid());
+}
+
+//  ****************************************************************************
+void TestOptionalProxySuite::TestReset()
+{
+  const uint8_t vals[] = {0x6,0x0,0x0,0xD,0xF,0x0,0x0,0xd};
+  const Hg::v_type k_control = make_vector(vals);
+
+  vector_data sut(k_control);
+
+  // SUT: Flags the managed parameter as invalid.
+  sut.reset();
+
+  TS_ASSERT(!sut.is_valid());
+}
+
+
+//  ****************************************************************************
 void TestOptionalProxySuite::TestClear()
 {
   const uint8_t vals[] = {0x6,0x0,0x0,0xD,0xF,0x0,0x0,0xd};
@@ -321,6 +373,9 @@ void TestOptionalProxySuite::TestClear()
   // SUT: Zeroes the shadow data and the buffer.
   sut.clear();
   TS_ASSERT_EQUALS(sut.get(), k_cleared);
+
+  // A cleared vector is still valid, albeit empty.
+  TS_ASSERT(sut.is_valid());
 }
 
 //  ****************************************************************************
@@ -334,6 +389,7 @@ void TestOptionalProxySuite::TestReserve()
 
   // Verify the new capacity is at least as large as the specified reserve mount. 
   TS_ASSERT_EQUALS(k_control, sut.capacity());
+  TS_ASSERT(sut.is_valid());
 }
 
 //  ****************************************************************************
@@ -403,6 +459,7 @@ void TestOptionalProxySuite::TestSet()
 
   auto result = sut.get();
   TS_ASSERT_EQUALS(result, k_control);
+  TS_ASSERT(sut.is_valid());
 }
 
 //  ****************************************************************************
@@ -502,6 +559,8 @@ void TestOptionalProxySuite::TestOpSquare()
   TS_ASSERT_EQUALS(k_control[5], sut[5]);
   TS_ASSERT_EQUALS(k_control[6], sut[6]);
   TS_ASSERT_EQUALS(k_control[7], sut[7]);
+
+  TS_ASSERT(sut.is_valid());
 }
 
 //  ****************************************************************************
@@ -529,6 +588,7 @@ void TestOptionalProxySuite::TestFront()
   // SUT
   sut.front() = k_control[0];
   TS_ASSERT_EQUALS(k_control[0], sut.front());
+  TS_ASSERT(sut.is_valid());
 }
 
 //  ****************************************************************************
@@ -556,6 +616,7 @@ void TestOptionalProxySuite::TestBack()
   // SUT
   sut.back() = k_control;
   TS_ASSERT_EQUALS(k_control, sut.back());
+  TS_ASSERT(sut.is_valid());
 }
 
 //  ****************************************************************************
@@ -694,6 +755,7 @@ void TestOptionalProxySuite::TestPushBack()
   sut.push_back(k_second);
 
   TS_ASSERT_EQUALS(sut.get(), k_control);
+  TS_ASSERT(sut.is_valid());
 }
 
 //  ****************************************************************************
@@ -711,6 +773,7 @@ void TestOptionalProxySuite::TestPushBack_empty()
   sut.push_back(k_second);
 
   TS_ASSERT_EQUALS(sut.get(), k_control);
+  TS_ASSERT(sut.is_valid());
 }
 
 //  ****************************************************************************
@@ -728,6 +791,7 @@ void TestOptionalProxySuite::TestPopBack()
   sut.pop_back();
 
   TS_ASSERT_EQUALS(sut.get(), k_control);
+  TS_ASSERT(sut.is_valid());
 }
 
 //  ****************************************************************************
@@ -747,6 +811,7 @@ void TestOptionalProxySuite::TestPopBack_empty()
 
   TS_ASSERT(sut.empty());
   TS_ASSERT_EQUALS(k_count, sut.capacity());
+  TS_ASSERT(sut.is_valid());
 }
 
 //  ****************************************************************************
@@ -798,13 +863,11 @@ void TestOptionalProxySuite::TestResize_default_smaller()
   const Hg::v_type k_control = make_vector(ctrl_vals);
 
   const size_t                  k_new_size = k_control.size();
-  vector_data::optional_type::value_type k_default_value = 100;
-
+  const vector_data::data_type  k_default_value = 100;
   vector_data   sut(k_initial);
 
   // SUT
-// TODO: Return and correct the test.
-//  sut.resize(k_new_size, k_default_value);
+  sut.resize(k_new_size, k_default_value);
 
   TS_ASSERT_EQUALS(sut.get(), k_control);
 }

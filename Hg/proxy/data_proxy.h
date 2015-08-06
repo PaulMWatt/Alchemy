@@ -40,6 +40,7 @@ template< typename  datum_trait,
 struct DataProxy
   : public Hg::Datum<kt_idx, format_t>
 {
+  using trait_type = datum_trait;
   using datum_type = Hg::Datum <kt_idx, format_t>;
   using value_type = typename datum_type::value_type;
 

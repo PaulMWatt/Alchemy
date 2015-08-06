@@ -18,6 +18,7 @@
 #include <Hg/storage_policy.h>
 #include <Hg/proxy.h>
 
+
 namespace Hg
 {
 
@@ -38,25 +39,22 @@ template< size_t    IdxT,
           typename  FormatT
         >
 struct DataProxy <optional_trait, IdxT, FormatT>
-  : public  DataProxy
-            < deduce_type_trait_t< typename type_at<IdxT, FormatT>::type::optional_type>, 
-              IdxT, 
-              FormatT
-            >
+  : public DataProxy< typename deduce_type_trait <typename Hg::type_at<IdxT, FormatT>::type::optional_type>::type, 
+                      IdxT, 
+                      FormatT
+                    >
 {
+  using type_a = typename Hg::type_at<IdxT, FormatT>::type;
+  using optional_type_at = typename Hg::type_at<IdxT, FormatT>::type::optional_type;
+
   /// The type managed by the optional container.
-  using index_type    = typename type_at<IdxT, FormatT>::type;
-  using optional_type = typename index_type::optional_type;
+  using index_type = typename type_at<IdxT, FormatT>::type;
+  using base_proxy = DataProxy< typename deduce_type_trait <typename Hg::type_at<IdxT, FormatT>::type::optional_type>::type, 
+                                IdxT, 
+                                FormatT
+                              >; 
 
-  /// The proxy-type for the actual value type managed by the optional object.
-  using proxy_type = 
-          DataProxy
-          < deduce_type_trait_t< optional_type>, 
-            IdxT, 
-            FormatT
-          >;
-
-  using datum_type = typename proxy_type::datum_type;
+  using datum_type = Hg::Datum <IdxT, FormatT>;
   using value_type = typename datum_type::value_type;
   using reference  = datum_type&;
 
@@ -64,7 +62,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   /// Default Constructor
   ///
   DataProxy()
-    : proxy_type()
+    : base_proxy()
   { }
 
   //  **************************************************************************
@@ -75,10 +73,8 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   /// @param proxy           A reference to the Another instance of a DataProxy.
   /// 
   DataProxy(const DataProxy& proxy)
-    : proxy_type()
-  {
-    this->set(proxy.get());
-  }
+    : base_proxy(proxy)
+  { }
 
   //  **************************************************************************
   /// Move Constructor
@@ -86,7 +82,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   /// @param proxy           A reference to the Another instance of a DataProxy.
   /// 
   DataProxy(DataProxy&& proxy)
-    : datum_type(std::move(proxy))
+    : base_proxy(std::move(proxy))
   { }
 
   //  **************************************************************************
@@ -96,7 +92,9 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   /// 
   DataProxy(const datum_type& datum)
     : datum_type(datum)
-  { }
+  { 
+    valid();
+  }
 
   //  **************************************************************************
   /// Value Constructor: Construct a proxy directly from a datum instance.
@@ -105,34 +103,8 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   /// 
   DataProxy(datum_type&& datum)
     : datum_type(std::move(datum))
-  { }
-
-  //  **************************************************************************
-  /// Value Constructor: Construct a proxy directly from the optional value type.
-  ///
-  /// @param datum           A reference to a value type instance used to initilize this.
-  /// 
-  DataProxy(const value_type& value)
-    : datum_type(value)
-  { }
-
-  //  **************************************************************************
-  /// Value Constructor: Construct a proxy directly from the optional value type.
-  ///
-  /// @param datum           A reference to a value type instance used to initilize this.
-  /// 
-  DataProxy(value_type&& value)
-    : datum_type(std::move(value))
-  { }
-
-  //  **************************************************************************
-  /// Value Constructor: Construct a proxy directly from the optional value type.
-  ///
-  /// @param datum           A reference to a value type instance used to initilize this.
-  /// 
-  DataProxy(const optional_type& value)
   { 
-    this->set(index_type(value));
+    valid();
   }
 
   //  **************************************************************************
@@ -140,9 +112,22 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   ///
   /// @param datum           A reference to a value type instance used to initilize this.
   /// 
-  DataProxy(optional_type&& value)
-    : datum_type(index_type(std::move(value)))
-  { }
+  DataProxy(const value_type& value)
+    : base_proxy(value)
+  { 
+    valid();
+  }
+
+  //  **************************************************************************
+  /// Value Constructor: Construct a proxy directly from the optional value type.
+  ///
+  /// @param datum           A reference to a value type instance used to initilize this.
+  /// 
+  DataProxy(value_type&& value)
+    : base_proxy(std::move(value))
+  { 
+    valid();
+  }
 
   //  **************************************************************************
   /// Copy assignment
@@ -163,25 +148,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   }
 
   //  **************************************************************************
-  /// Copy assignment
-  ///
-  DataProxy& operator=(const proxy_type& rhs)
-  {
-    proxy_type::operator=(rhs);
-    return *this;
-  }
-
-  //  **************************************************************************
-  /// Move assignment
-  ///
-  DataProxy& operator=(proxy_type&& rhs)
-  {
-    proxy_type::operator=(std::move(rhs));
-    return *this;
-  }
-
-  //  **************************************************************************
-  /// Copy assignment (value)
+  /// Datum Copy assignment
   ///
   DataProxy& operator=(const datum_type& value)
   {
@@ -190,7 +157,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   }
 
   //  **************************************************************************
-  /// Move assignment (value)
+  /// Datum Move assignment
   ///
   DataProxy& operator=(datum_type&& rhs)
   {
@@ -204,6 +171,8 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   DataProxy& operator=(const value_type& rhs)
   {
     datum_type::operator=(rhs);
+    valid();
+
     return *this;
   }
 
@@ -213,6 +182,8 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   DataProxy& operator=(value_type&& rhs)
   {
     datum_type::operator=(std::move(rhs));
+    valid(); 
+
     return *this;
   }
 
@@ -224,6 +195,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   /// 
   operator reference()
   {
+    valid();
     return *static_cast<datum_type*>(this);
   }
 
@@ -248,7 +220,10 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   ///
   /// @param other    The other vector to swap elements.
   ///
-  void swap(DataProxy& other)                     { this->get().swap(other.get()); }
+  void swap(DataProxy& other)                     
+  { 
+    this->get().swap(other.get()); 
+  }
 
   //  **************************************************************************
   /// Exchanges the contents of the container with those of other.
@@ -260,9 +235,10 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   ///
   /// @param other    The other vector to swap elements.
   ///
-  void swap(optional_type& other)                    { this->get().swap(other);   }
-
-
+  void swap(value_type& other)                    
+  { 
+    this->get().swap(other);   
+  }
 };
 
 } // namespace detail

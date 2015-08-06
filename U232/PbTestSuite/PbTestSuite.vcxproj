@@ -218,7 +218,6 @@ cd "../.."</Command>
     <ClInclude Include="..\common\test_helper.h" />
     <ClInclude Include="Src\TestByteOrder.h" />
     <ClInclude Include="Src\TestMeta.h" />
-    <ClInclude Include="Src\TestOptional.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\PbTestSuiteRunner.cpp">

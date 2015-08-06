@@ -240,7 +240,7 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   ///               causes new elements to be added to the container.
   /// 
   void resize(size_t    count, 
-              data_type value)                    { /*this->get().resize(count, value); */}
+              data_type value)                    { this->get().resize(count, value); }
 
   //  **************************************************************************
   /// Updates the value of this VectorProxy with a std::vector type. 
