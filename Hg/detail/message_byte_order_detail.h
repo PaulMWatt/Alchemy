@@ -99,6 +99,31 @@ struct ConvertEndianess
 };
 
 //  ****************************************************************************
+//  A specialized functor to convert optional types.
+// 
+//  @tparam T       [typename] The value_type for this specialization
+//                  is actually a format_type for the nested structure.
+//  
+template< typename T,
+          typename StorageT
+        >
+struct ConvertEndianess<T, StorageT, optional_trait>
+{
+  template <typename T>
+  void operator()(const T &input, T &output)
+  {
+    // Convert the byte-order only if the input type is valid.
+    // Otherwise, there is not meaningful data to process.
+    if (input.is_valid())
+    { 
+      ConvertEndianess<T, StorageT, typename T::base_trait> swap_order;
+
+      swap_order(input, output);
+    }
+  }
+};
+
+//  ****************************************************************************
 //  A specialized functor to convert nested types.
 // 
 //  @tparam T       [typename] The value_type for this specialization

@@ -299,6 +299,15 @@
     <ClInclude Include="..\..\Pb\type_list_size.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\pack_optional.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\unpack_optional.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unpack</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\TestOptionalMessageSuite.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgComplexTestSuiteRunner.cpp">

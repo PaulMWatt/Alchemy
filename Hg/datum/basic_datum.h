@@ -370,7 +370,6 @@ struct FieldTypes <FieldT, packed_trait>
 template< typename FieldT > 
 struct FieldTypes <FieldT, optional_trait>
   : public base_optional
-  , public field_data_t<FieldT>::value_type
 {
   /// The type at the index of the
   /// parent type container.
@@ -422,7 +421,7 @@ struct FieldTypes <FieldT, optional_trait>
   //  **************************************************************************
   FieldTypes& operator=(FieldTypes&& rhs)
   {
-    base_optional::operator=(std::move(rhs))
+    base_optional::operator=(std::move(rhs));
     m_data = std::move(rhs.m_data);
     return *this;
   }

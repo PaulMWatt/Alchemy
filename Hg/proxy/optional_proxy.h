@@ -44,12 +44,12 @@ struct DataProxy <optional_trait, IdxT, FormatT>
                       FormatT
                     >
 {
-  using type_a = typename Hg::type_at<IdxT, FormatT>::type;
-  using optional_type_at = typename Hg::type_at<IdxT, FormatT>::type::optional_type;
-
   /// The type managed by the optional container.
-  using index_type = typename type_at<IdxT, FormatT>::type;
-  using base_proxy = DataProxy< typename deduce_type_trait <typename Hg::type_at<IdxT, FormatT>::type::optional_type>::type, 
+  using index_type       = typename Hg::type_at<IdxT, FormatT>::type;
+  using optional_type_at = typename index_type::optional_type;
+
+  using base_trait = typename deduce_type_trait <optional_type_at>::type;
+  using base_proxy = DataProxy< base_trait, 
                                 IdxT, 
                                 FormatT
                               >; 

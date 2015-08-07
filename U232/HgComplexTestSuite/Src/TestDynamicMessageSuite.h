@@ -51,10 +51,10 @@ ALCHEMY_STRUCT(no_dyn_format_t,
 //  A type list used to create a basic message with a dynamic value.
 // 
 ALCHEMY_STRUCT(dyn_basic_format_t,
-  ALCHEMY_DATUM (uint32_t,                 word_0),
-  ALCHEMY_DATUM (uint32_t,                 word_1),
-  ALCHEMY_ALLOC(uint16_t,   word_0,      seq_16),
-  ALCHEMY_DATUM (uint32_t,                 word_2)
+  ALCHEMY_DATUM   (uint32_t,                 word_0),
+  ALCHEMY_DATUM   (uint32_t,                 word_1),
+  ALCHEMY_ALLOC   (uint16_t,   word_0,      seq_16),
+  ALCHEMY_DATUM   (uint32_t,                 word_2)
 );
 
 //  ****************************************************************************
@@ -66,11 +66,11 @@ ALCHEMY_STRUCT(dyn_test_format_t,
   ALCHEMY_DATUM    (uint8_t,             size_32),
   ALCHEMY_DATUM    (uint8_t,             size_64),
   ALCHEMY_DATUM    (uint32_t,            word_0),
-  ALCHEMY_ALLOC  (uint8_t,  size_8,    seq_8),
-  ALCHEMY_ALLOC  (uint16_t, size_16,   seq_16),
+  ALCHEMY_ALLOC    (uint8_t,  size_8,    seq_8),
+  ALCHEMY_ALLOC    (uint16_t, size_16,   seq_16),
   ALCHEMY_DATUM    (uint32_t,            word_1),
-  ALCHEMY_ALLOC  (uint32_t, size_32,   seq_32),
-  ALCHEMY_ALLOC  (uint64_t, size_64,   seq_64),
+  ALCHEMY_ALLOC    (uint32_t, size_32,   seq_32),
+  ALCHEMY_ALLOC    (uint64_t, size_64,   seq_64),
   ALCHEMY_DATUM    (uint32_t,            word_2)
 );
 

@@ -85,7 +85,7 @@ class optional <std::array<T,N> >
 public:
   /// The type of the optional value managed by this object. 
   using optional_type = std::array<T,N>;
-  using value_type = typename std::array<T,N>::value_type;
+  using value_type = typename optional_type::value_type;
 };
 
 //  ****************************************************************************
@@ -96,7 +96,7 @@ class optional <std::vector<T,A> >
 public:
   /// The type of the optional value managed by this object. 
   using optional_type = std::vector<T,A>;
-  using value_type = typename std::vector<T,A>::value_type;
+  using value_type = typename optional_type::value_type;
 };
 
 } // namespace Hg

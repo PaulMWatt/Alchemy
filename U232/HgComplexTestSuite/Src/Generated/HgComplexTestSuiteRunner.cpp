@@ -523,6 +523,85 @@ public:
  void runTest() { suite_TestFocusedDynamicMessageSuite.Test_write_vector_of_vectors(); }
 } testDescription_suite_TestFocusedDynamicMessageSuite_Test_write_vector_of_vectors;
 
+#include "..\TestOptionalMessageSuite.h"
+
+static TestOptionalMessageSuite suite_TestOptionalMessageSuite;
+
+static CxxTest::List Tests_TestOptionalMessageSuite = { 0, 0 };
+CxxTest::StaticSuiteDescription suiteDescription_TestOptionalMessageSuite( "../TestOptionalMessageSuite.h", 130, "TestOptionalMessageSuite", suite_TestOptionalMessageSuite, Tests_TestOptionalMessageSuite );
+
+static class TestDescription_suite_TestOptionalMessageSuite_TestDefaultCtor : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_TestDefaultCtor() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 296, "TestDefaultCtor" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.TestDefaultCtor(); }
+} testDescription_suite_TestOptionalMessageSuite_TestDefaultCtor;
+
+static class TestDescription_suite_TestOptionalMessageSuite_TestCopyCtor : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_TestCopyCtor() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 297, "TestCopyCtor" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.TestCopyCtor(); }
+} testDescription_suite_TestOptionalMessageSuite_TestCopyCtor;
+
+static class TestDescription_suite_TestOptionalMessageSuite_TestValueCtor : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_TestValueCtor() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 298, "TestValueCtor" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.TestValueCtor(); }
+} testDescription_suite_TestOptionalMessageSuite_TestValueCtor;
+
+static class TestDescription_suite_TestOptionalMessageSuite_TestAssignmentOperator : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_TestAssignmentOperator() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 299, "TestAssignmentOperator" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.TestAssignmentOperator(); }
+} testDescription_suite_TestOptionalMessageSuite_TestAssignmentOperator;
+
+static class TestDescription_suite_TestOptionalMessageSuite_Testempty : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_Testempty() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 300, "Testempty" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.Testempty(); }
+} testDescription_suite_TestOptionalMessageSuite_Testempty;
+
+static class TestDescription_suite_TestOptionalMessageSuite_Testempty_false : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_Testempty_false() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 301, "Testempty_false" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.Testempty_false(); }
+} testDescription_suite_TestOptionalMessageSuite_Testempty_false;
+
+static class TestDescription_suite_TestOptionalMessageSuite_TestSize : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_TestSize() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 302, "TestSize" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.TestSize(); }
+} testDescription_suite_TestOptionalMessageSuite_TestSize;
+
+static class TestDescription_suite_TestOptionalMessageSuite_Testis_host_order : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_Testis_host_order() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 303, "Testis_host_order" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.Testis_host_order(); }
+} testDescription_suite_TestOptionalMessageSuite_Testis_host_order;
+
+static class TestDescription_suite_TestOptionalMessageSuite_Testis_host_order_false : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_Testis_host_order_false() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 304, "Testis_host_order_false" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.Testis_host_order_false(); }
+} testDescription_suite_TestOptionalMessageSuite_Testis_host_order_false;
+
+static class TestDescription_suite_TestOptionalMessageSuite_TestAssign : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_TestAssign() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 305, "TestAssign" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.TestAssign(); }
+} testDescription_suite_TestOptionalMessageSuite_TestAssign;
+
+static class TestDescription_suite_TestOptionalMessageSuite_TestClear : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_TestClear() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 306, "TestClear" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.TestClear(); }
+} testDescription_suite_TestOptionalMessageSuite_TestClear;
+
+static class TestDescription_suite_TestOptionalMessageSuite_Testdata : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_Testdata() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 307, "Testdata" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.Testdata(); }
+} testDescription_suite_TestOptionalMessageSuite_Testdata;
+
 #include "..\TestOptionalProxySuite.h"
 
 static TestOptionalProxySuite suite_TestOptionalProxySuite;
