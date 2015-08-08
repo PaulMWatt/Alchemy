@@ -9,6 +9,7 @@
 #define OPTIONAL_H_INCLUDED
 //  includes *******************************************************************
 #include <Pb/meta_util.h>
+#include <Pb/type_list.h>
 #include <array>
 #include <vector>
 
@@ -98,6 +99,26 @@ public:
   using optional_type = std::vector<T,A>;
   using value_type = typename optional_type::value_type;
 };
+
+
+//  ****************************************************************************
+/// Extracts the underlying value type for an optional field.
+///
+template< size_t    IdxT,
+          typename  FormatT 
+        >
+struct optional_type_at
+{
+  //  **************************************************************************
+  using type = typename Hg::type_at<IdxT, FormatT>::type::optional_type;
+};
+
+//  **************************************************************************
+/// Template alias to access the meta-operation, optional_type_at.
+///
+template<size_t IdxT, typename FormatT>
+using optional_type_at_t = typename optional_type_at<IdxT,FormatT>::type;
+
 
 } // namespace Hg
 

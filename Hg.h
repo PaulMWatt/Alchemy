@@ -101,9 +101,7 @@ public:
   ///
   Message(const Message& rhs)
     : base_type(rhs)
-  {
-    //*static_cast<message_type*>(this) = rhs;
-  }
+  { }
 
   //  **************************************************************************
   /// Move Constructor
@@ -120,9 +118,8 @@ public:
   /// @param rhs              The Hg message object from which data is copied. 
   ///
   Message(const message_type& rhs)
-  {
-    *static_cast<message_type*>(this) = rhs;
-  }
+    : base_type(rhs)
+  { }
 
   //  **************************************************************************
   /// Move Constructor
@@ -336,9 +333,8 @@ public:
   /// @param rhs              The Hg message object from which data is copied. 
   ///
   basic_msg(const basic_msg& rhs)
-  {
-    *static_cast<message_type*>(this) = rhs;
-  }
+    : message_type(rhs)
+  { }
 
   //  **************************************************************************
   /// Move Constructor
@@ -356,9 +352,7 @@ public:
   ///
   basic_msg(const message_type& rhs)
     : message_type(rhs)
-  {
-    //*static_cast<message_type*>(this) = rhs;
-  }
+  { }
 
   //  **************************************************************************
   /// Move Constructor
@@ -367,9 +361,7 @@ public:
   ///
   basic_msg(message_type&& rhs)
     : message_type(std::move(rhs))
-  {
-    //*static_cast<message_type*>(this) = rhs;
-  }
+  { }
 
   //  **************************************************************************
   /// Value constructor. Constructs an initialized message from a raw data buffer.
@@ -425,7 +417,6 @@ public:
     if (this != &rhs)
     {
       message_type::operator=(rhs);
-//      *static_cast<message_type*>(this) = rhs;
     }
 
     return *this;

@@ -602,6 +602,30 @@ public:
  void runTest() { suite_TestOptionalMessageSuite.Testdata(); }
 } testDescription_suite_TestOptionalMessageSuite_Testdata;
 
+static class TestDescription_suite_TestOptionalMessageSuite_Testto_host : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_Testto_host() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 310, "Testto_host" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.Testto_host(); }
+} testDescription_suite_TestOptionalMessageSuite_Testto_host;
+
+static class TestDescription_suite_TestOptionalMessageSuite_Testto_network : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_Testto_network() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 311, "Testto_network" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.Testto_network(); }
+} testDescription_suite_TestOptionalMessageSuite_Testto_network;
+
+static class TestDescription_suite_TestOptionalMessageSuite_Testto_big_endian : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_Testto_big_endian() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 312, "Testto_big_endian" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.Testto_big_endian(); }
+} testDescription_suite_TestOptionalMessageSuite_Testto_big_endian;
+
+static class TestDescription_suite_TestOptionalMessageSuite_Testto_little_endian : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_TestOptionalMessageSuite_Testto_little_endian() : CxxTest::RealTestDescription( Tests_TestOptionalMessageSuite, suiteDescription_TestOptionalMessageSuite, 313, "Testto_little_endian" ) {}
+ void runTest() { suite_TestOptionalMessageSuite.Testto_little_endian(); }
+} testDescription_suite_TestOptionalMessageSuite_Testto_little_endian;
+
 #include "..\TestOptionalProxySuite.h"
 
 static TestOptionalProxySuite suite_TestOptionalProxySuite;

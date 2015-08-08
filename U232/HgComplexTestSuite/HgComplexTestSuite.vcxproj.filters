@@ -308,6 +308,9 @@
     <ClInclude Include="Src\TestOptionalMessageSuite.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Hg\datum\optional_datum.h">
+      <Filter>Header Files\Alchemy\Hg\Datum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\HgComplexTestSuiteRunner.cpp">

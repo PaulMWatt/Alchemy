@@ -51,9 +51,9 @@ bool IsArrayValid(const uint8_t* pBuffer, size_t len)
 //                   type       [size] [valid]        name
 //                   ---------- ------ -------------  ------
 ALCHEMY_STRUCT(basic_opt_t,
-  ALCHEMY_DATUM     (uint8_t,                         valid),
-  ALCHEMY_DATUM_OPT (pt3d_t,           valid,         pt),
-  ALCHEMY_DATUM_OPT (uint32_t,         valid,         single),
+  ALCHEMY_DATUM     (uint8_t,                         avail),
+  ALCHEMY_DATUM_OPT (pt3d_t,           avail,         pt),
+  ALCHEMY_DATUM_OPT (uint32_t,         avail,         single),
   ALCHEMY_ARRAY_OPT (uint32_t,  4,     IsArrayValid,  many),
   ALCHEMY_DATUM     (uint8_t,                         last)
 );
@@ -68,8 +68,8 @@ ALCHEMY_STRUCT(basic_opt_t,
 ALCHEMY_STRUCT(dyn_opt_format_t,
   ALCHEMY_DATUM     (uint8_t,                  id),
   ALCHEMY_DATUM     (uint8_t,                  exists),
-//  ALCHEMY_DATUM_OPT (basic_opt_t,      exists, fixed),
-  ALCHEMY_DATUM     (basic_opt_t,              fixed),
+  ALCHEMY_DATUM_OPT (basic_opt_t,      exists, fixed),
+//  ALCHEMY_DATUM     (basic_opt_t,              fixed),
   ALCHEMY_DATUM     ( int8_t,                  extra),
   ALCHEMY_ALLOC_OPT (uint16_t,  extra, extra,  dynamic)
 );
@@ -144,8 +144,8 @@ public:
 protected:
   //  Constants ******************************************************************
 
-  // With the current test structure, the SUT format uses 75 bytes.
-  static const size_t k_sut_msg_size = 37;
+  // With the current test structure, the SUT format uses 45 bytes.
+  static const size_t k_sut_msg_size = 45;
 
   uint8_t   packed_msg[k_sut_msg_size];
   uint8_t   other_packed_msg[k_sut_msg_size];
@@ -169,17 +169,17 @@ protected:
   template <typename SUT_t>
   void PopulateBaseValues(SUT_t& msg)
   {
-    msg.fixed.valid = k_valid;
-    //msg.fixed.pt.X  = k_pt_x;
-    //msg.fixed.pt.Y  = k_pt_y;
-    //msg.fixed.pt.Z  = k_pt_z;
-    msg.fixed.single= k_single;
+    msg.fixed.avail     = k_valid;
+    msg.fixed.pt.X      = k_pt_x;
+    msg.fixed.pt.Y      = k_pt_y;
+    msg.fixed.pt.Z      = k_pt_z;
+    msg.fixed.single    = k_single;
     //msg.fixed.many  = k_many; // not valid in this case
-    msg.fixed.last  = k_last;
+    msg.fixed.last      = k_last;
 
-    msg.id          = k_id;
-    msg.exists      = k_exists;
-    msg.extra       = k_extra;
+    msg.id              = k_id;
+    msg.exists          = k_exists;
+    msg.extra           = k_extra;
 
     msg.dynamic.assign(k_dynamic.begin(), k_dynamic.end());
 
@@ -224,17 +224,17 @@ protected:
 
     // This value is explicitly specified to insure that the 
     // the test is updated if the message buffer is updated.
-    TS_ASSERT_EQUALS((pCur - packed_msg), 37)
+    TS_ASSERT_EQUALS((pCur - packed_msg), 45)
   }
 
   //  ****************************************************************************
   template <typename SUT_t>
   void PopulateOtherValues(SUT_t& msg)
   {
-    msg.fixed.valid       = k_opp_valid;
-    //msg.fixed.pt.X        = k_opp_pt_x;
-    //msg.fixed.pt.Y        = k_opp_pt_y;
-    //msg.fixed.pt.Z        = k_opp_pt_z;
+    msg.fixed.avail       = k_opp_valid;
+    msg.fixed.pt.X        = k_opp_pt_x;
+    msg.fixed.pt.Y        = k_opp_pt_y;
+    msg.fixed.pt.Z        = k_opp_pt_z;
     msg.fixed.single      = k_opp_single;
     //msg.fixed.many        = k_opp_many; // not valid in this case
     msg.fixed.last        = k_opp_last;
@@ -286,7 +286,7 @@ protected:
 
     // This value is explicitly specified to insure that the 
     // the test is updated if the message buffer is updated.
-    TS_ASSERT_EQUALS((pCur - other_packed_msg), 37)
+    TS_ASSERT_EQUALS((pCur - other_packed_msg), 45)
   }
 
 public:
@@ -307,11 +307,10 @@ public:
   void Testdata();
 
   //  Worker Functions *********************************************************
-  // TODO: Correct issue that is corrupting the stack.
-  //void Testto_host();
-  //void Testto_network();
-  //void Testto_big_endian();
-  //void Testto_little_endian();
+  void Testto_host();
+  void Testto_network();
+  void Testto_big_endian();
+  void Testto_little_endian();
 
 };
 
@@ -432,20 +431,19 @@ void TestOptionalMessageSuite::Testdata()
 {
   SUT sut;
   
-  sut.id          = k_id;
-  sut.exists      = k_exists;
+  sut.id              = k_id;
+  sut.exists          = k_exists;
 
-  sut.fixed.valid = k_valid;
+  sut.fixed.avail     = k_valid;
 
-  // TODO: Need to add a specialization for extracting the nested type from the optional proxy, similar to the vector and array
-  //sut.fixed.pt.X  = k_pt_x;
-  //sut.fixed.pt.Y  = k_pt_y;
-  //sut.fixed.pt.Z  = k_pt_z;
-  sut.fixed.single= k_single;
+  sut.fixed.pt.X      = k_pt_x;
+  sut.fixed.pt.Y      = k_pt_y;
+  sut.fixed.pt.Z      = k_pt_z;
+  sut.fixed.single    = k_single;
   //msg.many        = k_many; // not valid in this case
-  sut.fixed.last  = k_last;
+  sut.fixed.last      = k_last;
 
-  sut.extra       = k_extra;
+  sut.extra           = k_extra;
 
   sut.dynamic.assign(k_dynamic.begin(), k_dynamic.end());
 
@@ -454,100 +452,100 @@ void TestOptionalMessageSuite::Testdata()
 }
 
 //  ****************************************************************************
-//void TestOptionalMessageSuite::Testto_host()
-//{
-//  // Populate the expected results.
-//  SUT_net expected;
-//  PopulateOtherValues(expected);
-//
-//  // Perform two instances of this test.
-//  // 1) with data that requires a conversion.
-//  // 2) with data that does not require a conversion
-//  SUT_net sut;
-//  PopulateBaseValues(sut);
-//
-//  SUT no_op_sut;
-//  PopulateOtherValues(no_op_sut);
-//
-//  // SUT
-//  SUT result = to_host(sut);
-//  SUT no_op_result = to_host(no_op_sut);
-//
-//  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
-//  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
-//}
-//
-////  ****************************************************************************
-//void TestOptionalMessageSuite::Testto_network()
-//{
-//  // Populate the expected results.
-//  SUT expected;
-//  PopulateOtherValues(expected);
-//
-//  // Perform two instances of this test.
-//  // 1) with data that requires a conversion.
-//  // 2) with data that does not require a conversion
-//  SUT sut;
-//  PopulateBaseValues(sut);
-//
-//  SUT_net no_op_sut;
-//  PopulateOtherValues(no_op_sut);
-//
-//  // SUT
-//  SUT_net result = to_network(sut);
-//  SUT_net no_op_result = to_network(no_op_sut);
-//
-//  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
-//  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
-//}
-//
-////  ****************************************************************************
-//void TestOptionalMessageSuite::Testto_big_endian()
-//{
-//  // Populate the expected results.
-//  SUT expected;
-//  PopulateOtherValues(expected);
-//
-//  // Perform two instances of this test.
-//  // 1) with data that requires a conversion.
-//  // 2) with data that does not require a conversion
-//  SUT_little sut;
-//  PopulateBaseValues(sut);
-//
-//  SUT_big no_op_sut;
-//  PopulateOtherValues(no_op_sut);
-//
-//  // SUT
-//  SUT_big result = to_big_endian(sut);
-//  SUT_big no_op_result = to_big_endian(no_op_sut);
-//
-//  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
-//  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
-//}
-//
-////  ****************************************************************************
-//void TestOptionalMessageSuite::Testto_little_endian()
-//{
-//  // Populate the expected results.
-//  SUT expected;
-//  PopulateOtherValues(expected);
-//
-//  // Perform two instances of this test.
-//  // 1) with data that requires a conversion.
-//  // 2) with data that does not require a conversion
-//  SUT_big sut;
-//  PopulateBaseValues(sut);
-//
-//  SUT_little no_op_sut;
-//  PopulateOtherValues(no_op_sut);
-//
-//  // SUT
-//  SUT_little result        = to_little_endian(sut);
-//  SUT_little no_op_result  = to_little_endian(no_op_sut);
-//
-//  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
-//  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
-//}
+void TestOptionalMessageSuite::Testto_host()
+{
+  // Populate the expected results.
+  SUT_net expected;
+  PopulateOtherValues(expected);
+
+  // Perform two instances of this test.
+  // 1) with data that requires a conversion.
+  // 2) with data that does not require a conversion
+  SUT_net sut;
+  PopulateBaseValues(sut);
+
+  SUT no_op_sut;
+  PopulateOtherValues(no_op_sut);
+
+  // SUT
+  SUT result = to_host(sut);
+  SUT no_op_result = to_host(no_op_sut);
+
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
+}
+
+//  ****************************************************************************
+void TestOptionalMessageSuite::Testto_network()
+{
+  // Populate the expected results.
+  SUT expected;
+  PopulateOtherValues(expected);
+
+  // Perform two instances of this test.
+  // 1) with data that requires a conversion.
+  // 2) with data that does not require a conversion
+  SUT sut;
+  PopulateBaseValues(sut);
+
+  SUT_net no_op_sut;
+  PopulateOtherValues(no_op_sut);
+
+  // SUT
+  SUT_net result = to_network(sut);
+  SUT_net no_op_result = to_network(no_op_sut);
+
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
+}
+
+//  ****************************************************************************
+void TestOptionalMessageSuite::Testto_big_endian()
+{
+  // Populate the expected results.
+  SUT expected;
+  PopulateOtherValues(expected);
+
+  // Perform two instances of this test.
+  // 1) with data that requires a conversion.
+  // 2) with data that does not require a conversion
+  SUT_little sut;
+  PopulateBaseValues(sut);
+
+  SUT_big no_op_sut;
+  PopulateOtherValues(no_op_sut);
+
+  // SUT
+  SUT_big result = to_big_endian(sut);
+  SUT_big no_op_result = to_big_endian(no_op_sut);
+
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
+}
+
+//  ****************************************************************************
+void TestOptionalMessageSuite::Testto_little_endian()
+{
+  // Populate the expected results.
+  SUT expected;
+  PopulateOtherValues(expected);
+
+  // Perform two instances of this test.
+  // 1) with data that requires a conversion.
+  // 2) with data that does not require a conversion
+  SUT_big sut;
+  PopulateBaseValues(sut);
+
+  SUT_little no_op_sut;
+  PopulateOtherValues(no_op_sut);
+
+  // SUT
+  SUT_little result        = to_little_endian(sut);
+  SUT_little no_op_result  = to_little_endian(no_op_sut);
+
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
+}
 
 
 #endif

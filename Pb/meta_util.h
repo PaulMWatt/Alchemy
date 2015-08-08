@@ -327,7 +327,7 @@ struct nested_value<MT>
 
 //  Detects types that are optionally present *********************************
 //  ***************************************************************************
-//  Detect types that are defined as optionally available.
+/// Detect types that are defined as optionally available.
 ///
 template< typename T>
 struct optional_value

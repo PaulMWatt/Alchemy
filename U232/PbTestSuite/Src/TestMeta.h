@@ -531,7 +531,11 @@ void TestMeta::Testsize_of_DynamicValue()
 {
   typedef std::vector<char>                     char_vec;
   typedef std::vector<double>                   double_vec;
-  typedef std::vector<std::array<char, 32> >    char_array_vec;
+  typedef std::vector<std::array<char, 32>>     char_array_vec;
+
+  typedef Hg::optional<char>                    opt_char;
+  typedef Hg::optional<double>                  opt_double;
+  typedef Hg::optional<std::array<char,32>>     opt_char_array;
 
   // Dynamically sized values return 0 for their static size.
   // All size calculations are performed at runtime for these field types.
@@ -543,6 +547,15 @@ void TestMeta::Testsize_of_DynamicValue()
 
   size_t size_array = Hg::size_of<char_vec>::value;
   TS_ASSERT_EQUALS(0, size_array);
+
+  size_t size_opt_char = Hg::size_of<opt_char>::value;
+  TS_ASSERT_EQUALS(0, size_opt_char);
+
+  size_t size_opt_double = Hg::size_of<opt_double>::value;
+  TS_ASSERT_EQUALS(0, size_opt_double);
+
+  size_t size_opt_array = Hg::size_of<opt_char_array>::value;
+  TS_ASSERT_EQUALS(0, size_opt_array);
 }
 
 //  ****************************************************************************

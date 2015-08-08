@@ -39,16 +39,16 @@ template< size_t    IdxT,
           typename  FormatT
         >
 struct DataProxy <optional_trait, IdxT, FormatT>
-  : public DataProxy< typename deduce_type_trait <typename Hg::type_at<IdxT, FormatT>::type::optional_type>::type, 
+  : public DataProxy< deduce_type_trait_t <optional_type_at_t<IdxT,FormatT>>, 
                       IdxT, 
                       FormatT
                     >
 {
   /// The type managed by the optional container.
-  using index_type       = typename Hg::type_at<IdxT, FormatT>::type;
-  using optional_type_at = typename index_type::optional_type;
+  using index_type    = type_at_t<IdxT, FormatT>;
+  using optional_type = optional_type_at_t<IdxT,FormatT>;
 
-  using base_trait = typename deduce_type_trait <optional_type_at>::type;
+  using base_trait = deduce_type_trait_t <optional_type>;
   using base_proxy = DataProxy< base_trait, 
                                 IdxT, 
                                 FormatT
@@ -134,7 +134,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   ///
   DataProxy& operator=(const DataProxy& rhs)
   {
-    datum_type::operator=(rhs);
+    base_proxy::operator=(rhs);
     return *this;
   }
 
@@ -143,7 +143,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   ///
   DataProxy& operator=(DataProxy&& rhs)
   {
-    datum_type::operator=(std::move(rhs));
+    base_proxy::operator=(std::move(rhs));
     return *this;
   }
 
@@ -170,7 +170,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   ///
   DataProxy& operator=(const value_type& rhs)
   {
-    datum_type::operator=(rhs);
+    base_proxy::operator=(rhs);
     valid();
 
     return *this;
@@ -181,7 +181,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   ///
   DataProxy& operator=(value_type&& rhs)
   {
-    datum_type::operator=(std::move(rhs));
+    base_proxy::operator=(std::move(rhs));
     valid(); 
 
     return *this;
@@ -196,7 +196,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   operator reference()
   {
     valid();
-    return *static_cast<datum_type*>(this);
+    return base_proxy.reference();
   }
 
   //  **************************************************************************
@@ -207,7 +207,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   /// 
   operator value_type() const
   {
-    return static_cast<const datum_type*>(this)->operator value_type();
+    return base_proxy.value_type();
   }
 
   //  **************************************************************************

@@ -1,16 +1,16 @@
-/// @file detail/basic_datum.h
+/// @file detail/optional_datum.h
 /// 
-/// The declaration and definition of general functions for a data field.
+/// The basic data field behaviors for optional parameters.
 ///           
 /// The MIT License(MIT)
-/// @copyright 2014 Paul M Watt
+/// @copyright 2015 Paul M Watt
 //  ****************************************************************************
-#ifndef BASIC_DATUM_H_INCLUDED
-#define BASIC_DATUM_H_INCLUDED
+#ifndef OPTIONAL_DATUM_H_INCLUDED
+#define OPTIONAL_DATUM_H_INCLUDED
 //  Includes ******************************************************************
 #include <Pb/meta_fwd.h>
-#include <Hg/msg_buffer.h>
-#include <Hg/deduce_type_trait.h>
+#include <Pb/optional.h>
+#include <Hg/datum/basic_datum.h>
 
 namespace Hg
 {
@@ -19,121 +19,28 @@ namespace detail
 {
 
 //  ****************************************************************************
-/// Type definition that indicates the parameterized-type
-/// located at an index in a type container.
+/// Optional Specialization provides the type definitions for field in type-container.
 ///
-/// @tparam field_t           [typename] This parameterized type declares the
-///                           type at the associated location in the parent 
-///                           type container.
-///
-/// @note           This type should be specialized for custom fields that
-///                 desire the field_t input to differ from the defined value_type.
-/// 
-template <typename FieldT>
-struct field_data_t
-{
-  /// The matching data type for the index.
-  /// The default implementation uses 
-  /// the same type as the index type.
-  using value_type = FieldT;            
-};
-
-//  ****************************************************************************
-/// Generalized copy function for message field value types.
-///
-/// @param to       A reference to the variable to copy the into.
-/// @param from     A reference to the data to copy from.
+/// @tparam T           [typename] The type of the optional data field. 
 ///
 template< typename T >
-void copy_value_type(T& to, const T& from)
+struct field_data_t < Hg::optional<T> >
 {
-  to = from;
-}
-
-//  ****************************************************************************
-/// (Fixed-Array Specialization) To copy from one instance to another.
-///
-/// @tparam SubTypeT          [typename] This parameterized type declares the
-///                           sub-type of the array defined at the location 
-///                           in the parent type container.
-/// @tparam N                 [size_t] The number of elements in the array.
-///
-template< typename SubTypeT,
-          size_t   N
-        >
-void copy_value_type(       std::array<SubTypeT, N>& to, 
-                      const std::array<SubTypeT, N>& from)
-{
-  std::copy(from.begin(), from.end(), to.begin());
-}
-
-
-//  ****************************************************************************
-/// (Dynamic-Array Specialization) Type definitions for field in type-container.
-///
-/// @param SubTypeT           [typename] This parameterized type declares the
-///                           sub-type of the vector defined at the location 
-///                           in the parent type container.
-/// @param AllocT             [typename] The defined allocator of the vector.
-///
-template< typename SubTypeT,
-          typename AllocT
-        >
-struct field_data_t < std::vector<SubTypeT, AllocT> >
-{
-  using sub_type        = SubTypeT;
-  using value_sub_type  = typename field_data_t<sub_type>::value_type;
-
-  /// The proper value_type definition
-  /// deduced from the type-container
-  /// and the specified array sub-type.
-  using value_type      = typename
-                            std::conditional
-                              < nested_value<sub_type>::value,
-                                std::vector< value_sub_type, AllocT>,
-                                std::vector< sub_type, AllocT>
-                              >::type;
+  /// Extract the actual value-type and 
+  /// use the FieldType defined for it.
+  using value_type = T;
 };
 
 
 //  ****************************************************************************
-/// (Dynamic-Array Specialization) To copy from one instance to another.
-///
-/// @param SubTypeT           [typename] This parameterized type declares the
-///                           sub-type of the vector defined at the location 
-///                           in the parent type container.
-/// @param AllocT             [typename] The defined allocator of the vector.
-///
-template< typename SubTypeT,
-          typename AllocT
-        >
-void copy_value_type(       std::vector<SubTypeT, AllocT>& to, 
-                      const std::vector<SubTypeT, AllocT>& from)
-{
-  // Empty the existing elements before inserting the new data.
-  to.clear();
-  std::copy(from.begin(), from.end(), std::back_inserter(to));
-}
-
-
-//  ****************************************************************************
-/// Provides the data field type definitions.
+/// Provides the default optional data field type definition.
 /// 
 /// This class acts as a discriminator object to choose the proper msg field types.
 /// This method of field and data definition allows the use of virtual 
 /// interfaces to be avoided for message fields. 
 /// 
-/// In cases such as a uint8_t, this would cause a 400% increase in size for 
-/// no value. This extra hidden complexity of implementation is well worth
-/// the runtime value of the final structure.
-/// 
-/// @note           The template defaults use *field_t* for both *index_type*
-///                 and *value_type*. These definitions determine the data
-///                 managed within a Datum. This template should be 
-///                 specialized if a different *value_type* is desired.
-///
-/// @note           The simplest method to specialize the value_type is
-///                 to create a specialization of the *field_data_t* template.
+/// This class behaves as a proxy to the underlying FieldType object. 
+/// This class peels off the optional shell before invoking the proper FieldType.
 /// 
 /// @tparam FieldT            This parameterized type declares the
 ///                           type at the associated location in the parent 
@@ -141,7 +48,8 @@ void copy_value_type(       std::vector<SubTypeT, AllocT>& to,
 /// 
 template< typename FieldT,
           typename TraitT = deduce_type_trait_t<FieldT>>
-struct FieldTypes
+struct OptionalFieldTypes
+  : public base_optional
 {
   /// The type at the index of the
   /// parent type container.
@@ -152,57 +60,65 @@ struct FieldTypes
   using value_type = typename field_data_t<index_type>::value_type;
 
   //  **************************************************************************
-  FieldTypes()
+  OptionalFieldTypes()
   { }
 
   //  **************************************************************************
-  FieldTypes(const FieldTypes& rhs)
+  OptionalFieldTypes(const OptionalFieldTypes& rhs)
+    : base_optional(rhs)
   {
     m_data = rhs.m_data;
   }
 
   //  **************************************************************************
-  FieldTypes(FieldTypes&& rhs)
+  OptionalFieldTypes(OptionalFieldTypes&& rhs)
+    : base_optional(std::move(rhs))
   {
     m_data = std::move(rhs.m_data);
   }
 
   //  **************************************************************************
-  FieldTypes(const value_type& rhs)
+  OptionalFieldTypes(const value_type& rhs)
   {
+    valid();
     m_data = rhs;
   }
 
   //  **************************************************************************
-  FieldTypes(value_type&& rhs)
+  OptionalFieldTypes(value_type&& rhs)
   {
+    valid();
     m_data = std::move(rhs);
   }
 
   //  **************************************************************************
-  FieldTypes& operator=(const FieldTypes& rhs)
+  OptionalFieldTypes& operator=(const OptionalFieldTypes& rhs)
   {
+    base_optional::operator=(rhs);
     m_data = rhs.m_data;
     return *this;
   }
 
   //  **************************************************************************
-  FieldTypes& operator=(FieldTypes&& rhs)
+  OptionalFieldTypes& operator=(OptionalFieldTypes&& rhs)
   {
+    base_optional::operator=(std::move(rhs));
     m_data = std::move(rhs.m_data);
     return *this;
   }
 
   //  **************************************************************************
-  FieldTypes& operator=(const value_type& rhs)
+  OptionalFieldTypes& operator=(const value_type& rhs)
   {
+    valid();
     m_data = rhs;
     return *this;
   }
   
   //  **************************************************************************
-  FieldTypes& operator=(value_type&& rhs)
+  OptionalFieldTypes& operator=(value_type&& rhs)
   {
+    valid();
     m_data = std::move(rhs);
     return *this;
   }
@@ -216,6 +132,7 @@ struct FieldTypes
   ///
   value_type& reference()                     
   { 
+    valid();
     return m_data;
   }
 
@@ -232,6 +149,7 @@ struct FieldTypes
   /// 
   void data(const value_type &value)                
   { 
+    valid();
     Hg::detail::copy_value_type(reference(), value);
   }
 
@@ -242,8 +160,9 @@ protected:
   value_type            m_data;         
 };
 
+
 //  ****************************************************************************
-/// Nested Specialization for the index and data field type definitions.
+/// Nested Specialization for the optional field type definition.
 /// 
 /// @tparam FieldT            This parameterized type declares the
 ///                           type at the associated location in the parent 
@@ -253,8 +172,9 @@ protected:
 ///       the user-defined format. 
 ///
 template< typename FieldT > 
-struct FieldTypes <FieldT, nested_trait>
-  : public field_data_t<FieldT>::value_type
+struct OptionalFieldTypes <FieldT, nested_trait>
+  : public base_optional
+  , public field_data_t<FieldT>::value_type
 {
   /// The type at the index of the
   /// parent type container.
@@ -271,7 +191,8 @@ struct FieldTypes <FieldT, nested_trait>
   /// Datum. The reference to the data can be useful, and necessary for
   ///
   value_type& reference()                     
-  { 
+  {
+    valid();
     return *static_cast<value_type*>(this);
   }
 
@@ -288,9 +209,11 @@ struct FieldTypes <FieldT, nested_trait>
   /// 
   void data(const value_type &value)                
   { 
+    valid();
     reference() = value;
   }
 };
+
 
 //  ****************************************************************************
 /// Packed Bits Specialization for the index and data field type definitions.
@@ -300,8 +223,9 @@ struct FieldTypes <FieldT, nested_trait>
 ///                           type container.
 /// 
 template< typename FieldT > 
-struct FieldTypes <FieldT, packed_trait>
-  : public FieldT
+struct OptionalFieldTypes <FieldT, packed_trait>
+  : public base_optional
+  , public FieldT
 {
   /// The type at the index of the
   /// parent type container.
@@ -322,6 +246,7 @@ struct FieldTypes <FieldT, packed_trait>
   ///
   value_type& reference()                     
   { 
+    valid();
     return this->value();
   }
 
@@ -338,46 +263,34 @@ struct FieldTypes <FieldT, packed_trait>
   /// 
   void data(const value_type &value)                
   { 
+    valid();
     reference() = value;
   }
-
 };
 
 
 //  ****************************************************************************
-/// A meta-function that simplfies the declaration of a FieldType.
-/// Publically derive from the type member of this struct.
+/// Nested Specialization for the index and data field type definitions.
+/// 
+/// @tparam FieldT            This parameterized type declares the
+///                           type at the associated location in the parent 
+///                           type container.
+/// 
+/// Note: The nested type provides storage for nested fields by deriving from 
+///       the user-defined format. 
 ///
-/// Specialize this template class to customize the internal type that 
-/// an index_type will resolve to.
-///
-/// @tparam  IdxT             [size_t] The index of this element in the 
-///                           type_list definition.
-///                           Idx must be < length<T>::value.
-/// @tparam  T                The type_list that contains this 
-///                           elements definition.
-///                           T must be an indexable type container.
-///
-template< size_t   Idx,
-          typename T
-        >
-struct declare_field_type
+template< typename FieldT > 
+struct FieldTypes <FieldT, optional_trait>
+  : public OptionalFieldTypes<typename field_data_t<FieldT>::value_type>
 {
-  //  Aliases ******************************************************************
-  /// The type extracted at the current
-  /// index defined in the parent type_list.
-  using index_type = Hg::type_at_t<Idx,T>;
+  /// The type at the index of the
+  /// parent type container.
+  using index_type = FieldT;
 
-  /// The field type definition that maps
-  /// a field type with it's value_type.
-  using type       = detail::FieldTypes< index_type >;
+  /// The specified value type for 
+  /// the current Datum.
+  using value_type = typename field_data_t<index_type>::value_type;
 };
-
-
-//  ****************************************************************************
-template <size_t Idx, typename T>
-using declare_field_type_t = typename declare_field_type<Idx, T>::type;
-
 
 } // namespace detail
 

@@ -159,21 +159,9 @@ size_t dynamic_size(const std::vector<T,A>& field)
   return Size(field);
 }
 
-//  ****************************************************************************
-/// Reports the conditional size for this optional field based on if a value
-/// is currently present.
-///    
-template< typename T >
-size_t dynamic_size(const optional<T>& field)
-{
-  return  field.empty()
-          ? 0
-          : dynamic_size<T>(field);
-}
-
 
 //  ****************************************************************************
-/// Catch all implementation that returns 0 dynamic size.
+/// Catch all implementations that returns 0 dynamic size.
 ///    
 template <typename T>
 size_t dynamic_size(const T& field)
@@ -223,12 +211,19 @@ struct DynamicSizeFunctor
   void operator()(const value_t*)
   {
     using proxy_type  = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
+    using index_type  = typename proxy_type::index_type;
     using value_type  = typename proxy_type::value_type;
                                       
 
     message_type &msg = const_cast<message_type&>(message);
     value_type &value = msg.template FieldAt<IdxT>().get();
-    m_dynamic_size += dynamic_size(value);
+
+    calc_dynamic_size<IdxT,format_type> calc;
+    m_dynamic_size += calc(msg.template FieldAt<IdxT>());
+
+    //m_dynamic_size += Hg::optional_value<type_at_t<IdxT, format_type>>::value
+    //  ? is_valid(msg.template FieldAt<IdxT>()) ? dynamic_size(value) : 0)
+    //  : dynamic_size(value);
   }
 
   //  **************************************************************************
@@ -238,8 +233,41 @@ struct DynamicSizeFunctor
   {
     return m_dynamic_size;
   }
-};
 
+private:
+
+  template< size_t   IdxT,
+            typename FormatT,
+            typename TraitT = deduce_type_trait_t<Hg::type_at_t<IdxT, FormatT>>>
+  struct calc_dynamic_size
+  {
+    size_t operator()(Datum<IdxT,FormatT>& field)
+    {
+      return dynamic_size(field.get());
+    }
+  };
+
+
+  template< size_t   IdxT,
+            typename FormatT>
+  struct calc_dynamic_size< IdxT, FormatT,optional_trait>
+  {
+    size_t operator()(Datum<IdxT,FormatT>& field)
+    {
+      using value_type = Hg::type_at_t<IdxT,FormatT>::value_type;
+      if (field.is_valid())
+      {
+// TODO: Return and dispatch statically.
+        return Hg::vector_value<value_type>::value
+               ? dynamic_size(field.get())
+               : Hg::size_of<value_type>::value;
+      }
+
+      return 0;
+    }
+  };
+
+};
 
 
 //  ****************************************************************************
