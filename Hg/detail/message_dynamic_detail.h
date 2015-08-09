@@ -27,76 +27,73 @@ template< typename MsgT,
 struct DynamicSizeWorker;
 
 
+namespace nested
+{
+
+//  ****************************************************************************
+//  Returns the size of a field that contains a dynamically-sized nested type.
+//
+template< typename  T >
+struct dynamic_size
+{
+  static_assert(Hg::nested_value<T>::value, "Parameterized type T must be a nested-type.");
+
+  static const 
+    bool k_has_dynamic  = 
+      Hg::has_dynamic<T::format_type>::value;
+
+  static const 
+    size_t k_fixed_size = 
+      Hg::size_of<typename T::format_type>::value;
+
+  //  **************************************************************************
+  static size_t eval(const T& field)
+  {
+    return eval_size<k_has_dynamic>(field);
+  }
+
+private:
+
+  //  **************************************************************************
+  template< bool HasDynamicT >
+  static size_t eval_size(const T& field)
+  {
+    size_t total_size = k_fixed_size
+                      + DynamicSizeWorker<T, true>().size(field);
+    return total_size;  
+  }
+
+  //  **************************************************************************
+  template<>
+  static size_t eval_size<false>(const T& /*field*/)
+  {
+    return k_fixed_size;  
+  }
+};
+
+} // namespace nested
+
+
+//  Dynamic Vector size calculations *******************************************
+namespace vector
+{ 
+
 //  ****************************************************************************
 /// Determines the number of bytes required to serialize a vector.
 ///    
 template< typename T,
           typename A,
-          typename TypeTraitT
+          typename TypeTraitT = typename deduce_type_trait<T>::type
         >
-struct size_ofVector
+struct dynamic_size
 {
   //  **************************************************************************
-  template< typename TypeT,
-            typename AllocT,
-            template <typename, typename> class VectorT
-          >
-  size_t operator()(const VectorT<TypeT,AllocT>& field)
+  static
+    size_t eval(const std::vector<T,A>& field)
   {
-    return field.size() * sizeof(TypeT);
+    return field.size() * sizeof(T);
   }
 };
-
-namespace nested
-{
-
-//  ****************************************************************************
-//  Returns the size of a vector that contains a dynamically-sized nested type.
-//
-template< typename T,
-          typename A,
-          bool  HasDynamicT
-        >
-struct Helpersize_ofVector
-{
-  static size_t size(const std::vector<T,A>& field)
-  {
-    size_t total_size = 0;
-
-    // This specialization represents vectors of nested traits. 
-    // Therefore, T must have a defined format_type.
-    const size_t k_fixed_size = Hg::size_of<typename T::format_type>::value;
-
-    for (size_t index = 0; index < field.size(); ++index)
-    {
-      // Type T is the MsgT parameter of a message definition.
-      // Therefore there will be a format_type that can be used
-      // to tag dispatch this variation of the DynamicSizeWorker.
-      //
-      // Add both the fixed-size as well as the actual dynamic-size.
-      total_size += k_fixed_size
-                  + DynamicSizeWorker<T, true>().size(field[index]);
-    }
-
-    return total_size;  
-  }
-};
-
-//  ****************************************************************************
-//  Returns the size of a vector that contains a fixed-size nested type.
-//
-template< typename T,
-          typename A
-        >
-struct Helpersize_ofVector <T, A, false>
-{
-  static size_t size(const std::vector<T,A>& field)
-  {
-    return  field.size() * Hg::size_of<typename T::format_type>::value;  
-  }
-};
-
-} // namespace nested
 
 
 //  ****************************************************************************
@@ -106,14 +103,19 @@ struct Helpersize_ofVector <T, A, false>
 template< typename T,
           typename A
         >
-struct size_ofVector<T,A,nested_trait>
+struct dynamic_size<T,A,nested_trait>
 {
   //  **************************************************************************
-  size_t operator()(const std::vector<T,A>& field)
+  static
+    size_t eval(const std::vector<T,A>& field)
   {
-    using format_type = typename T::format_type;
+    size_t total = 0;
+    for (auto entry : field)
+    {
+      total += Hg::detail::nested::dynamic_size<T>::eval(entry);
+    }
 
-    return nested::Helpersize_ofVector<T, A, has_dynamic<format_type>::value>::size(field);
+    return total;
   }
 };
 
@@ -125,26 +127,80 @@ struct size_ofVector<T,A,nested_trait>
 template< typename T,
           typename A
         >
-struct size_ofVector<T,A,vector_trait>
+struct dynamic_size<T,A,vector_trait>
 {
   //  **************************************************************************
-  size_t operator()(const std::vector<T,A>& field)
+  static
+    size_t eval(const std::vector<T,A>& field)
   {
-    size_t total_size = 0;
 
-    size_ofVector< typename T::value_type, 
-                  typename T::allocator_type, 
-                  typename deduce_type_trait<typename T::value_type>::type
-                > Size;
+    using Size = 
+      dynamic_size< typename T::value_type, 
+                    typename T::allocator_type, 
+                    typename deduce_type_trait<typename T::value_type>::type
+                  >;
 
+    size_t total = 0;
     for (size_t index = 0; index < field.size(); ++index)
     {
-      total_size += Size(field[index]);
+      total += Size::eval(field[index]);
     }
 
-    return total_size;
+    return total;
   }
 };
+
+} // namespace vector
+
+
+//  Optional datum dynamic size ************************************************
+namespace optional
+{
+//  ****************************************************************************
+/// Determines the number of bytes required to serialize an optional parameter.
+///    
+template< typename T >
+struct dynamic_size
+{
+  //  **************************************************************************
+  static 
+    size_t eval(const T& field)
+  {
+    using type_trait = typename deduce_type_trait<typename T>::type;
+
+    return eval_size<type_trait>(field);
+  }
+
+private:
+
+  //  **************************************************************************
+  template< typename TraitT>
+  static 
+    size_t eval_size(const T& /*field*/)
+  {
+    return Hg::size_of<T>::value;  
+  }
+
+  //  **************************************************************************
+  template< >
+  static 
+    size_t eval_size<nested_trait>(const T& field)
+  {
+    return Hg::detail::nested::dynamic_size<T>::eval(field);
+  }
+
+  //  **************************************************************************
+  template< >
+  static 
+    size_t eval_size<vector_trait>(const T& field)
+  {
+    return Hg::detail::vector::dynamic_size<T::value_type,
+                                            T::allocator_type>::eval(field);
+  }
+};
+
+} // namespace optional
+
 
 
 //  ****************************************************************************
@@ -155,13 +211,12 @@ template< typename T,
         >
 size_t dynamic_size(const std::vector<T,A>& field)
 {
-  size_ofVector<T,A, typename deduce_type_trait<T>::type> Size;
-  return Size(field);
+  return Hg::detail::vector::dynamic_size<T,A>::eval(field);
 }
 
 
 //  ****************************************************************************
-/// Catch all implementations that returns 0 dynamic size.
+/// Catch all implementations that returns 0 dynamically-sized data.
 ///    
 template <typename T>
 size_t dynamic_size(const T& field)
@@ -210,20 +265,10 @@ struct DynamicSizeFunctor
           >
   void operator()(const value_t*)
   {
-    using proxy_type  = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
-    using index_type  = typename proxy_type::index_type;
-    using value_type  = typename proxy_type::value_type;
-                                      
-
     message_type &msg = const_cast<message_type&>(message);
-    value_type &value = msg.template FieldAt<IdxT>().get();
 
     calc_dynamic_size<IdxT,format_type> calc;
     m_dynamic_size += calc(msg.template FieldAt<IdxT>());
-
-    //m_dynamic_size += Hg::optional_value<type_at_t<IdxT, format_type>>::value
-    //  ? is_valid(msg.template FieldAt<IdxT>()) ? dynamic_size(value) : 0)
-    //  : dynamic_size(value);
   }
 
   //  **************************************************************************
@@ -236,6 +281,9 @@ struct DynamicSizeFunctor
 
 private:
 
+  //  **************************************************************************
+  //  Tag-dispatched calculation for the dynamic-size of an element.
+  //
   template< size_t   IdxT,
             typename FormatT,
             typename TraitT = deduce_type_trait_t<Hg::type_at_t<IdxT, FormatT>>>
@@ -248,26 +296,25 @@ private:
   };
 
 
+  //  **************************************************************************
+  //  Tag-dispatched calculation for optional data fields.
+  //
   template< size_t   IdxT,
             typename FormatT>
-  struct calc_dynamic_size< IdxT, FormatT,optional_trait>
+  struct calc_dynamic_size<IdxT, FormatT,optional_trait>
   {
     size_t operator()(Datum<IdxT,FormatT>& field)
     {
-      using value_type = Hg::type_at_t<IdxT,FormatT>::value_type;
-      if (field.is_valid())
-      {
-// TODO: Return and dispatch statically.
-        return Hg::vector_value<value_type>::value
-               ? dynamic_size(field.get())
-               : Hg::size_of<value_type>::value;
-      }
+      using value_type = Datum<IdxT,FormatT>::value_type;
 
-      return 0;
+      return  field.is_valid()
+              ? Hg::detail::optional::dynamic_size<value_type>::eval(field.get())
+              : 0;
     }
   };
-
 };
+
+
 
 
 //  ****************************************************************************
@@ -297,7 +344,7 @@ struct DynamicSizeWorker
 
 
 //  ****************************************************************************
-/// Specialization that does not request dynamic size values for non-dynamic msgs.
+/// Specialization for statically-sized messages.
 ///
 template< typename MsgT >
 struct DynamicSizeWorker<MsgT, false>

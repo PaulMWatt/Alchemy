@@ -173,9 +173,12 @@ protected:
     msg.fixed.pt.X      = k_pt_x;
     msg.fixed.pt.Y      = k_pt_y;
     msg.fixed.pt.Z      = k_pt_z;
+    msg.fixed.pt.valid();
+
     msg.fixed.single    = k_single;
     //msg.fixed.many  = k_many; // not valid in this case
     msg.fixed.last      = k_last;
+    msg.fixed.reset();
 
     msg.id              = k_id;
     msg.exists          = k_exists;
@@ -235,9 +238,12 @@ protected:
     msg.fixed.pt.X        = k_opp_pt_x;
     msg.fixed.pt.Y        = k_opp_pt_y;
     msg.fixed.pt.Z        = k_opp_pt_z;
+    msg.fixed.pt.valid();
+
     msg.fixed.single      = k_opp_single;
     //msg.fixed.many        = k_opp_many; // not valid in this case
     msg.fixed.last        = k_opp_last;
+    msg.fixed.valid();
 
     msg.id          = k_opp_id;
     msg.exists      = k_opp_exists;

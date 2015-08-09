@@ -100,3 +100,4 @@ U232/HgTypeListTestSuite/Src/Generated/HgTypeListTestSuiteRunner.cpp
 *.csv
 *.suo
 U232/PbTestSuite/Src/Generated/PbTestSuiteRunner.cpp
+U232/HgComplexTestSuite/Src/Generated/HgComplexTestSuiteRunner.cpp

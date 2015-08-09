@@ -97,10 +97,8 @@ struct DataProxy
   /// Copy value
   ///
   DataProxy(const value_type& rhs)
-    : datum_type()
-  {
-    this->set(rhs);
-  }
+    : datum_type(rhs)
+  { }
 
   //  **************************************************************************
   /// Move value
