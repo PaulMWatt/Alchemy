@@ -93,3 +93,5 @@ doc/html/search/search.css
 *.css
 elements/Doxygen/Thumbs.db
 U232/HgComplexTestSuite/Src/Generated/HgComplexTestSuiteRunner.cpp
+elements/IDE/VS2015/.vs/Alchemy/v14/.suo
+*.csv
