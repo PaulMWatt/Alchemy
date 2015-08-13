@@ -248,21 +248,21 @@ using message_size_trait_t = typename message_size_trait<T>::type;
                                                                                \
     template <typename U>                                                      \
     size_t DatumSize(pfnGetDatumSize ftor, U* buffer)                          \
-    { static_assert(ftor!=0,"Pointer to function 'pfnGetDatumSize' cannot be 0");\
-      if (buffer->empty()) { return 0; }                                       \
+    {                                                                          \
+      if (!ftor || buffer->empty()) { return 0; }                              \
       return ftor(buffer->data(), buffer->size());                             \
     }                                                                          \
                                                                                \
     template <typename T, typename U>                                          \
     bool IsDatumValid(T value, U*)                                             \
     {                                                                          \
-      return value;                                                            \
+      return 0 != value;                                                       \
     }                                                                          \
                                                                                \
     template <typename U>                                                      \
     bool IsDatumValid(pfnIsDatumValid ftor, U* buffer)                         \
-    { static_assert(ftor!=0,"Pointer to function 'pfnIsDatumValid' cannot be 0");\
-      if (buffer->empty()) { return 0; }                                       \
+    {                                                                          \
+      if (!ftor || buffer->empty()) { return false; }                          \
       return ftor(buffer->data(), buffer->size());                             \
     }                                                                          \
   };                                                                           \

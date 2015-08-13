@@ -45,6 +45,8 @@ struct DataProxy <optional_trait, IdxT, FormatT>
                     >
 {
   /// The type managed by the optional container.
+  using trait_type = optional_trait;
+
   using index_type    = type_at_t<IdxT, FormatT>;
   using optional_type = optional_type_at_t<IdxT,FormatT>;
 
@@ -74,7 +76,14 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   /// 
   DataProxy(const DataProxy& proxy)
     : base_proxy(proxy)
-  { }
+  { 
+    // Set the validity state to match that of
+    // the initializing proxies validity state.
+    //
+    // This is currently necessary due to restrictions set on
+    // the Datum copy constructor, and value_type conversions.
+    valid(proxy);
+  }
 
   //  **************************************************************************
   /// Move Constructor
@@ -93,7 +102,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   DataProxy(const datum_type& datum)
     : datum_type(datum)
   { 
-    valid();
+    valid(datum);
   }
 
   //  **************************************************************************
@@ -104,7 +113,7 @@ struct DataProxy <optional_trait, IdxT, FormatT>
   DataProxy(datum_type&& datum)
     : datum_type(std::move(datum))
   { 
-    valid();
+    valid(datum);
   }
 
   //  **************************************************************************

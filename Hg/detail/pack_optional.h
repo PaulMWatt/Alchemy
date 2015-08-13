@@ -42,22 +42,31 @@ struct PackDatum<IdxT, MsgT, BufferT, optional_trait>
   //                        to this input value to report how much larger the
   //                        message has become. 
   //
-  void operator()(MsgT     &msg,
-                  BufferT  &buffer,
-                  size_t   &dynamic_offset)
+  //  @return               The number of bytes written to the buffer.
+  //
+  size_t operator()(MsgT     &msg,
+                    BufferT  &buffer,
+                    size_t   &dynamic_offset)
   {
     using format_type= typename MsgT::format_type;
     using proxy_type = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
 
-    auto &optional_value = msg.template FieldAt<IdxT>().get();
+    size_t bytes_written  = 0;
+    auto  &optional_value = msg.template FieldAt<IdxT>();
 
     if (optional_value.is_valid())
     { 
       // This field is valid.
       // Send it to the actual proxy handler to complete the data pack.
       PackDatum<IdxT, MsgT, BufferT, typename proxy_type::base_trait> pack;
-      pack(msg, buffer, dynamic_offset);
+      bytes_written = pack(msg, buffer, dynamic_offset);
+
+      // The entire size of the field is considered 
+      // part of the dynamic size with optional fields.
+      dynamic_offset += bytes_written;
     }
+
+    return bytes_written;
   }
 };
 

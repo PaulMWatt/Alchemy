@@ -29,6 +29,7 @@ template <size_t    kt_idx,
 struct DataProxy<packed_trait, kt_idx, format_t>
   : public Datum<kt_idx, format_t>
 {
+  using trait_type = packed_trait;
   using datum_type = Datum < kt_idx, format_t>;
   using value_type = typename datum_type::value_type;
   using reference  = datum_type;

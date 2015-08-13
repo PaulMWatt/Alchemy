@@ -45,9 +45,11 @@ struct PackDatum
   //  @param dynamic_size An additional offset for messages with dynamically 
   //                      sized fields.
   //
-  void operator()(MsgT     &msg,
-                  BufferT  &buffer,
-                  size_t    dynamic_offset)
+  //  @return             The number of bytes written to the buffer.
+  //
+  size_t operator()(MsgT     &msg,
+                    BufferT  &buffer,
+                    size_t    dynamic_offset)
   {
     using format_type= typename MsgT::format_type;
     using proxy_type = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
@@ -56,9 +58,8 @@ struct PackDatum
     value_type &value = msg.template FieldAt<IdxT>().get();
     size_t     offset = Hg::offset_of<IdxT, typename MsgT::format_type>::value
                       + dynamic_offset;
-    buffer.set_data(value, offset);
+    return buffer.set_data(value, offset);
   }
-
 };
 
 
@@ -80,7 +81,7 @@ void WriteDatum(MsgT& message,
   PackDatum < IdxT,
               MsgT,
               BufferT, 
-              typename deduce_type_trait<value_type>::type
+              proxy_type::trait_type
             > pack;
   pack(message, buffer, dynamic_offset);
 }

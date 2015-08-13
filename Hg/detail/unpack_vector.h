@@ -389,9 +389,11 @@ struct UnpackDatum< IdxT,
   //                        will be added to this input value to report how much 
   //                        larger the message has become. 
   //
-  void operator()(      message_type &msg,
-                  const buffer_type  &buffer,
-                        size_t   &dynamic_offset)
+  //  @return               The number of bytes read from the buffer.
+  //
+  size_t operator()(      message_type &msg,
+                    const buffer_type  &buffer,
+                          size_t   &dynamic_offset)
   {
     size_t     offset = Hg::offset_of<IdxT, format_type>::value
                       + dynamic_offset;
@@ -402,7 +404,7 @@ struct UnpackDatum< IdxT,
     // For zero-size move on.
     if (0 == count)
     {
-      return;
+      return 0;
     }
 
     // Allocate space for the incoming data.
@@ -413,6 +415,8 @@ struct UnpackDatum< IdxT,
       DeserializeVector(value, count, buffer, offset);
 
     dynamic_offset += bytes_read;
+
+    return bytes_read;
   }
 };
 

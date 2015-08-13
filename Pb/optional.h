@@ -50,6 +50,14 @@ public:
   }
 
   //  **************************************************************************
+  /// Flags the state of this object to the same state as another optional field.
+  ///
+  void valid(const base_optional& rhs)
+  {
+    m_is_valid = rhs.m_is_valid;
+  }
+
+  //  **************************************************************************
   /// Clears the valid state of this object.
   ///
   void reset()

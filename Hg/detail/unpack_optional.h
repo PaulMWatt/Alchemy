@@ -45,12 +45,16 @@ struct UnpackDatum<IdxT, MsgT, BufferT, optional_trait>
   //                        to this input value to report how much larger the
   //                        message has become. 
   //
-  void operator()(      MsgT     &msg,
-                  const BufferT  &buffer,
-                        size_t   &dynamic_offset)
+  //  @return               The number of bytes read from the buffer.
+  //
+  size_t operator()(      MsgT     &msg,
+                    const BufferT  &buffer,
+                          size_t   &dynamic_offset)
   {
     using format_type= typename MsgT::format_type;
     using proxy_type = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
+
+    size_t bytes_read = 0;
 
     // Query the message object for the validity of this field.
     if (msg.IsValid(buffer, &msg.template FieldAt<IdxT>()))
@@ -60,8 +64,14 @@ struct UnpackDatum<IdxT, MsgT, BufferT, optional_trait>
       // This field is valid.
       // The actual proxy handler will to complete the data unpack.
       UnpackDatum<IdxT, MsgT, BufferT, typename proxy_type::base_trait> unpack;
-      unpack(msg, buffer, dynamic_offset);
+      bytes_read = unpack(msg, buffer, dynamic_offset);
+
+      // The entire size of the field is considered 
+      // part of the dynamic size with optional fields.
+      dynamic_offset += bytes_read;
     }
+
+    return bytes_read;
   }
 };
 

@@ -42,7 +42,6 @@ bool IsArrayValid(const uint8_t* pBuffer, size_t len)
        && pBuffer[0] == 0;
 }
 
-
 //  ****************************************************************************
 //  A statically-sized type list with optional fields
 // 
@@ -54,7 +53,7 @@ ALCHEMY_STRUCT(basic_opt_t,
   ALCHEMY_DATUM     (uint8_t,                         avail),
   ALCHEMY_DATUM_OPT (pt3d_t,           avail,         pt),
   ALCHEMY_DATUM_OPT (uint32_t,         avail,         single),
-  ALCHEMY_ARRAY_OPT (uint32_t,  4,     IsArrayValid,  many),
+  ALCHEMY_ARRAY_OPT (uint32_t,  4,     IsArrayValid, many),
   ALCHEMY_DATUM     (uint8_t,                         last)
 );
 
@@ -69,7 +68,6 @@ ALCHEMY_STRUCT(dyn_opt_format_t,
   ALCHEMY_DATUM     (uint8_t,                  id),
   ALCHEMY_DATUM     (uint8_t,                  exists),
   ALCHEMY_DATUM_OPT (basic_opt_t,      exists, fixed),
-//  ALCHEMY_DATUM     (basic_opt_t,              fixed),
   ALCHEMY_DATUM     ( int8_t,                  extra),
   ALCHEMY_ALLOC_OPT (uint16_t,  extra, extra,  dynamic)
 );
@@ -91,7 +89,7 @@ const uint8_t                 k_last        = 254;
 
 const uint8_t                 k_id          = 10;
 const uint8_t                 k_exists      = 2;
-const  int8_t                 k_extra       = -1;
+const  int8_t                 k_extra       = 12;
 
 const std::array<uint16_t,12> k_dynamic     = { 0x600D, 0xEA45, 0x0B13, 0x553D, 
                                                 0x0C1A, 0x5500, 0x0DEF, 0xEA40,
@@ -111,7 +109,7 @@ const uint8_t                 k_opp_last    = 254;
 
 const uint8_t                 k_opp_id      = 10;
 const uint8_t                 k_opp_exists  = 2;
-const  int8_t                 k_opp_extra   = 1;
+const  int8_t                 k_opp_extra   = 12;
 
 const std::array<uint16_t,12> k_opp_dynamic = { 0x0D60, 0x45EA, 0x130B, 0x3D55,
                                                 0x1A0C, 0x0055, 0xEF0D, 0x40EA,
@@ -178,7 +176,7 @@ protected:
     msg.fixed.single    = k_single;
     //msg.fixed.many  = k_many; // not valid in this case
     msg.fixed.last      = k_last;
-    msg.fixed.reset();
+    msg.fixed.valid();
 
     msg.id              = k_id;
     msg.exists          = k_exists;
@@ -249,7 +247,7 @@ protected:
     msg.exists      = k_opp_exists;
     msg.extra       = k_opp_extra;
 
-    msg.dynamic.assign(k_dynamic.begin(), k_dynamic.end());
+    msg.dynamic.assign(k_opp_dynamic.begin(), k_opp_dynamic.end());
 
     // Construct a packed memory array by hand that contains the data
     // buffer that is expected based on the values assigned above.
@@ -374,8 +372,11 @@ void TestOptionalMessageSuite::Testempty()
 //  ****************************************************************************
 void TestOptionalMessageSuite::Testempty_false()
 {
+  SUT sut;
+  // This call allocates memory for dynamic storage policies.
+  sut.data();
+
   // SUT
-  SUT sut(get_buffer().get(), get_length());
   TS_ASSERT(!sut.empty());
 }
 
@@ -423,7 +424,10 @@ void TestOptionalMessageSuite::TestAssign()
 //  ****************************************************************************
 void TestOptionalMessageSuite::TestClear()
 {
-  SUT sut(get_buffer().get(), get_length());
+  SUT sut;
+  // This call allocates memory for dynamic storage policies.
+  sut.data();
+
   TS_ASSERT(!sut.empty());
 
   // SUT
@@ -445,9 +449,12 @@ void TestOptionalMessageSuite::Testdata()
   sut.fixed.pt.X      = k_pt_x;
   sut.fixed.pt.Y      = k_pt_y;
   sut.fixed.pt.Z      = k_pt_z;
+  sut.fixed.pt.valid();
+
   sut.fixed.single    = k_single;
   //msg.many        = k_many; // not valid in this case
   sut.fixed.last      = k_last;
+  sut.fixed.valid();
 
   sut.extra           = k_extra;
 

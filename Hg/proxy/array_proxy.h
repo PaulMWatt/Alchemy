@@ -48,6 +48,7 @@ struct DataProxy <array_trait, IdxT, FormatT>
   : public Hg::Datum<IdxT, FormatT>
 {
   //  Aliases ******************************************************************
+  using trait_type  = array_trait;
   using format_type = FormatT;
   using datum_type  = Hg::Datum < IdxT, format_type>;
 
