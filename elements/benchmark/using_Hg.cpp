@@ -47,8 +47,6 @@ void test_impl( DataBuffer &data,
 
 
 //  ****************************************************************************
-typedef Hg::basic_msg<Hg::NoConversion, Hg::BufferedStaticStoragePolicy>   HgNoConversion;
-
 void UsingHg::test_no_conversion( DataBuffer &data,
                                   DataBuffer &out)
 {

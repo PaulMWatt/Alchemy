@@ -149,6 +149,9 @@
     <ClInclude Include="..\..\Pb\type_list_size.h">
       <Filter>Header Files\Alchemy\Pb</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Pb\optional.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\PbTestSuiteRunner.cpp">

@@ -24,6 +24,9 @@
     <ClCompile Include="..\..\benchmark\using_memcpy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\benchmark\using_C.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\benchmark\benchmark_formats.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\benchmark\using_memcpy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\benchmark\using_C.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

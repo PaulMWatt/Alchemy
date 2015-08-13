@@ -4,7 +4,7 @@
 //  
 //  The MIT License(MIT)
 //  
-//  @copyright 2014 Paul M Watt
+//  @copyright 2015 Paul M Watt
 //  
 //  TS_FAIL(message):                        Fail unconditionally
 //  TS_ASSERT(expr):                         Verify (expr) is true

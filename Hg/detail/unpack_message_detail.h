@@ -48,9 +48,11 @@ struct UnpackDatum
   //  @param dynamic_offset An additional offset for messages with dynamically 
   //                        sized fields.
   //
-  void operator()(MsgT &msg,
-                  const BufferT  &buffer,
-                  size_t    dynamic_offset)
+  //  @return               The number of bytes read from the buffer.
+  //
+  size_t operator()(MsgT &msg,
+                    const BufferT  &buffer,
+                    size_t    dynamic_offset)
   {
     using format_type = typename MsgT::format_type;
     using proxy_type  = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
@@ -62,7 +64,7 @@ struct UnpackDatum
 
     msg.template FieldAt<IdxT>().get();
 
-    buffer.get_data(msg.template FieldAt<IdxT>().get(), offset);
+    return buffer.get_data(msg.template FieldAt<IdxT>().get(), offset);
   }
 };
 
@@ -85,7 +87,7 @@ void ReadDatum(       MsgT& message,
   UnpackDatum < IdxT,
                 MsgT,
                 const BufferT, 
-                deduce_type_trait_t<value_type>
+                proxy_type::trait_type
               > unpack;
   unpack(message, buffer, dynamic_offset);
 }

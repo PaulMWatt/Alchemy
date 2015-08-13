@@ -45,9 +45,11 @@ struct UnpackDatum<IdxT, MsgT, BufferT, nested_trait>
   //                        to this input value to report how much larger the
   //                        message has become. 
   //
-  void operator()(      MsgT &msg,
-                  const BufferT  &buffer,
-                        size_t   &dynamic_offset)
+  //  @return               The number of bytes read from the buffer.
+  //
+  size_t operator()(      MsgT &msg,
+                    const BufferT  &buffer,
+                          size_t   &dynamic_offset)
   {
     using format_type = typename MsgT::format_type;
     using proxy_type  = Hg::detail::deduce_proxy_type_t<IdxT, format_type>;
@@ -58,10 +60,10 @@ struct UnpackDatum<IdxT, MsgT, BufferT, nested_trait>
     size_t     offset = Hg::offset_of<IdxT, format_type>::value
                       + dynamic_offset;
     value_type& value = msg.template FieldAt<IdxT>().get();
-    unpack_message< value_type, 
-                    BufferT,
-                    message_size_trait_t<value_format_type>
-                  >(value, buffer, offset);
+    return unpack_message < value_type, 
+                            BufferT,
+                            message_size_trait_t<value_format_type>
+                          >(value, buffer, offset);
   }
 };
 

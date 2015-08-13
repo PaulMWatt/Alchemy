@@ -12,6 +12,7 @@
 //  Includes *******************************************************************
 #include <Pb/meta_fwd.h>
 #include <Hg/datum/basic_datum.h>
+#include <Hg/datum/optional_datum.h>
 
 namespace Hg
 {
@@ -38,7 +39,7 @@ template <size_t   Idx,
           typename format_t
          >
 class Datum
-  : public detail::DefineFieldType< Idx, format_t>::type
+  : public detail::declare_field_type_t<Idx, format_t>
 {
   static_assert(type_container<format_t>::value, "format_t must be a type container.");
 
@@ -52,7 +53,7 @@ public:
   //  Aliases ******************************************************************
   /// Type mapping for the message format
   /// type to the actual value_type.
-  using field_type = typename detail::DefineFieldType < Idx, format_t>::type;
+  using field_type = detail::declare_field_type_t<Idx, format_t>;
 
   /// The type extracted at the current
   /// index defined in the parent type_list.
@@ -93,6 +94,29 @@ public:
   /// 
   Datum(Datum&& datum)
 	: field_type(std::move(datum))
+  { }
+  
+  //  **************************************************************************
+  /// Value Copy Constructor
+  ///
+  /// Makes a copy of an input value to initialize this object.
+  ///
+  /// @param datum            A reference to the Another instance of a Datum.
+  /// 
+  Datum(value_type& value)
+  { 
+    set(rhs);
+  }
+
+  //  **************************************************************************
+  /// Value Move Constructor
+  ///
+  /// Moves an existing value into this datum.
+  ///
+  /// @param proxy           A rvalue  reference to the another instance of a Datum.
+  /// 
+  Datum(value_type&& value)
+	  : field_type(std::move(value))
   { }
   
   //  **************************************************************************

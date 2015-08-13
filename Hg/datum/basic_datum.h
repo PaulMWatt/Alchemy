@@ -140,13 +140,13 @@ void copy_value_type(       std::vector<SubTypeT, AllocT>& to,
 ///                           type container.
 /// 
 template< typename FieldT,
-          typename TraitT = typename Hg::detail::deduce_type_trait<FieldT>::type >
+          typename TraitT = deduce_type_trait_t<FieldT>>
 struct FieldTypes
 {
   /// The type at the index of the
   /// parent type container.
   using index_type = FieldT; 
-  
+ 
   /// The specified value type for 
   /// the current Datum.
   using value_type = typename field_data_t<index_type>::value_type;
@@ -344,7 +344,6 @@ struct FieldTypes <FieldT, packed_trait>
 };
 
 
-
 //  ****************************************************************************
 /// A meta-function that simplfies the declaration of a FieldType.
 /// Publically derive from the type member of this struct.
@@ -352,7 +351,7 @@ struct FieldTypes <FieldT, packed_trait>
 /// Specialize this template class to customize the internal type that 
 /// an index_type will resolve to.
 ///
-/// @tparam  Idx              [size_t] The index of this element in the 
+/// @tparam  IdxT             [size_t] The index of this element in the 
 ///                           type_list definition.
 ///                           Idx must be < length<T>::value.
 /// @tparam  T                The type_list that contains this 
@@ -360,19 +359,24 @@ struct FieldTypes <FieldT, packed_trait>
 ///                           T must be an indexable type container.
 ///
 template< size_t   Idx,
-          typename format_t
+          typename T
         >
-struct DefineFieldType
+struct declare_field_type
 {
   //  Aliases ******************************************************************
   /// The type extracted at the current
   /// index defined in the parent type_list.
-  using index_type = typename Hg::type_at<Idx, format_t>::type;
+  using index_type = Hg::type_at_t<Idx,T>;
 
   /// The field type definition that maps
   /// a field type with it's value_type.
   using type       = detail::FieldTypes< index_type >;
 };
+
+
+//  ****************************************************************************
+template <size_t Idx, typename T>
+using declare_field_type_t = typename declare_field_type<Idx, T>::type;
 
 
 } // namespace detail

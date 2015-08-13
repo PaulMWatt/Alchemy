@@ -237,37 +237,86 @@ struct ByteOrderConversionFunctor
   //  This function provides the ability for every type of data field to be
   //  converted by this functor.
   //  
-  //  @tparam size_t          Parameterized value that specifies the index
+  //  @tparam IdxT            [size_t] Parameterized value that specifies the index
   //                          of the data field to be converted.
-  //  @tparam value_type      [typename] The type of the data element T.
+  //  @tparam ValueT          [typename] The type of the data element T.
   //  @param unnamed          An unused variable to disambiguate the appropriate
   //                          specialization function for the compiler to select.
   //  
-  template <size_t   Idx,
-            typename value_t>
-  void operator()(const value_t*)
+  template< size_t   IdxT,
+            typename ValueT
+          >
+  void operator()(const ValueT*)
   {
-    using proxy_type  = Hg::detail::deduce_proxy_type_t<Idx, format_type>;
-    using value_type  = typename proxy_type::value_type;
-                                      
-    // The context for which the const input parameter is
-    // being used here does not change the value.
-    // However, a non-const version of get() causes conflicts.
-    // Therefore, casting away const is the safest and cleanest solution.
-    from_message_type &mutable_input = const_cast<from_message_type &>(input);
+    // Define a swap dispatcher that allows special behaviors
+    // to be performed at the Datum level before the raw data is swapped.
+    dispatch_endian_swap<IdxT, format_type> swap;
 
-    value_type& from_value = mutable_input.template FieldAt<Idx>().get();
-
-    // Create an instance of a selection template that will choose between
-    // nested processing, and value conversion.
-    ConvertEndianess< value_type,
-                      storage_type,
-                      deduce_type_trait_t<value_type>
-                    > swap_order;
-    // Swap directly into the value storage for the conversion output.
-    swap_order( from_value, 
-                output.template FieldAt<Idx>().get());
+    swap( input.template FieldAt<IdxT>(), 
+          output.template FieldAt<IdxT>());
   }
+
+private:
+
+  //  **************************************************************************
+  //  The default endian swap dispatcher.
+  //
+  template< size_t   IdxT,
+            typename FormatT,
+            typename TraitT = deduce_type_trait_t<Hg::type_at_t<IdxT, FormatT>>            
+          >
+  struct dispatch_endian_swap
+  {
+    void operator()(const Datum<IdxT,FormatT>& input,
+                          Datum<IdxT,FormatT>& output)
+    {
+      using datum_type = Datum<IdxT,FormatT>;
+      using value_type = typename datum_type::value_type;
+
+      ConvertEndianess< value_type,
+                        storage_type,
+                        deduce_type_trait_t<value_type>
+                      > swap_order;
+
+      // Swap directly into the value storage for the conversion output.
+      swap_order(const_cast<datum_type*>(&input)->get(), output.get());
+    }
+  };
+
+
+  //  **************************************************************************
+  //  Tag-dispatched endian swap for optional data fields.
+  //  This form of function is required to gain access to the data type before
+  //  the optional shell is stripped away from the Datum.
+  //
+  template< size_t   IdxT,
+            typename FormatT>
+  struct dispatch_endian_swap<IdxT, FormatT, optional_trait>
+  {
+    void operator()(const Datum<IdxT,FormatT>& input,
+                          Datum<IdxT,FormatT>& output)
+    {
+      using datum_type = Datum<IdxT,FormatT>;
+      using value_type = typename Datum<IdxT,FormatT>::value_type;
+
+      if (input.is_valid())
+      {
+        ConvertEndianess< value_type,
+                          storage_type,
+                          deduce_type_trait_t<value_type>
+                        > swap_order;
+
+        // Swap directly into the value storage for the conversion output.
+        swap_order(const_cast<datum_type*>(&input)->get(), output.get());
+      }
+      else
+      {
+        // Flag the optional output as invalid.
+        output.reset();
+      }
+    }
+  };
+
 };
 
 

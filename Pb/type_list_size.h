@@ -198,6 +198,14 @@ struct element_size<std::vector<T,A>, false>
 { };
 
 //  ****************************************************************************
+//  Optional field sizes are dynamically determined at runtime. 
+//
+template<typename T>
+struct element_size<Hg::optional<T>, false>
+  : std::integral_constant< size_t, 0>
+{ };
+
+//  ****************************************************************************
 //  element_size implementation for type_containers.
 //
 template <typename T>

@@ -40,6 +40,7 @@ template< typename  datum_trait,
 struct DataProxy
   : public Hg::Datum<kt_idx, format_t>
 {
+  using trait_type = datum_trait;
   using datum_type = Hg::Datum <kt_idx, format_t>;
   using value_type = typename datum_type::value_type;
 
@@ -60,6 +61,7 @@ struct DataProxy
   /// @param proxy           A reference to the Another instance of a DataProxy.
   /// 
   DataProxy(const DataProxy& proxy)
+    : datum_type()
   {
     this->set(proxy.get());
   }
@@ -80,6 +82,29 @@ struct DataProxy
   /// 
   DataProxy(const datum_type& datum)
     : datum_type(datum)
+  { }
+
+  //  **************************************************************************
+  /// Value Constructor: Construct a proxy directly from a datum instance.
+  ///
+  /// @param datum           A reference to a datum object used to initilize this.
+  /// 
+  DataProxy(datum_type&& datum)
+    : datum_type(std::move(datum))
+  { }
+
+  //  **************************************************************************
+  /// Copy value
+  ///
+  DataProxy(const value_type& rhs)
+    : datum_type(rhs)
+  { }
+
+  //  **************************************************************************
+  /// Move value
+  ///
+  DataProxy(value_type&& rhs)
+    : datum_type(std::move(rhs))
   { }
 
   //  **************************************************************************

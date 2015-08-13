@@ -26,7 +26,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -38,7 +38,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -208,6 +208,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\meta_macros.h" />
     <ClInclude Include="..\..\Pb\meta_math.h" />
     <ClInclude Include="..\..\Pb\meta_util.h" />
+    <ClInclude Include="..\..\Pb\optional.h" />
     <ClInclude Include="..\..\Pb\type_list.h" />
     <ClInclude Include="..\..\Pb\type_list_size.h" />
     <ClInclude Include="..\common\geometry_testdata.h" />

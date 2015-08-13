@@ -66,6 +66,8 @@ are supported.
 * An opaque view type exists that can be mapped against any sequence of
 bytes for temporary access. This allows the object to interact with a 
 packed structure at a byte-level, without making copies or taking ownership.
+* Optional field members that are not guaranteed to be present when a message is received.  
+
 
 Message structure definitions are created with the list of MACROs below.
 Refer to the appropriate MACROs documentation for details on correct
@@ -74,8 +76,12 @@ usage:
   ALCHEMY_BEGIN_FORMAT(TYPE_LIST, ...)
   -   ALCHEMY_DATUM(TYPE,NAME)
   -   ALCHEMY_ARRAY(TYPE,COUNT,NAME)
-  -   ALCHEMY_DYNAMIC(TYPE,COUNT,NAME)
-  -   ALCHEMY_ALLOCATOR(TYPE,ALLOCATOR,COUNT,NAME)
+  -   ALCHEMY_ALLOC(TYPE,COUNT,NAME)
+  -   ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)
+  -   ALCHEMY_DATUM_OPT(TYPE,EXISTS,NAME)
+  -   ALCHEMY_ARRAY_OPT(TYPE,COUNT,EXISTS,NAME)
+  -   ALCHEMY_ALLOC_OPT(TYPE,COUNT,EXISTS,NAME)
+  -   ALCHEMY_ALLOC_EX_OPT(TYPE,ALLOCATOR,COUNT,EXISTS,NAME)
 
 Hg provides a portable bit-field interface that works by generating the
 appropriate shift and mask operations for each field. This provides the 
@@ -223,4 +229,5 @@ These are the basic benchmark tests that have been written:
 4. A Nested struct that contains an instance of all of the previous structs. One of the nested structs is created in an array. 
 5. An array of 256 32-bit integers
 6. A structure that does not perform byte-order conversion, but does read, copy, then write data.
+
 

@@ -48,12 +48,13 @@ struct DataProxy <array_trait, IdxT, FormatT>
   : public Hg::Datum<IdxT, FormatT>
 {
   //  Aliases ******************************************************************
+  using trait_type  = array_trait;
   using format_type = FormatT;
   using datum_type  = Hg::Datum < IdxT, format_type>;
 
   /// Type mapping for the message format
   /// type to the actual value_type.
-  using field_type  = typename detail::DefineFieldType < IdxT, format_type>::type;
+  using field_type  = typename datum_type::field_type;
 
   /// The type extracted at the current
   /// index defined in the parent type_list.
@@ -63,11 +64,6 @@ struct DataProxy <array_trait, IdxT, FormatT>
   /// at the current index defined in the 
   /// parent type_list.
   using data_type  = typename index_type::value_type;
-
-  //  Constants ****************************************************************
-  /// The number of elements in the array.
-  static 
-    const auto k_extent = array_size<index_type>::value;
 
   //  Aliases ******************************************************************
   ///  The data type managed by this Array.
@@ -103,6 +99,11 @@ struct DataProxy <array_trait, IdxT, FormatT>
   ///  A const reverse iterator to a value_type index.
   using const_reverse_iterator =
     typename value_type::const_reverse_iterator;
+
+  //  Constants ****************************************************************
+  /// The number of elements in the array.
+  static 
+    const auto k_extent = array_size<value_type>::value;
 
   //  **************************************************************************
   /// Default Constructor

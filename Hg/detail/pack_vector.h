@@ -369,16 +369,18 @@ struct PackDatum< IdxT,
   //                      will be added to this input value to report how much 
   //                      larger the message has become. 
   //
-  void operator()(message_type& msg,
-                  buffer_type&  buffer,
-                  size_t&       dynamic_offset)
+  //  @return             The number of bytes written to the buffer.
+  //
+  size_t operator()(message_type& msg,
+                    buffer_type&  buffer,
+                    size_t&       dynamic_offset)
   {
     auto &value = msg.template FieldAt<IdxT>().get();
     
     // Exit if there are no entries in this dynamic value.
     if (value.empty())
     {
-      return;
+      return 0;
     }
 
     // Calculate the total starting offset.
@@ -391,6 +393,8 @@ struct PackDatum< IdxT,
     // Update the accumulated dynamic size with the 
     // new length added by the size of this field.
     dynamic_offset += bytes_written;
+
+    return bytes_written;
   }
 };
 

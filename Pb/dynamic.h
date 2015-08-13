@@ -9,6 +9,7 @@
 #define DYNAMIC_H_INCLUDED
 //  Includes *******************************************************************
 #include <Pb/meta_fwd.h>
+#include <Pb/optional.h>
 #include <Pb/type_list.h>
 #include <Pb/integer_sequence.h>
 
@@ -24,7 +25,9 @@ namespace detail
 {
 
 // Parameterized implementation of HasDynamic **********************************
-template <typename T, bool isContainer = false >
+template< typename  T, 
+          bool      isContainerT = false 
+        >
 struct HasDynamic_Impl
   : std::false_type
 { };
@@ -32,7 +35,9 @@ struct HasDynamic_Impl
 // HasDynamic implementation for type_containers *******************************
 template <typename T>
 struct HasDynamic_Impl<T, true>
-  : value_if< vector_value<front_t<T>>::value,
+  : value_if< Or< vector_value<front_t<T>>,
+                  optional_value<front_t<T>>
+                >::value,
               bool,
               true,
               has_dynamic<pop_front_t<T>>::value
@@ -40,11 +45,19 @@ struct HasDynamic_Impl<T, true>
 { };
 
 // Explicit HasDynamic implementation for vectors ******************************
-template< class T,
-          class A,
-          bool  isContainerT
+template< typename  T,
+          typename  A,
+          bool      isContainerT
         >
 struct HasDynamic_Impl<std::vector<T,A>, isContainerT>
+  : std::true_type
+{ };
+
+// Explicit HasDynamic implementation for optional data fields *****************
+template< typename  T,
+          bool      isContainerT
+        >
+struct HasDynamic_Impl<Hg::optional<T>, isContainerT>
   : std::true_type
 { };
 
@@ -56,13 +69,15 @@ template< typename ListT,
 struct DynamicFieldSequence
 {
   using NextSeqT = typename
-    std::conditional< vector_value<typename front<ListT>::type>::value,
+    std::conditional< Or< vector_value<front_t<ListT>>,
+                          optional_value<front_t<ListT>>
+                        >::value,
                       typename IntegralNode<IdxT, SeqT>::type,
                       SeqT
                     >::type;
 
   using type = typename
-    DynamicFieldSequence< typename pop_front<ListT>::type,
+    DynamicFieldSequence< pop_front_t<ListT>,
                           NextSeqT,
                           IdxT+1
                         >::type;

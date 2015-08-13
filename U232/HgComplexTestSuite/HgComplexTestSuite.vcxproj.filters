@@ -281,11 +281,35 @@
     <ClInclude Include="..\..\Pb\detail\boost_preprocessor.h">
       <Filter>Header Files\Alchemy\Pb\detail</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Pb\type_list_size.h">
-      <Filter>Header Files\Alchemy</Filter>
-    </ClInclude>
     <ClInclude Include="Src\TestDefinitions.h">
       <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\optional.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\TestOptionalProxySuite.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\proxy\optional_proxy.h">
+      <Filter>Header Files\Alchemy\Hg\Proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\proxy.h">
+      <Filter>Header Files\Alchemy\Hg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Pb\type_list_size.h">
+      <Filter>Header Files\Alchemy\Pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\pack_optional.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Pack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\detail\unpack_optional.h">
+      <Filter>Header Files\Alchemy\Hg\Detail\Unpack</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\TestOptionalMessageSuite.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Hg\datum\optional_datum.h">
+      <Filter>Header Files\Alchemy\Hg\Datum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

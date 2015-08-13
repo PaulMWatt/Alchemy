@@ -101,6 +101,10 @@
 //  ****************************************************************************
 #define C_DECLARE_ALLOCATOR_DATUM(T, A, N, P)   C_DECLARE_ALLOC(T, N, P)
 
+//  ****************************************************************************
+// TODO: Return to implement this feature for Carbon.
+//#define C_DECLARE_OPTIONAL_DATUM(T, E, P)       C_OPTIONAL(T, E, P)
+#define C_DECLARE_OPTIONAL_DATUM(T, E, P)
 
 //  ****************************************************************************
 //  Bit Fields *****************************************************************
@@ -513,6 +517,7 @@ size_t CarbonUnpackMessage( Hg_msg_t            *p_src,                        \
 # define C_DECLARE_ARRAY(T, N, P)        
 # define C_DECLARE_DYNAMIC(T, N, P)      
 # define C_DECLARE_ALLOCATOR(T, A, N, P) 
+# define C_DECLARE_OPTIONAL_DATUM(T, E, P)
 
 # define C_DECLARE_PACKED_HEADER(T,C, ...)  
 # define C_DECLARE_BIT_FIELD(IDX,P,N)

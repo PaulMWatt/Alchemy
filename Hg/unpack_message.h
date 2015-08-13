@@ -12,6 +12,7 @@
 #include <Hg/detail/unpack_message_detail.h>
 #include <Hg/detail/unpack_array.h>
 #include <Hg/detail/unpack_nested.h>
+#include <Hg/detail/unpack_optional.h>
 #include <Hg/detail/unpack_vector.h>
 #include <Hg/detail/unpack_stream.h>
 

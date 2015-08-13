@@ -109,7 +109,7 @@
 #include <Pb/type_list_size.h>
 #include <Pb/meta_math.h>
 #include <Hg/deduce_msg_type_list.h>
-#include <Hg/proxy/deduce_proxy_type.h>
+#include <Hg/proxy.h>
 
 
 //  ****************************************************************************
@@ -121,6 +121,7 @@ namespace Hg
 
 //  Aliases ********************************************************************
 using pfnGetDatumSize = size_t(*)(const uint8_t*, size_t);
+using pfnIsDatumValid = bool(*)(const uint8_t*, size_t);
 
 
 //  ****************************************************************************
@@ -248,7 +249,20 @@ using message_size_trait_t = typename message_size_trait<T>::type;
     template <typename U>                                                      \
     size_t DatumSize(pfnGetDatumSize ftor, U* buffer)                          \
     {                                                                          \
-      if (buffer->empty()) { return 0; }                                       \
+      if (!ftor || buffer->empty()) { return 0; }                              \
+      return ftor(buffer->data(), buffer->size());                             \
+    }                                                                          \
+                                                                               \
+    template <typename T, typename U>                                          \
+    bool IsDatumValid(T value, U*)                                             \
+    {                                                                          \
+      return 0 != value;                                                       \
+    }                                                                          \
+                                                                               \
+    template <typename U>                                                      \
+    bool IsDatumValid(pfnIsDatumValid ftor, U* buffer)                         \
+    {                                                                          \
+      if (!ftor || buffer->empty()) { return false; }                          \
       return ftor(buffer->data(), buffer->size());                             \
     }                                                                          \
   };                                                                           \
@@ -282,7 +296,7 @@ using message_size_trait_t = typename message_size_trait<T>::type;
 #define DECLARE_VECTOR(T)               std::vector<T>
 
 //  ****************************************************************************
-#define DECLARE_VECTOR_ALLOCATED(T,A)   std::vector<T,A>
+#define DECLARE_VECTOR_ALLOC(T,A)       std::vector<T,A>
 
 //  ****************************************************************************
 #define D_ARRAY(T, N, P)                D_DATUM_X((DECLARE_ARRAY(T,N)), P)
@@ -295,15 +309,49 @@ using message_size_trait_t = typename message_size_trait<T>::type;
     size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
 
 
-#define D_DYNAMIC2(...)  D_DYNAMIC __VA_ARGS__
-#define D_VECTOR(T,N,P) ((DECLARE_VECTOR(T)),D_DYNAMIC2,(N,P))
+#define D_DYNAMIC2(...)         D_DYNAMIC __VA_ARGS__
+#define D_VECTOR(T,N,P)         ((DECLARE_VECTOR(T)),D_DYNAMIC2,(N,P))
+#define D_VECTOR_ALLOC(T,A,N,P) ((DECLARE_VECTOR_ALLOC(T,A)),D_DYNAMIC2,(N,P))
+
+//  ****************************************************************************
+#define Hg_DECLARE_DATUM(T,P)                         D_DATUM_X((T),P)
+#define Hg_DECLARE_ARRAY_DATUM(T, N, P)               D_ARRAY(T, N, P) 
+#define Hg_DECLARE_VECTOR_DATUM(T, N, P)              D_VECTOR(T, N, P)
+#define Hg_DECLARE_ALLOCATOR_DATUM(T, A, N, P)        D_VECTOR_ALLOC(T,A, N, P)
+
+//  ****************************************************************************
+#define D_MAKE_OPTIONAL(T)              Hg::optional<T>
+
+
+#define D_OPTIONAL(T,E,P)                                                      \
+    D_DATUM_X(T, P)                                                            \
+  public:                                                                      \
+    template <typename U>                                                      \
+    bool IsValid(U& buffer, datum_##P*)  { return IsDatumValid(E, &buffer); }
+
+
+#define Hg_DECLARE_OPTIONAL(T, E, P)                  D_OPTIONAL((D_MAKE_OPTIONAL(T)), E, P)
+#define Hg_DECLARE_ARRAY_OPTIONAL(T, N, E, P)         D_OPTIONAL((D_MAKE_OPTIONAL(DECLARE_ARRAY(T,N))), E, P)
 
 
 //  ****************************************************************************
-#define Hg_DECLARE_DATUM(T,P)                  D_DATUM_X((T),P)
-#define Hg_DECLARE_ARRAY_DATUM(T, N, P)        D_ARRAY(T, N, P) 
-#define Hg_DECLARE_VECTOR_DATUM(T, N, P)       D_VECTOR(T, N, P)
-#define Hg_DECLARE_ALLOCATOR_DATUM(T, A, N, P) D_VECTOR(DECLARE_VECTOR_ALLOCATED(T,A), N, P)
+#define D_OPTIONAL_VECTOR(N,E,P)                                               \
+    DECLARE_DATUM_ENTRY_X(P)                                                   \
+  public:                                                                      \
+    template <typename U>                                                      \
+    bool IsValid(U& buffer, datum_##P*)  { return IsDatumValid(E, &buffer); }  \
+                                                                               \
+    template <typename U>                                                      \
+    size_t Size(U& buffer, datum_##P*)  { return DatumSize(N, &buffer); }
+
+
+#define D_DYN_OPT(...)                D_OPTIONAL_VECTOR __VA_ARGS__
+#define D_VECTOR_OPT(T,N,E,P)         ((D_MAKE_OPTIONAL(DECLARE_VECTOR(T))), D_DYN_OPT,(N,E,P))
+#define D_VECTOR_ALLOC_OPT(T,A,N,E,P) ((D_MAKE_OPTIONAL(DECLARE_VECTOR_ALLOC(T,A))) ,D_DYN_OPT,(N,E,P))
+
+
+#define Hg_DECLARE_VECTOR_OPTIONAL(T, N, E, P)        D_VECTOR_OPT(T,N,E,P)
+#define Hg_DECLARE_ALLOCATED_OPTIONAL(T, A, N, E, P)  D_VECTOR_ALLOC_OPT(T,A,N,E,P)
 
 
 
@@ -391,11 +439,16 @@ using message_size_trait_t = typename message_size_trait<T>::type;
 //  Declare empty Hg MACROS for non-C++ builds.
 //
 #define Hg_DECLARE_STRUCT_HEADER(NAME, ...)
+
 #define Hg_DECLARE_DATUM(TYPE,NAME)
 #define Hg_DECLARE_ARRAY_DATUM(TYPE,COUNT,NAME)
 #define Hg_DECLARE_VECTOR_DATUM(TYPE,COUNT,NAME)
 #define Hg_DECLARE_ALLOCATOR_DATUM(TYPE,ALLOCATOR,COUNT,NAME)
-#define Hg_DECLARE_STRUCT_FOOTER(TYPE_LIST)
+
+#define Hg_DECLARE_OPTIONAL(TYPE,EXISTS,NAME)
+#define Hg_DECLARE_ARRAY_OPTIONAL(TYPE,COUNT,EXISTS,NAME)
+#define Hg_DECLARE_VECTOR_OPTIONAL(TYPE,SIZE,EXISTS,NAME)
+#define Hg_DECLARE_ALLOCATED_OPTIONAL(TYPE,ALLOCATOR,SIZE,EXISTS,NAME)
 
 #define Hg_DECLARE_PACKED_HEADER(TYPE,NAME, ...)
 #define Hg_DECLARE_BIT_FIELD(INDEX, NAME, COUNT)

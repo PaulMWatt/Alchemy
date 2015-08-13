@@ -39,13 +39,14 @@ struct DataProxy <vector_trait, IdxT, FormatT>
   : public Hg::Datum<IdxT, FormatT>
 {
   //  Aliases ******************************************************************
+  using trait_type  = vector_trait;
   using format_type = FormatT;
 
   using datum_type  = Hg::Datum < IdxT,format_type>;
 
   /// Type mapping for the message format
   /// type to the actual value_type.
-  using field_type  = typename detail::DefineFieldType <IdxT, format_type>::type;
+  using field_type  = typename detail::declare_field_type <IdxT, format_type>::type;
 
   /// The raw type extracted at the current
   /// index defined in the parent type_list.

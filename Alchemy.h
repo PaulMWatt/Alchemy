@@ -23,10 +23,16 @@
 /// Refer to the appropriate MACROs documentation for details on correct usage:
 /// 
 ///   - ALCHEMY_STRUCT(TYPE_LIST)
+///
 ///   - ALCHEMY_DATUM(TYPE,NAME)
 ///   - ALCHEMY_ARRAY(TYPE,COUNT,NAME)
-///   - ALCHEMY_ALLOC(TYPE,COUNT,NAME)
-///   - ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)
+///   - ALCHEMY_ALLOC(TYPE,SIZE,NAME)
+///   - ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,SIZE,NAME)
+///
+///   - ALCHEMY_DATUM_OPT(TYPE,EXISTS,NAME)
+///   - ALCHEMY_ARRAY_OPT(TYPE,COUNT,EXISTS,NAME)
+///   - ALCHEMY_ALLOC_OPT(TYPE,SIZE,EXISTS,NAME)
+///   - ALCHEMY_ALLOC_EX_OPT(TYPE,ALLOCATOR,SIZE,EXISTS,NAME)
 ///
 /// Hg provides a portable bit-field interface that works by generating the
 /// appropriate shift and mask operations for each field. Use these MACROS
@@ -141,7 +147,7 @@
 /// large the field should be when reading data on input.
 ///             
 /// @param TYPE     The type to use for this field
-/// @param COUNT    Specifies how the size of the field is determined on input.
+/// @param SIZE     Specifies how the size of the field is determined on input.
 ///                 There are a few possible ways to indicate the method:
 ///                   * Reference a field previously defined in the message that
 ///                     indicates the number of entries.
@@ -153,8 +159,8 @@
 ///                 NAME will be the name used to access this field directly.
 ///
 ///             
-#define ALCHEMY_ALLOC(TYPE,COUNT,NAME)\
-                                        DECLARE_VECTOR_DATUM(TYPE,COUNT,NAME)
+#define ALCHEMY_ALLOC(TYPE,SIZE,NAME)\
+                                        DECLARE_VECTOR_DATUM(TYPE,SIZE,NAME)
 
 
 //  ****************************************************************************
@@ -170,7 +176,7 @@
 /// @param TYPE       The type to use for this field
 /// @param ALLOCATOR  An allocator that will be used to allocate space for
 ///                   the dynamically sized field.
-/// @param COUNT      Specifies how the size of the field is determined on input.
+/// @param SIZE       Specifies how the size of the field is determined on input.
 ///                   There are a few possible ways to indicate the method:
 ///                   * Reference a field previously defined in the message that
 ///                     indicates the number of entries.
@@ -182,22 +188,145 @@
 ///                   NAME will be the name used to access this field directly.
 ///
 ///             
-#define ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,COUNT,NAME)\
-                              DECLARE_ALLOCATOR_DATUM(TYPE,ALLOCATOR,COUNT,NAME)
+#define ALCHEMY_ALLOC_EX(TYPE,ALLOCATOR,SIZE,NAME)\
+                              DECLARE_ALLOCATOR_DATUM(TYPE,ALLOCATOR,SIZE,NAME)
 
 
 //  ****************************************************************************
-/// Marks the end of a message format.
+/// Adds an optional field that is not guaranteed to be present.  
+///
+/// This declaration supports fundamental and nested types.
 /// 
-/// A MACRO used to end the definition for a message format interface.
-/// This MACRO adds no functionality, it simply acts as a bookend to indicate 
-/// the end of the message format definition.
+/// This MACRO generates code based on the type_list specified in the 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
+/// name the property associated with this message format field. 
+/// Finally, a field is provided to specify how this datum will be able to tell
+/// if the optional field is present.  
+///             
+/// @param TYPE     The type to use for this field
+/// @param EXISTS   Specifies how the existance of the field is determined on input.
+///                 There are a few possible ways to indicate the method:
+///                   * Reference a field previously defined in the message that
+///                     indicates the presence of the field.
+///                     A boolean field set to true, or a non-zero integral
+///                     value will indicate the field exists.
+///                   * Specify a function pointer to a user-defined function
+///                     that will inspect the data and return a boolean.
+///                     the function should have the following signature:
+///                         bool pfn_DoesOptionalDatumExist(uint8_t* pCur, size_t len)
+/// @param NAME     The name to assign this parameter in the message definition.
+///                 NAME will be the name used to access this field directly.
+///
+///             
+#define ALCHEMY_DATUM_OPT(TYPE,EXISTS,NAME) \
+                                        DECLARE_OPTIONAL(TYPE,EXISTS,NAME)
+
+//  ****************************************************************************
+/// Adds an optional field that is not guaranteed to be present.  
+///
+/// This declaration supports arrays.
 /// 
-/// This MACRO will verify that all of the entries have been configured in the
-/// data format definition. A compiler error will be emitted if the number 
-/// of declared HG_MSG_FIELD entries does not match the number expected.
+/// This MACRO generates code based on the type_list specified in the 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
+/// name the property associated with this message format field. 
+/// Finally, a field is provided to specify how this datum will be able to tell
+/// if the optional field is present.  
+///             
+/// @param TYPE     The type to use for this array field
+/// @param COUNT    An unsigned integer that indicates the static size of the array.
+/// @param EXISTS   Specifies how the existance of the field is determined on input.
+///                 There are a few possible ways to indicate the method:
+///                   * Reference a field previously defined in the message that
+///                     indicates the presence of the field.
+///                     A boolean field set to true, or a non-zero integral
+///                     value will indicate the field exists.
+///                   * Specify a function pointer to a user-defined function
+///                     that will inspect the data and return a boolean.
+///                     the function should have the following signature:
+///                         bool pfn_DoesOptionalDatumExist(uint8_t* pCur, size_t len)
+/// @param NAME     The name to assign this parameter in the message definition.
+///                 NAME will be the name used to access this field directly.
+///
+///             
+#define ALCHEMY_ARRAY_OPT(TYPE,COUNT,EXISTS,NAME) \
+                                        DECLARE_ARRAY_OPTIONAL(TYPE,COUNT,EXISTS,NAME)
+
+//  ****************************************************************************
+/// Adds an optional field that is not guaranteed to be present.  
+///
+/// This declaration supports dynamically allocated arrays (vector).
 /// 
-#define ALCHEMY_END_STRUCT(TYPE_LIST)  DECLARE_STRUCT_FOOTER(TYPE_LIST)
+/// This MACRO generates code based on the type_list specified in the 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
+/// name the property associated with this message format field. 
+/// Finally, a field is provided to specify how this datum will be able to tell
+/// if the optional field is present.  
+///             
+/// @param TYPE     The type to use for this array field
+/// @param SIZE     Specifies how the size of the field is determined on input.
+///                 There are a few possible ways to indicate the method:
+///                   * Reference a field previously defined in the message that
+///                     indicates the number of entries.
+///                   * Specify a function pointer to a user-defined function
+///                     that will inspect the data and return the size.
+///                     the function should have the following signature:
+///                         size_t pfn_GetDatumSize(uint8_t* pCur, size_t len)
+/// @param EXISTS   Specifies how the existance of the field is determined on input.
+///                 There are a few possible ways to indicate the method:
+///                   * Reference a field previously defined in the message that
+///                     indicates the presence of the field.
+///                     A boolean field set to true, or a non-zero integral
+///                     value will indicate the field exists.
+///                   * Specify a function pointer to a user-defined function
+///                     that will inspect the data and return a boolean.
+///                     the function should have the following signature:
+///                         bool pfn_DoesOptionalDatumExist(uint8_t* pCur, size_t len)
+/// @param NAME     The name to assign this parameter in the message definition.
+///                 NAME will be the name used to access this field directly.
+///
+///             
+#define ALCHEMY_ALLOC_OPT(TYPE,SIZE,EXISTS,NAME) \
+                                        DECLARE_VECTOR_OPTIONAL(TYPE,SIZE,EXISTS,NAME)
+
+//  ****************************************************************************
+/// Adds an optional field that is not guaranteed to be present.  
+///
+/// This declaration supports dynamically allocated arrays (vector) with
+/// a user specified memory allocator.
+/// 
+/// This MACRO generates code based on the type_list specified in the 
+/// ALCHEMY_STRUCT MACRO. This MACRO also provides the user the ability to 
+/// name the property associated with this message format field. 
+/// Finally, a field is provided to specify how this datum will be able to tell
+/// if the optional field is present.  
+///             
+/// @param TYPE       The type to use for this array field
+/// @param ALLOCATOR  An allocator that will be used to allocate space for
+///                   the dynamically sized field.
+/// @param SIZE       Specifies how the size of the field is determined on input.
+///                   There are a few possible ways to indicate the method:
+///                     * Reference a field previously defined in the message that
+///                       indicates the number of entries.
+///                     * Specify a function pointer to a user-defined function
+///                       that will inspect the data and return the size.
+///                       the function should have the following signature:
+///                         size_t pfn_GetDatumSize(uint8_t* pCur, size_t len)
+/// @param EXISTS     Specifies how the existance of the field is determined on input.
+///                   There are a few possible ways to indicate the method:
+///                     * Reference a field previously defined in the message that
+///                       indicates the presence of the field.
+///                       A boolean field set to true, or a non-zero integral
+///                       value will indicate the field exists.
+///                     * Specify a function pointer to a user-defined function
+///                       that will inspect the data and return a boolean.
+///                       the function should have the following signature:
+///                         bool pfn_DoesOptionalDatumExist(uint8_t* pCur, size_t len)
+/// @param NAME       The name to assign this parameter in the message definition.
+///                   NAME will be the name used to access this field directly.
+///
+///             
+#define ALCHEMY_ALLOC_EX_OPT(TYPE,ALLOCATOR,SIZE,EXISTS,NAME) \
+                                        DECLARE_ALLOCATED_OPTIONAL(TYPE,ALLOCATOR,SIZE,EXISTS,NAME)
 
 
 //  ****************************************************************************
@@ -258,15 +387,6 @@
 ///             
 #define ALCHEMY_BITS(INDEX,NAME,COUNT)\
                                         DECLARE_BIT_FIELD(INDEX, NAME, COUNT)
-
-
-//  ****************************************************************************
-/// Ends the definition for a message field that represents a set of packed bits.
-///             
-/// A type container specialization is declared for this class to facilitate
-/// the proper calculation of the internal buffer size for the container.
-/// 
-#define ALCHEMY_END_PACKED              DECLARE_PACKED_FOOTER
 
 
 #endif

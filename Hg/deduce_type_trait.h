@@ -34,7 +34,7 @@ struct deduce_type_trait
   using value_type = ValueT;
 
   //  **************************************************************************
-  //  There are four distinct types of proxy objects required:
+  //  There are five distinct types of proxy objects required:
   //  Search from most general to most restrictive.
   //  Propagate the type info forward until the last test.
   //  The remaining trait at the end will be the most specific type role
@@ -46,6 +46,8 @@ struct deduce_type_trait
   //    2: bit field proxy       Bit-field types
   //    3: dynamic array proxy   Dynamically sized nested homogenous types
   //    4: fixed array proxy     Fixed sized nested homogenous types 
+  //    5: optional proxy        An parameter that is not guaranteed to be 
+  //                             present in the final message.
   // 
   using basic_type = typename 
     std::conditional< packed_value<value_type>::value,
@@ -81,9 +83,18 @@ struct deduce_type_trait
                     >::type;
 
   //  **************************************************************************
+  //  Determines if the value is optionally defined.
+  //
+  using optional_deduced_trait = typename 
+    std::conditional< optional_value<value_type>::value, 
+                      optional_trait,
+                      deduced_trait
+                    >::type;
+
+  //  **************************************************************************
   /// The type trait tag deduced for the specified parameter type.
   ///
-  using type = deduced_trait;
+  using type = optional_deduced_trait;
 };
 
 //  **************************************************************************
