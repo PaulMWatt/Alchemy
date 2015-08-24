@@ -201,10 +201,6 @@ using message_size_trait_t = typename message_size_trait<T>::type;
 
 #endif
 
-// TODO: Temporarily will try to put the source back together the way it is currently 
-//       structured. Then will move the placement of the definitions to 
-//       solve some of the incompatibilities for duplicate types.
-
 //  ****************************************************************************
 //  Defines the outer value container as well as the formatted type-list.
 //

@@ -8,8 +8,7 @@
 #ifndef CARBON_TEST_DEFS_H_INCLUDED
 #define CARBON_TEST_DEFS_H_INCLUDED
 #include <Carbon.h>
-#include <benchmark_formats.h>
-
+#include <../benchmark/benchmark_formats.h>
 
 
 //  ****************************************************************************
