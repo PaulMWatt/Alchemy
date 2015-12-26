@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{29124443-9144-4a65-a771-29ffe6d65ddb}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;cc</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{693b12b6-a8da-40a3-8bfa-231722b5ff3a}</UniqueIdentifier>
+      <Extensions>h;hpp;hh;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Tests">
+      <UniqueIdentifier>{9f184507-16ad-4ff7-aaf4-3882379257d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Generated">
+      <UniqueIdentifier>{679cf637-23ba-4d71-81d7-89768e88be90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy">
+      <UniqueIdentifier>{14df28ba-4b7d-401d-8427-4d8a0ebf3d7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Amalgam">
+      <UniqueIdentifier>{a8dfca2f-e86d-4821-8373-7c577921ac19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Amalgam\parsers">
+      <UniqueIdentifier>{ca6ef6c8-bbb2-49d4-9348-e7c505cadf81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Amalgam\parsers\JSON">
+      <UniqueIdentifier>{7acb1af9-c38e-4a1c-ae39-8baedef7ce63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Alchemy">
+      <UniqueIdentifier>{7321cbe4-e9fa-40c8-94c9-fd042ab7647f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Alchemy\Amalgam">
+      <UniqueIdentifier>{785abc73-73b7-4ceb-a22f-a1a28702b8c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Alchemy\Amalgam\parsers">
+      <UniqueIdentifier>{5178991e-3c6c-4fb8-8b8a-559f6970dba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Alchemy\Amalgam\parsers\JSON">
+      <UniqueIdentifier>{b81469d2-599f-4557-9f64-0a530d551a11}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\JSON_Test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\AmalgamTestSuite.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amalgam\parsers\JSON\Array.h">
+      <Filter>Header Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amalgam\parsers\JSON\j_String.h">
+      <Filter>Header Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amalgam\parsers\JSON\Literals.h">
+      <Filter>Header Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amalgam\parsers\JSON\Number.h">
+      <Filter>Header Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amalgam\parsers\JSON\Object.h">
+      <Filter>Header Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amalgam\parsers\JSON\parser.h">
+      <Filter>Header Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amalgam\parsers\JSON\production.h">
+      <Filter>Header Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amalgam\parsers\JSON\Value.h">
+      <Filter>Header Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\amalgam\parsers\JSON\WhiteSpace.h">
+      <Filter>Header Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\Generated\AmalgamTestSuiteRunner.cpp">
+      <Filter>Source Files\Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amalgam\parsers\JSON\Array.cpp">
+      <Filter>Source Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amalgam\parsers\JSON\Object.cpp">
+      <Filter>Source Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\amalgam\parsers\JSON\parser.cpp">
+      <Filter>Source Files\Alchemy\Amalgam\parsers\JSON</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
