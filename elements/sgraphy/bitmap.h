@@ -54,7 +54,7 @@ ALCHEMY_STRUCT(rgba_t,
 )
 
 ALCHEMY_STRUCT(bitmap_info_t,
-  ALCHEMY_DATUM(bitmap_core_header_t, header),
+  ALCHEMY_DATUM(bitmap_info_header_t, header),
   ALCHEMY_ALLOC(byte_t, header.sizeImage, pixels) 
 )
 
@@ -72,8 +72,8 @@ typedef Hg::basic_msg<Hg::bitmap_info_t,
                       Hg::BufferedStaticStoragePolicy>      hg_info_t;
 }
 
-typedef Hg::Message< detail::hg_file_t, Hg::LittleEndian>   file_t;
-typedef Hg::Message< detail::hg_info_t, Hg::LittleEndian>   info_t;
+typedef Hg::Message< detail::hg_file_t>   file_t;
+typedef Hg::Message< detail::hg_info_t>   info_t;
                        
 
 

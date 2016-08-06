@@ -27,8 +27,8 @@ bool Bitmap::Load (const std::string &name)
 
   input >> m_file_header;
 
-
-  if ((size_t)0x36 != m_file_header.offset)
+  const size_t k_info_len = 0x36;
+  if (k_info_len != m_file_header.offset)
   {
     return false;
   }
@@ -36,7 +36,7 @@ bool Bitmap::Load (const std::string &name)
 
   size_t s = m_info.size();
 
-  //input >> m_info;
+  input >> m_info;
 
   return true;
 }

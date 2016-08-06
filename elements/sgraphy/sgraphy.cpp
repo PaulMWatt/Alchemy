@@ -36,6 +36,11 @@ string msg_file       = "msg.txt";
 string input_file     = "source.bmp";
 string output_file    = "target.bmp";
 
+// The lower two bits of the data byte.
+const Hg::byte_t k_data_mask = 0x03;
+
+
+
 //  ****************************************************************************
 bool ParseCmdParams(int argc, char* argv[])
 {
@@ -106,9 +111,6 @@ void weave_data ( Hg::rgba_t&  pixel,
 {
   using Hg::s_data;
 
-  // The lower two bits of the data byte.
-  const Hg::byte_t k_data_mask = 0x03;
-
   s_data value(data);
   
   pixel.blue  = (pixel.blue  & ~k_data_mask)
@@ -126,9 +128,6 @@ void extract_data ( Hg::rgba_t&  pixel,
                     Hg::byte_t&  data)
 {
   using Hg::s_data;
-
-  // The lower two bits of the data byte.
-  const Hg::byte_t k_data_mask = 0x03;
 
   s_data value;
   
