@@ -13,7 +13,10 @@ Total: | **39.98%**
 
 Alchemy and Modern C++ Features
 ========================================================
-Alchemy is now implemented with Modern C++. I will keep a branch open called "Classic C++" that only requires C++98 and TR1 features. I will fix bugs on the classic branch, but I do not plan on further developing features for it.
+Alchemy is now implemented with Modern C++. I will keep a branch open called "Classic C++" that only requires C++98 and TR1 features.   
+
+I will fix bugs on the classic branch.  
+With the exception of Optional fields and Union types, I do not plan on developing additional features for this branch.
 
 Network Alchemy
 ========================================================
