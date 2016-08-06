@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{23ab41d3-1361-4c92-9a05-4e3bdabacfdc}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;cc</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{2e834f24-6e68-450a-b703-b630cc1004a1}</UniqueIdentifier>
+      <Extensions>h;hpp;hh;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Alchemy">
+      <UniqueIdentifier>{3f351605-38bd-4ea7-b3a0-40be2d96bf4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Alchemy\Li">
+      <UniqueIdentifier>{14f99be3-afe4-4950-a1c9-ddc10ec027ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Alchemy">
+      <UniqueIdentifier>{cf980d6e-dbfb-4af5-bc66-db44dd0b5f9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Alchemy\Li">
+      <UniqueIdentifier>{f6ab6c5e-13a2-4e9a-8582-9293cc34f57f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Generated">
+      <UniqueIdentifier>{711a5d12-3c0b-4493-877e-92928f2a4652}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\LiTestSuite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\Generated\LiTestSuiteRunner.cpp">
+      <Filter>Source Files\Generated</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
