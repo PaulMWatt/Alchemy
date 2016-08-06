@@ -167,6 +167,9 @@ cd "../.."</Command>
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Li.h" />
+    <ClInclude Include="..\..\Li\Z.h" />
+    <ClInclude Include="..\..\Li\Z_p.h" />
     <ClInclude Include="Src\LiTestSuite.h" />
   </ItemGroup>
   <ItemGroup>

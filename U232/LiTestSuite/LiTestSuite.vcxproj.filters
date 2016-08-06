@@ -32,6 +32,15 @@
     <ClInclude Include="Src\LiTestSuite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Li.h">
+      <Filter>Header Files\Alchemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Li\Z.h">
+      <Filter>Header Files\Alchemy\Li</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Li\Z_p.h">
+      <Filter>Header Files\Alchemy\Li</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\LiTestSuiteRunner.cpp">

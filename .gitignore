@@ -106,3 +106,7 @@ U232/HgComplexTestSuite/Src/Generated/HgComplexTestSuiteRunner.cpp
 elements/IDE/VS2015/x64/Release/benchmark.iobj
 *.ipdb
 U232/AmalgamTestSuite/Src/Generated/AmalgamTestSuiteRunner.cpp
+elements/sgraphy/dest.bmp
+elements/sgraphy/high_dest.bmp
+elements/sgraphy/diff.bmp
+elements/sgraphy/src.bmp
