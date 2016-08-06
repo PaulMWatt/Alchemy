@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Doxygen", "..\..\Doxygen\Doxygen.vcxproj", "{FD674306-0785-43B5-85CA-53710B155A0E}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CarbonTestLibrary", "..\..\..\U232\CarbonTestSuite\CarbonTestLibrary.vcxproj", "{274A541B-2BE9-492A-AE17-051641CBA5E6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BenchmarkCarbonLibrary", "..\..\BenchmarkCarbonLibrary\BenchmarkCarbonLibrary.vcxproj", "{60DE2C07-4E48-48C2-8B95-3DE5CEDB0BD7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AmalgamTestSuite", "..\..\..\U232\AmalgamTestSuite\AmalgamTestSuite.vcxproj", "{1530F59C-95B8-4FAE-9689-249EA448CE02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +131,18 @@ Global
 		{60DE2C07-4E48-48C2-8B95-3DE5CEDB0BD7}.Release|Win32.Build.0 = Release|Win32
 		{60DE2C07-4E48-48C2-8B95-3DE5CEDB0BD7}.Release|x64.ActiveCfg = Release|x64
 		{60DE2C07-4E48-48C2-8B95-3DE5CEDB0BD7}.Release|x64.Build.0 = Release|x64
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Debug|Win32.Build.0 = Debug|Win32
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Debug|x64.ActiveCfg = Debug|x64
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Debug|x64.Build.0 = Debug|x64
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Release|Win32.ActiveCfg = Release|Win32
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Release|Win32.Build.0 = Release|Win32
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Release|x64.ActiveCfg = Release|x64
+		{1530F59C-95B8-4FAE-9689-249EA448CE02}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
