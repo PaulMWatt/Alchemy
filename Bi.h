@@ -1,6 +1,6 @@
-/// @file Li.h
+/// @file Bi.h
 /// 
-/// Contains the Li (Lithium) Large Integer Library.
+/// Contains the Bi (Bismuth) Big Integer Library.
 /// This is a set of classes and algorithms for working with arbitrarily large
 /// integer values. Application usage is primarily for number theory and
 /// cryptography.
@@ -28,23 +28,23 @@
 /// THE SOFTWARE.
 /// 
 //  ****************************************************************************
-#ifndef LI_H_INCLUDED
-#define LI_H_INCLUDED
+#ifndef BI_H_INCLUDED
+#define BI_H_INCLUDED
 //  Includes *******************************************************************
 #include <alchemy.h>
 
 // Place this guard for all C++ Headers in the Alchemy base directory.
 #ifdef __cplusplus 
 
-#include <Li/Z.h>
-#include <Li/Z_p.h>
+#include <Bi/Z.h>
+#include <Bi/Zp.h>
 
 
-namespace Li
+namespace Bi
 {
 
 
-} // namespace Li
+} // namespace Bi
 
 
 #endif // __cplusplus

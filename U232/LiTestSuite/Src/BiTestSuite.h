@@ -1,9 +1,9 @@
-/** LiTestSuite
+/** BiTestSuite
  *
- * @file LiTestSuite.h
+ * @file BiTestSuite.h
  *
  * Test Fixture for Lithium library -
- * (Li) Large Integers
+ * (Bi) Big Integers
  * 
  * @author Paul
  * @date   2016.8.5: Paul    -- Initial release.
@@ -30,19 +30,21 @@
  *  TS_TRACE(message):                       Print message as an information message
  *
  */
-#ifndef LiTestSuite_H_INCLUDED
-#define LiTestSuite_H_INCLUDED
+#ifndef BiTestSuite_H_INCLUDED
+#define BiTestSuite_H_INCLUDED
 
 #include <cxxtest/TestSuite.h>
 
-/** LiTestSuite
- * @brief LiTestSuite Test Suite class.
+#include <Bi.h>
+
+/** BiTestSuite
+ * @brief BiTestSuite Test Suite class.
  *****************************************************************************/
-class LiTestSuite : public CxxTest::TestSuite
+class BiTestSuite : public CxxTest::TestSuite
 {
 public:
 
-  LiTestSuite()
+  BiTestSuite()
   {
     // TODO: Construct Test Suite Object
   }
@@ -74,7 +76,7 @@ public:
 };
 
 /*****************************************************************************/
-void LiTestSuite::TestCase1(void)
+void BiTestSuite::TestCase1(void)
 {
   // TODO: Implement Single Test Case.
   // TODO: The implementation can also be placed in a cpp file if desired.
