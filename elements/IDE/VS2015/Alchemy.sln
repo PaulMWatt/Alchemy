@@ -27,7 +27,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CarbonTestLibrary", "..\..\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BenchmarkCarbonLibrary", "..\..\BenchmarkCarbonLibrary\BenchmarkCarbonLibrary.vcxproj", "{60DE2C07-4E48-48C2-8B95-3DE5CEDB0BD7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LiTestSuite", "..\..\..\U232\LiTestSuite\LiTestSuite.vcxproj", "{C7219C95-47C5-4690-AE26-CA1FF1D1C18B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BiTestSuite", "..\..\..\U232\BiTestSuite\BiTestSuite.vcxproj", "{C7219C95-47C5-4690-AE26-CA1FF1D1C18B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

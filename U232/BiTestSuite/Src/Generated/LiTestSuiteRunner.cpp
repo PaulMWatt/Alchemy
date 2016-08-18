@@ -20,19 +20,19 @@ int main( int argc, char *argv[] ) {
     status = CxxTest::Main< CxxTest::ParenPrinter >( tmp, argc, argv );
     return status;
 }
-bool suite_LiTestSuite_init = false;
-#include "..\LiTestSuite.h"
+bool suite_BiTestSuite_init = false;
+#include "..\BiTestSuite.h"
 
-static LiTestSuite suite_LiTestSuite;
+static BiTestSuite suite_BiTestSuite;
 
-static CxxTest::List Tests_LiTestSuite = { 0, 0 };
-CxxTest::StaticSuiteDescription suiteDescription_LiTestSuite( "../LiTestSuite.h", 41, "LiTestSuite", suite_LiTestSuite, Tests_LiTestSuite );
+static CxxTest::List Tests_BiTestSuite = { 0, 0 };
+CxxTest::StaticSuiteDescription suiteDescription_BiTestSuite( "../BiTestSuite.h", 43, "BiTestSuite", suite_BiTestSuite, Tests_BiTestSuite );
 
-static class TestDescription_suite_LiTestSuite_TestCase1 : public CxxTest::RealTestDescription {
+static class TestDescription_suite_BiTestSuite_TestCase1 : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_LiTestSuite_TestCase1() : CxxTest::RealTestDescription( Tests_LiTestSuite, suiteDescription_LiTestSuite, 72, "TestCase1" ) {}
- void runTest() { suite_LiTestSuite.TestCase1(); }
-} testDescription_suite_LiTestSuite_TestCase1;
+ TestDescription_suite_BiTestSuite_TestCase1() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 74, "TestCase1" ) {}
+ void runTest() { suite_BiTestSuite.TestCase1(); }
+} testDescription_suite_BiTestSuite_TestCase1;
 
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";

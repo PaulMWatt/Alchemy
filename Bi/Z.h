@@ -10,9 +10,14 @@
 
 #include <cstdint>
 #include <algorithm>
+#include <initializer_list>
 #include <utility>
 #include <vector>
 
+// TODO: Once the basic class is up and running, I plan to convert this class to a template
+//       that accepts its base integer type, as well as a policy trait that 
+//       dictates what type of security to enforce. This will allow one implementation
+//       to support both fast and secure implementation types.
 
 namespace Bi
 {
@@ -77,7 +82,7 @@ public:
   //  ****************************************************************************
   /// Value Constructor for signed integer (Will be converted to unsigned).
   ///
-  Z(int64_t   rhs)
+  Z(int rhs)
   {
     if (rhs < 0)
     {
@@ -85,6 +90,14 @@ public:
       rhs           = -rhs;
     }
   }
+
+  //  ****************************************************************************
+  /// Value Constructor from initializer list
+  /// 
+  Z(std::initializer_list<T> rhs)
+    : m_is_positive(true)
+    , m_value(rhs)
+  { }
 
   //  ****************************************************************************
   /// Constructs an unsigned integer from a sequence of hexadecimal values.
@@ -107,7 +120,8 @@ public:
   ///
   Z&  operator=  (const Z& rhs)
   {
-    copy(rhs);
+    m_value       = rhs.m_value;
+    m_is_positive = rhs.m_is_positive;
     return *this;
   }
 
@@ -119,6 +133,24 @@ public:
     m_value       = std::move(rhs.m_value);
     m_is_positive = std::move(rhs.m_is_positive);
 
+    return *this;
+  }
+
+  //  ****************************************************************************
+  /// Assignment Opperator:= type T.
+  ///
+  Z& operator=  (T rhs)
+  {
+    *this = rhs;
+    return *this;
+  }
+
+  //  ****************************************************************************
+  /// Assignment Opperator:= integer.
+  ///
+  Z& operator=  (int rhs)
+  {
+    *this = rhs;
     return *this;
   }
 
@@ -324,6 +356,11 @@ public:
   {
     std::swap(m_value, rhs.m_value);
     std::swap(m_is_positive, rhs.m_is_positive);
+  }
+
+  void data(value_t &values)
+  {
+    values = m_value;
   }
 
 private:
