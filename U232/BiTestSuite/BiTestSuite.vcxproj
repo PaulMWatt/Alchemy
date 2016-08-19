@@ -20,8 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C7219C95-47C5-4690-AE26-CA1FF1D1C18B}</ProjectGuid>
-    <RootNamespace>LiTestSuite</RootNamespace>
+    <RootNamespace>BiTestSuite</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>BiTestSuite</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -57,15 +58,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Elements\CxxTest.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Elements\CxxTest.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Elements\CxxTest.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Elements\CxxTest.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -112,10 +117,25 @@ Generate the test runner...
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>./;../../;../common/;../cxxtest/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
     </Link>
+    <PreBuildEvent>
+      <Command>mkdir "./Src/Generated"
+cd "./Src/Generated"
+$(GenCxxTestRunner) --runner=ParenPrinter  -o "BiTestSuiteRunner.cpp" "../*.h"
+cd "../.."</Command>
+      <Message>Generate the test runner...</Message>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>"$(OutDir)\$(ProjectName).exe"</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Perform Test for BiTestSuite</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -149,10 +169,23 @@ Generate the test runner...
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\LiTestSuite.h" />
+    <ClInclude Include="..\..\Bi.h" />
+    <ClInclude Include="..\..\Bi\discrete_logarithm.h" />
+    <ClInclude Include="..\..\Bi\gcd.h" />
+    <ClInclude Include="..\..\Bi\Z.h" />
+    <ClInclude Include="..\..\Bi\Zp.h" />
+    <ClInclude Include="..\..\Bi\Z_functions.h" />
+    <ClInclude Include="Src\BiTestSuite.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\Generated\LiTestSuiteRunner.cpp" />
+    <ClCompile Include="..\..\Bi\discrete_logarithm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\Bi\gcd.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\Bi\Z.cpp" />
+    <ClCompile Include="Src\Generated\BiTestSuiteRunner.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
