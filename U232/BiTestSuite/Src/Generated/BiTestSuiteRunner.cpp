@@ -256,11 +256,11 @@ public:
  void runTest() { suite_BiTestSuite.Test_mod_eq(); }
 } testDescription_suite_BiTestSuite_Test_mod_eq;
 
-static class TestDescription_suite_BiTestSuite_Test_invert : public CxxTest::RealTestDescription {
+static class TestDescription_suite_BiTestSuite_Test_not : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_invert() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 162, "Test_invert" ) {}
- void runTest() { suite_BiTestSuite.Test_invert(); }
-} testDescription_suite_BiTestSuite_Test_invert;
+ TestDescription_suite_BiTestSuite_Test_not() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 162, "Test_not" ) {}
+ void runTest() { suite_BiTestSuite.Test_not(); }
+} testDescription_suite_BiTestSuite_Test_not;
 
 static class TestDescription_suite_BiTestSuite_Test_and_eq : public CxxTest::RealTestDescription {
 public:
