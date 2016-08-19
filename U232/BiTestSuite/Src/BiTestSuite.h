@@ -159,7 +159,7 @@ public:
   void Test_mod_eq(void);
 
   //  Logic ***********************************************************************
-  void Test_invert(void);
+  void Test_not(void);
   void Test_and_eq(void);
   void Test_or_eq(void);
   void Test_xor_eq(void);
@@ -380,7 +380,7 @@ void BiTestSuite::Test_less_than_false_sign(void)
   // SUT
   Bi::Z sut(get_SUT());
 
-  TS_ASSERT(sut < k_negative);
+  TS_ASSERT(!(sut < k_negative));
 }
 
 //  *****************************************************************************
@@ -389,7 +389,7 @@ void BiTestSuite::Test_less_than_false_value(void)
   // SUT
   Bi::Z sut(get_SUT() + 1);
 
-  TS_ASSERT(sut < k_control);
+  TS_ASSERT(!(sut < k_control));
 }
 
 //  *****************************************************************************
@@ -496,35 +496,70 @@ void BiTestSuite::Test_negate(void)
 //  *****************************************************************************
 void BiTestSuite::Test_add_eq(void)
 {
+  Bi::Z lhs = 8192;
+  Bi::Z rhs = 1024;
+  Bi::Z k_expected = 8192 + 1024;
 
+  // SUT
+  Bi::Z sut = lhs + rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_sub_eq(void)
 {
+  Bi::Z lhs = 8192;
+  Bi::Z rhs = 1024;
+  Bi::Z k_expected = 8192 - 1024;
 
+  // SUT
+  Bi::Z sut = lhs - rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_mul_eq(void)
 {
+  Bi::Z lhs = 8192;
+  Bi::Z rhs = 1024;
+  Bi::Z k_expected  = 8192 * 1024;
 
+  // SUT
+  Bi::Z sut = lhs * rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_div_eq(void)
 {
+  Bi::Z lhs = 8192;
+  Bi::Z rhs = 1024;
+  Bi::Z k_expected = 8192 / 1024;
 
+  // SUT
+  Bi::Z sut = lhs / rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_mod_eq(void)
 {
+  Bi::Z lhs = 8192;
+  Bi::Z rhs = 1023;
+  Bi::Z k_expected = 8192 % 1023;
 
+  // SUT
+  Bi::Z sut = lhs % rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
-void BiTestSuite::Test_invert(void)
+void BiTestSuite::Test_not(void)
 {
   Bi::Z sut;
   Bi::Z rhs = {k_even, k_even, k_even, k_even, k_even, k_even, k_even, k_even};

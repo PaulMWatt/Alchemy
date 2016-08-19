@@ -28,9 +28,15 @@ namespace Bi
 class Z
 {
   //  ****************************************************************************
+  // TODO: Plan to convert the basic radix block size to 64-bit rather than 32-bit.
+  //       This will complicate the implementation, however, it will also cut the
+  //       number of basic operations in half.
+
   typedef uint32_t                          T;
   typedef std::vector<T>                    value_t;
   typedef value_t::size_type                size_type;
+  typedef value_t::iterator                 value_iter_t;
+  typedef value_t::reverse_iterator         value_riter_t;
   typedef std::pair<size_type, size_type>   minmax_type;
 
   static const 
@@ -180,26 +186,65 @@ public:
   //  ****************************************************************************
   bool operator< (const Z& rhs) const
   {
-    if (m_is_positive == rhs.m_is_positive)
+    if (m_is_positive != rhs.m_is_positive)
     {
-// TODO: Complete this implementation for the less comparison of the data string. 
-      if (m_value != rhs.m_value)
-        return false;
+      // If the rhs element is positive, 
+      // this element will definitely be the lesser value.
+      return !m_is_positive;
     }
-    else if (m_is_positive)
-    {
-      // Then rhs is negative, and therefore, less than this.
+
+    // The result changes based on if the values are positive or negative.
+    if (m_value.size() < rhs.m_value.size())
+      return !m_is_positive;
+
+    // Start at the end (highest-order values), 
+    // search for the first element that is not equal.
+    typedef std::pair<value_t::const_reverse_iterator, 
+                      value_t::const_reverse_iterator>  riter_pair;
+    riter_pair elts = std::mismatch(m_value.crbegin(), m_value.crend(), rhs.m_value.crbegin());
+
+    if (elts.first == m_value.crend())
+    { // All items compared, the two lists are equal.
       return false;
     }
 
-    return true;
+    // The elements are not equal.
+    // Therefore, a direct comparison (based on sign) determines the result.
+    return  m_is_positive
+            ? *elts.first < *elts.second
+            : *elts.first > *elts.second;
   }
 
   //  ****************************************************************************
   bool operator<=(const Z& rhs) const
   {
-    // TODO: This will not be as efficient as it could be. Rewrite with it's own impl.
-    return operator<(rhs) || operator==(rhs);
+    if (m_is_positive != rhs.m_is_positive)
+    {
+      // If the rhs element is positive, 
+      // this element will definitely be the lesser value.
+      return !m_is_positive;
+    }
+
+    // The result changes based on if the values are positive or negative.
+    if (m_value.size() > rhs.m_value.size())
+      return !m_is_positive;
+
+    // Start at the end (highest-order values), 
+    // search for the first element that is not equal.
+    typedef std::pair<value_t::const_reverse_iterator,
+                      value_t::const_reverse_iterator>  riter_pair;
+    riter_pair elts = std::mismatch(m_value.crbegin(), m_value.crend(), rhs.m_value.crbegin());
+
+    if (elts.first == m_value.crend())
+    { // All items compared, the two lists are equal.
+      return true;
+    }
+
+    // The elements are not equal.
+    // Therefore, a direct comparison (based on sign) determines the result.
+    return  m_is_positive
+      ? *elts.first < *elts.second
+      : *elts.first > *elts.second;
   }
 
   //  ****************************************************************************
