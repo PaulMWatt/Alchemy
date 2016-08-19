@@ -28,19 +28,19 @@ namespace Bi
 class Z
 {
   //  ****************************************************************************
-  typedef uint64_t                          T;
+  typedef uint32_t                          T;
   typedef std::vector<T>                    value_t;
   typedef value_t::size_type                size_type;
   typedef std::pair<size_type, size_type>   minmax_type;
 
   static const 
-    uint8_t   k_place_bits  = (sizeof(T)/2) * 8;
+    uint8_t   k_place_bits  = (sizeof(uint64_t)/2) * 8;
 
   static const
-    T         k_upper_mask  = 0xFFFFFFFF00000000;
+    uint64_t  k_upper_mask  = 0xFFFFFFFF00000000;
 
   static const
-    T         k_lower_mask  = 0x00000000FFFFFFFF;
+    uint64_t  k_lower_mask  = 0x00000000FFFFFFFF;
 
 public:
   //  Construction ***************************************************************
@@ -83,12 +83,15 @@ public:
   /// Value Constructor for signed integer (Will be converted to unsigned).
   ///
   Z(int rhs)
+    : m_is_positive(true)
   {
     if (rhs < 0)
     {
       m_is_positive = false;
       rhs           = -rhs;
     }
+
+    m_value.push_back(static_cast<T>(rhs));
   }
 
   //  ****************************************************************************
@@ -141,7 +144,7 @@ public:
   ///
   Z& operator=  (T rhs)
   {
-    *this = rhs;
+    *this = Z(rhs);
     return *this;
   }
 
@@ -150,7 +153,7 @@ public:
   ///
   Z& operator=  (int rhs)
   {
-    *this = rhs;
+    *this = Z(rhs);
     return *this;
   }
 
@@ -263,6 +266,12 @@ public:
     }
 
     m_value = sum.m_value;
+
+    // If the signs between the two types do not match, flip them.
+    if (m_is_positive != rhs.m_is_positive)
+    {
+      m_is_positive = !m_is_positive;
+    }
 
     return *this;
   }
