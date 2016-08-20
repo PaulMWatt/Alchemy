@@ -50,6 +50,12 @@
     <ClInclude Include="..\..\Bi\discrete_logarithm.h">
       <Filter>Header Files\Alchemy\Bi</Filter>
     </ClInclude>
+    <ClInclude Include="BiTestIntegers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bi\Bi_defs.h">
+      <Filter>Header Files\Alchemy\Bi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\BiTestSuiteRunner.cpp">

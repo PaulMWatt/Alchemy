@@ -8,6 +8,8 @@
 #ifndef BI_Z_H_INCLUDED
 #define BI_Z_H_INCLUDED
 
+#include <Bi/Bi_defs.h>
+
 #include <cstdint>
 #include <algorithm>
 #include <initializer_list>
@@ -28,11 +30,12 @@ namespace Bi
 class Z
 {
   //  ****************************************************************************
-  // TODO: Plan to convert the basic radix block size to 64-bit rather than 32-bit.
-  //       This will complicate the implementation, however, it will also cut the
-  //       number of basic operations in half.
+  // TODO: Currently using a 64-bit block to handle all 32-bit calculations.
+  //       This wastes 2x the space, however, it makes the calculations simpler
+  //       while I am constructing the library. This will be converted to more
+  //       efficient algorithms once a base set of algorithms is available.
 
-  typedef uint32_t                          T;
+  typedef uint64_t                          T;
   typedef std::vector<T>                    value_t;
   typedef value_t::size_type                size_type;
   typedef value_t::iterator                 value_iter_t;
@@ -103,7 +106,7 @@ public:
   //  ****************************************************************************
   /// Value Constructor from initializer list
   /// 
-  Z(std::initializer_list<T> rhs)
+  Z(const std::initializer_list<T> rhs)
     : m_is_positive(true)
     , m_value(rhs)
   { }
@@ -186,79 +189,26 @@ public:
   //  ****************************************************************************
   bool operator< (const Z& rhs) const
   {
-    if (m_is_positive != rhs.m_is_positive)
-    {
-      // If the rhs element is positive, 
-      // this element will definitely be the lesser value.
-      return !m_is_positive;
-    }
-
-    // The result changes based on if the values are positive or negative.
-    if (m_value.size() < rhs.m_value.size())
-      return !m_is_positive;
-
-    // Start at the end (highest-order values), 
-    // search for the first element that is not equal.
-    typedef std::pair<value_t::const_reverse_iterator, 
-                      value_t::const_reverse_iterator>  riter_pair;
-    riter_pair elts = std::mismatch(m_value.crbegin(), m_value.crend(), rhs.m_value.crbegin());
-
-    if (elts.first == m_value.crend())
-    { // All items compared, the two lists are equal.
-      return false;
-    }
-
-    // The elements are not equal.
-    // Therefore, a direct comparison (based on sign) determines the result.
-    return  m_is_positive
-            ? *elts.first < *elts.second
-            : *elts.first > *elts.second;
+    return compare(rhs) < 0;
   }
 
   //  ****************************************************************************
   bool operator<=(const Z& rhs) const
   {
-    if (m_is_positive != rhs.m_is_positive)
-    {
-      // If the rhs element is positive, 
-      // this element will definitely be the lesser value.
-      return !m_is_positive;
-    }
-
-    // The result changes based on if the values are positive or negative.
-    if (m_value.size() > rhs.m_value.size())
-      return !m_is_positive;
-
-    // Start at the end (highest-order values), 
-    // search for the first element that is not equal.
-    typedef std::pair<value_t::const_reverse_iterator,
-                      value_t::const_reverse_iterator>  riter_pair;
-    riter_pair elts = std::mismatch(m_value.crbegin(), m_value.crend(), rhs.m_value.crbegin());
-
-    if (elts.first == m_value.crend())
-    { // All items compared, the two lists are equal.
-      return true;
-    }
-
-    // The elements are not equal.
-    // Therefore, a direct comparison (based on sign) determines the result.
-    return  m_is_positive
-      ? *elts.first < *elts.second
-      : *elts.first > *elts.second;
+    return compare(rhs) < 1;
   }
 
   //  ****************************************************************************
   bool operator> (const Z& rhs) const
   {
-    return !operator<=(rhs);
+    return compare(rhs) > 0;
   }
 
   //  ****************************************************************************
   bool operator>=(const Z& rhs) const
   {
-    return !operator<(rhs);
+    return compare(rhs) > -1;
   }
-
 
   //  Arithmetic *****************************************************************
   //  ****************************************************************************
@@ -436,6 +386,48 @@ private:
 
   }
 
+  //  ****************************************************************************
+  //  Compares operand to this and indicates if this value is
+  //  -1:   less-than
+  //   0:   equal
+  //   1:   greater-than
+  //
+  Z_relation compare(const Z& rhs) const
+  {
+    if (m_is_positive != rhs.m_is_positive)
+    {
+      return  m_is_positive
+              ? k_cmp_greater_sign_diff
+              : k_cmp_less_sign_diff;
+    }
+
+    // The result changes based on if the values are positive or negative.
+    if (m_value.size() > rhs.m_value.size())
+    {
+      return  m_is_positive
+              ? k_cmp_less_sign_diff
+              : k_cmp_greater_sign_diff;
+    }
+
+    // Start at the end (highest-order values), 
+    // search for the first element that is not equal.
+    typedef std::pair<value_t::const_reverse_iterator,
+      value_t::const_reverse_iterator>  riter_pair;
+    riter_pair elts = std::mismatch(m_value.crbegin(), m_value.crend(), rhs.m_value.crbegin());
+
+    if (elts.first == m_value.crend())
+    { // All items compared, the two lists are equal.
+      return k_cmp_equal;
+    }
+
+    // The elements are not equal.
+    // Therefore, a direct comparison (based on sign) determines the result.
+    return  (*elts.first < *elts.second) ^ !m_is_positive
+            ? k_cmp_less_sign_diff
+            : k_cmp_greater_sign_diff;
+  }
+
+
 
   //  ****************************************************************************
   T remove_carry(const T value)
@@ -446,7 +438,7 @@ private:
   //  ****************************************************************************
   T calculate_carry(const T value)
   {
-    return (value & k_lower_mask) >> k_place_bits;
+    return value >> k_place_bits;
   }
 
   //  ****************************************************************************
@@ -489,6 +481,18 @@ private:
     carry_value(m_value);
   }
 
+
+  //  ****************************************************************************
+  void addition(const value_t &input)
+  {
+
+  }
+
+  //  ****************************************************************************
+  void subtraction(const value_t &input)
+  {
+
+  }
 
 };
 
