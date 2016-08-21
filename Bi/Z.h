@@ -8,6 +8,8 @@
 #ifndef BI_Z_H_INCLUDED
 #define BI_Z_H_INCLUDED
 
+#include <Bi/Bi_defs.h>
+
 #include <cstdint>
 #include <algorithm>
 #include <initializer_list>
@@ -28,11 +30,12 @@ namespace Bi
 class Z
 {
   //  ****************************************************************************
-  // TODO: Plan to convert the basic radix block size to 64-bit rather than 32-bit.
-  //       This will complicate the implementation, however, it will also cut the
-  //       number of basic operations in half.
+  // TODO: Currently using a 64-bit block to handle all 32-bit calculations.
+  //       This wastes 2x the space, however, it makes the calculations simpler
+  //       while I am constructing the library. This will be converted to more
+  //       efficient algorithms once a base set of algorithms is available.
 
-  typedef uint32_t                          T;
+  typedef uint64_t                          T;
   typedef std::vector<T>                    value_t;
   typedef value_t::size_type                size_type;
   typedef value_t::iterator                 value_iter_t;
@@ -78,9 +81,9 @@ public:
   Z(T  rhs)
     : m_is_positive(true)
   {
-    m_value.push_back(remove_carry(rhs));
+    m_value.push_back(remove_overflow(rhs));
 
-    T high = calculate_carry(rhs);
+    T high = calculate_overflow(rhs);
     if (high > 0)
       m_value.push_back(high);
   }
@@ -103,7 +106,7 @@ public:
   //  ****************************************************************************
   /// Value Constructor from initializer list
   /// 
-  Z(std::initializer_list<T> rhs)
+  Z(const std::initializer_list<T> rhs)
     : m_is_positive(true)
     , m_value(rhs)
   { }
@@ -186,79 +189,26 @@ public:
   //  ****************************************************************************
   bool operator< (const Z& rhs) const
   {
-    if (m_is_positive != rhs.m_is_positive)
-    {
-      // If the rhs element is positive, 
-      // this element will definitely be the lesser value.
-      return !m_is_positive;
-    }
-
-    // The result changes based on if the values are positive or negative.
-    if (m_value.size() < rhs.m_value.size())
-      return !m_is_positive;
-
-    // Start at the end (highest-order values), 
-    // search for the first element that is not equal.
-    typedef std::pair<value_t::const_reverse_iterator, 
-                      value_t::const_reverse_iterator>  riter_pair;
-    riter_pair elts = std::mismatch(m_value.crbegin(), m_value.crend(), rhs.m_value.crbegin());
-
-    if (elts.first == m_value.crend())
-    { // All items compared, the two lists are equal.
-      return false;
-    }
-
-    // The elements are not equal.
-    // Therefore, a direct comparison (based on sign) determines the result.
-    return  m_is_positive
-            ? *elts.first < *elts.second
-            : *elts.first > *elts.second;
+    return compare(rhs) < 0;
   }
 
   //  ****************************************************************************
   bool operator<=(const Z& rhs) const
   {
-    if (m_is_positive != rhs.m_is_positive)
-    {
-      // If the rhs element is positive, 
-      // this element will definitely be the lesser value.
-      return !m_is_positive;
-    }
-
-    // The result changes based on if the values are positive or negative.
-    if (m_value.size() > rhs.m_value.size())
-      return !m_is_positive;
-
-    // Start at the end (highest-order values), 
-    // search for the first element that is not equal.
-    typedef std::pair<value_t::const_reverse_iterator,
-                      value_t::const_reverse_iterator>  riter_pair;
-    riter_pair elts = std::mismatch(m_value.crbegin(), m_value.crend(), rhs.m_value.crbegin());
-
-    if (elts.first == m_value.crend())
-    { // All items compared, the two lists are equal.
-      return true;
-    }
-
-    // The elements are not equal.
-    // Therefore, a direct comparison (based on sign) determines the result.
-    return  m_is_positive
-      ? *elts.first < *elts.second
-      : *elts.first > *elts.second;
+    return compare(rhs) < 1;
   }
 
   //  ****************************************************************************
   bool operator> (const Z& rhs) const
   {
-    return !operator<=(rhs);
+    return compare(rhs) > 0;
   }
 
   //  ****************************************************************************
   bool operator>=(const Z& rhs) const
   {
-    return !operator<(rhs);
+    return compare(rhs) > -1;
   }
-
 
   //  Arithmetic *****************************************************************
   //  ****************************************************************************
@@ -271,22 +221,25 @@ public:
   //  ****************************************************************************
   Z&   operator+=(const Z& rhs)
   {
-    accumulate(rhs.m_value);
+    add_and_substract<OpPositive<value_t>>(rhs);
     return *this;
   }
 
   //  ****************************************************************************
   Z&   operator-=(const Z& rhs)
   {
-    const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
-    for (size_type index = 0; index < k_count; ++index)
-    {
-      m_value[index] -= rhs.m_value[index];
-    }
-
-    carry_value(m_value);
-
+    add_and_substract<OpNegative<value_t>>(rhs);
     return *this;
+
+    //const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
+    //for (size_type index = 0; index < k_count; ++index)
+    //{
+    //  m_value[index] -= rhs.m_value[index];
+    //}
+
+    //carry_value(m_value);
+
+    //return *this;
   }
 
   //  ****************************************************************************
@@ -412,9 +365,24 @@ public:
     std::swap(m_is_positive, rhs.m_is_positive);
   }
 
+  //  ****************************************************************************
+  void clear()
+  {
+    m_value.clear();
+    m_value.push_back(0);
+    m_is_positive = true;
+  }
+
+  //  ****************************************************************************
   void data(value_t &values)
   {
     values = m_value;
+  }
+
+  //  ****************************************************************************
+  bool is_positive() const
+  {
+    return m_is_positive;
   }
 
 private:
@@ -426,27 +394,77 @@ private:
   //  ****************************************************************************
   void adjust_storage()
   {
-    for (int index = (int)m_value.size() - 1; index >= 0; --index)
+    // Remove the high-order element for all
+    // of the place-blocks that are zero.
+    while (m_value.back() == 0)
     {
-      if (m_value[index] != 0)
-        return;
+      m_value.pop_back();
+    }
+  }
 
-      m_value.resize(index-1);
+  //  ****************************************************************************
+  //
+  //
+  bool is_same_sign(const Z& rhs) const
+  {
+    return m_is_positive == rhs.m_is_positive;
+  }
+
+  //  ****************************************************************************
+  //  Compares operand to this and indicates if this value is
+  //  -1:   less-than
+  //   0:   equal
+  //   1:   greater-than
+  //
+  Z_relation compare(const Z& rhs) const
+  {
+    if (!is_same_sign(rhs))
+    {
+      return  m_is_positive
+              ? k_cmp_greater_sign_diff
+              : k_cmp_less_sign_diff;
     }
 
+    // The result changes based on if the values are positive or negative.
+    if (m_value.size() > rhs.m_value.size())
+    {
+      return  m_is_positive
+              ? k_cmp_greater_sign_same
+              : k_cmp_less_sign_same;
+    }
+
+    // Start at the end (highest-order values), 
+    // search for the first element that is not equal.
+    typedef std::pair<value_t::const_reverse_iterator,
+                      value_t::const_reverse_iterator>  riter_pair;
+    riter_pair elts = std::mismatch(m_value.crbegin(), 
+                                    m_value.crend(), 
+                                    rhs.m_value.crbegin());
+
+    if (elts.first == m_value.crend())
+    { // All items compared, the two lists are equal.
+      return k_cmp_equal;
+    }
+
+    // The elements are not equal.
+    // Therefore, a direct comparison (based on sign) determines the result.
+    return  (*elts.first < *elts.second) ^ !m_is_positive
+            ? k_cmp_less_sign_same
+            : k_cmp_greater_sign_same;
   }
 
 
+
   //  ****************************************************************************
-  T remove_carry(const T value)
+  T remove_overflow(const T value)
   {
     return value & k_lower_mask;
   }
 
   //  ****************************************************************************
-  T calculate_carry(const T value)
+  T calculate_overflow(const T value)
   {
-    return (value & k_lower_mask) >> k_place_bits;
+    return value >> k_place_bits;
   }
 
   //  ****************************************************************************
@@ -459,7 +477,7 @@ private:
       // Add carry values to the next place value
       place += carry;
       // Calculate the new carry digits.
-      carry  = calculate_carry(place);
+      carry  = calculate_overflow(place);
       // Eliminate the carry digits from the current place value.
       place &= k_lower_mask;
     }
@@ -471,9 +489,9 @@ private:
   }
 
   //  ****************************************************************************
-  void accumulate(const value_t &input)
+  void accumulate(const value_t &rhs)
   {
-    const size_type k_count = input.size();
+    const size_type k_count = rhs.size();
 
     // Make the local buffer at least as large as the input buffer.
     if (m_value.size() < k_count)
@@ -483,16 +501,81 @@ private:
 
     for (size_type index = 0; index < k_count; ++index)
     {
-      m_value[index] += input[index];
+      m_value[index] += rhs[index];
     }
 
     carry_value(m_value);
   }
 
+  //  ****************************************************************************
+  void borrow_value(value_t &number)
+  {
+    T borrow = 1;
+
+    for (auto& place : number)
+    {
+      // If the borrow value does not exist, 
+      // remove one from the next place value.
+      place += (borrow - 1);
+      // Calculate the new borrow digits.
+      borrow = calculate_overflow(place);
+      // Eliminate the borrow digits from the current place value.
+      place &= k_lower_mask;
+    }
+
+    adjust_storage();
+  }
+
+
+  //  ****************************************************************************
+  void disperse(const value_t &rhs)
+  {
+    const size_type k_count = rhs.size();
+    for (size_type index = 0; index < k_count; ++index)
+    {
+      // Place a temporary borrow value in the upper half of the current index.
+      // This will be resolved in the borrow phase.
+      m_value[index] = ((0x0000000100000000) | m_value[index]) - rhs[index];
+    }
+
+    borrow_value(m_value);
+  }
+
+
+  //  ****************************************************************************
+  template <typename OpT>
+  void add_and_substract(const Z &rhs)
+  {
+    OpT op;
+    if (op.adjust_sign(is_same_sign(rhs)))
+    {
+      op.adjust_sign(rhs.m_is_positive);
+      accumulate(rhs.m_value);
+      return;
+    }
+    else
+    {
+      Z_relation rel = compare(rhs);
+      if (rel == k_cmp_equal)
+      {
+        clear();
+      }
+
+      // TODO: Return and see about eliminating this temporary.
+      Z temp(rhs);
+      if (rel < k_cmp_equal)
+      {
+        swap(temp);
+      }
+
+      disperse(temp.m_value);
+    }
+  }
 
 };
 
 
+//  Companion Operators ********************************************************
 //  ****************************************************************************
 inline
 Z operator+(const Z& lhs, const Z& rhs)
