@@ -25,7 +25,7 @@ namespace Bi
 
   //  ****************************************************************************
   template <typename T>
-  struct OpNull
+  struct OpPositive
   {
     bool adjust_sign(bool param)
     {
@@ -38,7 +38,7 @@ namespace Bi
 
   //  ****************************************************************************
   template <typename T>
-  struct OpNegate
+  struct OpNegative
   {
     bool adjust_sign(bool param)
     {

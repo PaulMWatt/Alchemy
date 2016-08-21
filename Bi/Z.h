@@ -81,9 +81,9 @@ public:
   Z(T  rhs)
     : m_is_positive(true)
   {
-    m_value.push_back(remove_carry(rhs));
+    m_value.push_back(remove_overflow(rhs));
 
-    T high = calculate_carry(rhs);
+    T high = calculate_overflow(rhs);
     if (high > 0)
       m_value.push_back(high);
   }
@@ -221,22 +221,25 @@ public:
   //  ****************************************************************************
   Z&   operator+=(const Z& rhs)
   {
-    accumulate(rhs.m_value);
+    add_and_substract<OpPositive<value_t>>(rhs);
     return *this;
   }
 
   //  ****************************************************************************
   Z&   operator-=(const Z& rhs)
   {
-    const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
-    for (size_type index = 0; index < k_count; ++index)
-    {
-      m_value[index] -= rhs.m_value[index];
-    }
-
-    carry_value(m_value);
-
+    add_and_substract<OpNegative<value_t>>(rhs);
     return *this;
+
+    //const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
+    //for (size_type index = 0; index < k_count; ++index)
+    //{
+    //  m_value[index] -= rhs.m_value[index];
+    //}
+
+    //carry_value(m_value);
+
+    //return *this;
   }
 
   //  ****************************************************************************
@@ -363,6 +366,14 @@ public:
   }
 
   //  ****************************************************************************
+  void clear()
+  {
+    m_value.clear();
+    m_value.push_back(0);
+    m_is_positive = true;
+  }
+
+  //  ****************************************************************************
   void data(value_t &values)
   {
     values = m_value;
@@ -383,14 +394,12 @@ private:
   //  ****************************************************************************
   void adjust_storage()
   {
-    for (int index = (int)m_value.size() - 1; index >= 0; --index)
+    // Remove the high-order element for all
+    // of the place-blocks that are zero.
+    while (m_value.back() == 0)
     {
-      if (m_value[index] != 0)
-        return;
-
-      m_value.resize(index-1);
+      m_value.pop_back();
     }
-
   }
 
   //  ****************************************************************************
@@ -420,8 +429,8 @@ private:
     if (m_value.size() > rhs.m_value.size())
     {
       return  m_is_positive
-              ? k_cmp_less_sign_same
-              : k_cmp_greater_sign_same;
+              ? k_cmp_greater_sign_same
+              : k_cmp_less_sign_same;
     }
 
     // Start at the end (highest-order values), 
@@ -447,13 +456,13 @@ private:
 
 
   //  ****************************************************************************
-  T remove_carry(const T value)
+  T remove_overflow(const T value)
   {
     return value & k_lower_mask;
   }
 
   //  ****************************************************************************
-  T calculate_carry(const T value)
+  T calculate_overflow(const T value)
   {
     return value >> k_place_bits;
   }
@@ -468,7 +477,7 @@ private:
       // Add carry values to the next place value
       place += carry;
       // Calculate the new carry digits.
-      carry  = calculate_carry(place);
+      carry  = calculate_overflow(place);
       // Eliminate the carry digits from the current place value.
       place &= k_lower_mask;
     }
@@ -499,33 +508,48 @@ private:
   }
 
   //  ****************************************************************************
-  void disperse(const value_t &rhs)
+  void borrow_value(value_t &number)
   {
-    const size_type k_count = rhs.size();
+    T borrow = 1;
 
-    // Make the local buffer at least as large as the input buffer.
-    if (m_value.size() < k_count)
+    for (auto& place : number)
     {
-      m_value.resize(k_count);
+      // If the borrow value does not exist, 
+      // remove one from the next place value.
+      place += (borrow - 1);
+      // Calculate the new borrow digits.
+      borrow = calculate_overflow(place);
+      // Eliminate the borrow digits from the current place value.
+      place &= k_lower_mask;
     }
 
-    for (size_type index = 0; index < k_count; ++index)
-    {
-      m_value[index] += rhs[index];
-    }
-
-    carry_value(m_value);
+    adjust_storage();
   }
 
 
   //  ****************************************************************************
-  template <typename T, typename OpT>
-  void addition(const value_t &rhs)
+  void disperse(const value_t &rhs)
+  {
+    const size_type k_count = rhs.size();
+    for (size_type index = 0; index < k_count; ++index)
+    {
+      // Place a temporary borrow value in the upper half of the current index.
+      // This will be resolved in the borrow phase.
+      m_value[index] = ((0x0000000100000000) | m_value[index]) - rhs[index];
+    }
+
+    borrow_value(m_value);
+  }
+
+
+  //  ****************************************************************************
+  template <typename OpT>
+  void add_and_substract(const Z &rhs)
   {
     OpT op;
     if (op.adjust_sign(is_same_sign(rhs)))
     {
-      op.adjust_sign(rhs);
+      op.adjust_sign(rhs.m_is_positive);
       accumulate(rhs.m_value);
       return;
     }
@@ -534,8 +558,7 @@ private:
       Z_relation rel = compare(rhs);
       if (rel == k_cmp_equal)
       {
-        m_is_positive = true;
-        return 0;
+        clear();
       }
 
       // TODO: Return and see about eliminating this temporary.
@@ -552,6 +575,7 @@ private:
 };
 
 
+//  Companion Operators ********************************************************
 //  ****************************************************************************
 inline
 Z operator+(const Z& lhs, const Z& rhs)
