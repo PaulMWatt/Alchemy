@@ -362,9 +362,16 @@ public:
     std::swap(m_is_positive, rhs.m_is_positive);
   }
 
+  //  ****************************************************************************
   void data(value_t &values)
   {
     values = m_value;
+  }
+
+  //  ****************************************************************************
+  bool is_positive() const
+  {
+    return m_is_positive;
   }
 
 private:
@@ -387,6 +394,14 @@ private:
   }
 
   //  ****************************************************************************
+  //
+  //
+  bool is_same_sign(const Z& rhs) const
+  {
+    return m_is_positive == rhs.m_is_positive;
+  }
+
+  //  ****************************************************************************
   //  Compares operand to this and indicates if this value is
   //  -1:   less-than
   //   0:   equal
@@ -394,7 +409,7 @@ private:
   //
   Z_relation compare(const Z& rhs) const
   {
-    if (m_is_positive != rhs.m_is_positive)
+    if (!is_same_sign(rhs))
     {
       return  m_is_positive
               ? k_cmp_greater_sign_diff
@@ -405,15 +420,17 @@ private:
     if (m_value.size() > rhs.m_value.size())
     {
       return  m_is_positive
-              ? k_cmp_less_sign_diff
-              : k_cmp_greater_sign_diff;
+              ? k_cmp_less_sign_same
+              : k_cmp_greater_sign_same;
     }
 
     // Start at the end (highest-order values), 
     // search for the first element that is not equal.
     typedef std::pair<value_t::const_reverse_iterator,
-      value_t::const_reverse_iterator>  riter_pair;
-    riter_pair elts = std::mismatch(m_value.crbegin(), m_value.crend(), rhs.m_value.crbegin());
+                      value_t::const_reverse_iterator>  riter_pair;
+    riter_pair elts = std::mismatch(m_value.crbegin(), 
+                                    m_value.crend(), 
+                                    rhs.m_value.crbegin());
 
     if (elts.first == m_value.crend())
     { // All items compared, the two lists are equal.
@@ -423,8 +440,8 @@ private:
     // The elements are not equal.
     // Therefore, a direct comparison (based on sign) determines the result.
     return  (*elts.first < *elts.second) ^ !m_is_positive
-            ? k_cmp_less_sign_diff
-            : k_cmp_greater_sign_diff;
+            ? k_cmp_less_sign_same
+            : k_cmp_greater_sign_same;
   }
 
 
@@ -463,9 +480,9 @@ private:
   }
 
   //  ****************************************************************************
-  void accumulate(const value_t &input)
+  void accumulate(const value_t &rhs)
   {
-    const size_type k_count = input.size();
+    const size_type k_count = rhs.size();
 
     // Make the local buffer at least as large as the input buffer.
     if (m_value.size() < k_count)
@@ -475,7 +492,26 @@ private:
 
     for (size_type index = 0; index < k_count; ++index)
     {
-      m_value[index] += input[index];
+      m_value[index] += rhs[index];
+    }
+
+    carry_value(m_value);
+  }
+
+  //  ****************************************************************************
+  void disperse(const value_t &rhs)
+  {
+    const size_type k_count = rhs.size();
+
+    // Make the local buffer at least as large as the input buffer.
+    if (m_value.size() < k_count)
+    {
+      m_value.resize(k_count);
+    }
+
+    for (size_type index = 0; index < k_count; ++index)
+    {
+      m_value[index] += rhs[index];
     }
 
     carry_value(m_value);
@@ -483,15 +519,34 @@ private:
 
 
   //  ****************************************************************************
-  void addition(const value_t &input)
+  template <typename T, typename OpT>
+  void addition(const value_t &rhs)
   {
+    OpT op;
+    if (op.adjust_sign(is_same_sign(rhs)))
+    {
+      op.adjust_sign(rhs);
+      accumulate(rhs.m_value);
+      return;
+    }
+    else
+    {
+      Z_relation rel = compare(rhs);
+      if (rel == k_cmp_equal)
+      {
+        m_is_positive = true;
+        return 0;
+      }
 
-  }
+      // TODO: Return and see about eliminating this temporary.
+      Z temp(rhs);
+      if (rel < k_cmp_equal)
+      {
+        swap(temp);
+      }
 
-  //  ****************************************************************************
-  void subtraction(const value_t &input)
-  {
-
+      disperse(temp.m_value);
+    }
   }
 
 };
