@@ -11,6 +11,10 @@
 
 namespace Bi
 {
+  
+  //  ****************************************************************************
+  /// Represents the relative relationship of two integers in both sign and magnitude.
+  ///
   enum Z_relation
   {
     k_cmp_less_sign_diff    = -3,

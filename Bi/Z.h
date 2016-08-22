@@ -25,7 +25,7 @@ namespace Bi
 {
 
 //  ****************************************************************************
-/// Basic Integer that supports arbitrarily large integers.
+/// Basic integer, Z, that supports arbitrarily large integers.
 ///
 class Z
 {
@@ -169,6 +169,8 @@ public:
   //  Operators ******************************************************************
   //  Comparison *****************************************************************
   //  ****************************************************************************
+  /// Compares two integers, Z, for equality with sign and magnitude.
+  ///
   bool operator==(const Z& rhs) const
   {
     if (m_is_positive != rhs.m_is_positive)
@@ -181,30 +183,44 @@ public:
   }
 
   //  ****************************************************************************
+  /// Compares two integers, Z, for inequality with sign and/or magnitude.
+  ///
   bool operator!=(const Z& rhs) const
   {
     return !operator==(rhs);
   }
 
   //  ****************************************************************************
+  /// Determins if this integer is less-than the supplied integer in both
+  /// sign and magnitude.
+  ///
   bool operator< (const Z& rhs) const
   {
     return compare(rhs) < 0;
   }
 
   //  ****************************************************************************
+  /// Determins if this integer is less-than or equal to the supplied integer in 
+  /// both sign and magnitude.
+  ///
   bool operator<=(const Z& rhs) const
   {
     return compare(rhs) < 1;
   }
 
   //  ****************************************************************************
+  /// Determins if this integer is greater-than the supplied integer in both
+  /// sign and magnitude.
+  ///
   bool operator> (const Z& rhs) const
   {
     return compare(rhs) > 0;
   }
 
   //  ****************************************************************************
+  /// Determins if this integer is greeter-than or equal to the supplied integer in 
+  /// both sign and magnitude.
+  ///
   bool operator>=(const Z& rhs) const
   {
     return compare(rhs) > -1;
@@ -212,6 +228,8 @@ public:
 
   //  Arithmetic *****************************************************************
   //  ****************************************************************************
+  /// Unary *negate* operation for an integer, Z.
+  ///
   Z&   operator- ()
   {
     m_is_positive = !m_is_positive;
@@ -219,6 +237,10 @@ public:
   }
 
   //  ****************************************************************************
+  /// Unary *addition* operation for an integer, Z.
+  /// A value, rhs, is added to this instance. Carry operations and storage 
+  /// expansion are automatically managed.
+  ///
   Z&   operator+=(const Z& rhs)
   {
     add_and_substract<OpPositive<value_t>>(rhs);
@@ -226,23 +248,28 @@ public:
   }
 
   //  ****************************************************************************
+  /// Unary *subtraction* operation for an integer, Z.
+  /// A value, rhs, is subtracted from this instance. Borrow operations and storage 
+  /// contraction are automatically managed.
+  ///
   Z&   operator-=(const Z& rhs)
   {
     add_and_substract<OpNegative<value_t>>(rhs);
     return *this;
-
-    //const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
-    //for (size_type index = 0; index < k_count; ++index)
-    //{
-    //  m_value[index] -= rhs.m_value[index];
-    //}
-
-    //carry_value(m_value);
-
-    //return *this;
   }
 
   //  ****************************************************************************
+  /// Unary *multiplication* operation for an integer, Z.
+  /// A value, rhs, is multiplied with this instance. 
+  /// Adaptive algorithms are used for multiplication based on the size of 
+  /// the underlying integer.
+  ///
+  /// @note: Only long-form multiplication is currently implemented.
+  /// Additional planned algorithms include:
+  ///   * Maratsuba
+  ///   * Toom-3 and other dimensions
+  ///   * Strassen (Potentially)
+  ///
   Z&   operator*=(const Z& rhs)
   {
     const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
@@ -275,6 +302,11 @@ public:
   }
 
   //  ****************************************************************************
+  /// Unary *division* operation for an integer, Z.
+  /// A value, rhs, is divided into this instance. 
+  ///
+  /// @return   The quotient of *this*/rhs is returned. The remainder is discarded.
+  ///
   Z&   operator/=(const Z& rhs)
   {
     const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
@@ -289,6 +321,11 @@ public:
   }
 
   //  ****************************************************************************
+  /// Unary *modulus* operation for an integer, Z.
+  /// A value, rhs, is divided into this instance and determines the remainder. 
+  ///
+  /// @return   The remainder of *this*/rhs is returned. The quotient is discarded.
+  ///
   Z&   operator%=(const Z& rhs)
   {
     const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
@@ -304,6 +341,9 @@ public:
 
   //  Logic **********************************************************************
   //  ****************************************************************************
+  /// Unary *invert* or "not" operation for an integer, Z.
+  /// All of the bits of this number are flipped, similar to "ones complement".
+  ///
   Z&   operator~()
   {
     for (auto& word : m_value)
@@ -315,6 +355,9 @@ public:
   }
 
   //  ****************************************************************************
+  /// Unary logical *and* operation for an integer, Z.
+  /// A value, rhs, is logically *and'ed* with this integer.
+  ///
   Z&   operator&=(const Z& rhs)
   {
     const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
@@ -330,6 +373,9 @@ public:
   }
 
   //  ****************************************************************************
+  /// Unary logical *or* operation for an integer, Z.
+  /// A value, rhs, is logically *or'ed* with this integer.
+  ///
   Z&   operator|=(const Z& rhs)
   {
     const minmax_type k_minmax = std::minmax(m_value.size(), rhs.m_value.size());
@@ -344,6 +390,9 @@ public:
   }
 
   //  ****************************************************************************
+  /// Unary logical *xor* operation for an integer, Z.
+  /// A value, rhs, is logically *xor'ed* with this integer.
+  ///
   Z&   operator^=(const Z& rhs)
   {
     const minmax_type k_minmax = std::minmax(m_value.size(), rhs.m_value.size());
@@ -359,6 +408,8 @@ public:
 
   //  Methods ********************************************************************
   //  ****************************************************************************
+  /// The contents of this integer are swapped with another integer rhs.
+  ///
   void swap(Z& rhs)
   {
     std::swap(m_value, rhs.m_value);
@@ -366,6 +417,8 @@ public:
   }
 
   //  ****************************************************************************
+  /// Clears the contents of the current integer and sets it's value to zero. 
+  ///
   void clear()
   {
     m_value.clear();
@@ -374,12 +427,25 @@ public:
   }
 
   //  ****************************************************************************
+  /// Clears the contents of the current integer and sets it's value to zero. 
+  /// This is an alias for the method: *clear*.
+  ///
+  void zero()
+  {
+    clear();
+  }
+
+  //  ****************************************************************************
+  /// Returns a copy of the raw data contents of the internal integer values.
+  ///
   void data(value_t &values)
   {
     values = m_value;
   }
 
   //  ****************************************************************************
+  /// Indicates of the value of this integer is positive.
+  ///
   bool is_positive() const
   {
     return m_is_positive;
@@ -411,10 +477,9 @@ private:
   }
 
   //  ****************************************************************************
-  //  Compares operand to this and indicates if this value is
-  //  -1:   less-than
-  //   0:   equal
-  //   1:   greater-than
+  //  Compares operand to this and indicates the relative relationship of the two
+  //  integers with the *Z_relation* type. This provides information relative to 
+  //  both the sign and magnitude of the integer.
   //
   Z_relation compare(const Z& rhs) const
   {
@@ -468,6 +533,8 @@ private:
   }
 
   //  ****************************************************************************
+  /// Utility function to perform carry operations for addition on integers.
+  ///
   void carry_value(value_t &number)
   {
     T carry = 0;
@@ -489,6 +556,8 @@ private:
   }
 
   //  ****************************************************************************
+  /// Implements addition for a natural number, N.
+  ///
   void accumulate(const value_t &rhs)
   {
     const size_type k_count = rhs.size();
@@ -508,6 +577,8 @@ private:
   }
 
   //  ****************************************************************************
+  /// Utility function to perform borrow operations for subtraction with integers.
+  ///
   void borrow_value(value_t &number)
   {
     T borrow = 1;
@@ -528,6 +599,8 @@ private:
 
 
   //  ****************************************************************************
+  /// Implements subtraction for a natural number, N.
+  ///
   void disperse(const value_t &rhs)
   {
     const size_type k_count = rhs.size();
@@ -543,6 +616,11 @@ private:
 
 
   //  ****************************************************************************
+  /// A common template for the selection of correct operation for integer sign
+  /// selection with addition and subtraction operations. If the signs of the 
+  /// numbers differ, it is important to determine the relative magnitude of 
+  /// each integer to perform the actual calculation.
+  ///
   template <typename OpT>
   void add_and_substract(const Z &rhs)
   {
