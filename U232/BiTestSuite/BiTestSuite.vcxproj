@@ -176,6 +176,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Bi\Z.h" />
     <ClInclude Include="..\..\Bi\Zp.h" />
     <ClInclude Include="..\..\Bi\Z_functions.h" />
+    <ClInclude Include="..\..\Bi\Z_operators.h" />
     <ClInclude Include="BiTestIntegers.h" />
     <ClInclude Include="Src\BiTestSuite.h" />
   </ItemGroup>

@@ -37,6 +37,8 @@
 #ifdef __cplusplus 
 
 #include <Bi/Z.h>
+#include <Bi/Z_operators.h>
+
 #include <Bi/Zp.h>
 
 
