@@ -17,13 +17,15 @@ namespace Bi
   ///
   enum Z_relation
   {
-    k_cmp_less_sign_diff    = -3,
-    k_cmp_less_sign_same    = -2,
-    k_cmp_less              = -1,
+    k_cmp_less_sign_diff    = -4,
+    k_cmp_less_sign_same    = -3,
+    k_cmp_less              = -2,
+    k_cmp_less_or_equal     = -1,
     k_cmp_equal             =  0,
-    k_cmp_greater           =  1,
-    k_cmp_greater_sign_same =  2,
-    k_cmp_greater_sign_diff =  3,
+    k_cmp_greater_or_equal  =  1,
+    k_cmp_greater           =  2,
+    k_cmp_greater_sign_same =  3,
+    k_cmp_greater_sign_diff =  4,
   };
 
 

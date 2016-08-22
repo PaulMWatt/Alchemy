@@ -490,6 +490,7 @@ private:
               : k_cmp_less_sign_diff;
     }
 
+    if (m_is_positive)
     // The result changes based on if the values are positive or negative.
     if (m_value.size() > rhs.m_value.size())
     {
@@ -518,6 +519,36 @@ private:
             : k_cmp_greater_sign_same;
   }
 
+  //  ****************************************************************************
+  //  Compares operand for integer, solely by the magnitude.
+  //
+  Z_relation compare_magnitude(const Z& rhs) const
+  {
+    // The result changes based on if the values are positive or negative.
+    if (m_value.size() > rhs.m_value.size())
+    {
+      return k_cmp_greater;
+    }
+
+    // Start at the end (highest-order values), 
+    // search for the first element that is not equal.
+    typedef std::pair<value_t::const_reverse_iterator,
+      value_t::const_reverse_iterator>  riter_pair;
+    riter_pair elts = std::mismatch(m_value.crbegin(),
+                                    m_value.crend(),
+                                    rhs.m_value.crbegin());
+
+    if (elts.first == m_value.crend())
+    { // All items compared, the two lists are equal.
+      return k_cmp_equal;
+    }
+
+    // The elements are not equal.
+    // Therefore, a direct comparison determines the result.
+    return  (*elts.first < *elts.second) 
+      ? k_cmp_less
+      : k_cmp_greater;
+  }
 
 
   //  ****************************************************************************
@@ -611,6 +642,16 @@ private:
       m_value[index] = ((0x0000000100000000) | m_value[index]) - rhs[index];
     }
 
+    // For ripple borrows to work, every block in this value must 
+    // be extended with the "loaned" borrow value.
+    const size_type k_left_count = m_value.size();
+    for (size_type index = k_count; index < k_left_count; ++index)
+    {
+      // Place a temporary borrow value in the upper half of the current index.
+      // This will be resolved in the borrow phase.
+      m_value[index] = ((0x0000000100000000) | m_value[index]);
+    }
+
     borrow_value(m_value);
   }
 
@@ -633,10 +674,11 @@ private:
     }
     else
     {
-      Z_relation rel = compare(rhs);
+      Z_relation rel = compare_magnitude(rhs);
       if (rel == k_cmp_equal)
       {
         clear();
+        return;
       }
 
       // TODO: Return and see about eliminating this temporary.
@@ -653,86 +695,6 @@ private:
 };
 
 
-//  Companion Operators ********************************************************
-//  ****************************************************************************
-inline
-Z operator+(const Z& lhs, const Z& rhs)
-{
-  Z ret_val(lhs);
-  ret_val += rhs;
-
-  return ret_val;
-}
-
-//  ****************************************************************************
-inline
-Z operator-(const Z& lhs, const Z& rhs)
-{
-  Z ret_val(lhs);
-  ret_val -= rhs;
-
-  return ret_val;
-}
-
-//  ****************************************************************************
-inline
-Z operator*(const Z& lhs, const Z& rhs)
-{
-  Z ret_val(lhs);
-  ret_val *= rhs;
-
-  return ret_val;
-}
-
-//  ****************************************************************************
-inline
-Z operator/(const Z& lhs, const Z& rhs)
-{
-  Z ret_val(lhs);
-  ret_val /= rhs;
-
-  return ret_val;
-}
-
-//  ****************************************************************************
-inline
-Z operator%(const Z& lhs, const Z& rhs)
-{
-  Z ret_val(lhs);
-  ret_val %= rhs;
-
-  return ret_val;
-}
-
-//  ****************************************************************************
-inline
-Z operator&(const Z& lhs, const Z& rhs)
-{
-  Z ret_val(lhs);
-  ret_val &= rhs;
-
-  return ret_val;
-}
-
-//  ****************************************************************************
-inline
-Z operator|(const Z& lhs, const Z& rhs)
-{
-  Z ret_val(lhs);
-  ret_val |= rhs;
-
-  return ret_val;
-}
-
-//  ****************************************************************************
-inline
-Z operator^(const Z& lhs, const Z& rhs)
-{
-  Z ret_val(lhs);
-  ret_val ^= rhs;
-
-  return ret_val;
-}
 
 } // namespace Bi
 

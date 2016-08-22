@@ -136,19 +136,50 @@ public:
   //  Arithmetic ******************************************************************
   void Test_negate(void);
 
-  void Test_unary_add_single(void);
-  void Test_unary_add_multiple(void);
+  //  Arithmetic: Addition ********************************************************
+  void Test_unary_add_wo_carry(void);
   void Test_unary_add_w_carry(void);
   void Test_unary_add_w_ripple_carry(void);
   void Test_unary_add_identity(void);
-  void Test_unary_add_negative(void);
-  void Test_unary_add_both_negative(void);
+
+  void Test_unary_add_same_sign_pos_L_ls_R(void);
+  void Test_unary_add_same_sign_pos_L_gr_R(void);
+  void Test_unary_add_same_sign_pos_L_eq_R(void);
+  void Test_unary_add_same_sign_neg_L_ls_R(void);
+  void Test_unary_add_same_sign_neg_L_gr_R(void);
+  void Test_unary_add_same_sign_neg_L_eq_R(void);
+  void Test_unary_add_diff_sign_L_eq_R(void);
+  void Test_unary_add_neg_L_mag_L(void);
+  void Test_unary_add_neg_L_mag_R(void);
+  void Test_unary_add_neg_R_mag_L(void);
+  void Test_unary_add_neg_R_mag_R(void);
+
+  //  Arithmetic: Subtraction *****************************************************
+  void Test_unary_sub_wo_borrow(void);
+  void Test_unary_sub_w_borrow(void);
+  void Test_unary_sub_w_ripple_borrow(void);
+  void Test_unary_sub_identity(void);
+
+  void Test_unary_sub_same_sign_pos_L_ls_R(void);
+  void Test_unary_sub_same_sign_pos_L_gr_R(void);
+  void Test_unary_sub_same_sign_pos_L_eq_R(void);
+  void Test_unary_sub_same_sign_neg_L_ls_R(void);
+  void Test_unary_sub_same_sign_neg_L_gr_R(void);
+  void Test_unary_sub_same_sign_neg_L_eq_R(void);
+  void Test_unary_sub_diff_sign_L_eq_R(void);
+  void Test_unary_sub_neg_L_mag_L(void);
+  void Test_unary_sub_neg_L_mag_R(void);
+  void Test_unary_sub_neg_R_mag_L(void);
+  void Test_unary_sub_neg_R_mag_R(void);
 
 
-
-  void Test_unary_sub(void);
+  //  Arithmetic: Multiplication **************************************************
   void Test_unary_mul(void);
+
+  //  Arithmetic: Division ********************************************************
   void Test_unary_div(void);
+
+  //  Arithmetic: Modulus *********************************************************
   void Test_unary_mod(void);
 
   //  Logic ***********************************************************************
@@ -487,22 +518,7 @@ void BiTestSuite::Test_negate(void)
 }
 
 //  *****************************************************************************
-void BiTestSuite::Test_unary_add_single(void)
-{
-  const Bi::Z k_expected = k_1k + k_8k;
-
-  Bi::Z lhs = k_1k;
-  Bi::Z rhs = k_8k;
-
-  // SUT
-  Bi::Z sut = lhs + rhs;
-
-  TS_ASSERT_EQUALS(k_expected, sut);
-}
-
-
-//  *****************************************************************************
-void BiTestSuite::Test_unary_add_multiple(void)
+void BiTestSuite::Test_unary_add_wo_carry(void)
 {
   const Bi::Z k_expected = k_64B;
 
@@ -546,7 +562,7 @@ void BiTestSuite::Test_unary_add_w_ripple_carry(void)
 //  *****************************************************************************
 void BiTestSuite::Test_unary_add_identity(void)
 {
-  // The identity elements for integers is zero.
+  // The add identity elements for integers is zero.
   const Bi::Z k_expected = k_128B;
 
   Bi::Z lhs = k_128B_z;
@@ -559,12 +575,12 @@ void BiTestSuite::Test_unary_add_identity(void)
 }
 
 //  *****************************************************************************
-void BiTestSuite::Test_unary_add_negative(void)
+void BiTestSuite::Test_unary_add_same_sign_pos_L_ls_R(void)
 {
-  const Bi::Z k_expected = k_8B;
+  const Bi::Z k_expected = Bi::Z(k_24B);
 
-  Bi::Z lhs = k_24B_z;
-  Bi::Z rhs = -Bi::Z(k_16B_z);
+  Bi::Z lhs = k_8B_z;
+  Bi::Z rhs = k_16B_z;
 
   // SUT
   Bi::Z sut = lhs + rhs;
@@ -573,7 +589,35 @@ void BiTestSuite::Test_unary_add_negative(void)
 }
 
 //  *****************************************************************************
-void BiTestSuite::Test_unary_add_both_negative(void)
+void BiTestSuite::Test_unary_add_same_sign_pos_L_gr_R(void)
+{
+  const Bi::Z k_expected = k_24B;
+
+  Bi::Z lhs = k_16B_z;
+  Bi::Z rhs = k_8B_z;
+
+  // SUT
+  Bi::Z sut = lhs + rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_add_same_sign_pos_L_eq_R(void)
+{
+  const Bi::Z k_expected = k_64B;
+
+  Bi::Z lhs = k_32B_z;
+  Bi::Z rhs = k_32B_z;
+
+  // SUT
+  Bi::Z sut = lhs + rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_add_same_sign_neg_L_ls_R(void)
 {
   const Bi::Z k_expected = -Bi::Z(k_24B);
 
@@ -587,7 +631,105 @@ void BiTestSuite::Test_unary_add_both_negative(void)
 }
 
 //  *****************************************************************************
-void BiTestSuite::Test_unary_sub(void)
+void BiTestSuite::Test_unary_add_same_sign_neg_L_gr_R(void)
+{
+  const Bi::Z k_expected = -Bi::Z(k_24B);
+
+  Bi::Z lhs = k_16B_z;
+  Bi::Z rhs = k_8B_z;
+
+  // SUT
+  Bi::Z sut = (-lhs) + (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_add_same_sign_neg_L_eq_R(void)
+{
+  const Bi::Z k_expected = -Bi::Z(k_64B);
+
+  Bi::Z lhs = k_32B_z;
+  Bi::Z rhs = k_32B_z;
+
+  // SUT
+  Bi::Z sut = (-lhs) + (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_add_diff_sign_L_eq_R(void)
+{
+  const Bi::Z k_expected = k_zero;
+
+  Bi::Z lhs = k_32B_z;
+  Bi::Z rhs = k_32B_z;
+
+  // SUT
+  Bi::Z sut = (-lhs) + (rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_add_neg_L_mag_L(void)
+{
+  const Bi::Z k_expected = -Bi::Z(k_8B);
+
+  Bi::Z lhs = -Bi::Z(k_24B_z);
+  Bi::Z rhs = k_16B_z;
+
+  // SUT
+  Bi::Z sut = lhs + rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_add_neg_L_mag_R(void)
+{
+  const Bi::Z k_expected = k_16B;
+
+  Bi::Z lhs = -Bi::Z(k_8B_z);
+  Bi::Z rhs = k_24B_z;
+
+  // SUT
+  Bi::Z sut = lhs + rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_add_neg_R_mag_L(void)
+{
+  const Bi::Z k_expected = k_8B;
+
+  Bi::Z lhs = k_24B_z;
+  Bi::Z rhs = -Bi::Z(k_16B_z);
+
+  // SUT
+  Bi::Z sut = lhs + rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_add_neg_R_mag_R(void)
+{
+  const Bi::Z k_expected = -Bi::Z(k_8B);
+
+  Bi::Z lhs = k_16B_z;
+  Bi::Z rhs = -Bi::Z(k_24B_z);
+
+  // SUT
+  Bi::Z sut = lhs + rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_wo_borrow(void)
 {
   Bi::Z lhs = 8192;
   Bi::Z rhs = 1024;
@@ -597,6 +739,115 @@ void BiTestSuite::Test_unary_sub(void)
   Bi::Z sut = lhs - rhs;
 
   TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_w_borrow(void)
+{
+  const Bi::Z k_expected = k_16B;
+
+  Bi::Z lhs = k_24B;
+  Bi::Z rhs = k_8B_z;
+
+  // SUT
+  Bi::Z sut = lhs - rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_w_ripple_borrow(void)
+{
+  const Bi::Z k_expected = {0xFFFFFFFF, 0xFFFFFFFF};
+
+  Bi::Z lhs = {k_zero, k_zero, k_one};
+  Bi::Z rhs = 1;
+
+  // SUT
+  Bi::Z sut = lhs - rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_identity(void)
+{
+  // The sub identity elements for integers is zero.
+  const Bi::Z k_expected = k_128B;
+
+  Bi::Z lhs = k_128B_z;
+  Bi::Z rhs = k_zero;
+
+  // SUT
+  Bi::Z sut = lhs - rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_same_sign_pos_L_ls_R(void)
+{
+
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_same_sign_pos_L_gr_R(void)
+{
+
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_same_sign_pos_L_eq_R(void)
+{
+
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_same_sign_neg_L_ls_R(void)
+{
+
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_same_sign_neg_L_gr_R(void)
+{
+
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_same_sign_neg_L_eq_R(void)
+{
+
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_diff_sign_L_eq_R(void)
+{
+
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_neg_L_mag_L(void)
+{
+
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_neg_L_mag_R(void)
+{
+
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_neg_R_mag_L(void)
+{
+
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_sub_neg_R_mag_R(void)
+{
+
 }
 
 //  *****************************************************************************
