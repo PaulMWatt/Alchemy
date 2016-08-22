@@ -787,67 +787,160 @@ void BiTestSuite::Test_unary_sub_identity(void)
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_same_sign_pos_L_ls_R(void)
 {
+  const Bi::Z k_expected = -Bi::Z(k_8B);
 
+  Bi::Z lhs = k_16B_z;
+  Bi::Z rhs = k_24B_z;
+
+  // SUT
+  Bi::Z sut = lhs - rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_same_sign_pos_L_gr_R(void)
 {
+  const Bi::Z k_expected = k_16B;
 
+  Bi::Z lhs = k_24B_z;
+  Bi::Z rhs = k_8B_z;
+
+  // SUT
+  Bi::Z sut = lhs - rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_same_sign_pos_L_eq_R(void)
 {
+  const Bi::Z k_expected = k_zero;
 
+  Bi::Z lhs = k_128B_z;
+  Bi::Z rhs = k_128B_z;
+
+  // SUT
+  Bi::Z sut = lhs - rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_same_sign_neg_L_ls_R(void)
 {
+  const Bi::Z k_expected = Bi::Z(k_16B);
 
+  Bi::Z lhs = k_8B_z;
+  Bi::Z rhs = k_24B_z;
+
+  // SUT
+  Bi::Z sut = -(lhs) - (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_same_sign_neg_L_gr_R(void)
 {
+  const Bi::Z k_expected = -Bi::Z(k_8B);
 
+  Bi::Z lhs = k_24B_z;
+  Bi::Z rhs = k_16B_z;
+
+  // SUT
+  Bi::Z sut = -(lhs)-(-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_same_sign_neg_L_eq_R(void)
 {
+  const Bi::Z k_expected = k_zero;
 
+  Bi::Z lhs = k_64B_z;
+  Bi::Z rhs = k_64B_z;
+
+  // SUT
+  Bi::Z sut = (-lhs) - (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_diff_sign_L_eq_R(void)
 {
+  const Bi::Z k_expected = k_64B_z;
 
+  Bi::Z lhs = k_32B_z;
+  Bi::Z rhs = k_32B_z;
+
+  // SUT
+  Bi::Z sut = lhs - (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
+//  For these next few, the naming system is:
+//    All tests are for operands with two different signs
+//      neg_X indicates which parameter is negative, Left or Right
+//      mag_X indicates which parameter has a larger magnitude, Left or Right
+//
 void BiTestSuite::Test_unary_sub_neg_L_mag_L(void)
 {
+  const Bi::Z k_expected = -Bi::Z(k_32B_z);
 
+  Bi::Z lhs = k_24B_z;
+  Bi::Z rhs = k_8B_z;
+
+  // SUT
+  Bi::Z sut = (-lhs) - rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_neg_L_mag_R(void)
 {
+  const Bi::Z k_expected = -Bi::Z(k_32B_z);
 
+  Bi::Z lhs = k_8B_z;
+  Bi::Z rhs = k_24B_z;
+
+  // SUT
+  Bi::Z sut = (-lhs) - rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_neg_R_mag_L(void)
 {
+  const Bi::Z k_expected = Bi::Z(k_32B_z);
 
+  Bi::Z lhs = k_24B_z;
+  Bi::Z rhs = k_8B_z;
+
+  // SUT
+  Bi::Z sut = lhs - (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_neg_R_mag_R(void)
 {
+  const Bi::Z k_expected = Bi::Z(k_24B_z);
 
+  Bi::Z lhs = k_8B_z;
+  Bi::Z rhs = k_16B_z;
+
+  // SUT
+  Bi::Z sut = lhs - (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************

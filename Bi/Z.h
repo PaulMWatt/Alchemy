@@ -522,7 +522,7 @@ private:
   //  ****************************************************************************
   //  Compares operand for integer, solely by the magnitude.
   //
-  Z_relation compare_magnitude(const Z& rhs) const
+  Z_relation compare_abs(const Z& rhs) const
   {
     // The result changes based on if the values are positive or negative.
     if (m_value.size() > rhs.m_value.size())
@@ -674,7 +674,7 @@ private:
     }
     else
     {
-      Z_relation rel = compare_magnitude(rhs);
+      Z_relation rel = compare_abs(rhs);
       if (rel == k_cmp_equal)
       {
         clear();
@@ -686,6 +686,7 @@ private:
       if (rel < k_cmp_equal)
       {
         swap(temp);
+        m_is_positive = op.adjust_sign(m_is_positive);
       }
 
       disperse(temp.m_value);
