@@ -292,11 +292,14 @@ public:
 
     m_value = sum.m_value;
 
-    // If the signs between the two types do not match, flip them.
-    if (m_is_positive != rhs.m_is_positive)
+    // Change the sign of this value if rhs is negative.
+    if (!rhs.m_is_positive)
     {
       m_is_positive = !m_is_positive;
     }
+
+    // Remove the upper blocks that equal 0.
+    adjust_storage();
 
     return *this;
   }
@@ -462,7 +465,8 @@ private:
   {
     // Remove the high-order element for all
     // of the place-blocks that are zero.
-    while (m_value.back() == 0)
+    while (  m_value.size() >  1
+          && m_value.back() == 0)
     {
       m_value.pop_back();
     }

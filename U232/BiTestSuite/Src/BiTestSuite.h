@@ -174,7 +174,12 @@ public:
 
 
   //  Arithmetic: Multiplication **************************************************
-  void Test_unary_mul(void);
+  void Test_unary_mul_identity(void);
+  void Test_unary_mul_zero(void);
+  void Test_unary_mul_same_sign_pos(void);
+  void Test_unary_mul_same_sign_neg(void);
+  void Test_unary_mul_diff_sign_L_neg(void);
+  void Test_unary_mul_diff_sign_R_neg(void);
 
   //  Arithmetic: Division ********************************************************
   void Test_unary_div(void);
@@ -517,6 +522,7 @@ void BiTestSuite::Test_negate(void)
   TS_ASSERT_EQUALS(k_negative, sut);
 }
 
+//  Addition ********************************************************************
 //  *****************************************************************************
 void BiTestSuite::Test_unary_add_wo_carry(void)
 {
@@ -728,6 +734,7 @@ void BiTestSuite::Test_unary_add_neg_R_mag_R(void)
   TS_ASSERT_EQUALS(k_expected, sut);
 }
 
+//  Subtraction *****************************************************************
 //  *****************************************************************************
 void BiTestSuite::Test_unary_sub_wo_borrow(void)
 {
@@ -943,12 +950,13 @@ void BiTestSuite::Test_unary_sub_neg_R_mag_R(void)
   TS_ASSERT_EQUALS(k_expected, sut);
 }
 
+//  Multiplication **************************************************************
 //  *****************************************************************************
-void BiTestSuite::Test_unary_mul(void)
+void BiTestSuite::Test_unary_mul_identity(void)
 {
-  Bi::Z lhs = 8192;
-  Bi::Z rhs = 1024;
-  Bi::Z k_expected  = 8192 * 1024;
+  Bi::Z lhs = k_64B_z;
+  Bi::Z rhs = 1;
+  Bi::Z k_expected = k_64B_z;
 
   // SUT
   Bi::Z sut = lhs * rhs;
@@ -956,6 +964,72 @@ void BiTestSuite::Test_unary_mul(void)
   TS_ASSERT_EQUALS(k_expected, sut);
 }
 
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mul_zero(void)
+{
+  Bi::Z lhs = k_64B_z;
+  Bi::Z rhs = 0;
+  Bi::Z k_expected = k_zero;
+
+  // SUT
+  Bi::Z sut = lhs * rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mul_same_sign_pos(void)
+{
+  Bi::Z lhs = k_8B_z;
+  Bi::Z rhs = 8;
+  Bi::Z k_expected = k_64B;
+
+  // SUT
+  Bi::Z sut = lhs * rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mul_same_sign_neg(void)
+{
+  Bi::Z lhs = 16;
+  Bi::Z rhs = k_8B_z;
+  Bi::Z k_expected = Bi::Z(k_128B);
+
+  // SUT
+  Bi::Z sut = (-lhs) * (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mul_diff_sign_L_neg(void)
+{
+  Bi::Z lhs = 16;
+  Bi::Z rhs = k_16B_z;
+  Bi::Z k_expected = -Bi::Z(k_256B);
+
+  // SUT
+  Bi::Z sut = (-lhs) * rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mul_diff_sign_R_neg(void)
+{
+  Bi::Z lhs = k_16B_z;
+  Bi::Z rhs = 8;
+  Bi::Z k_expected = -Bi::Z(k_128B);
+
+  // SUT
+  Bi::Z sut = lhs * (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  Division ********************************************************************
 //  *****************************************************************************
 void BiTestSuite::Test_unary_div(void)
 {
