@@ -1,3 +1,10 @@
+Bi (Bismuth) Big-Integer
+========================================================
+I have started work on a Big-Integer library for Alchemy. This will be useful for integer calculations for number theory. Eventually, I will secure it for use with cryptography, which I plan to implement a few convenience functions to simplify encryption, hashing and other related activities with message passing. 
+
+Bismuth (Bi) is a Big-Integer library to handle operations that require numbers greater than the native processor can support. The primary goals of Bismuth are ease-of-use and security. A wide variety of operations from Number Theory are implemented in Bismuth, including modular arithmetic and discrete logarithms. The primary goal for this library is to become a building block to build other robust applications, such as cryptosystems. It is also written using C++ 11 features with clarity of implementation and simplicity to make security more realistic.
+
+
 Benchmarks
 ========================================================
 The addition of move semantics to the Hg constructs now bring the speed of Alchemy to 40% faster than the hand written construct, with a significant increase for nested data structures:
