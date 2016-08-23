@@ -116,6 +116,11 @@ const uint64_t k_128B    = 0x0000001DCD650000;
 const z_list   k_128B_z  = {0xCD650000, 0x0000001D};
 //const z_list   k_128B_z = {0x0000001D, 0xCD650000};
 
+const uint32_t k_256B_00 = 0x9ACA0000;
+const uint32_t k_256B_01 = 0x0000003B;
+const uint64_t k_256B = 0x0000003B9ACA0000;
+const z_list   k_256B_z = {0x9ACA0000, 0x0000003B};
+//const z_list   k_256B_z = {0x0000003B, 0x9ACA0000};
 
 
 

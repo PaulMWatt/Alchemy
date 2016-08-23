@@ -406,45 +406,75 @@ public:
  void runTest() { suite_BiTestSuite.Test_unary_sub_neg_R_mag_R(); }
 } testDescription_suite_BiTestSuite_Test_unary_sub_neg_R_mag_R;
 
-static class TestDescription_suite_BiTestSuite_Test_unary_mul : public CxxTest::RealTestDescription {
+static class TestDescription_suite_BiTestSuite_Test_unary_mul_identity : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_unary_mul() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 177, "Test_unary_mul" ) {}
- void runTest() { suite_BiTestSuite.Test_unary_mul(); }
-} testDescription_suite_BiTestSuite_Test_unary_mul;
+ TestDescription_suite_BiTestSuite_Test_unary_mul_identity() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 177, "Test_unary_mul_identity" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_mul_identity(); }
+} testDescription_suite_BiTestSuite_Test_unary_mul_identity;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_mul_zero : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_mul_zero() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 178, "Test_unary_mul_zero" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_mul_zero(); }
+} testDescription_suite_BiTestSuite_Test_unary_mul_zero;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_mul_same_sign_pos : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_mul_same_sign_pos() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 179, "Test_unary_mul_same_sign_pos" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_mul_same_sign_pos(); }
+} testDescription_suite_BiTestSuite_Test_unary_mul_same_sign_pos;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_mul_same_sign_neg : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_mul_same_sign_neg() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 180, "Test_unary_mul_same_sign_neg" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_mul_same_sign_neg(); }
+} testDescription_suite_BiTestSuite_Test_unary_mul_same_sign_neg;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_mul_diff_sign_L_neg : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_mul_diff_sign_L_neg() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 181, "Test_unary_mul_diff_sign_L_neg" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_mul_diff_sign_L_neg(); }
+} testDescription_suite_BiTestSuite_Test_unary_mul_diff_sign_L_neg;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_mul_diff_sign_R_neg : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_mul_diff_sign_R_neg() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 182, "Test_unary_mul_diff_sign_R_neg" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_mul_diff_sign_R_neg(); }
+} testDescription_suite_BiTestSuite_Test_unary_mul_diff_sign_R_neg;
 
 static class TestDescription_suite_BiTestSuite_Test_unary_div : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_unary_div() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 180, "Test_unary_div" ) {}
+ TestDescription_suite_BiTestSuite_Test_unary_div() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 185, "Test_unary_div" ) {}
  void runTest() { suite_BiTestSuite.Test_unary_div(); }
 } testDescription_suite_BiTestSuite_Test_unary_div;
 
 static class TestDescription_suite_BiTestSuite_Test_unary_mod : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_unary_mod() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 183, "Test_unary_mod" ) {}
+ TestDescription_suite_BiTestSuite_Test_unary_mod() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 188, "Test_unary_mod" ) {}
  void runTest() { suite_BiTestSuite.Test_unary_mod(); }
 } testDescription_suite_BiTestSuite_Test_unary_mod;
 
 static class TestDescription_suite_BiTestSuite_Test_not : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_not() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 186, "Test_not" ) {}
+ TestDescription_suite_BiTestSuite_Test_not() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 191, "Test_not" ) {}
  void runTest() { suite_BiTestSuite.Test_not(); }
 } testDescription_suite_BiTestSuite_Test_not;
 
 static class TestDescription_suite_BiTestSuite_Test_and_eq : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_and_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 187, "Test_and_eq" ) {}
+ TestDescription_suite_BiTestSuite_Test_and_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 192, "Test_and_eq" ) {}
  void runTest() { suite_BiTestSuite.Test_and_eq(); }
 } testDescription_suite_BiTestSuite_Test_and_eq;
 
 static class TestDescription_suite_BiTestSuite_Test_or_eq : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_or_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 188, "Test_or_eq" ) {}
+ TestDescription_suite_BiTestSuite_Test_or_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 193, "Test_or_eq" ) {}
  void runTest() { suite_BiTestSuite.Test_or_eq(); }
 } testDescription_suite_BiTestSuite_Test_or_eq;
 
 static class TestDescription_suite_BiTestSuite_Test_xor_eq : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_xor_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 189, "Test_xor_eq" ) {}
+ TestDescription_suite_BiTestSuite_Test_xor_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 194, "Test_xor_eq" ) {}
  void runTest() { suite_BiTestSuite.Test_xor_eq(); }
 } testDescription_suite_BiTestSuite_Test_xor_eq;
 
