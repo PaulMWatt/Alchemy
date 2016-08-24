@@ -478,5 +478,17 @@ public:
  void runTest() { suite_BiTestSuite.Test_xor_eq(); }
 } testDescription_suite_BiTestSuite_Test_xor_eq;
 
+static class TestDescription_suite_BiTestSuite_Test_lshift_eq : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_lshift_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 195, "Test_lshift_eq" ) {}
+ void runTest() { suite_BiTestSuite.Test_lshift_eq(); }
+} testDescription_suite_BiTestSuite_Test_lshift_eq;
+
+static class TestDescription_suite_BiTestSuite_Test_rshift_eq : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_rshift_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 196, "Test_rshift_eq" ) {}
+ void runTest() { suite_BiTestSuite.Test_rshift_eq(); }
+} testDescription_suite_BiTestSuite_Test_rshift_eq;
+
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";

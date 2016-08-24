@@ -94,6 +94,25 @@ Z operator^(const Z& lhs, const Z& rhs)
   return ret_val;
 }
 
+//  ****************************************************************************
+inline
+Z operator<<(const Z& lhs, uint64_t offset)
+{
+  Z ret_val(lhs);
+  ret_val <<= offset;
+
+  return ret_val;
+}
+
+//  ****************************************************************************
+inline
+Z operator>>(const Z& lhs, uint64_t offset)
+{
+  Z ret_val(lhs);
+  ret_val >>= offset;
+
+  return ret_val;
+}
 
 } // namespace Bi
 

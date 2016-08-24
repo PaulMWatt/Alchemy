@@ -192,14 +192,16 @@ public:
   void Test_and_eq(void);
   void Test_or_eq(void);
   void Test_xor_eq(void);
+  void Test_lshift_eq(void);
+  void Test_rshift_eq(void);
 
-  // TODO: Need to add tests that include variables of different sizes
 
   //  Other ***********************************************************************
 
 
 
-  // TODO: Add binary arithmetic operators
+  // TODO: Need to add tests that include variables of different sizes
+  // TODO: Add tests for binary arithmetic operators
 
 };
 
@@ -1108,4 +1110,27 @@ void BiTestSuite::Test_xor_eq(void)
   TS_ASSERT_EQUALS(even, sut);
 }
 
+//  *****************************************************************************
+void BiTestSuite::Test_lshift_eq(void)
+{
+  const Bi::Z k_expected = k_65536B_z;
+  Bi::Z sut = k_256B_z;
+
+  // SUT 
+  sut <<= 8;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_rshift_eq(void)
+{
+  const Bi::Z k_expected = k_1B;
+  Bi::Z sut = k_256B_z;
+
+  // SUT 
+  sut >>= 8;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
 #endif

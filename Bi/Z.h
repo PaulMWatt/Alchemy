@@ -409,6 +409,54 @@ public:
     return *this;
   }
 
+  //  Bit-shift Operations *******************************************************
+  //  ****************************************************************************
+  /// Unary logical left-shift and assign
+  ///
+  Z& operator<<=(uint64_t offset)
+  {
+    T bits = 0;
+
+    uint64_t opposite = ((sizeof(T) * 8) - offset);
+    for (auto &word : m_value)
+    {
+      uint64_t prev = bits;
+
+      bits = word >> opposite;
+      word <<= offset;
+      word |= prev;
+    }
+
+    carry_value(m_value);
+
+    return *this;
+  }
+
+  //  ****************************************************************************
+  /// Unary logical right-shift and assign
+  ///
+  Z& operator>>=(uint64_t offset)
+  {
+    T bits = 0;
+
+    uint64_t opposite = ((sizeof(T) * 8) / 2) - offset;
+    for (auto iter = m_value.rbegin(); iter != m_value.rend(); ++iter)
+    {
+      auto &word = *iter;
+
+      uint64_t prev = bits;
+
+      bits = word << opposite;
+      word >>= offset;
+      word |= prev;
+    }
+
+    adjust_storage();
+
+    return *this;
+  }
+
+
   //  Methods ********************************************************************
   //  ****************************************************************************
   /// The contents of this integer are swapped with another integer rhs.
