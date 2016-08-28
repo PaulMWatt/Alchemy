@@ -192,7 +192,13 @@ public:
   void Test_unary_div_divisor_equal(void);
 
   //  Arithmetic: Modulus *********************************************************
-  void Test_unary_mod(void);
+  void Test_unary_mod_zero(void);
+  void Test_unary_mod_same_sign_pos(void);
+  void Test_unary_mod_same_sign_neg(void);
+  void Test_unary_mod_diff_sign_L_neg(void);
+  void Test_unary_mod_diff_sign_R_neg(void);
+  void Test_unary_mod_divisor_larger(void);
+  void Test_unary_mod_divisor_equal(void);
 
   //  Logic ***********************************************************************
   void Test_not(void);
@@ -1156,18 +1162,105 @@ void BiTestSuite::Test_unary_div_divisor_equal(void)
   TS_ASSERT_EQUALS(k_expected, sut);
 }
 
+//  Modulus *********************************************************************
 //  *****************************************************************************
-void BiTestSuite::Test_unary_mod(void)
+void BiTestSuite::Test_unary_mod_zero(void)
 {
   Bi::Z lhs = 8192;
-  Bi::Z rhs = 1023;
-  Bi::Z k_expected = 8192 % 1023;
+  Bi::Z rhs = 0;
+  Bi::Z k_expected = 0;
+
+  // SUT
+  Bi::Z sut = lhs % rhs;
+
+  // TODO: This code needs an error handling policy. For now it returns 0.
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mod_same_sign_pos(void)
+{
+  Bi::Z lhs = Bi::Z(k_256B_z) - 1;
+  Bi::Z rhs = k_16B_z;
+  Bi::Z k_expected = Bi::Z(k_16B_z) - 1;
 
   // SUT
   Bi::Z sut = lhs % rhs;
 
   TS_ASSERT_EQUALS(k_expected, sut);
+  TS_ASSERT_LESS_THAN(sut, rhs);
 }
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mod_same_sign_neg(void)
+{
+  Bi::Z lhs = Bi::Z(k_256B_z) - 1;
+  Bi::Z rhs = k_16B_z;
+  Bi::Z k_expected = Bi::Z(k_16B_z) - 1;
+
+  // SUT
+  Bi::Z sut = (-lhs) % (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+  TS_ASSERT_LESS_THAN(sut, -rhs);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mod_diff_sign_L_neg(void)
+{
+  Bi::Z lhs = 96;
+  Bi::Z rhs = 31;
+  Bi::Z k_expected = -Bi::Z(3);
+
+  // SUT
+  Bi::Z sut = (-lhs) % rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+  TS_ASSERT_LESS_THAN(sut, rhs);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mod_diff_sign_R_neg(void)
+{
+  Bi::Z lhs = 98;
+  Bi::Z rhs = 31;
+  Bi::Z k_expected = -Bi::Z(5);
+
+  // SUT
+  Bi::Z sut = lhs % (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+  TS_ASSERT_LESS_THAN(-sut, -rhs);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mod_divisor_larger(void)
+{
+  Bi::Z lhs = k_8B_z;
+  Bi::Z rhs = k_24B_z;
+  Bi::Z k_expected = k_8B_z;
+
+  // SUT
+  Bi::Z sut = lhs % rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+  TS_ASSERT_LESS_THAN(sut, rhs);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_mod_divisor_equal(void)
+{
+  Bi::Z lhs = k_24B_z;
+  Bi::Z rhs = k_24B_z;
+  Bi::Z k_expected = 0;
+
+  // SUT
+  Bi::Z sut = lhs % rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+  TS_ASSERT_LESS_THAN(sut, rhs);
+}
+
 
 //  *****************************************************************************
 void BiTestSuite::Test_not(void)

@@ -430,6 +430,10 @@ public:
       return *this;
     }
 
+    // Determine final sign.
+    bool L_sign = m_is_positive;
+    m_is_positive = true;
+
     // If the divisor is larger, 
     // it cannot be divided into the dividend.
     Z_relation rel = compare_abs(rhs);
@@ -448,9 +452,21 @@ public:
     bit_size_t divisor_bits   = rhs.bit_size( );
     uint64_t   iterations     = dividend_bits - divisor_bits;
 
+    if (iterations > k_base_size)
+    {
+      uint64_t full_words = (iterations / k_base_size) / 2;
+      iterations = (full_words * k_base_size) + (iterations % k_base_size);
+    }
+
     // Line up the divisor with the most significant bit of the dividend.
     Z quotient(0);
     Z div = rhs;
+
+    // Change the sign of this value if rhs is negative.
+    if (!rhs.m_is_positive)
+    {
+      div = -div;
+    }
 
     div <<= iterations;
 
@@ -470,6 +486,7 @@ public:
     }
 
     // Change the sign of this value if rhs is negative.
+    m_is_positive = L_sign;
     if (!rhs.m_is_positive)
     {
       m_is_positive = !m_is_positive;
