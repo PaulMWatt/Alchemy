@@ -74,7 +74,30 @@ const uint64_t k_2k     = 0x00000800;
 const uint64_t k_4k     = 0x00001000;
 const uint64_t k_8k     = 0x00002000;
 const uint64_t k_16k    = 0x00004000;
-          
+
+const uint64_t k_1GB    = 0x40000000;
+const uint64_t k_2GB    = 0x80000000;
+
+const uint32_t k_4_5EB_00 = 0x00000000;
+const uint32_t k_4_5EB_01 = 0x40000000;
+const uint64_t k_4_5EB    = 0x4000000000000000;
+const z_list   k_4_5EB_z  = {0x00000000, 0x40000000};
+//const z_list   k_4_5EB_z = {0x400000000, 0x00000000};
+
+const uint32_t k_9EB_00 = 0x00000000;
+const uint32_t k_9EB_01 = 0x80000000;
+const uint64_t k_9EB    = 0x8000000000000000;
+const z_list   k_9EB_z  = {0x00000000, 0x80000000};
+//const z_list   k_9EB_z = {0x800000000, 0x00000000};
+
+const uint32_t k_18EB_00 = 0x00000000;
+const uint32_t k_18EB_01 = 0x00000000;
+const uint32_t k_18EB_02 = 0x00000001;
+const z_list   k_18EB_z  = {0x00000000, 0x00000000, 0x00000001};
+//const z_list   k_32EB_z = {0x800000000, 0x00000000};
+
+//  Round numbers in Millions, Billions, ... ***********************************
+
 const uint64_t k_1M     = 0x000F4240;
 const uint64_t k_1B     = 0x3B9ACA00;
 const uint64_t k_4B     = 0xEE6B2800;
@@ -122,6 +145,11 @@ const uint64_t k_256B = 0x0000003B9ACA0000;
 const z_list   k_256B_z = {0x9ACA0000, 0x0000003B};
 //const z_list   k_256B_z = {0x0000003B, 0x9ACA0000};
 
+const uint32_t k_65536B_00 = 0xCA000000;
+const uint32_t k_65536B_01 = 0x00003B9A;
+const uint64_t k_65536B = 0x00003B9ACA000000;
+const z_list   k_65536B_z = {0xCA000000, 0x00003B9A};
+//const z_list   k_65536B_z = {0x00003B9A, 0xCA000000};
 
 
 

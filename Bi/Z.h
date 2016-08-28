@@ -42,8 +42,13 @@ class Z
   typedef value_t::reverse_iterator         value_riter_t;
   typedef std::pair<size_type, size_type>   minmax_type;
 
+  typedef uint64_t                          bit_size_t;
+
   static const 
-    uint8_t   k_place_bits  = (sizeof(uint64_t)/2) * 8;
+    uint8_t   k_base_size   = (sizeof(uint64_t)/2) * 8;
+
+  static const 
+    uint8_t   k_word_size   = (sizeof(uint64_t) * 8);
 
   static const
     uint64_t  k_upper_mask  = 0xFFFFFFFF00000000;
@@ -56,7 +61,8 @@ public:
   //  ****************************************************************************
   /// Default Constructor
   Z()
-    : m_is_positive(true)
+    : m_value({0})
+    , m_is_positive(true)
   { }
 
   //  ****************************************************************************
@@ -270,6 +276,11 @@ public:
   ///   * Toom-3 and other dimensions
   ///   * Strassen (Potentially)
   ///
+  /// @note: Also plan to abstract implementations to use intrinsic
+  ///        compiler functions for both VS and GCC. Then have a default
+  ///        implementation that breaks up native-word blocks to perform
+  ///        calculations in standard C++ for portability.
+  ///
   Z&   operator*=(const Z& rhs)
   {
     const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
@@ -312,13 +323,87 @@ public:
   ///
   Z&   operator/=(const Z& rhs)
   {
-    const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
-    for (size_type index = 0; index < k_count; ++index)
+    // Divide-by-zero (amatuer hour)
+    if (rhs == 0)
     {
-      m_value[index] /= rhs.m_value[index];
+      // TODO: Determine how best to handle this. Possibly exception, or abort dependent upon the context.
+      zero();
+      return *this;
+    }
+    else if (rhs == 1)
+    {
+      // The identity element returns the dividend.
+      return *this;
     }
 
-    carry_value(m_value);
+    // If the divisor is larger, 
+    // it cannot be divided into the dividend.
+    Z_relation rel = compare_abs(rhs);
+    if (k_cmp_less == rel)
+    {
+      zero();
+      return *this;
+    }
+    else if (k_cmp_equal == rel)
+    {
+      *this = 1;
+      return *this;
+    }
+
+    // Determine final sign.
+    bool L_sign = m_is_positive;
+    m_is_positive = true;
+
+    // TODO: Using the extremely slow, yet functional "Subtract-and-shift" division algorithm for the moment.
+    bit_size_t dividend_bits  = bit_size( );
+    bit_size_t divisor_bits   = rhs.bit_size( );
+    uint64_t   iterations     = dividend_bits - divisor_bits;
+    
+    if (iterations > k_base_size)
+    {
+      uint64_t full_words = (iterations / k_base_size) / 2;
+      iterations = (full_words * k_base_size) + (iterations % k_base_size);
+    }
+
+    // Line up the divisor with the most significant bit of the dividend.
+    Z remainder(0);
+    Z div = rhs;
+
+    // Change the sign of this value if rhs is negative.
+    if (!rhs.m_is_positive)
+    {
+      div = -div;
+    }
+
+    div <<= iterations;
+
+    // The quotient will be stored in this objects buffers.
+    swap(remainder);
+
+    for (uint64_t i = 0; i <= iterations; ++i)
+    {
+      // Make space for the result of this round.
+      *this <<= 1;
+
+      if (div <= remainder)
+      {
+        *this += 1;
+
+        remainder -= div;
+      }
+
+      div >>= 1;
+    }
+
+    // Change the sign of this value if rhs is negative.
+    m_is_positive = L_sign;
+    if (!rhs.m_is_positive)
+    {
+      m_is_positive = !m_is_positive;
+    }
+
+    // Remove the upper blocks that equal 0.
+    adjust_storage();
 
     return *this;
   }
@@ -331,13 +416,67 @@ public:
   ///
   Z&   operator%=(const Z& rhs)
   {
-    const size_type k_count = std::min(m_value.size(), rhs.m_value.size());
-    for (size_type index = 0; index < k_count; ++index)
+    // Divide-by-zero (amatuer hour)
+    if (rhs == 0)
     {
-      m_value[index] %= rhs.m_value[index];
+      // TODO: Determine how best to handle this. Possibly exception, or abort dependent upon the context.
+      zero();
+      return *this;
+    }
+    else if (rhs == 1)
+    {
+      // The identity element does not produce a remainder.
+      zero();
+      return *this;
     }
 
-    carry_value(m_value);
+    // If the divisor is larger, 
+    // it cannot be divided into the dividend.
+    Z_relation rel = compare_abs(rhs);
+    if (k_cmp_less == rel)
+    {
+      return *this;
+    }
+    else if (k_cmp_equal == rel)
+    {
+      zero();
+      return *this;
+    }
+
+    // TODO: Using the extremely slow, yet functional "Subtract-and-shift" division algorithm for the moment.
+    bit_size_t dividend_bits  = bit_size( );
+    bit_size_t divisor_bits   = rhs.bit_size( );
+    uint64_t   iterations     = dividend_bits - divisor_bits;
+
+    // Line up the divisor with the most significant bit of the dividend.
+    Z quotient(0);
+    Z div = rhs;
+
+    div <<= iterations;
+
+    for (uint64_t i = 0; i <= iterations; ++i)
+    {
+      // Make space for the result of this round.
+      quotient <<= 1;
+
+      if (div <= *this)
+      {
+        quotient += 1;
+
+        *this -= div;
+      }
+
+      div >>= 1;
+    }
+
+    // Change the sign of this value if rhs is negative.
+    if (!rhs.m_is_positive)
+    {
+      m_is_positive = !m_is_positive;
+    }
+
+    // Remove the upper blocks that equal 0.
+    adjust_storage();
 
     return *this;
   }
@@ -409,6 +548,57 @@ public:
     return *this;
   }
 
+  //  Bit-shift Operations *******************************************************
+  //  ****************************************************************************
+  /// Unary logical left-shift and assign
+  ///
+  Z& operator<<=(uint64_t offset)
+  {
+    if (offset >= k_word_size)
+    {
+      uint64_t count = offset / k_base_size;
+      for (auto i = 0; i < count; ++i)
+      {
+        m_value.insert(m_value.begin( ), 0);
+      }
+
+      offset %= k_word_size;
+    }
+
+    shift_left_one_word(offset);
+    
+    return *this;
+  }
+
+  //  ****************************************************************************
+  /// Unary logical right-shift and assign
+  ///
+  Z& operator>>=(uint64_t offset)
+  {
+    if (offset >= k_word_size)
+    {
+      uint64_t count = offset / k_base_size;
+      // Prevent too many bits from being removed.
+      if (count >= m_value.size( ))
+      {
+        zero( );
+        return *this;
+      }
+
+      for (auto i = 0; i < count; ++i)
+      {
+        m_value.erase(m_value.begin( ));
+      }
+
+      offset %= k_word_size;
+    }
+
+    shift_right_one_word(offset);
+    
+    return *this;
+  }
+
+
   //  Methods ********************************************************************
   //  ****************************************************************************
   /// The contents of this integer are swapped with another integer rhs.
@@ -454,6 +644,30 @@ public:
     return m_is_positive;
   }
 
+  //  ****************************************************************************
+  /// Reports the size of the integer in bits.
+  ///
+  bit_size_t bit_size() const
+  {
+    bit_size_t count = 0;
+    size_type  words = m_value.size( );
+
+    if (words > 1)
+    {
+      count = words * k_base_size;
+    }
+
+    // Add the number of bits used in the highest order word.
+    T msw = m_value.back(); 
+    while (msw)
+    {
+      count++;
+      msw >>= 1;
+    }
+
+    return count;
+  }
+
 private:
   //  Member data ****************************************************************
   value_t   m_value;        ///<  Buffer that contains integer data.
@@ -494,7 +708,6 @@ private:
               : k_cmp_less_sign_diff;
     }
 
-    if (m_is_positive)
     // The result changes based on if the values are positive or negative.
     if (m_value.size() > rhs.m_value.size())
     {
@@ -502,6 +715,13 @@ private:
               ? k_cmp_greater_sign_same
               : k_cmp_less_sign_same;
     }
+    else if (m_value.size() < rhs.m_value.size())
+    {
+      return  m_is_positive
+              ? k_cmp_less_sign_same
+              : k_cmp_greater_sign_same;
+    }
+
 
     // Start at the end (highest-order values), 
     // search for the first element that is not equal.
@@ -532,6 +752,10 @@ private:
     if (m_value.size() > rhs.m_value.size())
     {
       return k_cmp_greater;
+    }
+    else if (m_value.size() < rhs.m_value.size())
+    {
+      return k_cmp_less;
     }
 
     // Start at the end (highest-order values), 
@@ -564,7 +788,7 @@ private:
   //  ****************************************************************************
   T calculate_overflow(const T value)
   {
-    return value >> k_place_bits;
+    return value >> k_base_size;
   }
 
   //  ****************************************************************************
@@ -661,11 +885,11 @@ private:
 
 
   //  ****************************************************************************
-  /// A common template for the selection of correct operation for integer sign
-  /// selection with addition and subtraction operations. If the signs of the 
-  /// numbers differ, it is important to determine the relative magnitude of 
-  /// each integer to perform the actual calculation.
-  ///
+  //  A common template for the selection of correct operation for integer sign
+  //  selection with addition and subtraction operations. If the signs of the 
+  //  numbers differ, it is important to determine the relative magnitude of 
+  //  each integer to perform the actual calculation.
+  // 
   template <typename OpT>
   void add_and_substract(const Z &rhs)
   {
@@ -697,7 +921,78 @@ private:
     }
   }
 
+  //  ****************************************************************************
+  //  Shifts the contents to the left, at most, by one word.
+  //
+  void shift_left_one_word(uint64_t offset)
+  {
+    if (0 == offset)
+      return;
+
+    T bits = 0;
+
+    uint64_t opposite = ((sizeof(T) * 8) - offset);
+    for (auto &word : m_value)
+    {
+      uint64_t prev = bits;
+
+      bits = word >> opposite;
+      word <<= offset;
+      word |= prev;
+    }
+
+    carry_value(m_value);
+  }
+
+
+  //  ****************************************************************************
+  //  Shifts the contents to the right, at most, by one word.
+  //
+  void shift_right_one_word(uint64_t offset)
+  {
+    if (0 == offset)
+      return;
+
+    T bits = 0;
+
+    uint64_t opposite;
+    if (offset > k_base_size)
+    {
+      opposite = k_word_size - offset;
+
+      for (auto iter = m_value.rbegin(); iter != m_value.rend(); ++iter)
+      {
+        auto &word = *iter;
+
+        uint64_t prev = bits;
+
+        bits = word << opposite;
+        word >>= offset;
+        word |= (prev >> k_base_size);
+      }
+    }
+    else
+    {
+      opposite = k_base_size - offset;
+
+      for (auto iter = m_value.rbegin(); iter != m_value.rend(); ++iter)
+      {
+        auto &word = *iter;
+
+        uint64_t prev = bits;
+
+        bits = word << opposite;
+        word >>= offset;
+        word |= (prev & k_lower_mask);
+      }
+    }
+
+    adjust_storage();
+  }
+
 };
+
+
 
 
 

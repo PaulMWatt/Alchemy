@@ -175,7 +175,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Bi\gcd.h" />
     <ClInclude Include="..\..\Bi\Z.h" />
     <ClInclude Include="..\..\Bi\Zp.h" />
-    <ClInclude Include="..\..\Bi\Z_functions.h" />
+    <ClInclude Include="..\..\Bi\N_functions.h" />
     <ClInclude Include="..\..\Bi\Z_operators.h" />
     <ClInclude Include="BiTestIntegers.h" />
     <ClInclude Include="Src\BiTestSuite.h" />
@@ -188,6 +188,7 @@ cd "../.."</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Bi\Z.cpp" />
+    <ClCompile Include="N_functions.cpp" />
     <ClCompile Include="Src\Generated\BiTestSuiteRunner.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

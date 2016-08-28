@@ -442,41 +442,143 @@ public:
  void runTest() { suite_BiTestSuite.Test_unary_mul_diff_sign_R_neg(); }
 } testDescription_suite_BiTestSuite_Test_unary_mul_diff_sign_R_neg;
 
-static class TestDescription_suite_BiTestSuite_Test_unary_div : public CxxTest::RealTestDescription {
+static class TestDescription_suite_BiTestSuite_Test_unary_div_identity : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_unary_div() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 185, "Test_unary_div" ) {}
- void runTest() { suite_BiTestSuite.Test_unary_div(); }
-} testDescription_suite_BiTestSuite_Test_unary_div;
+ TestDescription_suite_BiTestSuite_Test_unary_div_identity() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 185, "Test_unary_div_identity" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_div_identity(); }
+} testDescription_suite_BiTestSuite_Test_unary_div_identity;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_div_zero : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_div_zero() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 186, "Test_unary_div_zero" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_div_zero(); }
+} testDescription_suite_BiTestSuite_Test_unary_div_zero;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_div_same_sign_pos : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_div_same_sign_pos() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 187, "Test_unary_div_same_sign_pos" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_div_same_sign_pos(); }
+} testDescription_suite_BiTestSuite_Test_unary_div_same_sign_pos;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_div_same_sign_neg : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_div_same_sign_neg() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 188, "Test_unary_div_same_sign_neg" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_div_same_sign_neg(); }
+} testDescription_suite_BiTestSuite_Test_unary_div_same_sign_neg;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_div_diff_sign_L_neg : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_div_diff_sign_L_neg() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 189, "Test_unary_div_diff_sign_L_neg" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_div_diff_sign_L_neg(); }
+} testDescription_suite_BiTestSuite_Test_unary_div_diff_sign_L_neg;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_div_diff_sign_R_neg : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_div_diff_sign_R_neg() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 190, "Test_unary_div_diff_sign_R_neg" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_div_diff_sign_R_neg(); }
+} testDescription_suite_BiTestSuite_Test_unary_div_diff_sign_R_neg;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_div_divisor_larger : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_div_divisor_larger() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 191, "Test_unary_div_divisor_larger" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_div_divisor_larger(); }
+} testDescription_suite_BiTestSuite_Test_unary_div_divisor_larger;
+
+static class TestDescription_suite_BiTestSuite_Test_unary_div_divisor_equal : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_unary_div_divisor_equal() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 192, "Test_unary_div_divisor_equal" ) {}
+ void runTest() { suite_BiTestSuite.Test_unary_div_divisor_equal(); }
+} testDescription_suite_BiTestSuite_Test_unary_div_divisor_equal;
 
 static class TestDescription_suite_BiTestSuite_Test_unary_mod : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_unary_mod() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 188, "Test_unary_mod" ) {}
+ TestDescription_suite_BiTestSuite_Test_unary_mod() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 195, "Test_unary_mod" ) {}
  void runTest() { suite_BiTestSuite.Test_unary_mod(); }
 } testDescription_suite_BiTestSuite_Test_unary_mod;
 
 static class TestDescription_suite_BiTestSuite_Test_not : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_not() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 191, "Test_not" ) {}
+ TestDescription_suite_BiTestSuite_Test_not() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 198, "Test_not" ) {}
  void runTest() { suite_BiTestSuite.Test_not(); }
 } testDescription_suite_BiTestSuite_Test_not;
 
 static class TestDescription_suite_BiTestSuite_Test_and_eq : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_and_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 192, "Test_and_eq" ) {}
+ TestDescription_suite_BiTestSuite_Test_and_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 199, "Test_and_eq" ) {}
  void runTest() { suite_BiTestSuite.Test_and_eq(); }
 } testDescription_suite_BiTestSuite_Test_and_eq;
 
 static class TestDescription_suite_BiTestSuite_Test_or_eq : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_or_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 193, "Test_or_eq" ) {}
+ TestDescription_suite_BiTestSuite_Test_or_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 200, "Test_or_eq" ) {}
  void runTest() { suite_BiTestSuite.Test_or_eq(); }
 } testDescription_suite_BiTestSuite_Test_or_eq;
 
 static class TestDescription_suite_BiTestSuite_Test_xor_eq : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_BiTestSuite_Test_xor_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 194, "Test_xor_eq" ) {}
+ TestDescription_suite_BiTestSuite_Test_xor_eq() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 201, "Test_xor_eq" ) {}
  void runTest() { suite_BiTestSuite.Test_xor_eq(); }
 } testDescription_suite_BiTestSuite_Test_xor_eq;
+
+static class TestDescription_suite_BiTestSuite_Test_lshift_eq_0 : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_lshift_eq_0() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 205, "Test_lshift_eq_0" ) {}
+ void runTest() { suite_BiTestSuite.Test_lshift_eq_0(); }
+} testDescription_suite_BiTestSuite_Test_lshift_eq_0;
+
+static class TestDescription_suite_BiTestSuite_Test_lshift_eq_1 : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_lshift_eq_1() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 206, "Test_lshift_eq_1" ) {}
+ void runTest() { suite_BiTestSuite.Test_lshift_eq_1(); }
+} testDescription_suite_BiTestSuite_Test_lshift_eq_1;
+
+static class TestDescription_suite_BiTestSuite_Test_lshift_eq_word_boundary : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_lshift_eq_word_boundary() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 207, "Test_lshift_eq_word_boundary" ) {}
+ void runTest() { suite_BiTestSuite.Test_lshift_eq_word_boundary(); }
+} testDescription_suite_BiTestSuite_Test_lshift_eq_word_boundary;
+
+static class TestDescription_suite_BiTestSuite_Test_lshift_eq_new_word : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_lshift_eq_new_word() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 208, "Test_lshift_eq_new_word" ) {}
+ void runTest() { suite_BiTestSuite.Test_lshift_eq_new_word(); }
+} testDescription_suite_BiTestSuite_Test_lshift_eq_new_word;
+
+static class TestDescription_suite_BiTestSuite_Test_lshift_eq_multiple_words : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_lshift_eq_multiple_words() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 209, "Test_lshift_eq_multiple_words" ) {}
+ void runTest() { suite_BiTestSuite.Test_lshift_eq_multiple_words(); }
+} testDescription_suite_BiTestSuite_Test_lshift_eq_multiple_words;
+
+static class TestDescription_suite_BiTestSuite_Test_rshift_eq_0 : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_rshift_eq_0() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 211, "Test_rshift_eq_0" ) {}
+ void runTest() { suite_BiTestSuite.Test_rshift_eq_0(); }
+} testDescription_suite_BiTestSuite_Test_rshift_eq_0;
+
+static class TestDescription_suite_BiTestSuite_Test_rshift_eq_1 : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_rshift_eq_1() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 212, "Test_rshift_eq_1" ) {}
+ void runTest() { suite_BiTestSuite.Test_rshift_eq_1(); }
+} testDescription_suite_BiTestSuite_Test_rshift_eq_1;
+
+static class TestDescription_suite_BiTestSuite_Test_rshift_eq_word_boundary : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_rshift_eq_word_boundary() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 213, "Test_rshift_eq_word_boundary" ) {}
+ void runTest() { suite_BiTestSuite.Test_rshift_eq_word_boundary(); }
+} testDescription_suite_BiTestSuite_Test_rshift_eq_word_boundary;
+
+static class TestDescription_suite_BiTestSuite_Test_rshift_eq_remove_word : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_rshift_eq_remove_word() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 214, "Test_rshift_eq_remove_word" ) {}
+ void runTest() { suite_BiTestSuite.Test_rshift_eq_remove_word(); }
+} testDescription_suite_BiTestSuite_Test_rshift_eq_remove_word;
+
+static class TestDescription_suite_BiTestSuite_Test_rshift_eq_multiple_words : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_BiTestSuite_Test_rshift_eq_multiple_words() : CxxTest::RealTestDescription( Tests_BiTestSuite, suiteDescription_BiTestSuite, 215, "Test_rshift_eq_multiple_words" ) {}
+ void runTest() { suite_BiTestSuite.Test_rshift_eq_multiple_words(); }
+} testDescription_suite_BiTestSuite_Test_rshift_eq_multiple_words;
 
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";
