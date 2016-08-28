@@ -182,7 +182,14 @@ public:
   void Test_unary_mul_diff_sign_R_neg(void);
 
   //  Arithmetic: Division ********************************************************
-  void Test_unary_div(void);
+  void Test_unary_div_identity(void);
+  void Test_unary_div_zero(void);
+  void Test_unary_div_same_sign_pos(void);
+  void Test_unary_div_same_sign_neg(void);
+  void Test_unary_div_diff_sign_L_neg(void);
+  void Test_unary_div_diff_sign_R_neg(void);
+  void Test_unary_div_divisor_larger(void);
+  void Test_unary_div_divisor_equal(void);
 
   //  Arithmetic: Modulus *********************************************************
   void Test_unary_mod(void);
@@ -192,8 +199,20 @@ public:
   void Test_and_eq(void);
   void Test_or_eq(void);
   void Test_xor_eq(void);
-  void Test_lshift_eq(void);
-  void Test_rshift_eq(void);
+
+
+  //  Bit Manipulation ************************************************************
+  void Test_lshift_eq_0(void);
+  void Test_lshift_eq_1(void);
+  void Test_lshift_eq_word_boundary(void);
+  void Test_lshift_eq_new_word(void);
+  void Test_lshift_eq_multiple_words(void);
+
+  void Test_rshift_eq_0(void);
+  void Test_rshift_eq_1(void);
+  void Test_rshift_eq_word_boundary(void);
+  void Test_rshift_eq_remove_word(void);
+  void Test_rshift_eq_multiple_words(void);
 
 
   //  Other ***********************************************************************
@@ -1033,11 +1052,103 @@ void BiTestSuite::Test_unary_mul_diff_sign_R_neg(void)
 
 //  Division ********************************************************************
 //  *****************************************************************************
-void BiTestSuite::Test_unary_div(void)
+void BiTestSuite::Test_unary_div_identity(void)
+{
+  Bi::Z lhs = k_256B_z;
+  Bi::Z rhs = 1;
+  Bi::Z k_expected = k_256B_z;
+
+  // SUT
+  Bi::Z sut = lhs / rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_div_zero(void)
+{
+  Bi::Z lhs = 8192;
+  Bi::Z rhs = 0;
+  Bi::Z k_expected = 0;
+
+  // SUT
+  Bi::Z sut = lhs / rhs;
+
+  // TODO: This code needs an error handling policy. For now it returns 0.
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_div_same_sign_pos(void)
+{
+  Bi::Z lhs = k_65536B_z;
+  Bi::Z rhs = k_256B_z;
+  Bi::Z k_expected = 256;
+
+  // SUT
+  Bi::Z sut = lhs / rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_div_same_sign_neg(void)
+{
+  Bi::Z lhs = k_24B_z;
+  Bi::Z rhs = k_8B_z;
+  Bi::Z k_expected = 3;
+
+  // SUT
+  Bi::Z sut = (-lhs) / (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_div_diff_sign_L_neg(void)
+{
+  Bi::Z lhs = k_24B_z;
+  Bi::Z rhs = 3;
+  Bi::Z k_expected = -Bi::Z(k_8B_z);
+
+  // SUT
+  Bi::Z sut = (-lhs) / rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_div_diff_sign_R_neg(void)
 {
   Bi::Z lhs = 8192;
   Bi::Z rhs = 1024;
-  Bi::Z k_expected = 8192 / 1024;
+  Bi::Z k_expected = -Bi::Z(8);
+
+  // SUT
+  Bi::Z sut = lhs / (-rhs);
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_div_divisor_larger(void)
+{
+  Bi::Z lhs = k_8B_z;
+  Bi::Z rhs = k_24B_z;
+  Bi::Z k_expected = 0;
+
+  // SUT
+  Bi::Z sut = lhs / rhs;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_unary_div_divisor_equal(void)
+{
+  Bi::Z lhs = k_24B_z;
+  Bi::Z rhs = k_24B_z;
+  Bi::Z k_expected = 1;
 
   // SUT
   Bi::Z sut = lhs / rhs;
@@ -1110,27 +1221,133 @@ void BiTestSuite::Test_xor_eq(void)
   TS_ASSERT_EQUALS(even, sut);
 }
 
+//  Bit-Shift Tests *************************************************************
 //  *****************************************************************************
-void BiTestSuite::Test_lshift_eq(void)
+void BiTestSuite::Test_lshift_eq_0(void)
 {
-  const Bi::Z k_expected = k_65536B_z;
-  Bi::Z sut = k_256B_z;
+  const Bi::Z k_expected = k_16B_z;
+  Bi::Z sut = k_16B_z;
 
   // SUT 
-  sut <<= 8;
+  sut <<= 0;
 
   TS_ASSERT_EQUALS(k_expected, sut);
 }
 
 //  *****************************************************************************
-void BiTestSuite::Test_rshift_eq(void)
+void BiTestSuite::Test_lshift_eq_1(void)
 {
-  const Bi::Z k_expected = k_1B;
-  Bi::Z sut = k_256B_z;
+ const Bi::Z k_expected = k_32B_z;
+  Bi::Z sut = k_16B_z;
 
   // SUT 
-  sut >>= 8;
+  sut <<= 1;
 
   TS_ASSERT_EQUALS(k_expected, sut);
 }
+
+//  *****************************************************************************
+void BiTestSuite::Test_lshift_eq_word_boundary(void)
+{
+  const Bi::Z k_expected = k_9EB_z;
+  Bi::Z sut = 1;
+
+  // SUT 
+  sut <<= 63;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_lshift_eq_new_word(void)
+{
+  const Bi::Z k_expected = k_18EB_z;
+  Bi::Z sut = 1;
+
+  // SUT 
+  sut <<= 64;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_lshift_eq_multiple_words(void)
+{
+  const Bi::Z k_expected = {0x00000000, 0x00000000, 0x00000000, 
+                            0x00000000, 0x00000000, 0x00000000, 
+                            0x00000001};
+  Bi::Z sut = 1;
+
+  // SUT 
+  // Insert 2.5 64-bit words
+  sut <<= 160;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_rshift_eq_0(void)
+{
+  const Bi::Z k_expected = k_16B_z;
+  Bi::Z sut = k_16B_z;
+
+  // SUT 
+  sut >>= 0;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_rshift_eq_1(void)
+{
+ const Bi::Z k_expected = k_16B_z;
+  Bi::Z sut = k_32B_z;
+
+  // SUT 
+  sut >>= 1;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_rshift_eq_word_boundary(void)
+{
+  const Bi::Z k_expected = 1;
+  Bi::Z sut = k_4_5EB_z;
+
+  // SUT 
+  sut >>= 62;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_rshift_eq_remove_word(void)
+{
+  const Bi::Z k_expected = 1;
+  Bi::Z sut = k_18EB_z;
+
+  // SUT 
+  sut >>= 64;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+//  *****************************************************************************
+void BiTestSuite::Test_rshift_eq_multiple_words(void)
+{
+  const Bi::Z k_expected = 0x80000001ull;
+
+  Bi::Z sut = { 0x00000000, 0x00000000, 0x00000000, 
+                0x00000000, 0x00000000, 0x00000000, 
+                0x80000001};
+
+  // SUT 
+  // reduce by 2.5 64-bit words
+  sut >>= 160;
+
+  TS_ASSERT_EQUALS(k_expected, sut);
+}
+
+
 #endif
