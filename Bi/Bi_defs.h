@@ -8,6 +8,8 @@
 #ifndef BI_DEFS_H_INCLUDED
 #define BI_DEFS_H_INCLUDED
 //  Includes *******************************************************************
+#include <vector>
+#include <utility>
 
 namespace Bi
 {

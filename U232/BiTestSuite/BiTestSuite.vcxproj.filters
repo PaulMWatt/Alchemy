@@ -41,9 +41,6 @@
     <ClInclude Include="..\..\Bi\Z.h">
       <Filter>Header Files\Alchemy\Bi</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Bi\gcd.h">
-      <Filter>Header Files\Alchemy\Bi</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Bi\discrete_logarithm.h">
       <Filter>Header Files\Alchemy\Bi</Filter>
     </ClInclude>
@@ -59,6 +56,12 @@
     <ClInclude Include="..\..\Bi\N_functions.h">
       <Filter>Header Files\Alchemy\Bi</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Bi\NT.h">
+      <Filter>Header Files\Alchemy\Bi</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Bi_NumberTheory_Fns_TestSuite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Generated\BiTestSuiteRunner.cpp">
@@ -67,13 +70,13 @@
     <ClCompile Include="..\..\Bi\discrete_logarithm.cpp">
       <Filter>Source Files\Alchemy\Bi</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Bi\gcd.cpp">
-      <Filter>Source Files\Alchemy\Bi</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Bi\Z.cpp">
       <Filter>Source Files\Alchemy\Bi</Filter>
     </ClCompile>
     <ClCompile Include="N_functions.cpp">
+      <Filter>Source Files\Alchemy\Bi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Bi\NT.cpp">
       <Filter>Source Files\Alchemy\Bi</Filter>
     </ClCompile>
   </ItemGroup>

@@ -39,6 +39,7 @@
 #include <Bi/Z.h>
 #include <Bi/Z_operators.h>
 #include <Bi/N_functions.h>
+#include <Bi/NT.h>
 
 #include <Bi/Zp.h>
 
