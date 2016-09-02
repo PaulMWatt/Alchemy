@@ -172,19 +172,20 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Bi.h" />
     <ClInclude Include="..\..\Bi\Bi_defs.h" />
     <ClInclude Include="..\..\Bi\discrete_logarithm.h" />
-    <ClInclude Include="..\..\Bi\gcd.h" />
+    <ClInclude Include="..\..\Bi\NT.h" />
     <ClInclude Include="..\..\Bi\Z.h" />
     <ClInclude Include="..\..\Bi\Zp.h" />
     <ClInclude Include="..\..\Bi\N_functions.h" />
     <ClInclude Include="..\..\Bi\Z_operators.h" />
     <ClInclude Include="BiTestIntegers.h" />
     <ClInclude Include="Src\BiTestSuite.h" />
+    <ClInclude Include="Src\Bi_NumberTheory_Fns_TestSuite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Bi\discrete_logarithm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\Bi\gcd.cpp">
+    <ClCompile Include="..\..\Bi\NT.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Bi\Z.cpp" />

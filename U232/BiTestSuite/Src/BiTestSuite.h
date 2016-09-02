@@ -1,12 +1,11 @@
 /// @file BiTestSuite.h
 ///
-/// Test Fixture for Lithium library -
+/// Test Fixture for Bismuth library -
 /// (Bi) Big Integers
 /// 
-/// @author Paul
-/// @date   2016.8.5: Paul    -- Initial release.
-///
-/// TODO: Update with an appropriate license copyright 2016
+/// The MIT License(MIT)
+/// 
+/// @copyright 2014 Paul M Watt
 ///
 ///  Verify data with these TEST ASSERTIONS:
 ///
