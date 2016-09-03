@@ -39,15 +39,19 @@ namespace Bi
 typedef std::pair<int, int> value_t;
 
 //  ***************************************************************************
-template <typename T>
-struct NT_gcd_ex_t
-{
-  T coef;
-  T denom;
-};
+/// Stores the return value for a call to the extended GCD function.
+/// 
+//template <typename T>
+//struct NT_gcd_ex_t
+//{
+//  T coef;     ///< The coefficient for the lhs parameter
+//  T denom;    ///< The GCD between the lhs and rhs parameters
+//};
 
 
 //  ***************************************************************************
+/// This type is a templated parallel for the version in std:: called div_t.
+///
 template <typename T>
 struct NT_div_t
 {
@@ -58,13 +62,11 @@ struct NT_div_t
 
 
 //  Explicit Instantitation ***************************************************
-using gcd_ex_Z_t  = NT_gcd_ex_t<Z>;
+using gcd_ex_Z_t  = std::pair<Z, Z>;
 using div_Z_t     = NT_div_t<Z>;
-
+using coef_Z_t    = std::pair<Z, Z>;
 
 //  Factorization *************************************************************
-//  TODO: 
-
 //  ***************************************************************************
 /// Calculates the gcd of a and b.
 ///
@@ -97,14 +99,15 @@ T gcd(T lhs, T rhs)
 /// @param[in] rhs  The second parameter to use in the GCD calculation.
 /// 
 /// @return   A pair that indicates results.
-///           The first parameter contains the solution to 'x' in the expression:
+///           return.coef contains the solution to 'x' in the expression:
 ///
 ///              ax + by = gcd(a,b)
 ///
-///           The second parameter contains the gcd(a,b)
+///           return.denom contains the gcd(a,b). 
+///           A value of 1 indicates they are coprime.
 /// 
 template <typename T>
-NT_gcd_ex_t<T> gcd_ex(T lhs, T rhs)
+std::pair<T, T> gcd_ex(T lhs, T rhs)
 {
   T x0 = 1;
   T x1 = 0;
@@ -130,40 +133,94 @@ NT_gcd_ex_t<T> gcd_ex(T lhs, T rhs)
 }
 
 //  ***************************************************************************
-/// This algorithm uses Bezout's Identity to solve for the coefficients (x,y)
-/// in the following equation:
+/// Calculates the gcd of a and b using the extended euclidean method.
+/// This implementation specifically handles types: int and int64_t
 ///
-///     ax + by = gcd(a,b)  ->   ax = 1 mod(b)
-///                         ->    y = (gcd(a,b)-ax) / b
-///
-/// Source: "From Mathematics to Generic Programming", pg 225
+/// @param[in] lhs  The first parameter to use in the GCD calculation.
+/// @param[in] rhs  The second parameter to use in the GCD calculation.
 /// 
-value_t solve_gcd_coefficients(int a, int b);
-
-//  ***************************************************************************
-/// Square and multiply from Stinson
+/// @return   A pair that indicates results.
+///           return.coef contains the solution to 'x' in the expression:
 ///
-uint16_t square_and_multiply(uint16_t x, uint16_t c, uint16_t n);
-
-//  ***************************************************************************
-uint64_t square_and_multiply(uint64_t x, uint64_t c, uint64_t n);
+///              ax + by = gcd(a,b)
+///
+///           return.denom contains the gcd(a,b). 
+///           A value of 1 indicates they are coprime.
+/// 
+std::pair<int, int> gcd_ex(int lhs, int rhs);
+std::pair<int64_t, int64_t> gcd_ex(int64_t lhs, int64_t rhs);
 
 //  Primality Testing *********************************************************
 
 //  Modulus Operations ********************************************************
-//  TODO: Chinese Remainder Theorem
-//        Modular Inverse
-//
 //  ***************************************************************************
 /// Calculates the multiplicative inverse of a mod(n).
 ///
-int multiplicative_inverse(int a, int n);
+template <typename T>
+T multiplicative_inverse(T a, T n)
+{
+  std::pair<T, T> p = gcd_ex(a, n);
+
+  if (p.second != 1)
+    return 0;
+
+  if (p.first < 0)
+    return p.first + n;
+
+  return p.first;
+}
+
+
+//  ***************************************************************************
+/// Calculates the multiplicative inverse of a mod(n).
+/// This is a instance created for convenience.
+///   Refer to: multiplicative_inverse
+///
+template <typename T>
+T mod_inv(T a, T n)
+{
+  return multiplicative_inverse(a, n);
+}
 
 //  ***************************************************************************
 /// Calculates the chinese remainder from two lists of pairwise coprime values.
+/// The input vectors must be the same length as the algorithm interprets 
+/// these values pairwise matches.
 ///
-int chinese_remainder(const std::vector<int> &a,
-                      const std::vector<int> &m);
+/// param[in] a   The first list of coprime values.
+/// param[in] n   The second list of coprime values. 
+///
+///
+///
+template <typename T>
+T chinese_remainder(const std::vector<T> &a,
+                    const std::vector<T> &m)
+{
+  if (a.size() != m.size())
+    return 0;
+
+  // This value is the product of all of the elements in m.
+  T M = 1;
+  for (auto i : m)
+  {
+    M *= i;
+  }
+
+  T sum = 0;
+  const size_t r = a.size();
+
+  for (size_t i = 0; i < r; ++i)
+  {
+    T Mi  = M / m[i];
+    T yi  = multiplicative_inverse(Mi, m[i]);
+
+    sum  += a[i] * Mi * yi;
+  }
+
+  // The result is the accumulated sum modulo M.
+  return sum % M;
+}
+
 
 
 //  Number Generators *********************************************************
@@ -176,6 +233,11 @@ int chinese_remainder(const std::vector<int> &a,
 //  ***************************************************************************
 int pollard_rho_factorization(int n, uint64_t x);
 
+
+
+
+//  Alias definitions for call convenience ************************************
+//  TODO: Add aliases for calls such as the chinese remainder theorem (CRT)
 
 
 } // namespace Bi

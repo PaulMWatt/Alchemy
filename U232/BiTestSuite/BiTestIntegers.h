@@ -100,6 +100,7 @@ const z_list   k_18EB_z  = {0x00000000, 0x00000000, 0x00000001};
 
 const uint64_t k_1M     = 0x000F4240;
 const uint64_t k_1B     = 0x3B9ACA00;
+const uint64_t k_2B     = 0x77359400;
 const uint64_t k_4B     = 0xEE6B2800;
           
 const uint64_t k_8B_00  = 0xDCD65000;
@@ -127,6 +128,12 @@ const uint64_t k_32B    = 0x0000000773594000;
 const z_list   k_32B_z  = {0x73594000, 0x00000007};
 //const z_list   k_32B_z = {0x00000007, 0x73594000};
 
+const uint32_t k_56B_00 = 0x09DC3000;
+const uint32_t k_56B_01 = 0x0000000D;
+const uint64_t k_56B    = 0x0000000D09DC3000;
+const z_list   k_56B_z  = {0x09DC3000, 0x0000000D};
+//const z_list   k_56B_z = {0x0000000D, 0x09DC3000};
+
 const uint32_t k_64B_00 = 0xE6B28000;
 const uint32_t k_64B_01 = 0x0000000E;
 const uint64_t k_64B    = 0x0000000EE6B28000;
@@ -144,6 +151,12 @@ const uint32_t k_256B_01 = 0x0000003B;
 const uint64_t k_256B = 0x0000003B9ACA0000;
 const z_list   k_256B_z = {0x9ACA0000, 0x0000003B};
 //const z_list   k_256B_z = {0x0000003B, 0x9ACA0000};
+
+const uint32_t k_722B_00 = 0x1A8DB400;
+const uint32_t k_722B_01 = 0x000000A8;
+const uint64_t k_722B = 0x000000A81A8DB400;
+const z_list   k_722B_z = {0x1A8DB400, 0x000000A8};
+//const z_list   k_722B_z = {0x000000A8, 0x1A8DB400};
 
 const uint32_t k_65536B_00 = 0xCA000000;
 const uint32_t k_65536B_01 = 0x00003B9A;

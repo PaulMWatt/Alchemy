@@ -21,83 +21,50 @@ namespace Bi
 {
 
 //  ***************************************************************************
+std::pair<int, int> gcd_ex(int lhs, int rhs)
+{
+  int x0 = 1;
+  int x1 = 0;
+
+  while (rhs != 0)
+  {
+    div_t result = std::div(lhs, rhs);
+    
+    int x2 = x0 - (result.quot * x1);
+
+    x0 = x1;
+    x1 = x2;
+
+    lhs = rhs;
+    rhs = result.rem;
+  }
+
+  return {x0, lhs};
+}
+
+//  ***************************************************************************
+std::pair<int64_t, int64_t> gcd_ex(int64_t lhs, int64_t rhs)
+{
+  int64_t x0 = 1;
+  int64_t x1 = 0;
+
+  while (rhs != 0)
+  {
+    lldiv_t result = std::lldiv(lhs, rhs);
+    
+    int64_t x2 = x0 - (result.quot * x1);
+
+    x0 = x1;
+    x1 = x2;
+
+    lhs = rhs;
+    rhs = result.rem;
+  }
+
+  return {x0, lhs};
+}
 
 
-
-////  ***************************************************************************
-//value_t solve_gcd_coefficients(int a, int b)
-//{
-//  value_t result = gcd_ex(a,b);
-//
-//  // If the gcd != 1, then there was a common factor
-//  // and both a and b need to be divided to coprime values.
-//  if (result.second != 1)
-//  { 
-//    a /= result.second;
-//    b /= result.second;
-//
-//    // The gcd is now 1.
-//    result.second = 1;
-//  }
-//
-//  int gcd = result.second;
-//  int x   = result.first;
-//  int y   = (gcd - a * x) / b;
-//
-//  // This step ensures that both values are reported 
-//  // as positive coefficients.
-//  return {(x+b)%b, (y+a)%a};
-//}
-//
-//
-//
-////  ***************************************************************************
-//int multiplicative_inverse(int a, int n)
-//{
-//  value_t p = gcd_ex(a, n);
-//
-//  if (p.second != 1)
-//    return 0;
-//
-//  if (p.first < 0)
-//    return p.first + n;
-//
-//  return p.first;
-//}
-//
-//
-////  ***************************************************************************
-///// Calculates the chinese remainder from two lists of pairwise coprime values.
-/////
-//int chinese_remainder(const vector<int> &a, 
-//                      const vector<int> &m)
-//{
-//  if (a.size() != m.size())
-//    return 0;
-//
-//  // This value is the product of all of the elements in m.
-//  int M = 1;
-//  for (auto i : m)
-//  {
-//    M *= i;
-//  }
-//
-//  long long     sum = 0;
-//  const size_t  r   = a.size();
-//
-//  for (size_t i = 0; i < r; ++i)
-//  {
-//    int Mi  = M / m[i];
-//    int yi  = multiplicative_inverse(Mi, m[i]);
-//
-//    sum    += a[i] * Mi * yi;
-//  }
-//
-//  // The result is the accumulated sum modulo M.
-//  return sum % M;
-//}
-//
-//
 ////  ***************************************************************************
 ///// Creates a binary reflection of the input.
 ///// Returns the number of bits used to represent the original number.

@@ -70,7 +70,7 @@ public:
   ///
   Z(const Z& rhs)
     : m_value(rhs.m_value)
-    , m_is_positive(rhs.m_is_positive)
+    , m_is_positive(rhs.sign_bit())
   { }
 
   //  ****************************************************************************
@@ -78,7 +78,7 @@ public:
   ///
   Z(Z&& rhs)
     : m_value(std::move(rhs.m_value))
-    , m_is_positive(std::move(rhs.m_is_positive))
+    , m_is_positive(std::move(rhs.sign_bit()))
   { }
   
   //  ****************************************************************************
@@ -139,7 +139,7 @@ public:
   Z&  operator=  (const Z& rhs)
   {
     m_value       = rhs.m_value;
-    m_is_positive = rhs.m_is_positive;
+    m_is_positive = rhs.sign_bit();
     return *this;
   }
 
@@ -149,7 +149,7 @@ public:
   Z& operator=  (Z&& rhs)
   {
     m_value       = std::move(rhs.m_value);
-    m_is_positive = std::move(rhs.m_is_positive);
+    m_is_positive = std::move(rhs.sign_bit());
 
     return *this;
   }
@@ -179,7 +179,7 @@ public:
   ///
   bool operator==(const Z& rhs) const
   {
-    if (m_is_positive != rhs.m_is_positive)
+    if (sign_bit() != rhs.sign_bit())
       return false;
 
     if (m_value != rhs.m_value) 
@@ -238,7 +238,7 @@ public:
   ///
   Z&   operator- ()
   {
-    m_is_positive = !m_is_positive;
+    negate( );
     return *this;
   }
 
@@ -304,9 +304,9 @@ public:
     m_value = sum.m_value;
 
     // Change the sign of this value if rhs is negative.
-    if (!rhs.m_is_positive)
+    if (!rhs.sign_bit())
     {
-      m_is_positive = !m_is_positive;
+      m_is_positive = !sign_bit();
     }
 
     // Remove the upper blocks that equal 0.
@@ -351,7 +351,7 @@ public:
     }
 
     // Determine final sign.
-    bool L_sign = m_is_positive;
+    bool L_sign = sign_bit();
     m_is_positive = true;
 
     // TODO: Using the extremely slow, yet functional "Subtract-and-shift" division algorithm for the moment.
@@ -370,7 +370,7 @@ public:
     Z div = rhs;
 
     // Change the sign of this value if rhs is negative.
-    if (!rhs.m_is_positive)
+    if (!rhs.sign_bit())
     {
       div = -div;
     }
@@ -397,9 +397,9 @@ public:
 
     // Change the sign of this value if rhs is negative.
     m_is_positive = L_sign;
-    if (!rhs.m_is_positive)
+    if (!rhs.sign_bit())
     {
-      m_is_positive = !m_is_positive;
+      m_is_positive = !sign_bit();
     }
 
     // Remove the upper blocks that equal 0.
@@ -431,7 +431,7 @@ public:
     }
 
     // Determine final sign.
-    bool L_sign = m_is_positive;
+    bool L_sign = sign_bit();
     m_is_positive = true;
 
     // If the divisor is larger, 
@@ -463,7 +463,7 @@ public:
     Z div = rhs;
 
     // Change the sign of this value if rhs is negative.
-    if (!rhs.m_is_positive)
+    if (!rhs.sign_bit())
     {
       div = -div;
     }
@@ -487,9 +487,9 @@ public:
 
     // Change the sign of this value if rhs is negative.
     m_is_positive = L_sign;
-    if (!rhs.m_is_positive)
+    if (!rhs.sign_bit())
     {
-      m_is_positive = !m_is_positive;
+      m_is_positive = !sign_bit();
     }
 
     // Remove the upper blocks that equal 0.
@@ -646,6 +646,22 @@ public:
   }
 
   //  ****************************************************************************
+  /// Converts this value to a strictly positive magnitude.
+  ///
+  void abs()
+  {
+    m_is_positive = true;
+  }
+
+  //  ****************************************************************************
+  /// Inverts the current sign for this integer.
+  ///
+  void negate()
+  {
+    m_is_positive = !sign_bit();
+  }
+
+  //  ****************************************************************************
   /// Returns a copy of the raw data contents of the internal integer values.
   ///
   void data(value_t &values)
@@ -656,7 +672,10 @@ public:
   //  ****************************************************************************
   /// Indicates of the value of this integer is positive.
   ///
-  bool is_positive() const
+  /// @return   true indicates the sign of the value is positive.
+  ///           false indicates the sign of the value is negative.
+  ///
+  bool sign_bit() const
   {
     return m_is_positive;
   }
@@ -708,7 +727,7 @@ private:
   //
   bool is_same_sign(const Z& rhs) const
   {
-    return m_is_positive == rhs.m_is_positive;
+    return sign_bit() == rhs.sign_bit();
   }
 
   //  ****************************************************************************
@@ -720,7 +739,7 @@ private:
   {
     if (!is_same_sign(rhs))
     {
-      return  m_is_positive
+      return  sign_bit()
               ? k_cmp_greater_sign_diff
               : k_cmp_less_sign_diff;
     }
@@ -728,13 +747,13 @@ private:
     // The result changes based on if the values are positive or negative.
     if (m_value.size() > rhs.m_value.size())
     {
-      return  m_is_positive
+      return  sign_bit()
               ? k_cmp_greater_sign_same
               : k_cmp_less_sign_same;
     }
     else if (m_value.size() < rhs.m_value.size())
     {
-      return  m_is_positive
+      return  sign_bit()
               ? k_cmp_less_sign_same
               : k_cmp_greater_sign_same;
     }
@@ -755,7 +774,7 @@ private:
 
     // The elements are not equal.
     // Therefore, a direct comparison (based on sign) determines the result.
-    return  (*elts.first < *elts.second) ^ !m_is_positive
+    return  (*elts.first < *elts.second) ^ !sign_bit()
             ? k_cmp_less_sign_same
             : k_cmp_greater_sign_same;
   }
@@ -913,7 +932,7 @@ private:
     OpT op;
     if (op.adjust_sign(is_same_sign(rhs)))
     {
-      op.adjust_sign(rhs.m_is_positive);
+      op.adjust_sign(rhs.sign_bit());
       accumulate(rhs.m_value);
       return;
     }
@@ -931,7 +950,7 @@ private:
       if (rel < k_cmp_equal)
       {
         swap(temp);
-        m_is_positive = op.adjust_sign(m_is_positive);
+        m_is_positive = op.adjust_sign(sign_bit());
       }
 
       disperse(temp.m_value);

@@ -90,18 +90,25 @@ protected:
 
 public:
   // Test Cases ***************************************************************
-  void Test_gcd_basic(void);
+  void Test_gcd(void);
   void Test_gcd_lhs_larger(void);
-  void Test_gcd_rhs_larger(void);
+  void Test_gcd_lhs_smaller(void);
   void Test_gcd_both_equal(void);
   void Test_gcd_rhs_0(void);
+
   void Test_gcd_ex(void);
+  void Test_gcd_ex_lhs_larger(void);
+  void Test_gcd_ex_lhs_smaller(void);
+  void Test_gcd_ex_both_equal(void);
+  void Test_gcd_ex_rhs_0(void);
 
+  void Test_mod_inverse(void);
 
+  void Test_CRT(void);
 };
 
 //  *****************************************************************************
-void Bi_NumberTheory_Fns_TestSuite::Test_gcd_basic(void)
+void Bi_NumberTheory_Fns_TestSuite::Test_gcd(void)
 {
   Bi::Z lhs = 240;
   Bi::Z rhs = 46;
@@ -129,7 +136,7 @@ void Bi_NumberTheory_Fns_TestSuite::Test_gcd_lhs_larger(void)
 }
 
 //  *****************************************************************************
-void Bi_NumberTheory_Fns_TestSuite::Test_gcd_rhs_larger(void)
+void Bi_NumberTheory_Fns_TestSuite::Test_gcd_lhs_smaller(void)
 {
   Bi::Z lhs = k_16B_z;
   Bi::Z rhs = k_24B_z;
@@ -181,9 +188,97 @@ void Bi_NumberTheory_Fns_TestSuite::Test_gcd_ex(void)
   // SUT
   Bi::gcd_ex_Z_t result = Bi::gcd_ex(lhs, rhs);
 
-  TS_ASSERT_EQUALS(k_expected.coef,   result.coef); 
-  TS_ASSERT_EQUALS(k_expected.denom,  result.denom); 
+  TS_ASSERT_EQUALS(k_expected.first,   result.first); 
+  TS_ASSERT_EQUALS(k_expected.second,  result.second); 
 }
 
+//  *****************************************************************************
+void Bi_NumberTheory_Fns_TestSuite::Test_gcd_ex_lhs_larger(void)
+{
+  Bi::Z lhs = k_722B_z;
+  Bi::Z rhs = k_56B_z;
+
+  const Bi::gcd_ex_Z_t k_expected = {9, k_2B};
+
+  // SUT
+  Bi::gcd_ex_Z_t result = Bi::gcd_ex(lhs, rhs);
+
+  TS_ASSERT_EQUALS(k_expected.first,   result.first); 
+  TS_ASSERT_EQUALS(k_expected.second,  result.second); 
+}
+
+//  *****************************************************************************
+void Bi_NumberTheory_Fns_TestSuite::Test_gcd_ex_lhs_smaller(void)
+{
+  Bi::Z lhs = k_56B_z;
+  Bi::Z rhs = k_722B_z;
+
+  const Bi::gcd_ex_Z_t k_expected = {-116, k_2B};
+
+  // SUT
+  Bi::gcd_ex_Z_t result = gcd_ex(lhs, rhs);
+
+  TS_ASSERT_EQUALS(k_expected.first,   result.first); 
+  TS_ASSERT_EQUALS(k_expected.second,  result.second); 
+}
+
+//  *****************************************************************************
+void Bi_NumberTheory_Fns_TestSuite::Test_gcd_ex_both_equal(void)
+{
+  Bi::Z lhs = k_128B_z;
+  Bi::Z rhs = k_128B_z;
+
+  const Bi::gcd_ex_Z_t k_expected = {0, k_128B_z};
+
+  // SUT
+  Bi::gcd_ex_Z_t result = Bi::gcd_ex(lhs, rhs);
+
+
+  TS_ASSERT_EQUALS(k_expected.first,   result.first); 
+  TS_ASSERT_EQUALS(k_expected.second,  result.second); 
+}
+
+//  *****************************************************************************
+void Bi_NumberTheory_Fns_TestSuite::Test_gcd_ex_rhs_0(void)
+{
+  Bi::Z lhs = k_32B_z;
+  Bi::Z rhs = 0;
+
+  const Bi::gcd_ex_Z_t k_expected = {1, k_32B_z};
+
+  // SUT
+  Bi::gcd_ex_Z_t result = Bi::gcd_ex(lhs, rhs);
+
+  TS_ASSERT_EQUALS(k_expected.first,   result.first); 
+  TS_ASSERT_EQUALS(k_expected.second,  result.second); 
+}
+
+//  *****************************************************************************
+void Bi_NumberTheory_Fns_TestSuite::Test_mod_inverse(void)
+{
+  Bi::Z lhs = 3125;
+  Bi::Z rhs = 9987;
+
+  const Bi::Z k_expected = 1844;
+
+  // SUT
+  Bi::Z result = Bi::multiplicative_inverse(lhs, rhs);
+
+  TS_ASSERT_EQUALS(k_expected, result); 
+}
+
+//  *****************************************************************************
+void Bi_NumberTheory_Fns_TestSuite::Test_CRT(void)
+{
+  std::vector<Bi::Z> a = {Bi::Z(12), Bi::Z(9),  Bi::Z(23)};
+  std::vector<Bi::Z> n = {Bi::Z(25), Bi::Z(26), Bi::Z(27)};
+
+  const Bi::Z k_expected = 14387;
+
+  // SUT
+  Bi::Z result = Bi::chinese_remainder(a, n);
+
+  TS_ASSERT_EQUALS(k_expected, result); 
+}
 
 #endif
