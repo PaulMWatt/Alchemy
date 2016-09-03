@@ -17,6 +17,32 @@ namespace Bi
 class Z;
 
 //  ****************************************************************************
+/// Returns the absolute value of specified value.
+///
+template <typename T>
+T abs(const T& lhs)
+{
+  T retval(lhs);
+  retval.abs( );
+
+  return retval;
+}
+
+//  ****************************************************************************
+/// Returns an inverted copy of the specified value.
+///
+template <typename T>
+T negate(const T& lhs)
+{
+  T retval(lhs);
+  retval.negate( );
+
+  return retval;
+}
+
+
+
+//  ****************************************************************************
 /// Computes the binary representation of the reciprocal for the integer value.
 ///
 /// @param[in] value  The big-integer value to use in the reciprocal calculation.
