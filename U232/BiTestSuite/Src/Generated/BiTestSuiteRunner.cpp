@@ -683,5 +683,17 @@ public:
  void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_gcd_ex_rhs_0(); }
 } testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_gcd_ex_rhs_0;
 
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_mod_inverse : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_mod_inverse() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 105, "Test_mod_inverse" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_mod_inverse(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_mod_inverse;
+
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_CRT : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_CRT() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 107, "Test_CRT" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_CRT(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_CRT;
+
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";

@@ -41,12 +41,12 @@ typedef std::pair<int, int> value_t;
 //  ***************************************************************************
 /// Stores the return value for a call to the extended GCD function.
 /// 
-template <typename T>
-struct NT_gcd_ex_t
-{
-  T coef;     ///< The coefficient for the lhs parameter
-  T denom;    ///< The GCD between the lhs and rhs parameters
-};
+//template <typename T>
+//struct NT_gcd_ex_t
+//{
+//  T coef;     ///< The coefficient for the lhs parameter
+//  T denom;    ///< The GCD between the lhs and rhs parameters
+//};
 
 
 //  ***************************************************************************
@@ -62,7 +62,7 @@ struct NT_div_t
 
 
 //  Explicit Instantitation ***************************************************
-using gcd_ex_Z_t  = NT_gcd_ex_t<Z>;
+using gcd_ex_Z_t  = std::pair<Z, Z>;
 using div_Z_t     = NT_div_t<Z>;
 using coef_Z_t    = std::pair<Z, Z>;
 
@@ -107,7 +107,7 @@ T gcd(T lhs, T rhs)
 ///           A value of 1 indicates they are coprime.
 /// 
 template <typename T>
-NT_gcd_ex_t<T> gcd_ex(T lhs, T rhs)
+std::pair<T, T> gcd_ex(T lhs, T rhs)
 {
   T x0 = 1;
   T x1 = 0;
@@ -159,7 +159,7 @@ std::pair<int64_t, int64_t> gcd_ex(int64_t lhs, int64_t rhs);
 template <typename T>
 T multiplicative_inverse(T a, T n)
 {
-  NT_gcd_ex_t<T> p = gcd_ex(a, n);
+  std::pair<T, T> p = gcd_ex(a, n);
 
   if (p.second != 1)
     return 0;
@@ -184,6 +184,13 @@ T mod_inv(T a, T n)
 
 //  ***************************************************************************
 /// Calculates the chinese remainder from two lists of pairwise coprime values.
+/// The input vectors must be the same length as the algorithm interprets 
+/// these values pairwise matches.
+///
+/// param[in] a   The first list of coprime values.
+/// param[in] n   The second list of coprime values. 
+///
+///
 ///
 template <typename T>
 T chinese_remainder(const std::vector<T> &a,
