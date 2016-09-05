@@ -14,7 +14,6 @@
 //  Follow naming convention of functions included in C++ 11 or greater
 //
 //  (Possibly include Z_)
-//  - abs
 //  - div (quotient and remainder)
 //  - remainder
 //  - remquo
