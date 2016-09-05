@@ -12,6 +12,7 @@
 
 #include <cstdint>
 #include <algorithm>
+#include <functional>
 #include <initializer_list>
 #include <utility>
 #include <vector>
@@ -34,15 +35,15 @@ class Z
   //       This wastes 2x the space, however, it makes the calculations simpler
   //       while I am constructing the library. This will be converted to more
   //       efficient algorithms once a base set of algorithms is available.
+  using type_type       = Z;
+  using T               = uint64_t;
+  using value_t         = std::vector<T>;
+  using size_type       = value_t::size_type;
+  using value_iter_t    = value_t::iterator;
+  using value_riter_t   = value_t::reverse_iterator;
+  using minmax_type     = std::pair<size_type, size_type>;
 
-  typedef uint64_t                          T;
-  typedef std::vector<T>                    value_t;
-  typedef value_t::size_type                size_type;
-  typedef value_t::iterator                 value_iter_t;
-  typedef value_t::reverse_iterator         value_riter_t;
-  typedef std::pair<size_type, size_type>   minmax_type;
-
-  typedef uint64_t                          bit_size_t;
+  using bit_size_t      = uint64_t;
 
   static const 
     uint8_t   k_base_size   = (sizeof(uint64_t)/2) * 8;
@@ -57,6 +58,11 @@ class Z
     uint64_t  k_lower_mask  = 0x00000000FFFFFFFF;
 
 public:
+  //  Typedefs *******************************************************************
+  // TODO: these operations need to be converted to reference the Bi namespace once they are implemented.
+  using plus        = std::plus<type_type>;
+  using multiplies  = std::multiplies<type_type>;
+
   //  Construction ***************************************************************
   //  ****************************************************************************
   /// Default Constructor
@@ -658,7 +664,8 @@ public:
   ///
   void negate()
   {
-    m_signbit = !signbit();
+    if (!is_zero())
+      m_signbit = !signbit();
   }
 
   //  ****************************************************************************
@@ -736,11 +743,20 @@ private:
   }
 
   //  ****************************************************************************
-  //
+  //  Compares two integers, Z, for the same sign.
   //
   bool is_same_sign(const Z& rhs) const
   {
     return signbit() == rhs.signbit();
+  }
+
+  //  ****************************************************************************
+  /// Indicates if this integer instance is zero.
+  ///
+  bool is_zero( ) const
+  {
+    return  m_value.size( ) == 1
+        &&  m_value.at(0) == 0;
   }
 
   //  ****************************************************************************

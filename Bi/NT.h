@@ -65,6 +65,29 @@ using gcd_ex_Z_t  = std::pair<Z, Z>;
 using div_Z_t     = NT_div_t<Z>;
 using coef_Z_t    = std::pair<Z, Z>;
 
+//  Fundamental ***************************************************************
+//  ***************************************************************************
+/// TODO: Working on a parameterized mechanism to return the identity element.
+
+//  ***************************************************************************
+/// Returns the identity element for the additive type.
+///
+//template <typename T>
+//T identity_element<T, T::plus>()
+//{
+//  return T(0);
+//}
+
+//  ***************************************************************************
+/// Returns the identity element for the multiplicative type.
+///
+//template <typename T>
+//T identity_element<T, T::multiplies>()
+//{
+//  return T(1);
+//}
+
+
 //  Factorization *************************************************************
 //  ***************************************************************************
 /// Calculates the gcd of a and b.

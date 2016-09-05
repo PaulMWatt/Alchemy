@@ -695,5 +695,41 @@ public:
  void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_CRT(); }
 } testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_CRT;
 
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_positive : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_positive() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 109, "Test_abs_Z_positive" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_abs_Z_positive(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_positive;
+
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_negative : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_negative() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 110, "Test_abs_Z_negative" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_abs_Z_negative(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_negative;
+
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_zero : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_zero() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 111, "Test_abs_Z_zero" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_abs_Z_zero(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_zero;
+
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_positive : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_positive() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 113, "Test_negate_Z_positive" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_negate_Z_positive(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_positive;
+
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_negative : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_negative() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 114, "Test_negate_Z_negative" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_negate_Z_negative(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_negative;
+
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_zero : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_zero() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 115, "Test_negate_Z_zero" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_negate_Z_zero(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_zero;
+
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";
