@@ -172,8 +172,6 @@ std::pair<T, T> gcd_ex(T lhs, T rhs)
 std::pair<int, int> gcd_ex(int lhs, int rhs);
 std::pair<int64_t, int64_t> gcd_ex(int64_t lhs, int64_t rhs);
 
-//  Primality Testing *********************************************************
-
 //  Modulus Operations ********************************************************
 //  ***************************************************************************
 /// Calculates the multiplicative inverse of a mod(n).
@@ -190,18 +188,6 @@ T multiplicative_inverse(T a, T n)
     return p.first + n;
 
   return p.first;
-}
-
-
-//  ***************************************************************************
-/// Calculates the multiplicative inverse of a mod(n).
-/// This is a instance created for convenience.
-///   Refer to: multiplicative_inverse
-///
-template <typename T>
-T mod_inv(T a, T n)
-{
-  return multiplicative_inverse(a, n);
 }
 
 //  ***************************************************************************
@@ -244,6 +230,11 @@ T chinese_remainder(const std::vector<T> &a,
 }
 
 
+//  ***************************************************************************
+int pollard_rho_factorization(int n, uint64_t x);
+
+
+//  Primality Testing *********************************************************
 
 //  Number Generators *********************************************************
 //  TODO: Fibonacci Numbers
@@ -252,14 +243,33 @@ T chinese_remainder(const std::vector<T> &a,
 //        Jacobi Number
 //        Legendre Number
 
-//  ***************************************************************************
-int pollard_rho_factorization(int n, uint64_t x);
-
-
 
 
 //  Alias definitions for call convenience ************************************
-//  TODO: Add aliases for calls such as the chinese remainder theorem (CRT)
+
+//  ***************************************************************************
+/// Calculates the multiplicative inverse of a mod(n).
+/// This is a instance created for convenience.
+///   Refer to: multiplicative_inverse
+///
+template <typename T>
+T mod_inv(T a, T n)
+{
+  return multiplicative_inverse(a, n);
+}
+
+//  ***************************************************************************
+/// Calculates the chinese remainder from two lists of pairwise coprime values.
+/// This is a instance created for convenience.
+///   Refer to: chinese_remainder
+///
+template <typename T>
+T CRT(const std::vector<T> &a,
+      const std::vector<T> &m)
+{
+  return chinese_remainder(a, m);
+}
+
 
 
 } // namespace Bi

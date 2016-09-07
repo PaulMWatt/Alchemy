@@ -695,39 +695,57 @@ public:
  void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_CRT(); }
 } testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_CRT;
 
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_odd_Z_true : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_odd_Z_true() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 109, "Test_odd_Z_true" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_odd_Z_true(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_odd_Z_true;
+
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_odd_Z_false : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_odd_Z_false() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 110, "Test_odd_Z_false" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_odd_Z_false(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_odd_Z_false;
+
 static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_positive : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_positive() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 109, "Test_abs_Z_positive" ) {}
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_positive() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 112, "Test_abs_Z_positive" ) {}
  void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_abs_Z_positive(); }
 } testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_positive;
 
 static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_negative : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_negative() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 110, "Test_abs_Z_negative" ) {}
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_negative() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 113, "Test_abs_Z_negative" ) {}
  void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_abs_Z_negative(); }
 } testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_negative;
 
 static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_zero : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_zero() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 111, "Test_abs_Z_zero" ) {}
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_zero() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 114, "Test_abs_Z_zero" ) {}
  void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_abs_Z_zero(); }
 } testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_abs_Z_zero;
 
+static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_pow_Z : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_pow_Z() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 116, "Test_pow_Z" ) {}
+ void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_pow_Z(); }
+} testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_pow_Z;
+
 static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_positive : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_positive() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 113, "Test_negate_Z_positive" ) {}
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_positive() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 118, "Test_negate_Z_positive" ) {}
  void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_negate_Z_positive(); }
 } testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_positive;
 
 static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_negative : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_negative() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 114, "Test_negate_Z_negative" ) {}
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_negative() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 119, "Test_negate_Z_negative" ) {}
  void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_negate_Z_negative(); }
 } testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_negative;
 
 static class TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_zero : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_zero() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 115, "Test_negate_Z_zero" ) {}
+ TestDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_zero() : CxxTest::RealTestDescription( Tests_Bi_NumberTheory_Fns_TestSuite, suiteDescription_Bi_NumberTheory_Fns_TestSuite, 120, "Test_negate_Z_zero" ) {}
  void runTest() { suite_Bi_NumberTheory_Fns_TestSuite.Test_negate_Z_zero(); }
 } testDescription_suite_Bi_NumberTheory_Fns_TestSuite_Test_negate_Z_zero;
 

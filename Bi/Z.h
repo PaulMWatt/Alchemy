@@ -101,7 +101,7 @@ public:
   }
 
   //  ****************************************************************************
-  /// Value Constructor for signed integer (Will be converted to unsigned).
+  /// Value Constructor for signed integer.
   ///
   Z(int rhs)
     : m_signbit(false)
@@ -671,9 +671,19 @@ public:
   //  ****************************************************************************
   /// Returns a copy of the raw data contents of the internal integer values.
   ///
+  /// TODO: Return to this function. I do not like the idea of releasing control of internal variables. Working towards building a collection of utility functions, then factoring the interface of Z to be minimal.
+  ///
   void data(value_t &values)
   {
     values = m_value;
+  }
+
+  //  ****************************************************************************
+  /// Returns a copy of the raw data contents of the internal integer values.
+  ///
+  T low_word() const
+  {
+    return m_value[0];
   }
 
   //  ****************************************************************************

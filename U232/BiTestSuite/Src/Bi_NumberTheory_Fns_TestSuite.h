@@ -106,9 +106,14 @@ public:
 
   void Test_CRT(void);
 
+  void Test_odd_Z_true(void);
+  void Test_odd_Z_false(void);
+
   void Test_abs_Z_positive(void);
   void Test_abs_Z_negative(void);
   void Test_abs_Z_zero(void);
+
+  void Test_pow_Z(void);
 
   void Test_negate_Z_positive(void);
   void Test_negate_Z_negative(void);
@@ -290,6 +295,32 @@ void Bi_NumberTheory_Fns_TestSuite::Test_CRT(void)
 }
 
 //  *****************************************************************************
+void Bi_NumberTheory_Fns_TestSuite::Test_odd_Z_true(void)
+{
+  Bi::Z rhs = k_32B_z;
+
+  const bool k_expected = true;
+
+  // SUT
+  bool result = Bi::odd(rhs-1);
+
+  TS_ASSERT_EQUALS(k_expected, result); 
+}
+
+//  *****************************************************************************
+void Bi_NumberTheory_Fns_TestSuite::Test_odd_Z_false(void)
+{
+  Bi::Z rhs = k_32B_z;
+
+  const bool k_expected = false;
+
+  // SUT
+  bool result = Bi::odd(rhs);
+
+  TS_ASSERT_EQUALS(k_expected, result); 
+}
+
+//  *****************************************************************************
 void Bi_NumberTheory_Fns_TestSuite::Test_abs_Z_positive(void)
 {
   Bi::Z rhs = k_32B_z;
@@ -323,6 +354,20 @@ void Bi_NumberTheory_Fns_TestSuite::Test_abs_Z_zero(void)
 
   // SUT
   Bi::Z result = Bi::abs(rhs);
+
+  TS_ASSERT_EQUALS(k_expected, result); 
+}
+
+//  *****************************************************************************
+void Bi_NumberTheory_Fns_TestSuite::Test_pow_Z(void)
+{
+  Bi::Z base = 3;
+  Bi::Z exp  = 20;
+
+  const Bi::Z k_expected = {0xCFD41B91};
+
+  // SUT
+  Bi::Z result = Bi::pow(base, exp);
 
   TS_ASSERT_EQUALS(k_expected, result); 
 }
