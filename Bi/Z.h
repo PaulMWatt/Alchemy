@@ -12,6 +12,7 @@
 
 #include <cstdint>
 #include <algorithm>
+#include <functional>
 #include <initializer_list>
 #include <utility>
 #include <vector>
@@ -34,15 +35,15 @@ class Z
   //       This wastes 2x the space, however, it makes the calculations simpler
   //       while I am constructing the library. This will be converted to more
   //       efficient algorithms once a base set of algorithms is available.
+  using type_type       = Z;
+  using T               = uint64_t;
+  using value_t         = std::vector<T>;
+  using size_type       = value_t::size_type;
+  using value_iter_t    = value_t::iterator;
+  using value_riter_t   = value_t::reverse_iterator;
+  using minmax_type     = std::pair<size_type, size_type>;
 
-  typedef uint64_t                          T;
-  typedef std::vector<T>                    value_t;
-  typedef value_t::size_type                size_type;
-  typedef value_t::iterator                 value_iter_t;
-  typedef value_t::reverse_iterator         value_riter_t;
-  typedef std::pair<size_type, size_type>   minmax_type;
-
-  typedef uint64_t                          bit_size_t;
+  using bit_size_t      = uint64_t;
 
   static const 
     uint8_t   k_base_size   = (sizeof(uint64_t)/2) * 8;
@@ -57,12 +58,17 @@ class Z
     uint64_t  k_lower_mask  = 0x00000000FFFFFFFF;
 
 public:
+  //  Typedefs *******************************************************************
+  // TODO: these operations need to be converted to reference the Bi namespace once they are implemented.
+  using plus        = std::plus<type_type>;
+  using multiplies  = std::multiplies<type_type>;
+
   //  Construction ***************************************************************
   //  ****************************************************************************
   /// Default Constructor
   Z()
     : m_value({0})
-    , m_is_positive(true)
+    , m_signbit(false)
   { }
 
   //  ****************************************************************************
@@ -70,7 +76,7 @@ public:
   ///
   Z(const Z& rhs)
     : m_value(rhs.m_value)
-    , m_is_positive(rhs.sign_bit())
+    , m_signbit(rhs.signbit())
   { }
 
   //  ****************************************************************************
@@ -78,14 +84,14 @@ public:
   ///
   Z(Z&& rhs)
     : m_value(std::move(rhs.m_value))
-    , m_is_positive(std::move(rhs.sign_bit()))
+    , m_signbit(std::move(rhs.signbit()))
   { }
   
   //  ****************************************************************************
   /// Value Constructor for unsigned integer
   /// 
   Z(T  rhs)
-    : m_is_positive(true)
+    : m_signbit(false)
   {
     m_value.push_back(remove_overflow(rhs));
 
@@ -95,15 +101,15 @@ public:
   }
 
   //  ****************************************************************************
-  /// Value Constructor for signed integer (Will be converted to unsigned).
+  /// Value Constructor for signed integer.
   ///
   Z(int rhs)
-    : m_is_positive(true)
+    : m_signbit(false)
   {
     if (rhs < 0)
     {
-      m_is_positive = false;
-      rhs           = -rhs;
+      m_signbit = true;
+      rhs       = -rhs;
     }
 
     m_value.push_back(static_cast<T>(rhs));
@@ -113,7 +119,7 @@ public:
   /// Value Constructor from initializer list
   /// 
   Z(const std::initializer_list<T> rhs)
-    : m_is_positive(true)
+    : m_signbit(false)
     , m_value(rhs)
   { }
 
@@ -138,8 +144,8 @@ public:
   ///
   Z&  operator=  (const Z& rhs)
   {
-    m_value       = rhs.m_value;
-    m_is_positive = rhs.sign_bit();
+    m_value   = rhs.m_value;
+    m_signbit = rhs.signbit();
     return *this;
   }
 
@@ -148,8 +154,8 @@ public:
   ///
   Z& operator=  (Z&& rhs)
   {
-    m_value       = std::move(rhs.m_value);
-    m_is_positive = std::move(rhs.sign_bit());
+    m_value   = std::move(rhs.m_value);
+    m_signbit = std::move(rhs.signbit());
 
     return *this;
   }
@@ -179,7 +185,7 @@ public:
   ///
   bool operator==(const Z& rhs) const
   {
-    if (sign_bit() != rhs.sign_bit())
+    if (signbit() != rhs.signbit())
       return false;
 
     if (m_value != rhs.m_value) 
@@ -304,9 +310,9 @@ public:
     m_value = sum.m_value;
 
     // Change the sign of this value if rhs is negative.
-    if (!rhs.sign_bit())
+    if (rhs.signbit())
     {
-      m_is_positive = !sign_bit();
+      m_signbit = !signbit();
     }
 
     // Remove the upper blocks that equal 0.
@@ -351,8 +357,8 @@ public:
     }
 
     // Determine final sign.
-    bool L_sign = sign_bit();
-    m_is_positive = true;
+    bool L_sign = signbit();
+    m_signbit = false;
 
     // TODO: Using the extremely slow, yet functional "Subtract-and-shift" division algorithm for the moment.
     bit_size_t dividend_bits  = bit_size( );
@@ -370,7 +376,7 @@ public:
     Z div = rhs;
 
     // Change the sign of this value if rhs is negative.
-    if (!rhs.sign_bit())
+    if (rhs.signbit())
     {
       div = -div;
     }
@@ -396,10 +402,10 @@ public:
     }
 
     // Change the sign of this value if rhs is negative.
-    m_is_positive = L_sign;
-    if (!rhs.sign_bit())
+    m_signbit = L_sign;
+    if (rhs.signbit())
     {
-      m_is_positive = !sign_bit();
+      m_signbit = !signbit();
     }
 
     // Remove the upper blocks that equal 0.
@@ -431,8 +437,8 @@ public:
     }
 
     // Determine final sign.
-    bool L_sign = sign_bit();
-    m_is_positive = true;
+    bool L_sign = signbit();
+    m_signbit = false;
 
     // If the divisor is larger, 
     // it cannot be divided into the dividend.
@@ -463,7 +469,7 @@ public:
     Z div = rhs;
 
     // Change the sign of this value if rhs is negative.
-    if (!rhs.sign_bit())
+    if (rhs.signbit())
     {
       div = -div;
     }
@@ -486,10 +492,10 @@ public:
     }
 
     // Change the sign of this value if rhs is negative.
-    m_is_positive = L_sign;
-    if (!rhs.sign_bit())
+    m_signbit = L_sign;
+    if (rhs.signbit())
     {
-      m_is_positive = !sign_bit();
+      m_signbit = !signbit();
     }
 
     // Remove the upper blocks that equal 0.
@@ -623,7 +629,7 @@ public:
   void swap(Z& rhs)
   {
     std::swap(m_value, rhs.m_value);
-    std::swap(m_is_positive, rhs.m_is_positive);
+    std::swap(m_signbit, rhs.m_signbit);
   }
 
   //  ****************************************************************************
@@ -633,7 +639,7 @@ public:
   {
     m_value.clear();
     m_value.push_back(0);
-    m_is_positive = true;
+    abs( );
   }
 
   //  ****************************************************************************
@@ -650,7 +656,7 @@ public:
   ///
   void abs()
   {
-    m_is_positive = true;
+    m_signbit = false;
   }
 
   //  ****************************************************************************
@@ -658,11 +664,14 @@ public:
   ///
   void negate()
   {
-    m_is_positive = !sign_bit();
+    if (!is_zero())
+      m_signbit = !signbit();
   }
 
   //  ****************************************************************************
   /// Returns a copy of the raw data contents of the internal integer values.
+  ///
+  /// TODO: Return to this function. I do not like the idea of releasing control of internal variables. Working towards building a collection of utility functions, then factoring the interface of Z to be minimal.
   ///
   void data(value_t &values)
   {
@@ -670,14 +679,35 @@ public:
   }
 
   //  ****************************************************************************
-  /// Indicates of the value of this integer is positive.
+  /// Returns a copy of the raw data contents of the internal integer values.
   ///
-  /// @return   true indicates the sign of the value is positive.
-  ///           false indicates the sign of the value is negative.
-  ///
-  bool sign_bit() const
+  T low_word() const
   {
-    return m_is_positive;
+    return m_value[0];
+  }
+
+  //  ****************************************************************************
+  /// Indicates of the value of this integer is negative.
+  ///
+  /// @return   true indicates the sign of the value is negative.
+  ///           false indicates the sign of the value is positive.
+  ///
+  bool signbit() const
+  {
+    return m_signbit;
+  }
+
+  //  ****************************************************************************
+  /// Copies the sign of the specified parameter to this value.
+  ///
+  /// @param[in]  rhs   The value to copy the sign from.
+  ///
+  /// @return   a reference to this instance.
+  ///
+  Z& copysign(const Z& rhs) 
+  {
+    m_signbit = rhs.signbit( );
+    return *this;
   }
 
   //  ****************************************************************************
@@ -707,7 +737,7 @@ public:
 private:
   //  Member data ****************************************************************
   value_t   m_value;        ///<  Buffer that contains integer data.
-  bool      m_is_positive;  ///<  Flag that indicates the sign of the value.
+  bool      m_signbit;  ///<  Flag that indicates the sign of the value.
 
   //  Methods ********************************************************************
   //  ****************************************************************************
@@ -723,11 +753,20 @@ private:
   }
 
   //  ****************************************************************************
-  //
+  //  Compares two integers, Z, for the same sign.
   //
   bool is_same_sign(const Z& rhs) const
   {
-    return sign_bit() == rhs.sign_bit();
+    return signbit() == rhs.signbit();
+  }
+
+  //  ****************************************************************************
+  /// Indicates if this integer instance is zero.
+  ///
+  bool is_zero( ) const
+  {
+    return  m_value.size( ) == 1
+        &&  m_value.at(0) == 0;
   }
 
   //  ****************************************************************************
@@ -739,25 +778,24 @@ private:
   {
     if (!is_same_sign(rhs))
     {
-      return  sign_bit()
-              ? k_cmp_greater_sign_diff
-              : k_cmp_less_sign_diff;
+      return  signbit()
+              ? k_cmp_less_sign_diff
+              : k_cmp_greater_sign_diff;
     }
 
     // The result changes based on if the values are positive or negative.
     if (m_value.size() > rhs.m_value.size())
     {
-      return  sign_bit()
-              ? k_cmp_greater_sign_same
-              : k_cmp_less_sign_same;
-    }
-    else if (m_value.size() < rhs.m_value.size())
-    {
-      return  sign_bit()
+      return  signbit()
               ? k_cmp_less_sign_same
               : k_cmp_greater_sign_same;
     }
-
+    else if (m_value.size() < rhs.m_value.size())
+    {
+      return  signbit()
+              ? k_cmp_greater_sign_same
+              : k_cmp_less_sign_same;
+    }
 
     // Start at the end (highest-order values), 
     // search for the first element that is not equal.
@@ -774,7 +812,7 @@ private:
 
     // The elements are not equal.
     // Therefore, a direct comparison (based on sign) determines the result.
-    return  (*elts.first < *elts.second) ^ !sign_bit()
+    return  (*elts.first < *elts.second) ^ signbit()
             ? k_cmp_less_sign_same
             : k_cmp_greater_sign_same;
   }
@@ -797,7 +835,7 @@ private:
     // Start at the end (highest-order values), 
     // search for the first element that is not equal.
     typedef std::pair<value_t::const_reverse_iterator,
-      value_t::const_reverse_iterator>  riter_pair;
+                      value_t::const_reverse_iterator>  riter_pair;
     riter_pair elts = std::mismatch(m_value.crbegin(),
                                     m_value.crend(),
                                     rhs.m_value.crbegin());
@@ -932,7 +970,7 @@ private:
     OpT op;
     if (op.adjust_sign(is_same_sign(rhs)))
     {
-      op.adjust_sign(rhs.sign_bit());
+      op.adjust_sign(!rhs.signbit());
       accumulate(rhs.m_value);
       return;
     }
@@ -950,7 +988,7 @@ private:
       if (rel < k_cmp_equal)
       {
         swap(temp);
-        m_is_positive = op.adjust_sign(sign_bit());
+        m_signbit = op.adjust_sign(signbit());
       }
 
       disperse(temp.m_value);

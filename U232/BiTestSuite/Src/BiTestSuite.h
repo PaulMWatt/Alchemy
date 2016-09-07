@@ -47,7 +47,7 @@ public:
   BiTestSuite()
     : k_default({k_A, k_B, k_C, k_D})
     , k_control({k_A, k_B, k_C, k_D})
-    , k_negative(Bi::Z({k_A, k_B, k_C, k_D}) * -1)
+    , k_negative(-Bi::Z({k_A, k_B, k_C, k_D}))
   {
     // TODO: Construct Test Suite Object
   }
