@@ -44,11 +44,30 @@
 //  Includes *******************************************************************
 #include <Pb/detail/endianess.h>
 
+namespace // unnamed
+{
+
+#if defined(ALCHEMY_CONSTEXPR_SUPPORTED)
+//  ****************************************************************************
+constexpr Endianess get_endianess()
+{
+  return  unsigned short(0x30 << 8 | 0x40) == 0x3040
+          ? k_big_endian
+          : k_little_endian;
+}
+#else
+
+#define get_endianess()   Endianess(ALCHEMY_ENDIANESS)
+#endif
+
+}
+
 namespace Hg
 {
 
 ///< Constant indicates machine endianess.
-const Endianess k_endianess = Endianess(ALCHEMY_ENDIANESS); 
+//const Endianess k_endianess = Endianess(ALCHEMY_ENDIANESS); 
+ const Endianess k_endianess = get_endianess();
 
 namespace convert
 {
