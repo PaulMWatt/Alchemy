@@ -39,7 +39,6 @@ typename T::base_type::net_t
   detail::convert_byte_order<T, NetByteOrder>(from, to);
 
   return to;
-  //return std::move(to);
 }
 
 //  ****************************************************************************

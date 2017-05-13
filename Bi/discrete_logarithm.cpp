@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "discrete_logarithm.h"
+#include "detail/modular.h"
 #include "gcd.h"
 
 #include <map>
@@ -21,7 +22,7 @@ uint64_t shanks_algorithm(uint64_t  n,
   std::map<uint64_t, uint32_t>   L1;
   std::map<uint64_t, uint32_t>   L2;
 
-  uint32_t m    = std::ceil(std::sqrt(n));
+  uint32_t m    = static_cast<uint32_t>(std::ceil(std::sqrt(n)));
   uint64_t base = square_and_multiply(alpha, m, n);
 
   // Precalculate all of the products a^1, a^2, ... a^m-1

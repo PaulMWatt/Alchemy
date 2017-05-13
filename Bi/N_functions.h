@@ -19,12 +19,31 @@ class Z;
 // TODO: Need to return and add constraints to these functions for integral types only.
 
 //  ****************************************************************************
-/// Returns the absolute value of specified value.
+/// Indicates if the specified value is odd.
+///
+/// @param[in] value  The value to test for odd.
+///
+/// @return   true if the value is odd,
+///           false if the value is even.
 ///
 template <typename T>
-bool odd(const T& rhs)
+bool odd(const T& value)
 {
-  return bool(rhs.low_word() & 0x01);
+  return bool(value.low_word() & 0x01);
+}
+
+//  ****************************************************************************
+/// Indicates if the specified value is even.
+///
+/// @param[in] value  The value to test for even.
+///
+/// @return   true if the value is even,
+///           false if the value is odd.
+///
+template <typename T>
+bool even(const T& value)
+{
+  return !odd(value);
 }
 
 //  ****************************************************************************
@@ -38,6 +57,10 @@ T abs(const T& lhs)
 
   return retval;
 }
+
+//  ****************************************************************************
+//  TODO: sqr
+
 
 //  ****************************************************************************
 //  TODO: These utility functions will be moved into a detail sub-namespace.
@@ -59,15 +82,15 @@ T& power_accumulate(T& rval, T& base, T& exp)
     exp >>= 1;
 
     // TODO: Again, need to revisit when efficient square algorithm that does not copy.
-    base *= T(base);
+    base *= base;
   }
 }
 
 //  ****************************************************************************
-/// Calculates base^n, i.e., lhs raised to the nth power.
+/// Calculates base^n, i.e., lhs raised to the xth power.
 ///
 /// @param[in] base   The base value to multiply by an exponent.
-/// @param[in] n      The exponent in the calculation.
+/// @param[in] x      The exponent in the calculation.
 ///
 /// @return           The calculation base^n is returned.
 ///
@@ -75,17 +98,16 @@ T& power_accumulate(T& rval, T& base, T& exp)
 ///         A. Stepanov, D. Rose, "From Mathematics to Generic Programming," 2014
 ///
 template <typename T>
-T pow(const T& base, const T& n)
+T pow(const T& base, const T& x)
 {
   // TODO: Need to add support for negative exponents. Will do this when I have better support for integer reciprocals.
-  T exp(n);
+  T exp(x);
   T rval(base);
 
-  while (!odd(exp))
+  while (even(exp))
   {
-    // TODO: Need to add internal memory management to the Z object to detect operations on self, and properly handle memory.
-    // TODO: Actually, there is an optimized method to square a value, that needs to go here.
-    rval *= T(rval);
+    // TODO: Add optimized implementation for squaring
+    rval *= rval;
     exp >>= 1;
   }
 
@@ -96,9 +118,6 @@ T pow(const T& base, const T& n)
   exp >>= 1;
   return power_accumulate(rval, rval*rval, exp);
 }
-
-//  ****************************************************************************
-//  TODO: sqr
 
 //  ****************************************************************************
 //  TODO: sqrt

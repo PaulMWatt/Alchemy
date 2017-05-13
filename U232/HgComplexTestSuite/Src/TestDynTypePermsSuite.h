@@ -277,7 +277,7 @@ void TestDynTypePermsSuite::TestCopyCtor()
   // SUT
   SUT sut(rhs);
 
-  TS_ASSERT_SAME_DATA(&perms_msg[0], sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(&perms_msg[0], sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -288,7 +288,7 @@ void TestDynTypePermsSuite::TestValueCtor()
 
   // SUT
   SUT sut(rhs.data(), rhs.size());
-  TS_ASSERT_SAME_DATA(&perms_msg[0], sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(&perms_msg[0], sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -300,7 +300,7 @@ void TestDynTypePermsSuite::TestAssignmentOperator()
   // SUT
   SUT sut;
   sut = rhs;
-  TS_ASSERT_SAME_DATA(&perms_msg[0], sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(&perms_msg[0], sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -358,7 +358,7 @@ void TestDynTypePermsSuite::TestAssign()
   sut.assign(expected.data(), expected.size());
 
   TS_ASSERT_EQUALS(expected.size(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -389,7 +389,7 @@ void TestDynTypePermsSuite::Testdata_static()
 
   TS_ASSERT(result);
   TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -412,8 +412,8 @@ void TestDynTypePermsSuite::Testto_host()
   SUT result = to_host(sut);
   SUT no_op_result = to_host(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), result.size());
-  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_result.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), (unsigned int)result.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), (unsigned int)no_op_result.size());
 }
 
 //  ****************************************************************************
@@ -436,8 +436,8 @@ void TestDynTypePermsSuite::Testto_network()
   SUT_net result = to_network(sut);
   SUT_net no_op_result = to_network(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -460,8 +460,8 @@ void TestDynTypePermsSuite::Testto_big_endian()
   SUT_big result = to_big_endian(sut);
   SUT_big no_op_result = to_big_endian(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -484,8 +484,8 @@ void TestDynTypePermsSuite::Testto_little_endian()
   SUT_little result        = to_little_endian(sut);
   SUT_little no_op_result  = to_little_endian(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(&other_perms_msg[0], no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 

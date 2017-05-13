@@ -89,17 +89,6 @@ public:
   }
 
   //  **************************************************************************
-  /// Move Constructor
-  ///
-  /// @param rhs    The input object to be moved into this object.
-  ///               
-  MsgBuffer(MsgBuffer&& rhs)
-    : m_offset(rhs.offset())
-  {
-    m_data = std::move(rhs.m_data);
-  }
-
-  //  **************************************************************************
   /// Destructor
   ///
   ~MsgBuffer()
@@ -109,24 +98,16 @@ public:
 
   //  Operators ****************************************************************
   //  **************************************************************************
-  /// Copy Assignment Operator
+  /// Assignment Operator
   ///
   /// @param rhs    (right-hand side) The input object to be copied.
+  /// @note         This object's copy constructor only performs a shallow 
+  ///               copy of the message buffer. Use the clone operation
+  ///               to make a separate copy of the buffer.
   ///               
   MsgBuffer& operator=(const MsgBuffer& rhs)
   {
     assign(rhs.data(), rhs.size());
-    return *this;
-  }
-
-  //  **************************************************************************
-  /// Move Assignment Operator
-  ///
-  /// @param rhs    (right-hand side) The input object to be moved.
-  ///               
-  MsgBuffer& operator=(MsgBuffer&& rhs)
-  {
-    m_data = std::move(rhs.m_data);
     return *this;
   }
 

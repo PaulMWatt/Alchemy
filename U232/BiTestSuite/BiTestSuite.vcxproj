@@ -154,10 +154,11 @@ cd "../.."</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>./;../../;../common/;$(CxxTestDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -171,7 +172,9 @@ cd "../.."</Command>
   <ItemGroup>
     <ClInclude Include="..\..\Bi.h" />
     <ClInclude Include="..\..\Bi\Bi_defs.h" />
+    <ClInclude Include="..\..\Bi\detail\modular.h" />
     <ClInclude Include="..\..\Bi\discrete_logarithm.h" />
+    <ClInclude Include="..\..\Bi\gcd.h" />
     <ClInclude Include="..\..\Bi\NT.h" />
     <ClInclude Include="..\..\Bi\Z.h" />
     <ClInclude Include="..\..\Bi\Zp.h" />

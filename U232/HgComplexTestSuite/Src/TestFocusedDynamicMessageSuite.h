@@ -313,7 +313,7 @@ void TestFocusedDynamicMessageSuite::Test_write_array_of_arrays()
   uint8_t const* pData = sut.data();
 
   TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, (unsigned int)buffer.size());
 }
 
 //  ****************************************************************************
@@ -427,7 +427,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_fundamental()
   uint8_t const* pData = sut.data();
 
   TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, (unsigned int)buffer.size());
 }
 
 //  ****************************************************************************
@@ -451,7 +451,7 @@ void TestFocusedDynamicMessageSuite::Test_read_vector_fundamental()
   // Verify the results for all of the fields.
   TS_ASSERT_EQUALS(k_count, sut.len);
   // Verify the sequence of bytes after the first, which is the count.
-  TS_ASSERT_SAME_DATA(&buffer[1], &sut.str[0], k_count);
+  TS_ASSERT_SAME_DATA(&buffer[1], &sut.str[0], (unsigned int)k_count);
 }
 
 
@@ -537,7 +537,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_fixed_size()
   uint8_t const* pData = sut.data();
 
   TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, (unsigned int)buffer.size());
 }
 
 //  ****************************************************************************
@@ -704,7 +704,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_with_nested_dynamic_size(
   uint8_t const* pData = sut.data();
 
   TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, (unsigned int)buffer.size());
 }
 
 //  ****************************************************************************
@@ -1017,7 +1017,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_of_arrays()
   uint8_t const* pData = sut.data();
 
   TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, (unsigned int)buffer.size());
 
 }
 
@@ -1211,7 +1211,7 @@ void TestFocusedDynamicMessageSuite::Test_write_vector_of_vectors()
   uint8_t const* pData = sut.data();
 
   TS_ASSERT_EQUALS(buffer.size(), sut.size());
-  TS_ASSERT_SAME_DATA(&buffer[0], pData, buffer.size());
+  TS_ASSERT_SAME_DATA(&buffer[0], pData, (unsigned int)buffer.size());
 }
 
 #endif

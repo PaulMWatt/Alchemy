@@ -24,6 +24,12 @@
     <Filter Include="Header Files\Alchemy\Bi">
       <UniqueIdentifier>{14f99be3-afe4-4950-a1c9-ddc10ec027ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Alchemy\Bi\detail">
+      <UniqueIdentifier>{b9c342dd-38b0-41fb-822d-1a02aa1a4a0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Alchemy\Bi\detail">
+      <UniqueIdentifier>{6c4f9b4b-5a24-418e-90b7-3277d8a53c6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -61,6 +67,12 @@
     </ClInclude>
     <ClInclude Include="Src\Bi_NumberTheory_Fns_TestSuite.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bi\detail\modular.h">
+      <Filter>Header Files\Alchemy\Bi\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Bi\gcd.h">
+      <Filter>Header Files\Alchemy\Bi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

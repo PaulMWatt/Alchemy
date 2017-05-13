@@ -306,6 +306,8 @@ public:
   ///
   pointer operator->() const
   {   
+    // TODO: Make sure a pointer_to implementation is always available.
+    //return (std::pointer_traits<pointer>::pointer_to(**this));
     return ((pointer)*(base_t *)this);
   }
 
