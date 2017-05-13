@@ -1,45 +1,48 @@
-Benchmarks
-========================================================
-The addition of move semantics to the Hg constructs now bring the speed of Alchemy to 40% faster than the hand written construct, with a significant increase for nested data structures:
-
-Test | % Faster
------------ |:------------
-Basic: |  **41.37%**
-Packed: | **14.05%**
-Unaligned: | **47.74%**
-Complex: | **25.54%**
-Array: | **73.23%**
-Total: | **39.98%**
-
-Alchemy and Modern C++ Features
-========================================================
-Alchemy is now implemented with Modern C++. I will keep a branch open called "Classic C++" that only requires C++98 and TR1 features.   
-
-I will fix bugs on the classic branch.  
-With the exception of Optional fields and Union types, I do not plan on developing additional features for this branch.
-
 Network Alchemy
 ========================================================
 A portable framework to robustly process network messages and structured data. This library can also be used for serialization tasks and provides **compile-time reflection** for Hg-defined structures. 
 
 Alchemy is portable across different processor types and platforms. 
-There is currently only one tool in the Alchemy framework, Hg (Mercury).
 
 Currently Alchemy is based on template library development with
 the same methodologies that are used to develop the Standard C++ Library.
-Therefore the project only includes header files.
+The majority of this library only requires header files.
+The implementation aims to be portable across platforms and processor types. Functionality is only dependent upon the C++ Standard Library.
 
-Alchemy requires a Modern C++98 compiler (C++11 and C++14), although a legacy version for Classic C++ with the TR1 extensions is available. This version supports fundamentals, nested, packed, arrays, vectors and message views. All new development is done exclusively on the modern branch and bug fixes on both branches.
+Alchemy requires a Modern compiler (C++11, C++14 and C++17), although a legacy version exists for Classic C++, C++98 with the TR1 extensions. This version supports fundamentals, nested, packed, arrays, vectors and message views. All new development is done exclusively on the modern branch and bug fixes on both branches.
 
 All commenting is done using doxygen.
 
-Carbon (C), C-linkable API generation 
-==============================
+I welcome your feedback.
+If you have an idea that you think would fit within Alchemy or would like to contribute, please contact me.
 
-The preprocessor has been utilized to generate definitions that are compatible with C. A Mercury library can now be generated and configured to generate Carbon definitions as well. All of the power and speed of the Hg messages will be compiled into a library that exports C-linkable interfaces, as well as C-style structures to access the data.
+You can follow me on Twitter: @codeofthedamned
 
-This library will allow any language that is capable of importing a C-library to take advantage of Hg message serialization support. More details will soon follow regarding documentation and usage examples.
+Benchmarks
+========================================================
+Machine:  
+*Intel Core i7-4790L @ 4.00GHz  
+*16 GB RAM  
+*Windows 10 64-bit
 
+These benchmarks were compiled by Visual Studio 2017 with these compiler settings:  
+*Maximixe Speed: /O2  
+*Enable Intrinsic (Yes): /Oi  
+*Favor Speed: /Ot  
+*Omit Frame Pointers (Yes): /Oy  
+*Whole Program Optimization (Yes): /GL  
+*Use Link-time Code Generation
+
+Link-time code generation gives about 15% increase in performance.
+
+Test | % Faster
+----------- |:------------
+Basic: |  **40.01%**
+Packed: | ** 4.20%**
+Unaligned: | **45.20%**
+Complex: | **74.16%**
+Array: | **21.55%**
+Total: | **36.77%**
 
 Mercury (Hg), Messenger of the Gods
 ==============================
@@ -95,6 +98,35 @@ Hg currently is written to allow up to 32 bit-fields in a single parameter.
 
   - ALCHEMY_BEGIN_PACKED(TYPE,BITSET, ...)
   -   ALCHEMY_BIT_FIELD(INDEX, NAME, COUNT)
+  
+** Hg Example below **
+
+
+Carbon (C), C-linkable API generation 
+==============================
+
+The preprocessor has been utilized to generate definitions that are compatible with C. A Mercury library can now be generated and configured to generate Carbon definitions as well. All of the power and speed of the Hg messages will be compiled into a library that exports C-linkable interfaces, as well as C-style structures to access the data.
+
+This library will allow any language that is capable of importing a C-library to take advantage of Hg message serialization support. More details will soon follow regarding documentation and usage examples.
+
+
+Bi (Bismuth) Big-Integer
+========================================================
+I have started work on a Big-Integer library for Alchemy. This will be useful for integer calculations for number theory. Eventually, I will secure it for use with cryptography, which I plan to implement a few convenience functions to simplify encryption, hashing and other related activities with message passing. 
+
+Bismuth (Bi) is a Big-Integer library to handle operations that require numbers greater than the native processor can support. The primary goals of Bismuth are ease-of-use and security. A wide variety of operations from Number Theory are implemented in Bismuth, including modular arithmetic and discrete logarithms. The primary goal for this library is to become a building block to build other robust applications, such as cryptosystems. It is also written using C++ 11 features with clarity of implementation and simplicity to make security more realistic.
+
+Current work:
+  - Natural Number Group
+  - Integer Group
+  - Discrete Logarithm
+  - Discrete Elliptical Curve
+  
+Future work:
+  - Discrete Lattice
+
+
+
 
 -------------
 
@@ -172,62 +204,21 @@ I envision users of the library to be able to use message objects defined for ho
 
 If you know of other transport libraries and would like to see an Hg adapter to that library, please create a new issue request.
 
--------------
-Benchmark performance:
 
-Machine:  
-*Intel Core i7-4790L @ 4.00GHz  
-*16 GB RAM  
-*Windows 8.1  
+--------------
 
-These benchmarks were compiled by Visual Studio 2013 with these compiler settings:  
-*Maximixe Speed: /O2  
-*Enable Intrinsic (Yes): /Oi  
-*Favor Speed: /Ot  
-*Omit Frame Pointers (Yes): /Oy  
-*Whole Program Optimization (Yes): /GL  
+Future Plans:
+
+ - CMake Build-System
+ - Cs (Cesium): Time-related constructs that are built upon the std::chronos library
+   -- Benchmarking constructs
    
-Omitting the frame pointers gave the largest boost in performance. Most probably due to the recursive implementation for many of the algorithms that process the Hg messages.
-
-Benchmark output:
------------------
-Loading test data:  
-Hit enter when ready...:  
+ - Si (Silicon): Memory based constructs suitable for embedded development
+   -- Register maps
+   -- Lockless Ring-Buffer
    
-Test | Msg Size | Cycles 
--------------- |:---------- |:---------
-no_conversion  | 64 | 8388608  
-        basic  | 14 | 38347922  
-       packed  | 7 | 76695844  
-    unaligned  | 19 | 28256363  
-      complex  | 86 | 6242685  
-        array  | 1024 | 524288  
-  
-Running control benchmark:  
-Test completed  
-  
-Running Hg benchmark:
-Test completed  
-
-diff:    Is time difference calculated as **control** - **Hg**  
-percent: Value indicates **Hg** performance (+ is better)  
-    
-Test | control | Hg | diff | percent
------------ |:---------- |:--------- |:---------- |:------------
-Basic: |  0.4133  s | 0.2423  s | -0.1710 | **41.37%**
-Packed: | 0.3959  s | 0.3403     s | -0.0556 | **14.05%**
-Unaligned: | 0.4391  s | 0.2295  s | -0.2096 | **47.74%**
-Complex: | 0.7485  s | 0.5573  s | -0.1912 | **25.54%**
-Array: | 0.5141  s | 0.1376   s | -0.3765 | **73.23%**
-Total: | 2.5109  s | 1.5071   s | -1.0039 | **39.98%**
-
-These are the basic benchmark tests that have been written:
-
-1. A single struct with fundamental type fields.  
-2. A single struct with Packed bit fields.  
-3. A single struct with fundamental fields that are intentionally placed at unaligned memory positions.  
-4. A Nested struct that contains an instance of all of the previous structs. One of the nested structs is created in an array. 
-5. An array of 256 32-bit integers
-6. A structure that does not perform byte-order conversion, but does read, copy, then write data.
-
-
+ - Other:
+   -- Finite State-Machine
+   -- Discrete Random Variables and supporting functions (e.g. PDF and CDF)
+   
+   

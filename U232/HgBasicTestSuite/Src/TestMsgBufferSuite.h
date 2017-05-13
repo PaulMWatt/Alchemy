@@ -311,7 +311,7 @@ void TestMsgBufferSuite::TestCopyCtor()
 
   // SUT
   host_buffer sut(rhs);
-  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -337,7 +337,7 @@ void TestMsgBufferSuite::TestOpAssignment()
   sut = rhs;
 
   TS_ASSERT(!sut.empty());
-  TS_ASSERT_SAME_DATA(sut.data(), rhs.data(), sut.size());
+  TS_ASSERT_SAME_DATA(sut.data(), rhs.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -353,7 +353,7 @@ void TestMsgBufferSuite::TestOpAssignment_ToSelf()
   TS_ASSERT(!sut.empty());
   host_buffer expected;
   PopulateBaseValues(expected);
-  TS_ASSERT_SAME_DATA(sut.data(), expected.data(), sut.size());
+  TS_ASSERT_SAME_DATA(sut.data(), expected.data(), (unsigned int)sut.size());
 }
 
 
@@ -531,7 +531,7 @@ void TestMsgBufferSuite::TestSetData()
   host_buffer expected;
   PopulateBaseValues(expected);
 
-  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), expected.size());
+  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), (unsigned int)expected.size());
 }
 
 //  ****************************************************************************
@@ -568,7 +568,7 @@ void TestMsgBufferSuite::TestClone()
   host_buffer sut = rhs.clone();
 
   // Verify an exact copy of the original has been created.
-  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), (unsigned int)sut.size());
 
   // Verify that the cloned version (SUT) is in a separate buffer.
   rhs.zero();

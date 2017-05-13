@@ -212,7 +212,7 @@ void TestMessageSuite::TestCopyCtor()
 
   // SUT
   SUT sut(rhs);
-  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -222,7 +222,7 @@ void TestMessageSuite::TestValueCtor()
   PopulateBaseValues (rhs);
   // SUT
   SUT sut(rhs.data(), rhs.size());
-  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -234,7 +234,7 @@ void TestMessageSuite::TestAssignmentOperator()
   // SUT
   SUT sut;
   sut = rhs;
-  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(rhs.data(), sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -291,7 +291,7 @@ void TestMessageSuite::TestAssign()
 
   // Verify the contents held in the input buffer were properly assigned to the msg.
   TS_ASSERT_EQUALS(expected.size(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -379,8 +379,8 @@ void TestMessageSuite::Testto_host()
   SUT result = to_host(sut);
   SUT no_op_result = to_host(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -403,8 +403,8 @@ void TestMessageSuite::Testto_network()
   SUT_net result = to_network(sut);
   SUT_net no_op_result = to_network(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -427,8 +427,8 @@ void TestMessageSuite::Testto_big_endian()
   SUT_big result = to_big_endian(sut);
   SUT_big no_op_result = to_big_endian(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -451,8 +451,8 @@ void TestMessageSuite::Testto_little_endian()
   SUT_little result        = to_little_endian(sut);
   SUT_little no_op_result  = to_little_endian(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(expected.data(), result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 

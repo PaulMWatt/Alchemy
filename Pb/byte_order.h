@@ -49,6 +49,8 @@ namespace // unnamed
 
 #if defined(ALCHEMY_CONSTEXPR_SUPPORTED)
 //  ****************************************************************************
+/// We test with certainty the endianess of the processor.
+///
 constexpr Endianess get_endianess()
 {
   return  unsigned short(0x30 << 8 | 0x40) == 0x3040
@@ -57,7 +59,11 @@ constexpr Endianess get_endianess()
 }
 #else
 
-#define get_endianess()   Endianess(ALCHEMY_ENDIANESS)
+//  ****************************************************************************
+/// This method relies upon preprocessor definitions of the CPU-type
+///
+# define get_endianess()   Endianess(ALCHEMY_ENDIANESS)
+
 #endif
 
 }
@@ -66,8 +72,7 @@ namespace Hg
 {
 
 ///< Constant indicates machine endianess.
-//const Endianess k_endianess = Endianess(ALCHEMY_ENDIANESS); 
- const Endianess k_endianess = get_endianess();
+const Endianess k_endianess = get_endianess();
 
 namespace convert
 {

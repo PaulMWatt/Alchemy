@@ -336,7 +336,7 @@ void TestOptionalMessageSuite::TestCopyCtor()
 
   // SUT
   SUT sut(rhs);
-  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -346,7 +346,7 @@ void TestOptionalMessageSuite::TestValueCtor()
   PopulateBaseValues (rhs);
   // SUT
   SUT sut(rhs.data(), rhs.size());
-  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -358,7 +358,7 @@ void TestOptionalMessageSuite::TestAssignmentOperator()
   // SUT
   SUT sut;
   sut = rhs;
-  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -418,7 +418,7 @@ void TestOptionalMessageSuite::TestAssign()
   sut.assign(expected.data(), expected.size());
 
   TS_ASSERT_EQUALS(expected.size(), sut.size());
-  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(expected.data(), sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -461,7 +461,7 @@ void TestOptionalMessageSuite::Testdata()
   sut.dynamic.assign(k_dynamic.begin(), k_dynamic.end());
 
   TS_ASSERT_EQUALS(k_sut_msg_size, sut.size());
-  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), sut.size());
+  TS_ASSERT_SAME_DATA(packed_msg, sut.data(), (unsigned int)sut.size());
 }
 
 //  ****************************************************************************
@@ -484,8 +484,8 @@ void TestOptionalMessageSuite::Testto_host()
   SUT result = to_host(sut);
   SUT no_op_result = to_host(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -508,8 +508,8 @@ void TestOptionalMessageSuite::Testto_network()
   SUT_net result = to_network(sut);
   SUT_net no_op_result = to_network(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -532,8 +532,8 @@ void TestOptionalMessageSuite::Testto_big_endian()
   SUT_big result = to_big_endian(sut);
   SUT_big no_op_result = to_big_endian(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 //  ****************************************************************************
@@ -556,8 +556,8 @@ void TestOptionalMessageSuite::Testto_little_endian()
   SUT_little result        = to_little_endian(sut);
   SUT_little no_op_result  = to_little_endian(no_op_sut);
 
-  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), sut.size());
-  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), no_op_sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, result.data(), (unsigned int)sut.size());
+  TS_ASSERT_SAME_DATA(other_packed_msg, no_op_result.data(), (unsigned int)no_op_sut.size());
 }
 
 

@@ -118,8 +118,9 @@ public:
   /// @param rhs              The Hg message object from which data is copied. 
   ///
   Message(const message_type& rhs)
-    : base_type(rhs)
-  { }
+  {
+    *static_cast<message_type*>(this) = rhs;
+  }
 
   //  **************************************************************************
   /// Move Constructor
@@ -304,6 +305,7 @@ public:
   using const_pointer   = const data_type*;
   using reference       = MsgT&;
   using const_reference = const MsgT&;
+  using rval_reference  = MsgT&&;
   using this_type       = basic_msg<MsgT, StorageT>;
   using host_t          = Message<this_type, Hg::HostByteOrder>;
   using net_t           = Message<this_type, Hg::NetByteOrder>;
@@ -333,8 +335,9 @@ public:
   /// @param rhs              The Hg message object from which data is copied. 
   ///
   basic_msg(const basic_msg& rhs)
-    : message_type(rhs)
-  { }
+  {
+    *static_cast<message_type*>(this) = rhs;
+  }
 
   //  **************************************************************************
   /// Move Constructor
@@ -515,6 +518,14 @@ public:
   reference values()
   {
     return *this;
+  }
+
+  //  **************************************************************************
+  /// Returns an reference refernce to the underlying collection of value objects.
+  ///
+  rval_reference move_values() &&
+  {
+    return std::move(*this);
   }
 
   //  **************************************************************************
