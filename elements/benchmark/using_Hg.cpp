@@ -30,9 +30,18 @@ void test_impl( DataBuffer &data,
   using HgType = Hg::basic_msg<T, Hg::BufferedStaticStoragePolicy>;
 
   size_t len = Hg::size_of<HgType>::value;
+  cout << name << " size: " << len;
+
   size_t count = data.Size() / len;
 
-  cout << name << " size: " << len   << "\t\tcount: " << count << endl;
+  if (len < 1000)
+  {
+    cout << "\t";
+  }
+
+  cout << "\tcount: " << count << endl;
+  
+  
   for (size_t index = 0; index < count; ++index)
   {
     HgType::host_t host((HgType::data_type*)data.GetBytes(len), len);  

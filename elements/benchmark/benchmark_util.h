@@ -9,52 +9,25 @@
 #define BENCHMARK_UTIL_H_INCLUDED
 //  Includes *******************************************************************
 #include <algorithm>
+#include <chrono>
 
-
-#ifdef WIN32
-
-#include <windows.h>
 
 namespace alchemy
 {
 namespace benchmark
 {
 
+using time_point = std::chrono::time_point<std::chrono::system_clock>;
+using duration   = std::chrono::duration<double>;
+
 inline
-double get_time()
+time_point get_time()
 {
-    LARGE_INTEGER t, f;
-    QueryPerformanceCounter(&t);
-    QueryPerformanceFrequency(&f);
-    return (double)t.QuadPart/(double)f.QuadPart;
+  return std::chrono::system_clock::now();
 }
 
 } // benchmark
 } // alchemy
-
-#else
-
-#include <sys/time.h>
-#include <sys/resource.h>
-
-namespace alchemy
-{
-namespace benchmark
-{
-
-inline
-double get_time()
-{
-    struct timeval t;
-    struct timezone tzp;
-    gettimeofday(&t, &tzp);
-    return t.tv_sec + t.tv_usec*1e-6;
-}
-
-} // benchmark
-} // alchemy
-
-#endif
 
 
 namespace alchemy
@@ -84,9 +57,6 @@ public:
   //  **************************************************************************
   void Init(size_t size)
   {
-    double seed = get_time();
-    srand((unsigned int)seed);
-
     // Attempt to allocate the requested amount of memory.
     Term();
 

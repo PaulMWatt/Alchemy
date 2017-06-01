@@ -189,6 +189,7 @@ cd "../.."</Command>
     <ClInclude Include="..\..\Pb\detail\alias_templates.h" />
     <ClInclude Include="..\..\Pb\detail\auto.h" />
     <ClInclude Include="..\..\Pb\detail\conditional.h" />
+    <ClInclude Include="..\..\Pb\detail\constexpr.h" />
     <ClInclude Include="..\..\Pb\detail\decltype.h" />
     <ClInclude Include="..\..\Pb\detail\explicit_conversion.h" />
     <ClInclude Include="..\..\Pb\detail\offset_of.h" />
