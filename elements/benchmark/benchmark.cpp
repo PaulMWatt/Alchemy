@@ -18,7 +18,7 @@
 
 
 //  ****************************************************************************
-typedef std::vector<double>     TimeValues;
+using TimeValues = std::vector<alchemy::benchmark::time_point>;
 using std::cin;
 using std::cout;
 using std::endl;
@@ -117,23 +117,23 @@ void DisplayResults(const std::string &control_name,
   using std::setw;
   using std::left;
 
-  double c_basic_len     = control_times[k_end_basic]     - control_times[k_start_basic];
-  double c_packed_len    = control_times[k_end_packed]    - control_times[k_start_packed];   
-  double c_unaligned_len = control_times[k_end_unaligned] - control_times[k_start_unaligned];
-  double c_array_len     = control_times[k_end_array]   - control_times[k_start_array];
-  double c_complex_len   = control_times[k_end_complex] - control_times[k_start_complex];
-  double c_total_len     = c_basic_len + c_packed_len + c_unaligned_len + c_array_len + c_complex_len;
+  double c_basic_len     = duration(control_times[k_end_basic]     - control_times[k_start_basic]).count();
+  double c_packed_len    = duration(control_times[k_end_packed]    - control_times[k_start_packed]).count();   
+  double c_unaligned_len = duration(control_times[k_end_unaligned] - control_times[k_start_unaligned]).count();
+  double c_array_len     = duration(control_times[k_end_array]   - control_times[k_start_array]).count();
+  double c_complex_len   = duration(control_times[k_end_complex] - control_times[k_start_complex]).count();
+  double c_total_len     = duration(c_basic_len + c_packed_len + c_unaligned_len + c_array_len + c_complex_len).count();
 
-  double basic_len     = times[k_end_basic]     - times[k_start_basic];
-  double packed_len    = times[k_end_packed]    - times[k_start_packed];   
-  double unaligned_len = times[k_end_unaligned] - times[k_start_unaligned];
-  double array_len     = times[k_end_array]     - times[k_start_array];
-  double complex_len   = times[k_end_complex] - times[k_start_complex];
-  double total_len     = basic_len + packed_len + unaligned_len + array_len + complex_len;
+  double basic_len     = duration(times[k_end_basic]     - times[k_start_basic]).count();
+  double packed_len    = duration(times[k_end_packed]    - times[k_start_packed]).count();   
+  double unaligned_len = duration(times[k_end_unaligned] - times[k_start_unaligned]).count();
+  double array_len     = duration(times[k_end_array]     - times[k_start_array]).count();
+  double complex_len   = duration(times[k_end_complex] - times[k_start_complex]).count();
+  double total_len     = duration(basic_len + packed_len + unaligned_len + array_len + complex_len).count();
 
   cout << "-------------------------------------------------------------------------\n";
-  double c_no_conv_len   = control_times[k_end_no_conv]   - control_times[k_start_no_conv];
-  double no_conv_len     = times[k_end_no_conv]   - times[k_start_no_conv];
+  double c_no_conv_len   = duration(control_times[k_end_no_conv]   - control_times[k_start_no_conv]).count();
+  double no_conv_len     = duration(times[k_end_no_conv]   - times[k_start_no_conv]).count();
   cout << "Scenario:     " << control_name    << "\t\t"<< name          << "\tdiff\t\tpercent\n";
   cout << "------------- ----------        ----------      ----------      ---------\n";
   cout << "NoConversion: " << setw(10) << left << c_no_conv_len   << "s\t" << setw(10) << left << no_conv_len << "s\t" << (no_conv_len   - c_no_conv_len  ) << "\t" << 100.0 - (no_conv_len   / c_no_conv_len  ) * 100.0 << "%\n\n\n";

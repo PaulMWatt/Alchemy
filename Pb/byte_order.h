@@ -43,6 +43,7 @@
 #define BYTE_ORDER_H_INCLUDED
 //  Includes *******************************************************************
 #include <Pb/detail/endianess.h>
+#include <stdlib.h>
 
 namespace // unnamed
 {

@@ -10,6 +10,16 @@
 #include <Hg.h>
 #include <iostream>
 
+
+// Need access to the functions typically 
+// used to swap bytes for the local platform.
+#if defined(WIN32)
+# include<windows.h>
+
+#else
+
+#endif
+
 using std::cout;
 using std::endl;
 

@@ -20,7 +20,7 @@
       (__GNUC__ == 4 && (__GNUC_MINOR__ >  6 || \
                         (__GNUC_MINOR__ == 6 && \
                          __GNUC_PATCHLEVEL__ > 0)))
-#   define  ALCHEMY_CONSTEXPR_SUPPORTED    1    
+# define    ALCHEMY_CONSTEXPR_SUPPORTED    1    
 
 #else 
   // Compiler does not support constexpr
