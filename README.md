@@ -40,8 +40,8 @@ Test | % Faster
 Basic: |  **40.01%**
 Packed: | ** 4.20%**
 Unaligned: | **45.20%**
-Complex: | **74.16%**
-Array: | **21.55%**
+Array: | **74.16%**
+Complex: | **21.55%**
 Total: | **36.77%**
 
 Mercury (Hg), Messenger of the Gods
